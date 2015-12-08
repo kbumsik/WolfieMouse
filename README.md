@@ -7,3 +7,7 @@ Trello: https://trello.com/b/nIOMXuWJ
 Slack: http://kbumsik.slack.com
 
 This is project for IEEE Reion 1 Micromouse competition.
+
+## Directory descriptions
+
+`source`: Source codes of common libraries
