@@ -11,3 +11,4 @@ This is project for IEEE Reion 1 Micromouse competition.
 ## Directory descriptions
 
 `source`: Source codes of common libraries
+`Project_STM32CubeMX`: For a basic source code using STM32CubeMX code generator.

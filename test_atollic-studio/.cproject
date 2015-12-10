@@ -32,8 +32,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/CMSIS/CMSIS/Include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/CMSIS/STM32F4xx_HAL_Driver/Inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/Middlewares/Third_Party/FatFs/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/Peripherals/Inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/config}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source}&quot;"/>
 								</option>
 								<inputType id="com.atollic.truestudio.as.input.1301091204" name="Input" superClass="com.atollic.truestudio.as.input"/>
 							</tool>
@@ -49,8 +49,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/CMSIS/CMSIS/Include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/CMSIS/STM32F4xx_HAL_Driver/Inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/Middlewares/Third_Party/FatFs/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/Peripherals/Inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/config}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source}&quot;"/>
 								</option>
 								<option id="com.atollic.truestudio.common_options.target.endianess.1141285463" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess"/>
 								<option id="com.atollic.truestudio.common_options.target.mcpu.623766988" name="Microcontroller" superClass="com.atollic.truestudio.common_options.target.mcpu" value="STM32F446RE" valueType="enumerated"/>
@@ -83,8 +83,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/CMSIS/CMSIS/Include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/CMSIS/STM32F4xx_HAL_Driver/Inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/Middlewares/Third_Party/FatFs/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/Peripherals/Inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/config}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source}&quot;"/>
 								</option>
 								<option id="com.atollic.truestudio.common_options.target.endianess.798347776" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess"/>
 								<option id="com.atollic.truestudio.common_options.target.mcpu.1613339549" name="Microcontroller" superClass="com.atollic.truestudio.common_options.target.mcpu" value="STM32F446RE" valueType="enumerated"/>
