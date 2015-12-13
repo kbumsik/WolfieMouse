@@ -29,6 +29,7 @@
 #include "i2c.h"
 #include "quadspi.h"
 #include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private macro */
@@ -57,6 +58,7 @@ int main(void)
   MX_I2C2_Init();
   MX_QUADSPI_Init();
   MX_TIM1_Init();
+  MX_USART2_UART_Init();
   MX_FATFS_Init();
 
   /**
