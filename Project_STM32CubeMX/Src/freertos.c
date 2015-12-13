@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
-  * @file    stm32f4xx_it.c
-  * @brief   Interrupt Service Routines.
+  * File Name          : freertos.c
+  * Description        : Code for freertos applications
   ******************************************************************************
   *
   * COPYRIGHT(c) 2015 STMicroelectronics
@@ -30,46 +30,85 @@
   *
   ******************************************************************************
   */
+
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx_hal.h"
-#include "stm32f4xx.h"
-#include "stm32f4xx_it.h"
+#include "FreeRTOS.h"
+#include "task.h"
 #include "cmsis_os.h"
 
-/* USER CODE BEGIN 0 */
+/* USER CODE BEGIN Includes */     
 
-/* USER CODE END 0 */
+/* USER CODE END Includes */
 
-/* External variables --------------------------------------------------------*/
-extern void xPortSysTickHandler(void);
+/* Variables -----------------------------------------------------------------*/
+osThreadId defaultTaskHandle;
 
-/******************************************************************************/
-/*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
-/******************************************************************************/
+/* USER CODE BEGIN Variables */
 
-/**
-* @brief This function handles System tick timer.
-*/
-void SysTick_Handler(void)
-{
-  /* USER CODE BEGIN SysTick_IRQn 0 */
+/* USER CODE END Variables */
 
-  /* USER CODE END SysTick_IRQn 0 */
-  HAL_IncTick();
-  osSystickHandler();
-  /* USER CODE BEGIN SysTick_IRQn 1 */
+/* Function prototypes -------------------------------------------------------*/
+void StartDefaultTask(void const * argument);
 
-  /* USER CODE END SysTick_IRQn 1 */
+extern void MX_FATFS_Init(void);
+void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+
+/* USER CODE BEGIN FunctionPrototypes */
+
+/* USER CODE END FunctionPrototypes */
+
+/* Hook prototypes */
+
+/* Init FreeRTOS */
+
+void MX_FREERTOS_Init(void) {
+  /* USER CODE BEGIN Init */
+       
+  /* USER CODE END Init */
+
+  /* USER CODE BEGIN RTOS_MUTEX */
+  /* add mutexes, ... */
+  /* USER CODE END RTOS_MUTEX */
+
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* add semaphores, ... */
+  /* USER CODE END RTOS_SEMAPHORES */
+
+  /* USER CODE BEGIN RTOS_TIMERS */
+  /* start timers, add new ones, ... */
+  /* USER CODE END RTOS_TIMERS */
+
+  /* Create the thread(s) */
+  /* definition and creation of defaultTask */
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+
+  /* USER CODE BEGIN RTOS_THREADS */
+  /* add threads, ... */
+  /* USER CODE END RTOS_THREADS */
+
+  /* USER CODE BEGIN RTOS_QUEUES */
+  /* add queues, ... */
+  /* USER CODE END RTOS_QUEUES */
 }
 
-/******************************************************************************/
-/* STM32F4xx Peripheral Interrupt Handlers                                    */
-/* Add here the Interrupt Handlers for the used peripherals.                  */
-/* For the available peripheral interrupt handler names,                      */
-/* please refer to the startup file (startup_stm32f4xx.s).                    */
-/******************************************************************************/
+/* StartDefaultTask function */
+void StartDefaultTask(void const * argument)
+{
+  /* init code for FATFS */
+  MX_FATFS_Init();
 
-/* USER CODE BEGIN 1 */
+  /* USER CODE BEGIN StartDefaultTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartDefaultTask */
+}
 
-/* USER CODE END 1 */
+/* USER CODE BEGIN Application */
+     
+/* USER CODE END Application */
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

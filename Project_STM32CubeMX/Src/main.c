@@ -32,6 +32,7 @@
   */
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+#include "cmsis_os.h"
 #include "fatfs.h"
 #include "i2c.h"
 #include "quadspi.h"
@@ -52,6 +53,7 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void MX_FREERTOS_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -83,11 +85,18 @@ int main(void)
   MX_QUADSPI_Init();
   MX_TIM1_Init();
   MX_USART2_UART_Init();
-  MX_FATFS_Init();
 
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
+
+  /* Call init function for freertos objects (in freertos.c) */
+  MX_FREERTOS_Init();
+
+  /* Start scheduler */
+  osKernelStart();
+  
+  /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
