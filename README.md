@@ -6,8 +6,6 @@ Discussion: https://gitter.im/kbumsik/Micromouse_2016
 
 Documentation: https://kbumsik.gitbooks.io/micromouse_2016_docs
 
-Webpage: http://kbumsik.github.io/Micromouse_2016/
-
 Trello: https://trello.com/b/nIOMXuWJ
 
 This is project for IEEE Region 1 Micromouse competition.
