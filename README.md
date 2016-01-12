@@ -6,7 +6,7 @@ Webpage: http://kbumsik.github.io/Micromouse_2016/
 
 Trello: https://trello.com/b/nIOMXuWJ
 
-Slack: http://kbumsik.slack.com
+Discussion: https://gitter.im/kbumsik/Micromouse_2016
 
 This is project for IEEE Region 1 Micromouse competition.
 
