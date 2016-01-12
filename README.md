@@ -1,5 +1,7 @@
 # Micromouse_2016
 
+[![Join the chat at https://gitter.im/kbumsik/Micromouse_2016](https://badges.gitter.im/kbumsik/Micromouse_2016.svg)](https://gitter.im/kbumsik/Micromouse_2016?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Webpage: http://kbumsik.github.io/Micromouse_2016/
 
 Trello: https://trello.com/b/nIOMXuWJ
