@@ -51,7 +51,7 @@
 									<listOptionValue builtIn="false" value="" />
 									<listOptionValue builtIn="false" value="" />
 									<listOptionValue builtIn="false" value="" />
-								<listOptionValue builtIn="false" value="" /></option>
+								<listOptionValue builtIn="false" value="" /><listOptionValue builtIn="false" value="" /><listOptionValue builtIn="false" value="" /><listOptionValue builtIn="false" value="" /><listOptionValue builtIn="false" value="" /><listOptionValue builtIn="false" value="" /><listOptionValue builtIn="false" value="" /><listOptionValue builtIn="false" value="" /></option>
 								<option id="com.atollic.truestudio.gcc.symbols.defined.1670122205" name="Defined symbols" superClass="com.atollic.truestudio.gcc.symbols.defined" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__weak=&quot;__attribute__((weak))&quot;" />
 									<listOptionValue builtIn="false" value="__packed=&quot;__attribute__((__packed__))&quot;" />

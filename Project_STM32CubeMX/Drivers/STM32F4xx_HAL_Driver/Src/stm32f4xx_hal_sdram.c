@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_sdram.c
   * @author  MCD Application Team
-  * @version V1.4.1
-  * @date    09-October-2015
+  * @version V1.4.3
+  * @date    11-December-2015
   * @brief   SDRAM HAL module driver.
   *          This file provides a generic firmware to drive SDRAM memories mounted 
   *          as external device.
@@ -199,6 +199,8 @@ HAL_StatusTypeDef HAL_SDRAM_DeInit(SDRAM_HandleTypeDef *hsdram)
   */
 __weak void HAL_SDRAM_MspInit(SDRAM_HandleTypeDef *hsdram)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hsdram);
   /* NOTE: This function Should not be modified, when the callback is needed,
             the HAL_SDRAM_MspInit could be implemented in the user file
    */ 
@@ -212,6 +214,8 @@ __weak void HAL_SDRAM_MspInit(SDRAM_HandleTypeDef *hsdram)
   */
 __weak void HAL_SDRAM_MspDeInit(SDRAM_HandleTypeDef *hsdram)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hsdram);
   /* NOTE: This function Should not be modified, when the callback is needed,
             the HAL_SDRAM_MspDeInit could be implemented in the user file
    */ 
@@ -244,6 +248,8 @@ void HAL_SDRAM_IRQHandler(SDRAM_HandleTypeDef *hsdram)
   */
 __weak void HAL_SDRAM_RefreshErrorCallback(SDRAM_HandleTypeDef *hsdram)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hsdram);
   /* NOTE: This function Should not be modified, when the callback is needed,
             the HAL_SDRAM_RefreshErrorCallback could be implemented in the user file
    */ 
@@ -257,6 +263,8 @@ __weak void HAL_SDRAM_RefreshErrorCallback(SDRAM_HandleTypeDef *hsdram)
   */
 __weak void HAL_SDRAM_DMA_XferCpltCallback(DMA_HandleTypeDef *hdma)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hdma);
   /* NOTE: This function Should not be modified, when the callback is needed,
             the HAL_SDRAM_DMA_XferCpltCallback could be implemented in the user file
    */ 
@@ -269,6 +277,8 @@ __weak void HAL_SDRAM_DMA_XferCpltCallback(DMA_HandleTypeDef *hdma)
   */
 __weak void HAL_SDRAM_DMA_XferErrorCallback(DMA_HandleTypeDef *hdma)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hdma);
   /* NOTE: This function Should not be modified, when the callback is needed,
             the HAL_SDRAM_DMA_XferErrorCallback could be implemented in the user file
    */ 

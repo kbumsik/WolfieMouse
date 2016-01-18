@@ -5,7 +5,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -73,7 +73,7 @@
 //#define HAL_RTC_MODULE_ENABLED   
 //#define HAL_SAI_MODULE_ENABLED   
 //#define HAL_SD_MODULE_ENABLED   
-//#define HAL_SPI_MODULE_ENABLED   
+#define HAL_SPI_MODULE_ENABLED
 #define HAL_TIM_MODULE_ENABLED
 #define HAL_UART_MODULE_ENABLED
 //#define HAL_USART_MODULE_ENABLED   
@@ -84,7 +84,7 @@
 //#define HAL_HCD_MODULE_ENABLED   
 //#define HAL_DSI_MODULE_ENABLED   
 //#define HAL_QSPI_MODULE_ENABLED   
-#define HAL_QSPI_MODULE_ENABLED
+//#define HAL_QSPI_MODULE_ENABLED   
 //#define HAL_CEC_MODULE_ENABLED   
 //#define HAL_FMPI2C_MODULE_ENABLED   
 //#define HAL_SPDIFRX_MODULE_ENABLED   
@@ -108,7 +108,7 @@
 #endif /* HSE_VALUE */
 
 #if !defined  (HSE_STARTUP_TIMEOUT)
-  #define HSE_STARTUP_TIMEOUT    ((uint32_t)5000)   /*!< Time out for HSE start up, in ms */
+  #define HSE_STARTUP_TIMEOUT    ((uint32_t)100)   /*!< Time out for HSE start up, in ms */
 #endif /* HSE_STARTUP_TIMEOUT */
 
 /**
@@ -153,7 +153,7 @@
   */     
   
 #define  VDD_VALUE					  ((uint32_t)3300) /*!< Value of VDD in mv */           
-#define  TICK_INT_PRIORITY            ((uint32_t)0)   /*!< tick interrupt priority */            
+#define  TICK_INT_PRIORITY            ((uint32_t)15)   /*!< tick interrupt priority */            
 #define  USE_RTOS                     0     
 #define  PREFETCH_ENABLE              1
 #define  INSTRUCTION_CACHE_ENABLE     1

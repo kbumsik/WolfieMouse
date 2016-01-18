@@ -149,10 +149,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
 		</link><link>
-			<name>Application/User/quadspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/quadspi.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
@@ -168,14 +164,6 @@
 			<name>Application/User/fatfs.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
-		</link><link>
-			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_qspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c</locationURI>
-		</link><link>
-			<name>Application/User/i2c.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/i2c.c</locationURI>
 		</link><link>
 			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
 			<type>1</type>
@@ -193,10 +181,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
 		</link><link>
-			<name>Middlewares/FatFs/ccsbcs.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/ccsbcs.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
@@ -213,10 +197,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
 		</link><link>
-			<name>Application/User/tim.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/tim.c</locationURI>
-		</link><link>
 			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f446xx.s</locationURI>
@@ -232,10 +212,6 @@
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
-		</link><link>
-			<name>Application/User/gpio.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/gpio.c</locationURI>
 		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
 			<type>1</type>
@@ -313,10 +289,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
 		</link><link>
-			<name>Application/User/quadspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/quadspi.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
@@ -332,14 +304,6 @@
 			<name>Application/User/fatfs.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
-		</link><link>
-			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_qspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c</locationURI>
-		</link><link>
-			<name>Application/User/i2c.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/i2c.c</locationURI>
 		</link><link>
 			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
 			<type>1</type>
@@ -357,10 +321,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
 		</link><link>
-			<name>Middlewares/FatFs/ccsbcs.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/ccsbcs.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
@@ -377,10 +337,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
 		</link><link>
-			<name>Application/User/tim.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/tim.c</locationURI>
-		</link><link>
 			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f446xx.s</locationURI>
@@ -396,10 +352,6 @@
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
-		</link><link>
-			<name>Application/User/gpio.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/gpio.c</locationURI>
 		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
 			<type>1</type>
@@ -477,10 +429,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
 		</link><link>
-			<name>Application/User/quadspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/quadspi.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
@@ -496,14 +444,6 @@
 			<name>Application/User/fatfs.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
-		</link><link>
-			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_qspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c</locationURI>
-		</link><link>
-			<name>Application/User/i2c.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/i2c.c</locationURI>
 		</link><link>
 			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
 			<type>1</type>
@@ -521,10 +461,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
 		</link><link>
-			<name>Middlewares/FatFs/ccsbcs.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/ccsbcs.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
@@ -541,10 +477,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
 		</link><link>
-			<name>Application/User/tim.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/tim.c</locationURI>
-		</link><link>
 			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f446xx.s</locationURI>
@@ -560,10 +492,6 @@
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
-		</link><link>
-			<name>Application/User/gpio.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/gpio.c</locationURI>
 		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
 			<type>1</type>
@@ -641,10 +569,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
 		</link><link>
-			<name>Application/User/quadspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/quadspi.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
@@ -660,14 +584,6 @@
 			<name>Application/User/fatfs.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
-		</link><link>
-			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_qspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c</locationURI>
-		</link><link>
-			<name>Application/User/i2c.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/i2c.c</locationURI>
 		</link><link>
 			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
 			<type>1</type>
@@ -685,10 +601,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
 		</link><link>
-			<name>Middlewares/FatFs/ccsbcs.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/ccsbcs.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
@@ -705,10 +617,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
 		</link><link>
-			<name>Application/User/tim.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/tim.c</locationURI>
-		</link><link>
 			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f446xx.s</locationURI>
@@ -724,10 +632,6 @@
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
-		</link><link>
-			<name>Application/User/gpio.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/gpio.c</locationURI>
 		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
 			<type>1</type>
@@ -805,10 +709,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
 		</link><link>
-			<name>Application/User/quadspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/quadspi.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
@@ -824,14 +724,6 @@
 			<name>Application/User/fatfs.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
-		</link><link>
-			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_qspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c</locationURI>
-		</link><link>
-			<name>Application/User/i2c.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/i2c.c</locationURI>
 		</link><link>
 			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
 			<type>1</type>
@@ -849,10 +741,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
 		</link><link>
-			<name>Middlewares/FatFs/ccsbcs.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/ccsbcs.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
@@ -869,10 +757,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
 		</link><link>
-			<name>Application/User/tim.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/tim.c</locationURI>
-		</link><link>
 			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f446xx.s</locationURI>
@@ -888,10 +772,6 @@
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
-		</link><link>
-			<name>Application/User/gpio.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/gpio.c</locationURI>
 		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
 			<type>1</type>
@@ -969,10 +849,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
 		</link><link>
-			<name>Application/User/quadspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/quadspi.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
@@ -988,14 +864,6 @@
 			<name>Application/User/fatfs.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
-		</link><link>
-			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_qspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c</locationURI>
-		</link><link>
-			<name>Application/User/i2c.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/i2c.c</locationURI>
 		</link><link>
 			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
 			<type>1</type>
@@ -1013,10 +881,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
 		</link><link>
-			<name>Middlewares/FatFs/ccsbcs.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/ccsbcs.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
@@ -1033,10 +897,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
 		</link><link>
-			<name>Application/User/tim.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/tim.c</locationURI>
-		</link><link>
 			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f446xx.s</locationURI>
@@ -1052,10 +912,6 @@
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
-		</link><link>
-			<name>Application/User/gpio.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/gpio.c</locationURI>
 		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
 			<type>1</type>
@@ -1133,10 +989,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
 		</link><link>
-			<name>Application/User/quadspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/quadspi.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
@@ -1152,14 +1004,6 @@
 			<name>Application/User/fatfs.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
-		</link><link>
-			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_qspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c</locationURI>
-		</link><link>
-			<name>Application/User/i2c.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/i2c.c</locationURI>
 		</link><link>
 			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
 			<type>1</type>
@@ -1177,10 +1021,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
 		</link><link>
-			<name>Middlewares/FatFs/ccsbcs.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/ccsbcs.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
@@ -1197,10 +1037,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
 		</link><link>
-			<name>Application/User/tim.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/tim.c</locationURI>
-		</link><link>
 			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f446xx.s</locationURI>
@@ -1216,10 +1052,6 @@
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
-		</link><link>
-			<name>Application/User/gpio.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/gpio.c</locationURI>
 		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
 			<type>1</type>
@@ -1297,10 +1129,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
 		</link><link>
-			<name>Application/User/quadspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/quadspi.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
@@ -1316,14 +1144,6 @@
 			<name>Application/User/fatfs.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
-		</link><link>
-			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_qspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c</locationURI>
-		</link><link>
-			<name>Application/User/i2c.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/i2c.c</locationURI>
 		</link><link>
 			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
 			<type>1</type>
@@ -1341,10 +1161,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
 		</link><link>
-			<name>Middlewares/FatFs/ccsbcs.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/ccsbcs.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
@@ -1361,10 +1177,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
 		</link><link>
-			<name>Application/User/tim.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/tim.c</locationURI>
-		</link><link>
 			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f446xx.s</locationURI>
@@ -1380,10 +1192,6 @@
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
-		</link><link>
-			<name>Application/User/gpio.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/gpio.c</locationURI>
 		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
 			<type>1</type>
@@ -1465,10 +1273,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
 		</link><link>
-			<name>Application/User/quadspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/quadspi.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
@@ -1484,14 +1288,6 @@
 			<name>Application/User/fatfs.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
-		</link><link>
-			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_qspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c</locationURI>
-		</link><link>
-			<name>Application/User/i2c.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/i2c.c</locationURI>
 		</link><link>
 			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
 			<type>1</type>
@@ -1509,10 +1305,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
 		</link><link>
-			<name>Middlewares/FatFs/ccsbcs.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/ccsbcs.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
@@ -1521,10 +1313,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c</locationURI>
 		</link><link>
-			<name>Application/User/usart.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/usart.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr_ex.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c</locationURI>
@@ -1532,10 +1320,6 @@
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c_ex.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
-		</link><link>
-			<name>Application/User/tim.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/tim.c</locationURI>
 		</link><link>
 			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
 			<type>1</type>
@@ -1553,17 +1337,13 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
 		</link><link>
-			<name>Application/User/gpio.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/gpio.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c</locationURI>
 		</link><link>
-			<name>Middlewares</name>
+			
 			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			
 		</link><link>
 			<name>Middlewares/FreeRTOS</name>
 			<type>2</type>
@@ -1577,17 +1357,17 @@
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link><link>
-			<name>Application</name>
+			
 			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			
 		</link><link>
 			<name>Drivers/CMSIS</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link><link>
-			<name>Drivers</name>
+			
 			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			
 		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver</name>
 			<type>2</type>
@@ -1665,10 +1445,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
 		</link><link>
-			<name>Application/User/quadspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/quadspi.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
@@ -1689,14 +1465,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/croutine.c</locationURI>
 		</link><link>
-			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_qspi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c</locationURI>
-		</link><link>
-			<name>Application/User/i2c.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/i2c.c</locationURI>
-		</link><link>
 			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c</locationURI>
@@ -1712,10 +1480,6 @@
 			<name>Middlewares/FatFs/syscall.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
-		</link><link>
-			<name>Middlewares/FatFs/ccsbcs.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/ccsbcs.c</locationURI>
 		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
 			<type>1</type>
@@ -1733,10 +1497,6 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c</locationURI>
 		</link><link>
-			<name>Application/User/usart.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/usart.c</locationURI>
-		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr_ex.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c</locationURI>
@@ -1744,10 +1504,6 @@
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c_ex.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
-		</link><link>
-			<name>Application/User/tim.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/tim.c</locationURI>
 		</link><link>
 			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
 			<type>1</type>
@@ -1769,12 +1525,1352 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/tasks.c</locationURI>
 		</link><link>
-			<name>Application/User/gpio.c</name>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/gpio.c</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c</locationURI>
+		</link><link>
+			
+			<type>2</type>
+			
+		</link><link>
+			
+			<type>2</type>
+			
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			
+			<type>2</type>
+			
+		</link><link>
+			<name>Drivers/CMSIS</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application/User</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application/TrueSTUDIO</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/list.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/list.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_uart.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c</locationURI>
+		</link><link>
+			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f446xx.s</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/ff_gen_drv.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/ff_gen_drv.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_spi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_gpio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c</locationURI>
+		</link><link>
+			<name>Application/User/user_diskio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/user_diskio.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/diskio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/diskio.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/timers.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/timers.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_cortex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c</locationURI>
+		</link><link>
+			<name>Application/User/main.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
+		</link><link>
+			<name>Application/User/fatfs.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/heap_4.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/tasks.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/tasks.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/syscall.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
 		</link><link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/cmsis_os.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c</locationURI>
+		</link><link>
+			<name>Application/User/stm32f4xx_it.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/stm32f4xx_it.c</locationURI>
+		</link><link>
+			<name>Application/User/stm32f4xx_hal_msp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/stm32f4xx_hal_msp.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/croutine.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/croutine.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/ff.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/ff.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/event_groups.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/port.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c</locationURI>
+		</link><link>
+			<name>Application/User/freertos.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/freertos.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/queue.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/queue.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c</locationURI>
+		</link><link>
+			
+			<type>2</type>
+			
+		</link><link>
+			
+			<type>2</type>
+			
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			
+			<type>2</type>
+			
+		</link><link>
+			<name>Drivers/CMSIS</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application/User</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application/TrueSTUDIO</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/list.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/list.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_uart.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c</locationURI>
+		</link><link>
+			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f446xx.s</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/ff_gen_drv.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/ff_gen_drv.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_spi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_gpio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c</locationURI>
+		</link><link>
+			<name>Application/User/user_diskio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/user_diskio.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/diskio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/diskio.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/timers.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/timers.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_cortex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c</locationURI>
+		</link><link>
+			<name>Application/User/main.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
+		</link><link>
+			<name>Application/User/fatfs.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/heap_4.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/tasks.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/tasks.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/syscall.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/cmsis_os.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c</locationURI>
+		</link><link>
+			<name>Application/User/stm32f4xx_it.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/stm32f4xx_it.c</locationURI>
+		</link><link>
+			<name>Application/User/stm32f4xx_hal_msp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/stm32f4xx_hal_msp.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/croutine.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/croutine.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/ff.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/ff.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/event_groups.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/port.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c</locationURI>
+		</link><link>
+			<name>Application/User/freertos.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/freertos.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/queue.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/queue.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c</locationURI>
+		</link><link>
+			
+			<type>2</type>
+			
+		</link><link>
+			
+			<type>2</type>
+			
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			
+			<type>2</type>
+			
+		</link><link>
+			<name>Drivers/CMSIS</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application/User</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application/TrueSTUDIO</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/list.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/list.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_uart.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c</locationURI>
+		</link><link>
+			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f446xx.s</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/ff_gen_drv.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/ff_gen_drv.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_spi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_gpio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c</locationURI>
+		</link><link>
+			<name>Application/User/user_diskio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/user_diskio.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/diskio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/diskio.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/timers.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/timers.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_cortex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c</locationURI>
+		</link><link>
+			<name>Application/User/main.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
+		</link><link>
+			<name>Application/User/fatfs.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/heap_4.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/tasks.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/tasks.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/syscall.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/cmsis_os.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c</locationURI>
+		</link><link>
+			<name>Application/User/stm32f4xx_it.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/stm32f4xx_it.c</locationURI>
+		</link><link>
+			<name>Application/User/stm32f4xx_hal_msp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/stm32f4xx_hal_msp.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/croutine.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/croutine.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/ff.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/ff.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/event_groups.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/port.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c</locationURI>
+		</link><link>
+			<name>Application/User/freertos.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/freertos.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/queue.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/queue.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c</locationURI>
+		</link><link>
+			
+			<type>2</type>
+			
+		</link><link>
+			
+			<type>2</type>
+			
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			
+			<type>2</type>
+			
+		</link><link>
+			<name>Drivers/CMSIS</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application/User</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application/TrueSTUDIO</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/list.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/list.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_uart.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c</locationURI>
+		</link><link>
+			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f446xx.s</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/ff_gen_drv.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/ff_gen_drv.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_spi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_gpio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c</locationURI>
+		</link><link>
+			<name>Application/User/user_diskio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/user_diskio.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/diskio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/diskio.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/timers.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/timers.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_cortex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c</locationURI>
+		</link><link>
+			<name>Application/User/main.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
+		</link><link>
+			<name>Application/User/fatfs.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/heap_4.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/tasks.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/tasks.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/syscall.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/cmsis_os.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c</locationURI>
+		</link><link>
+			<name>Application/User/stm32f4xx_it.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/stm32f4xx_it.c</locationURI>
+		</link><link>
+			<name>Application/User/stm32f4xx_hal_msp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/stm32f4xx_hal_msp.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/croutine.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/croutine.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/ff.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/ff.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/event_groups.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/port.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c</locationURI>
+		</link><link>
+			<name>Application/User/freertos.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/freertos.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/queue.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/queue.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Drivers</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Drivers/CMSIS</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application/User</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application/TrueSTUDIO</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/list.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/list.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_uart.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c</locationURI>
+		</link><link>
+			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f446xx.s</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/ff_gen_drv.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/ff_gen_drv.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_spi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_gpio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c</locationURI>
+		</link><link>
+			<name>Application/User/user_diskio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/user_diskio.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/timers.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/timers.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/diskio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/diskio.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_cortex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c</locationURI>
+		</link><link>
+			<name>Application/User/main.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
+		</link><link>
+			<name>Application/User/fatfs.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/heap_4.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/tasks.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/tasks.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/syscall.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/cmsis_os.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c</locationURI>
+		</link><link>
+			<name>Application/User/stm32f4xx_it.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/stm32f4xx_it.c</locationURI>
+		</link><link>
+			<name>Application/User/stm32f4xx_hal_msp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/stm32f4xx_hal_msp.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/croutine.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/croutine.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/ff.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/ff.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/event_groups.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/port.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c</locationURI>
+		</link><link>
+			<name>Application/User/freertos.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/freertos.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/queue.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/queue.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Drivers</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Drivers/CMSIS</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application/User</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application/TrueSTUDIO</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/list.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/list.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_uart.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c</locationURI>
+		</link><link>
+			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f446xx.s</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/ff_gen_drv.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/ff_gen_drv.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_spi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_gpio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c</locationURI>
+		</link><link>
+			<name>Application/User/user_diskio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/user_diskio.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/timers.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/timers.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/diskio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/diskio.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_cortex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c</locationURI>
+		</link><link>
+			<name>Application/User/main.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
+		</link><link>
+			<name>Application/User/fatfs.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/heap_4.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/tasks.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/tasks.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/syscall.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/cmsis_os.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c</locationURI>
+		</link><link>
+			<name>Application/User/stm32f4xx_it.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/stm32f4xx_it.c</locationURI>
+		</link><link>
+			<name>Application/User/stm32f4xx_hal_msp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/stm32f4xx_hal_msp.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/croutine.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/croutine.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/ff.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/ff.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/event_groups.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/port.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c</locationURI>
+		</link><link>
+			<name>Application/User/freertos.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/freertos.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/queue.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/queue.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Drivers</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Drivers/CMSIS</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application/User</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Application/TrueSTUDIO</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/list.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/list.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_uart.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c</locationURI>
+		</link><link>
+			<name>Application/TrueSTUDIO/startup_stm32f446xx.s</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f446xx.s</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/ff_gen_drv.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/ff_gen_drv.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_spi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_gpio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c</locationURI>
+		</link><link>
+			<name>Application/User/user_diskio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/user_diskio.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c</locationURI>
+		</link><link>
+			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/timers.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/timers.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/diskio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/diskio.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_i2c.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_cortex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c</locationURI>
+		</link><link>
+			<name>Application/User/main.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/main.c</locationURI>
+		</link><link>
+			<name>Application/User/fatfs.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/fatfs.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/heap_4.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/tasks.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/tasks.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/syscall.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/option/syscall.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/cmsis_os.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c</locationURI>
+		</link><link>
+			<name>Application/User/stm32f4xx_it.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/stm32f4xx_it.c</locationURI>
+		</link><link>
+			<name>Application/User/stm32f4xx_hal_msp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/stm32f4xx_hal_msp.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/croutine.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/croutine.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c</locationURI>
+		</link><link>
+			<name>Middlewares/FatFs/ff.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FatFs/src/ff.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/event_groups.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/port.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c</locationURI>
+		</link><link>
+			<name>Application/User/freertos.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/freertos.c</locationURI>
+		</link><link>
+			<name>Middlewares/FreeRTOS/queue.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/queue.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c</locationURI>
+		</link><link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c</locationURI>
 		</link></linkedResources>
 </projectDescription>

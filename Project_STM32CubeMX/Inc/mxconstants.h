@@ -4,7 +4,7 @@
   * Description        : This file contains the common defines of the application
   ******************************************************************************
   *
-  * COPYRIGHT(c) 2015 STMicroelectronics
+  * COPYRIGHT(c) 2016 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -46,12 +46,46 @@
 #define USART_RX_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
+#define speakerPIN_PWM_Pin GPIO_PIN_6
+#define speakerPIN_PWM_GPIO_Port GPIOA
+#define rotaryPIN_CH2_A_INT_Pin GPIO_PIN_4
+#define rotaryPIN_CH2_A_INT_GPIO_Port GPIOC
+#define rotaryPIN_CH2_B_Pin GPIO_PIN_5
+#define rotaryPIN_CH2_B_GPIO_Port GPIOC
+#define rotaryPIN_CH1_A_INT_Pin GPIO_PIN_0
+#define rotaryPIN_CH1_A_INT_GPIO_Port GPIOB
+#define rotaryPIN_CH1_B_Pin GPIO_PIN_1
+#define rotaryPIN_CH1_B_GPIO_Port GPIOB
+#define imuPIN_SCL_Pin GPIO_PIN_10
+#define imuPIN_SCL_GPIO_Port GPIOB
+#define sdPIN_SCK_Pin GPIO_PIN_13
+#define sdPIN_SCK_GPIO_Port GPIOB
+#define sdPIN_MISO_Pin GPIO_PIN_14
+#define sdPIN_MISO_GPIO_Port GPIOB
+#define sdPIN_MOSI_Pin GPIO_PIN_15
+#define sdPIN_MOSI_GPIO_Port GPIOB
+#define motorPIN_PWM_CH1_Pin GPIO_PIN_8
+#define motorPIN_PWM_CH1_GPIO_Port GPIOA
+#define motorPIN_PWM_CH2_Pin GPIO_PIN_9
+#define motorPIN_PWM_CH2_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
 #define TCK_GPIO_Port GPIOA
+#define displayPIN_SCK_Pin GPIO_PIN_10
+#define displayPIN_SCK_GPIO_Port GPIOC
+#define imuPIN_SDA_Pin GPIO_PIN_12
+#define imuPIN_SDA_GPIO_Port GPIOC
 #define SWO_Pin GPIO_PIN_3
 #define SWO_GPIO_Port GPIOB
+#define displayPIN_MISO_Pin GPIO_PIN_4
+#define displayPIN_MISO_GPIO_Port GPIOB
+#define displayPIN_MOSI_Pin GPIO_PIN_5
+#define displayPIN_MOSI_GPIO_Port GPIOB
+#define rangePIN_SCL_Pin GPIO_PIN_6
+#define rangePIN_SCL_GPIO_Port GPIOB
+#define rangePIN_SDA_Pin GPIO_PIN_7
+#define rangePIN_SDA_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
