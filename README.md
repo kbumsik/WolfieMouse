@@ -17,4 +17,4 @@ This is project for IEEE Region 1 Micromouse competition.
 ## Branch Description
 * `master`: main, stable version
 * `doc`: only for documentation (https://kbumsik.gitbooks.io/micromouse_2016/content/)
-* 'test': test branch
+* `test`: test branch
