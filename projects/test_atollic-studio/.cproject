@@ -312,7 +312,14 @@
 		<project id="test_atollic-studio.com.atollic.truestudio.exe.682185980" name="Executable" projectType="com.atollic.truestudio.exe"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/test_atollic-studio"/>
+		</configuration>
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/test_atollic-studio"/>
+		</configuration>
+	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		<scannerConfigBuildInfo instanceId="com.atollic.truestudio.configuration.release.2024367529;com.atollic.truestudio.configuration.release.2024367529.;com.atollic.truestudio.exe.release.toolchain.gpp.928256144;com.atollic.truestudio.gpp.input.552825094">

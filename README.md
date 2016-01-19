@@ -10,10 +10,11 @@
 This is project for IEEE Region 1 Micromouse competition.
 
 ## Directory descriptions
-
+* `projects`: Projects folders, including main and test projects
+* `settings`: Setting files like include path and symbol. Also there is base CubeMX project is located.
 * `source`: Source codes of common libraries
-* `Project_STM32CubeMX`: For a basic source code using STM32CubeMX code generator.
 
 ## Branch Description
 * `master`: main, stable version
 * `doc`: only for documentation (https://kbumsik.gitbooks.io/micromouse_2016/content/)
+* 'test': test branch
