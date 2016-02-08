@@ -64,7 +64,7 @@ void MouseController::initDistance()
 
 void MouseController::getDistanceAllCell()
 {
-  int currentPathDistance = mazeSTART_DISTANCE + 1; // This is how far the 'water' has flowed
+  int currentPathDistance = mazeSTART_DISTANCE + 1; /* This is how far the 'water' has flowed */
   int row;
   int col;
   
@@ -76,16 +76,21 @@ void MouseController::getDistanceAllCell()
 
   while (1)
   {
-    for (row = 0; row <= mazeMAX_ROW_SIZE; row++) { //Creating a loop which scans the whole maze
-      for (col = 0 ; col <= mazeMAX_COL_SIZE; col++) {
-        if (getDistance(row, col) != UNREACHED) //If the cell has already been reached, then continue to the next cell
+    /* Creating a loop which scans the whole maze */
+    for (row = 0; row <= mazeMAX_ROW_SIZE; row++)
+    { 
+      for (col = 0 ; col <= mazeMAX_COL_SIZE; col++)
+      {
+      /* If the cell has already been reached, then continue to the next cell */
+        if (getDistance(row, col) != UNREACHED)
         {
           continue;
         }
-        if (getHighestNeighbouringDistance(row, col) != UNREACHED) //If there is a neighbouring cell which has been
+        /* If there is a neighbouring cell which has been */
+        if (getHighestNeighbouringDistance(row, col) != UNREACHED)
         {
-          setDistance(row, col, currentPathDistance); //reached, then you have reached the current cell
-          //so give it a value
+          /* you have reached the current cell */
+          setDistance(row, col, currentPathDistance);
         }
       }
     }
@@ -93,15 +98,19 @@ void MouseController::getDistanceAllCell()
     {
       break;
     }
-    currentPathDistance++; //Increment the distance because we are scanning again.
+    /* Increment the distance because we are scanning again. */
+    currentPathDistance++;
   }
-  //The highestNeighbouringCell(x,y) function returns the value of the highest, accessible (ie there
-  //are no separating walls) neighbouring cell.
-
-  //Initially, all the cells are given a value of UNREACHED(which is -1), except the micromouse's current cell, which is given value 0.
-  //Then the grid of cell values is scanned. On the first scan, only the cells next to, and accessible to the cell
-  //where the micromouse is, will be given a (non-UNREACHED) value. That value is 1. This is repeated untill the
-  //destination cell has been given a (non-UNREACHED) value.
+  /**
+   * The highestNeighbouringCell(x,y) function returns the value of the highest,
+   * accessible (ie there are no separating walls) neighbouring cell. Initially,
+   * all the cells are given a value of UNREACHED(which is -1), except the 
+   * micromouse's current cell, which is given value 0. 
+   * Then the grid of cell values is scanned. On the first scan, only the cells 
+   * next to, and accessible to the cellwhere the micromouse is, will be given 
+   * a (non-UNREACHED) value. That value is 1. This is repeated untill the 
+   * destination cell has been given a (non-UNREACHED) value.
+   */
 }
 
 /* TODO: Could be a bottleneck */
@@ -178,7 +187,8 @@ void MouseController::getShortestPath()
       pathStack.pushToBack(availablePositionStack.popFromBack());
       break;
     }
-    /* Now look for next available cells, meaning neighbour cells that has distance of 1 more */
+    /* Now look for next available cells, meaning neighbour cells that has 
+      distance of 1 more */
     /* Look around in counter-clockwise */
     for (i = (int)row_plus; i <= (int)col_minus; i++)
     {
@@ -194,9 +204,10 @@ void MouseController::getShortestPath()
     }
 
     if (!isFound)
-    { //if no available next cell
+    { 
+      /* if no available next cell */
       availablePositionStack.popFromBack();
-      //pop pathstack until it meet next availableStack
+      /* pop pathstack until it meet next availableStack */
       while (!(
         (pathStack.peekFromBack().getNextPosition(row_plus) == availablePositionStack.peekFromBack().getCurrentPosition())||
         (pathStack.peekFromBack().getNextPosition(col_plus) == availablePositionStack.peekFromBack().getCurrentPosition())||
@@ -208,14 +219,13 @@ void MouseController::getShortestPath()
       }
     }
   }
-
-  //Delete the top element - it is the current position!
+  /* Delete the top element - it is the current position! */
   pathStack.popFromFront();
 }
 
 WallDirection MouseController::getNextDirection()
 {
-  //get the next position
+  /* get the next position */
   nextPosition = pathStack.peekFromFront();
   char x_delta = nextPosition.x - currentPosition.x;
   char y_delta = nextPosition.y - currentPosition.y;
@@ -237,8 +247,8 @@ WallDirection MouseController::getNextDirection()
   default:
     break;
   }
-  //return value should not this one
-  //we can make a strange code ablow to indicate there is an error
+  /* return value should not this one */
+  /* we can make a strange code ablow to indicate there is an error */
   return row_plus;
 }
 
