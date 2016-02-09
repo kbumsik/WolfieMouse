@@ -1,6 +1,6 @@
 /*
  * main.h
- *
+ *testing github features -eric
  *  Created on: Jan 4, 2016
  *      Author: Bumsik Kim
  */
