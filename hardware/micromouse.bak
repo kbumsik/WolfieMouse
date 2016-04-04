@@ -108,10 +108,10 @@ uSD & IMU & DISPLAY
 Text Notes 6900 3200 0    150  ~ 30
 MCU
 $Comp
-L Led_Small LED_GREEN2
+L Led_Small LED_BLUE1
 U 1 1 56F5171B
 P 3350 6750
-F 0 "LED_GREEN2" H 3300 6875 50  0000 L CNN
+F 0 "LED_BLUE1" H 3300 6875 50  0000 L CNN
 F 1 "Led_Small" H 3175 6650 50  0001 L CNN
 F 2 "LEDs:LED_0603" V 3350 6750 50  0001 C CNN
 F 3 "" V 3350 6750 50  0000 C CNN
@@ -119,10 +119,10 @@ F 3 "" V 3350 6750 50  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Led_Small LED_RED1
+L Led_Small LED_WHITE1
 U 1 1 56F517D6
 P 3600 6750
-F 0 "LED_RED1" H 3550 6875 50  0000 L CNN
+F 0 "LED_WHITE1" H 3550 6875 50  0000 L CNN
 F 1 "Led_Small" H 3425 6650 50  0001 L CNN
 F 2 "LEDs:LED_0603" V 3600 6750 50  0001 C CNN
 F 3 "" V 3600 6750 50  0000 C CNN
@@ -130,10 +130,10 @@ F 3 "" V 3600 6750 50  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L R_Small R4
+L R_Small R3
 U 1 1 56F51D0B
 P 3350 6200
-F 0 "R4" V 3290 6110 50  0000 L CNN
+F 0 "R3" V 3290 6110 50  0000 L CNN
 F 1 "1k" V 3410 6110 50  0000 L CNN
 F 2 "Resistors_SMD:R_0603_HandSoldering" H 3350 6200 50  0001 C CNN
 F 3 "" H 3350 6200 50  0000 C CNN
@@ -141,10 +141,10 @@ F 3 "" H 3350 6200 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R_Small R5
+L R_Small R4
 U 1 1 56F51DDC
 P 3600 6200
-F 0 "R5" V 3540 6110 50  0000 L CNN
+F 0 "R4" V 3540 6110 50  0000 L CNN
 F 1 "1k" V 3660 6110 50  0000 L CNN
 F 2 "Resistors_SMD:R_0603_HandSoldering" H 3600 6200 50  0001 C CNN
 F 3 "" H 3600 6200 50  0000 C CNN
@@ -162,58 +162,10 @@ F 3 "" H 3250 7300 50  0000 C CNN
 	1    3250 7300
 	1    0    0    -1  
 $EndComp
-$Comp
-L Led_Small LED_GREEN4
-U 1 1 56F54CEA
-P 4850 6750
-F 0 "LED_GREEN4" H 4800 6875 50  0000 L CNN
-F 1 "Led_Small" H 4675 6650 50  0001 L CNN
-F 2 "LEDs:LED_0603" V 4850 6750 50  0001 C CNN
-F 3 "" V 4850 6750 50  0000 C CNN
-	1    4850 6750
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Led_Small LED_RED3
-U 1 1 56F54CF0
-P 5100 6750
-F 0 "LED_RED3" H 5050 6875 50  0000 L CNN
-F 1 "Led_Small" H 4925 6650 50  0001 L CNN
-F 2 "LEDs:LED_0603" V 5100 6750 50  0001 C CNN
-F 3 "" V 5100 6750 50  0000 C CNN
-	1    5100 6750
-	0    -1   -1   0   
-$EndComp
-$Comp
-L R_Small R10
-U 1 1 56F54D0E
-P 4850 6200
-F 0 "R10" V 4790 6110 50  0000 L CNN
-F 1 "1k" V 4910 6110 50  0000 L CNN
-F 2 "Resistors_SMD:R_0603_HandSoldering" H 4850 6200 50  0001 C CNN
-F 3 "" H 4850 6200 50  0000 C CNN
-	1    4850 6200
-	1    0    0    -1  
-$EndComp
-$Comp
-L R_Small R11
-U 1 1 56F54D14
-P 5100 6200
-F 0 "R11" V 5040 6110 50  0000 L CNN
-F 1 "1k" V 5160 6110 50  0000 L CNN
-F 2 "Resistors_SMD:R_0603_HandSoldering" H 5100 6200 50  0001 C CNN
-F 3 "" H 5100 6200 50  0000 C CNN
-	1    5100 6200
-	1    0    0    -1  
-$EndComp
 Text GLabel 3350 5900 1    60   Input ~ 0
 LED3
 Text GLabel 3600 5900 1    60   Input ~ 0
 LED4
-Text GLabel 4850 5900 1    60   Input ~ 0
-LED9
-Text GLabel 5100 5900 1    60   Input ~ 0
-LED10
 $Comp
 L JST_CONNECTOR_FEMALE.-THROUGH M2
 U 1 1 56F94214
@@ -445,7 +397,7 @@ F 3 "" H 5850 1050 50  0000 C CNN
 	1    5850 1050
 	1    0    0    -1  
 $EndComp
-Text GLabel 2050 5850 1    60   Input ~ 0
+Text GLabel 1200 5850 1    60   Input ~ 0
 PB1
 $Comp
 L +3.3V #PWR010
@@ -504,7 +456,7 @@ F 3 "" H 5400 6500 50  0000 C CNN
 	1    5400 6500
 	1    0    0    -1  
 $EndComp
-Text GLabel 1200 5850 1    60   Input ~ 0
+Text GLabel 2050 5850 1    60   Input ~ 0
 PB2
 $Comp
 L +3.3V #PWR011
@@ -541,21 +493,17 @@ F 3 "" H 1050 6450 60  0000 C CNN
 $EndComp
 Text Notes 3200 800  0    150  ~ 30
 Power
-Text GLabel 7450 3900 0    40   Input ~ 0
+Text GLabel 9700 2950 1    40   Input ~ 0
 PB1
-Text GLabel 7450 4500 0    40   Input ~ 0
+Text GLabel 10650 4100 2    40   Input ~ 0
 PB2
-Text GLabel 8600 6150 3    40   Input ~ 0
+Text GLabel 9500 2950 1    40   Input ~ 0
 LED3
-Text GLabel 8700 6150 3    40   Input ~ 0
+Text GLabel 9600 2950 1    40   Input ~ 0
 LED4
-Text GLabel 10650 4900 2    40   Input ~ 0
-LED9
-Text GLabel 10650 4800 2    40   Input ~ 0
-LED10
-Text GLabel 7450 5100 0    40   Input ~ 0
+Text GLabel 8900 2950 1    40   Input ~ 0
 ROT_R_CHA
-Text GLabel 7450 5200 0    40   Input ~ 0
+Text GLabel 8800 2950 1    40   Input ~ 0
 ROT_R_CHB
 Text Notes 8500 950  0    150  ~ 30
 UART
@@ -583,37 +531,37 @@ Text GLabel 10650 5000 2    40   Input ~ 0
 uSD_MOSI
 Text GLabel 10650 4700 2    40   Input ~ 0
 ~MOTOR_L_FAULT
-Text GLabel 10650 4600 2    40   Input ~ 0
+Text GLabel 10650 4400 2    40   Input ~ 0
 ~MOTOR_R_FAULT
 Text GLabel 10650 4500 2    40   Input ~ 0
 MOTOR_L_PWM
-Text GLabel 10650 4400 2    40   Input ~ 0
-MOTOR_R_PWM
-Text GLabel 10650 4300 2    40   Input ~ 0
-MOTOR_L_DIR
 Text GLabel 10650 4200 2    40   Input ~ 0
+MOTOR_R_PWM
+Text GLabel 10650 4600 2    40   Input ~ 0
+MOTOR_L_DIR
+Text GLabel 10650 4300 2    40   Input ~ 0
 MOTOR_R_DIR
-Text GLabel 10650 4100 2    40   Input ~ 0
+Text GLabel 7450 3900 0    40   Input ~ 0
 ~RANGE_RESET
-Text GLabel 9700 2950 1    40   Input ~ 0
+Text GLabel 10650 4900 2    40   Input ~ 0
 ROT_L_CHA
-Text GLabel 8500 2950 1    40   Input ~ 0
+Text GLabel 10650 4800 2    40   Input ~ 0
 ROT_L_CHB
-Text GLabel 8600 2950 1    40   Input ~ 0
+Text GLabel 9100 6150 3    40   Input ~ 0
 ~DIS_RESET
-Text GLabel 8800 2950 1    40   Input ~ 0
+Text GLabel 8500 2950 1    40   Input ~ 0
 RANGE_SDA
-Text GLabel 8900 2950 1    40   Input ~ 0
+Text GLabel 8600 2950 1    40   Input ~ 0
 RANGE_SCL
-Text GLabel 9000 2950 1    40   Input ~ 0
+Text GLabel 8900 6150 3    40   Input ~ 0
 DIS_MOSI
-Text GLabel 9300 2950 1    40   Input ~ 0
+Text GLabel 8600 6150 3    40   Input ~ 0
 ~DIS_CE
 Text GLabel 9400 2950 1    40   Input ~ 0
 IMU_SDA
-Text GLabel 9500 2950 1    40   Input ~ 0
+Text GLabel 9000 6150 3    40   Input ~ 0
 DIS_RS
-Text GLabel 9600 2950 1    40   Input ~ 0
+Text GLabel 8700 6150 3    40   Input ~ 0
 DIS_SCK
 Text GLabel 1050 1500 0    40   Input ~ 0
 RANGE_SDA
@@ -818,15 +766,7 @@ Connection ~ 2850 7050
 Wire Wire Line
 	3250 7050 3250 7300
 Connection ~ 3250 7050
-Wire Wire Line
-	4850 6300 4850 6650
-Wire Wire Line
-	5100 6300 5100 6650
-Wire Wire Line
-	5100 7050 5100 6850
 Connection ~ 5100 7050
-Wire Wire Line
-	4850 7050 4850 6850
 Connection ~ 4850 7050
 Connection ~ 4600 7050
 Connection ~ 4350 7050
@@ -836,10 +776,6 @@ Wire Wire Line
 	3350 5900 3350 6100
 Wire Wire Line
 	3600 6100 3600 5900
-Wire Wire Line
-	4850 5900 4850 6100
-Wire Wire Line
-	5100 6100 5100 5900
 Wire Wire Line
 	3400 1650 3400 1850
 Wire Wire Line
@@ -880,7 +816,7 @@ Wire Wire Line
 	4100 1850 4100 1650
 Connection ~ 4300 1850
 Wire Wire Line
-	3300 1650 3300 2250
+	3300 1650 3300 2350
 Connection ~ 4300 2250
 Connection ~ 3300 2250
 Connection ~ 2850 2250
@@ -942,8 +878,6 @@ Wire Wire Line
 	5850 1300 5850 1350
 Wire Wire Line
 	5850 1050 5850 1100
-Wire Wire Line
-	2850 2250 7450 2250
 Wire Wire Line
 	5250 1850 6150 1850
 Wire Wire Line
@@ -1414,7 +1348,7 @@ F 3 "" H 7250 5800 50  0000 C CNN
 	1    7250 5800
 	1    0    0    -1  
 $EndComp
-Text GLabel 9300 6150 3    40   Input ~ 0
+Text GLabel 9000 2950 1    40   Input ~ 0
 VOL_METER
 Text GLabel 7100 6000 0    40   Input ~ 0
 VOL_METER
@@ -1647,4 +1581,83 @@ Wire Wire Line
 Wire Wire Line
 	6200 6800 6200 6600
 Connection ~ 5900 6800
+Wire Wire Line
+	3300 2250 2850 2250
+Wire Wire Line
+	4300 2250 7450 2250
+$Comp
+L GND #PWR034
+U 1 1 5701E1F8
+P 3300 2350
+F 0 "#PWR034" H 3300 2100 50  0001 C CNN
+F 1 "GND" H 3300 2200 50  0000 C CNN
+F 2 "" H 3300 2350 50  0000 C CNN
+F 3 "" H 3300 2350 50  0000 C CNN
+	1    3300 2350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Led_Small LED_GREEN1
+U 1 1 5702AD1A
+P 3100 6750
+F 0 "LED_GREEN1" H 3050 6875 50  0000 L CNN
+F 1 "Led_Small" H 2925 6650 50  0001 L CNN
+F 2 "LEDs:LED_0603" V 3100 6750 50  0001 C CNN
+F 3 "" V 3100 6750 50  0000 C CNN
+	1    3100 6750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L R_Small R2
+U 1 1 5702AD20
+P 3100 6200
+F 0 "R2" V 3040 6110 50  0000 L CNN
+F 1 "1k" V 3160 6110 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603_HandSoldering" H 3100 6200 50  0001 C CNN
+F 3 "" H 3100 6200 50  0000 C CNN
+	1    3100 6200
+	1    0    0    -1  
+$EndComp
+Text GLabel 3100 5900 1    60   Input ~ 0
+LED2
+Wire Wire Line
+	3100 6300 3100 6650
+Wire Wire Line
+	3100 7050 3100 6850
+Wire Wire Line
+	3100 5900 3100 6100
+$Comp
+L Led_Small LED_RED1
+U 1 1 5702AEA8
+P 2850 6750
+F 0 "LED_RED1" H 2800 6875 50  0000 L CNN
+F 1 "Led_Small" H 2675 6650 50  0001 L CNN
+F 2 "LEDs:LED_0603" V 2850 6750 50  0001 C CNN
+F 3 "" V 2850 6750 50  0000 C CNN
+	1    2850 6750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L R_Small R1
+U 1 1 5702AEAE
+P 2850 6200
+F 0 "R1" V 2790 6110 50  0000 L CNN
+F 1 "1k" V 2910 6110 50  0000 L CNN
+F 2 "Resistors_SMD:R_0603_HandSoldering" H 2850 6200 50  0001 C CNN
+F 3 "" H 2850 6200 50  0000 C CNN
+	1    2850 6200
+	1    0    0    -1  
+$EndComp
+Text GLabel 2850 5900 1    60   Input ~ 0
+LED1
+Wire Wire Line
+	2850 6300 2850 6650
+Wire Wire Line
+	2850 7050 2850 6850
+Wire Wire Line
+	2850 6100 2850 5900
+Text GLabel 9300 6150 3    40   Input ~ 0
+LED1
+Text GLabel 9200 6150 3    40   Input ~ 0
+LED2
 $EndSCHEMATC
