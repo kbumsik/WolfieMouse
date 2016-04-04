@@ -1,10 +1,10 @@
-(module uSD_MOLEX_47219-2001 (layer F.Cu) (tedit 56E74568)
+(module uSD_MOLEX_47219-2001 (layer F.Cu) (tedit 570270FD)
   (solder_mask_margin 0.1)
   (attr smd)
   (fp_text reference J1 (at -8.835 3.56 90) (layer F.SilkS)
     (effects (font (size 1 1) (thickness 0.05)))
   )
-  (fp_text value 47219-2001 (at 8.615 2.575 90) (layer F.SilkS)
+  (fp_text value uSD_SLOT_47219-2001 (at 8.615 2.575 90) (layer F.SilkS) hide
     (effects (font (size 1 1) (thickness 0.05)))
   )
   (fp_text user uSD (at -6.35 -8.89) (layer F.SilkS)

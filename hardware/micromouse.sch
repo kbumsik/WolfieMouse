@@ -1670,7 +1670,7 @@ Wire Wire Line
 Wire Wire Line
 	3400 1000 3600 1000
 Wire Wire Line
-	3600 1900 4000 1900
+	4000 1900 3600 1900
 Connection ~ 3600 1750
 Wire Wire Line
 	3450 1200 3450 2050
@@ -1681,7 +1681,7 @@ Wire Wire Line
 Wire Wire Line
 	3400 1750 3450 1750
 Wire Wire Line
-	3600 1000 3600 1900
+	3600 1900 3600 1000
 Wire Wire Line
 	3400 1200 3450 1200
 Wire Wire Line
