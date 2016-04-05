@@ -1,6 +1,7 @@
 #ifndef Queue_h
 #define Queue_h
 
+#include <stdlib.h>
 #include "config_maze.h"
 
 #ifndef mazeQUEUE_MAX_BUFFER
@@ -93,7 +94,7 @@ public:
    * @brief      pop the Queue from back
    *
    * @return     On Success: an object from the back
-   *             On failure: NULL
+   *             On failure: T()
    */
   T popFromBack(){
     T temp;
@@ -105,14 +106,14 @@ public:
       size--; /* decrease the size */
       return temp;
     }
-    return NULL;
+    return T();
   }
 
   /**
    * @brief      pop the Queue from front
    *
    * @return     On Success: an object from the front
-   *             On failure: NULL
+   *             On failure: T()
    */
   T popFromFront(){
     T temp;
@@ -124,35 +125,35 @@ public:
       size--; /* decrease the size */
       return temp;
     }
-    return NULL;
+    return T();
   }
 
   /**
    * @brief      pop the Queue from back
    *
    * @return     On Success: an object from the back
-   *             On failure: NULL
+   *             On failure: T()
    */
   T peekFromBack(){
     if (!isEmpty())
     {
-      retrun buffer[back];
+      return buffer[back];
     }
-    return NULL;
+    return T();
   }
 
   /**
    * @brief      pop the Queue from front
    *
    * @return     On Success: an object from the front
-   *             On failure: NULL
+   *             On failure: T()
    */
   T peekFromFront(){
     if (!isEmpty())
     {
-      retrun buffer[front + 1];
+      return buffer[front + 1];
     }
-    return NULL;
+    return T();
   }
 
   /**

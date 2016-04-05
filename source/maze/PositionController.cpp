@@ -1,5 +1,44 @@
 #include "PositionController.h"
 
+// prefix (++direction)
+Direction& operator++(Direction& orig)
+{
+	orig = static_cast<Direction>(orig + 1); // static_cast required because enum + int -> int
+	if (orig > col_minus)
+	{
+		orig = row_plus;
+	}
+	return orig;
+}
+
+// postfix (direction++)
+Direction operator++(Direction& orig, int)
+{
+	Direction rVal = orig;
+	++orig;
+	return rVal;
+}
+
+// prefix (--direction)
+Direction& operator--(Direction& orig)
+{
+	orig = static_cast<Direction>(orig - 1); // static_cast required because enum + int -> int
+	if (orig < row_plus)
+	{
+		orig = col_minus;
+	}
+	return orig;
+}
+
+// postfix (direction--)
+Direction operator--(Direction& orig, int)
+{
+	Direction rVal = orig;
+	--orig;
+	return rVal;
+}
+
+
 PositionController::PositionController(int row, int col, direction_e dirTo)
 {
   pos.row = row;
@@ -7,7 +46,7 @@ PositionController::PositionController(int row, int col, direction_e dirTo)
   dir = dirTo;
 }
 
-PositionController::PositionController(position_t pos, direction_e dirTo)
+PositionController::PositionController(struct position_t pos, direction_e dirTo)
 {
   PositionController(pos.row, pos.col, dirTo);
 }

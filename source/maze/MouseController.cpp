@@ -15,7 +15,7 @@ inline int MouseController::getDistance(int row, int col)
   return distance[row][col];
 }
 
-inline int MouseController::getDistance(position_t pos)
+inline int MouseController::getDistance(struct position_t pos)
 {
   return getDistance(pos.row, pos.col);
 }
@@ -43,7 +43,7 @@ inline void MouseController::setDistance(int row, int col, int dis)
   distance[row][col] = dis;
 }
 
-inline void MouseController::setDistance(position_t pos, int dis)
+inline void MouseController::setDistance(struct position_t pos, int dis)
 {
   setDistance(pos.row, pos.col, dis);
 }
@@ -223,13 +223,12 @@ void MouseController::getShortestPath()
   pathStack.popFromFront();
 }
 
-WallDirection MouseController::getNextDirection()
+direction_e MouseController::getNextDirection()
 {
   /* get the next position */
-  nextPosition = pathStack.peekFromFront();
-  char x_delta = nextPosition.x - currentPosition.x;
-  char y_delta = nextPosition.y - currentPosition.y;
-  switch (y_delta)
+  PositionController nextPosition = pathStack.peekFromFront();
+  position_t pos_delta = nextPosition.getCurrentPosition() - this->getCurrentPosition();
+  switch (pos_delta.row)
   {
   case 1 : return row_plus;
     break;
@@ -238,7 +237,7 @@ WallDirection MouseController::getNextDirection()
   default:
     break;
   }
-  switch (x_delta)
+  switch (pos_delta.col)
   {
   case 1: return col_plus;
     break;
@@ -252,17 +251,3 @@ WallDirection MouseController::getNextDirection()
   return row_plus;
 }
 
-void MouseController::movingCompleted()
-{
-  currentPosition = pathStack.pop();
-}
-
-Cell* MouseController::getCurrentCell()
-{
-  return maze->getCell(currentPosition);
-}
-
-Cell* MouseController::getNextCell()
-{
-  return maze->getCell(nextPosition);
-}

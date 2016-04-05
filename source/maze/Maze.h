@@ -2,7 +2,6 @@
 #define Maze_h
 
 #include "config_maze.h"
-#include "PositionController.h"
 
 /**
  * @brief Status of wall
@@ -23,6 +22,38 @@ typedef enum {
   unsearched = 0,  /* there is unknown wall around a cell */
   searched = 1     /* all walls around a cell are searched */
 }cell_e;
+
+/**
+* @brief direction enumeration
+*/
+typedef enum Direction {
+  eDirError = -1, /* indicate error */
+  row_plus = 0,     /* direction in y-increasing way */
+  col_plus = 1,     /* direction in x-increasing way */
+  row_minus = 2,    /* direction in y-decreasing way */
+  col_minus = 3     /* direction in x-decreasing way */
+}direction_e;
+
+/**
+ * @brief position structure
+ */
+struct position_t{
+  int row; /* y (or row) index */
+  int col; /* x (or column) index */
+
+  position_t operator-(const position_t& rVal)
+  {
+  	position_t result;
+  	result.col = col - rVal.col;
+  	result.row = row - rVal.row;
+  	return result;
+  }
+
+  bool operator==(const position_t& rVal)
+  {
+  	return ((row == rVal.row) && (col == rVal.col));
+  }
+};
 
 
 class Maze 
