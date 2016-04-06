@@ -48,7 +48,7 @@ void board_Init(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_I2C1_Init();
+  //MX_I2C1_Init(); /* TODO: Init */
   MX_I2C2_Init();
   MX_SPI2_Init();
   MX_SPI3_Init();
