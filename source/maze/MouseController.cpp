@@ -153,7 +153,8 @@ MouseController::getShortestPath ()
 		/* Look around in counter-clockwise */
 		for (i = (int) row_plus; i <= (int) col_minus; i++)
 		{
-			if (getNextDistance(position, (direction_e) i) == (currentDistance + 1))
+			if (getNextDistance(position, (direction_e) i)
+					== (currentDistance + 1))
 			{
 				if (!isFound)
 				{
@@ -161,8 +162,9 @@ MouseController::getShortestPath ()
 					isFound = true;
 				}
 				availablePositionStack.pushToBack(
-						PositionController(position.getNextPosition((direction_e) i),
-																(direction_e) i));
+						PositionController(
+								position.getNextPosition((direction_e) i),
+								(direction_e) i));
 			}
 		}
 
@@ -171,12 +173,14 @@ MouseController::getShortestPath ()
 			/* if no available next cell */
 			availablePositionStack.popFromBack();
 			/* pop pathstack until it meet next availableStack */
-			while (!
-					((pathStack.peekFromBack().getNextPosition(row_plus) == availablePositionStack.peekFromBack().getCurrentPosition())
-					|| (pathStack.peekFromBack().getNextPosition(col_plus) == availablePositionStack.peekFromBack().getCurrentPosition())
-					|| (pathStack.peekFromBack().getNextPosition(row_minus) == availablePositionStack.peekFromBack().getCurrentPosition())
-					|| (pathStack.peekFromBack().getNextPosition(col_minus) == availablePositionStack.peekFromBack().getCurrentPosition()))
-					)
+			while (!((pathStack.peekFromBack().getNextPosition(row_plus)
+					== availablePositionStack.peekFromBack().getCurrentPosition())
+					|| (pathStack.peekFromBack().getNextPosition(col_plus)
+							== availablePositionStack.peekFromBack().getCurrentPosition())
+					|| (pathStack.peekFromBack().getNextPosition(row_minus)
+							== availablePositionStack.peekFromBack().getCurrentPosition())
+					|| (pathStack.peekFromBack().getNextPosition(col_minus)
+							== availablePositionStack.peekFromBack().getCurrentPosition())))
 			{
 				pathStack.popFromBack();
 			}

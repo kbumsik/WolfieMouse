@@ -50,7 +50,7 @@ PositionController::PositionController (int row, int col, direction_e dirTo)
 }
 
 PositionController::PositionController (struct position_t pos,
-																				direction_e dirTo)
+										direction_e dirTo)
 {
 	PositionController(pos.row, pos.col, dirTo);
 }
@@ -144,7 +144,6 @@ bool
 PositionController::isInGoal ()
 {
 	position_t tmp = getCurrentPosition();
-	return
-			(tmp.row == mazeINDEX_GOAL_ROW && tmp.col == mazeINDEX_GOAL_COL) ?
-					true : false;
+	return (tmp.row == mazeINDEX_GOAL_ROW && tmp.col == mazeINDEX_GOAL_COL) ?
+			true : false;
 }
