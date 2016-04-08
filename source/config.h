@@ -50,6 +50,7 @@
 #define confMOTOR_ENABLED       1
 #define confI2C_ENABLED         1
 #define confTIMER_ENABLED       1
+#define confTCA9545_ENABLED		1
 
 
 /* ################### Board configuration ################################# */
@@ -102,6 +103,10 @@
 #include "cmsis_os.h"
 #include "FreeRTOSConfig.h"
 
+#include <stdio.h>
+#ifdef configDEBUG
+	#define DEBUG_ERROR printf
+#endif
 
 /**
   * @brief Include module's header file
@@ -124,6 +129,10 @@
 
 #ifdef confTIMER_ENABLED
   #include "timer.h"
+#endif
+
+#ifdef confTCA9545_ENABLED
+  #include "tca9545.h"
 #endif
 
 #endif /* __MAIN_H */

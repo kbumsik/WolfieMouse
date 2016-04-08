@@ -82,8 +82,6 @@ static int _V2_GetSwicth(void);
 #define GPSR    0x12
 #define GPDR    0x14
 
-
-
 #define V2_D1       (1<<7)
 // second byte or word MSB
 #define V2_D2       (1<<8)

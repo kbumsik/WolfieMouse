@@ -72,7 +72,7 @@
 #define LOG_GET_TIME()  HAL_GetTick()
 #else
 /* these is nto stm32 vl6180x GNuArm eclpse build*/
-#define trace_printf(...) printf(...)
+#define trace_printf	printf
 #define LOG_GET_TIME() HAL_GetTick() /* add your code here expect to be an integer native (%d) type  value  */
 #endif
 
