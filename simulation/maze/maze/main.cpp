@@ -1,5 +1,0 @@
-#include "MouseController.h"
-
-main() {
-
-}
