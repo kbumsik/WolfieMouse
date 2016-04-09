@@ -70,7 +70,7 @@ private:
 	 * @brief      initialize the maze
 	 */
 	void initMaze ();
-
+	void writeMazeToFile(void *pFile);
 public:
 	/**
 	 * @brief      maze constructor
@@ -99,7 +99,7 @@ public:
 	cell_e getCell (int row, int col);
 
 	/**
-	 * @brief      get status of a wall
+	 * @brief      set status of a wall
 	 *
 	 * @param[in]  row     row index of cell
 	 * @param[in]  col     column index of cell
@@ -126,5 +126,22 @@ public:
 	 * @brief      update status of all cell
 	 */
 	void updateCell ();
+
+	/**
+	 * @brief      construct Maze from file
+	 *
+	 * @param      fileName  filename to construct
+	 */
+	void readMazeFromFile(char* fileName);
+	/**
+	 * @brief      print the current maze
+	 */
+	void printMaze();
+	/**
+	 * @brief      save the maze as file
+	 *
+	 * @param      fileName  filename to save
+	 */
+	void saveMazeFile(char* fileName);
 };
 #endif

@@ -8,14 +8,6 @@ class PositionController
 private:
 	position_t pos; /**< current position of the mouse */
 	direction_e dir; /**< direction of the mouse */
-	inline void setPosition (position_t posToSet)
-	{
-		pos = posToSet;
-	}
-	inline void setDirection (direction_e dirToSet)
-	{
-		dir = dirToSet;
-	}
 
 public:
 	PositionController (int row, int col, direction_e dirTo);
@@ -24,6 +16,17 @@ public:
 	virtual void turnRight ();
 	virtual void turnLeft ();
 	virtual int goForward ();
+
+	inline void setDirection (direction_e dirToSet)
+	{
+		dir = dirToSet;
+	}
+
+	inline void setPosition (position_t posToSet)
+	{
+		pos = posToSet;
+	}
+
 	inline direction_e getCurrentDirection ()
 	{
 		return dir;
