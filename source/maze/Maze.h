@@ -2,28 +2,38 @@
 #define Maze_h
 
 #include "config_maze.h"
+#include <stdio.h>
 
 /**
  * @brief Status of wall
  */
-typedef enum
+enum wall
 {
 	eWallError = mazeERROR, /* indicating error */
 	empty = 0, /* indicating there is no wall */
 	wall = 1, /* indicating there is wall */
 	unknown = 2 /* indicating we haven't searched yet
 	 so we don't know if there is a wall */
-} wall_e;
+};
 
-/**
- * @brief Status of cell
- */
-typedef enum
+
+enum status
 {
 	eCellerror = mazeERROR, /* indicating error */
 	unsearched = 0, /* there is unknown wall around a cell */
 	searched = 1 /* all walls around a cell are searched */
-} cell_e;
+};
+
+/**
+ * @brief Status of cell
+ */
+struct cell_t{
+	int distance;
+	enum status status;
+	bool isMouse, isGoal, isStart;
+	/** FIXME: maybe put isDestination? */
+	/** TODO: put turning? */
+};
 
 /**
  * @brief direction enumeration
@@ -35,25 +45,25 @@ typedef enum Direction
 	col_plus = 1, /* direction in x-increasing way */
 	row_minus = 2, /* direction in y-decreasing way */
 	col_minus = 3 /* direction in x-decreasing way */
-} direction_e;
+} dir_e;
 
 /**
  * @brief position structure
  */
-struct position_t
+struct pos_t
 {
 	int row; /* y (or row) index */
 	int col; /* x (or column) index */
 
-	position_t operator- (const position_t& rVal)
+	pos_t operator- (const pos_t& rVal)
 	{
-		position_t result;
+		pos_t result;
 		result.col = col - rVal.col;
 		result.row = row - rVal.row;
 		return result;
 	}
 
-	bool operator== (const position_t& rVal)
+	bool operator== (const pos_t& rVal)
 	{
 		return ((row == rVal.row) && (col == rVal.col));
 	}
@@ -62,20 +72,37 @@ struct position_t
 class Maze
 {
 private:
-	wall_e rowWall[mazeMAX_ROW_SIZE + 1][mazeMAX_COL_SIZE]; /* walls in y-direction (or row-increasing) */
-	wall_e colWall[mazeMAX_ROW_SIZE][mazeMAX_COL_SIZE + 1]; /* walls in x-direction (or column-increasing)*/
-	cell_e cell[mazeMAX_ROW_SIZE][mazeMAX_COL_SIZE]; /* each cells in the maze */
+	enum wall rowWall[mazeMAX_ROW_SIZE + 1][mazeMAX_COL_SIZE]; /* walls in y-direction (or row-increasing) */
+	enum wall colWall[mazeMAX_ROW_SIZE][mazeMAX_COL_SIZE + 1]; /* walls in x-direction (or column-increasing)*/
+	cell_t cell[mazeMAX_ROW_SIZE][mazeMAX_COL_SIZE]; /* each cells in the maze */
 
-	/**
-	 * @brief      initialize the maze
-	 */
-	void initMaze ();
 	void writeMazeToFile(void *pFile);
+	
+	/**
+	 * @brief      construct Maze from file
+	 *
+	 * @param      fileName  filename to construct
+	 */
+	void readMazeFromFile(char* fileName);
+
+	void printCell(int row, int col, void *pFile);
 public:
+	int index_goal_row;
+	int index_goal_col;
+	int index_start_row;
+	int index_start_col;
+
 	/**
 	 * @brief      maze constructor
 	 */
 	Maze ();
+
+	/**
+	 * @brief      maze constructor. Maze is built based on the file
+	 *
+	 * @param      filename  the name of the file to read
+	 */
+	Maze (char* filename);
 
 	/**
 	 * @brief      get status of a wall
@@ -86,7 +113,7 @@ public:
 	 *
 	 * @return     status of wall
 	 */
-	wall_e getWall (int row, int col, direction_e dir);
+	enum wall getWall (int row, int col, dir_e dir);
 
 	/**
 	 * @brief      get status of a cell
@@ -96,7 +123,7 @@ public:
 	 *
 	 * @return     status of cell
 	 */
-	cell_e getCell (int row, int col);
+	cell_t getCell (int row, int col);
 
 	/**
 	 * @brief      set status of a wall
@@ -109,7 +136,28 @@ public:
 	 * @return     mazeERROR (that is, -1) if failed
 	 *             mazeSUCCESS otherwise
 	 */
-	int setWall (int row, int col, direction_e dir, wall_e status);
+	int setWall (int row, int col, dir_e dir, enum wall status);
+
+	inline int setDistance(int row, int col, int dis)
+	{
+		if (mazeIS_POS_OUT_BOUNDS(row, col))
+		{
+			printf("invalid cell!\n");
+			return mazeERROR;
+		}
+		cell[row][col].distance = dis;
+		return mazeSUCCESS;
+	}
+
+	inline int getDistance(int row, int col)
+	{
+		if (mazeIS_POS_OUT_BOUNDS(row, col))
+		{
+			printf("invalid cell!\n");
+			return mazeERROR;
+		}
+		return cell[row][col].distance;
+	}
 
 	/**
 	 * @brief      update status of a cell
@@ -128,15 +176,10 @@ public:
 	void updateCell ();
 
 	/**
-	 * @brief      construct Maze from file
-	 *
-	 * @param      fileName  filename to construct
-	 */
-	void readMazeFromFile(char* fileName);
-	/**
 	 * @brief      print the current maze
 	 */
 	void printMaze();
+
 	/**
 	 * @brief      save the maze as file
 	 *

@@ -5,11 +5,7 @@
 #define mazeMAX_ROW_SIZE	16
 #define mazeMAX_COL_SIZE	16
 #define mazeQUEUE_MAX_BUFFER (mazeMAX_COL_SIZE*mazeMAX_ROW_SIZE)
-extern int mazeINDEX_GOAL_ROW;
-extern int mazeINDEX_GOAL_COL;
-extern int mazeINDEX_START_ROW;
-extern int mazeINDEX_START_COL;
-#define mazeDIRECTION_START col_plus
+#define mazeDIRECTION_START row_plus
 
 #define mazeIS_ROW_SAFE_TO_MOVE_FORWARD(row)	(row < (mazeMAX_ROW_SIZE - 1))
 #define mazeIS_ROW_SAFE_TO_MOVE_BACKWARD(row)	(row > 0)

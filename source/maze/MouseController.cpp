@@ -1,9 +1,20 @@
 #include "MouseController.h"
 
 MouseController::MouseController ()
+: Maze()
 {
 	pathStack = Queue<PositionController>();
 	availablePositionStack = Queue<PositionController>();
+	/* FIXME: Set the default start point */
+	setPos({index_start_row, index_start_col});
+	setDir(mazeDIRECTION_START);
+	updateMousePosition();
+}
+
+MouseController::MouseController(char *filename)
+: Maze(filename)
+{
+	MouseController();
 }
 
 void
@@ -16,7 +27,7 @@ MouseController::initDistance ()
 	{
 		for (col = 0; col < mazeMAX_COL_SIZE; col++)
 		{
-			setDistance(row, col, UNREACHED);
+			setDis(row, col, UNREACHED);
 		}
 	}
 }
@@ -32,7 +43,7 @@ MouseController::getDistanceAllCell ()
 	initDistance();
 
 	/* Firstly set the distance of the current opsition to 0 */
-	setDistance(getCurrentPosition(), mazeSTART_DISTANCE);
+	setDis(getCurrentPos(), mazeSTART_DISTANCE);
 
 	while (1)
 	{
@@ -42,7 +53,7 @@ MouseController::getDistanceAllCell ()
 			for (col = 0; col <= mazeMAX_COL_SIZE; col++)
 			{
 				/* If the cell has already been reached, then continue to the next cell */
-				if (getDistance(row, col) != UNREACHED)
+				if (getDis(row, col) != UNREACHED)
 				{
 					continue;
 				}
@@ -50,11 +61,11 @@ MouseController::getDistanceAllCell ()
 				if (getHighestNeighbouringDistance(row, col) != UNREACHED)
 				{
 					/* you have reached the current cell */
-					setDistance(row, col, currentPathDistance);
+					setDis(row, col, currentPathDistance);
 				}
 			}
 		}
-		if (getDistance(mazeINDEX_GOAL_ROW, mazeINDEX_GOAL_COL) != UNREACHED) //If the destination cell has a value after a sweep, the algorithm ends
+		if (getDis(index_goal_row, index_goal_col) != UNREACHED) //If the destination cell has a value after a sweep, the algorithm ends
 		{
 			break;
 		}
@@ -87,7 +98,7 @@ MouseController::getHighestNeighbouringDistance (int row, int col)
 
 	if (getWall(row, col, row_plus) != wall)
 	{
-		cmp = getDistance(row + 1, col);
+		cmp = Maze::getDistance(row + 1, col);
 		if (cmp > tmp)
 		{
 			tmp = cmp;
@@ -95,7 +106,7 @@ MouseController::getHighestNeighbouringDistance (int row, int col)
 	}
 	if (getWall(row, col, col_plus) != wall)
 	{
-		cmp = getDistance(row, col + 1);
+		cmp = getDis(row, col + 1);
 		if (cmp > tmp)
 		{
 			tmp = cmp;
@@ -103,7 +114,7 @@ MouseController::getHighestNeighbouringDistance (int row, int col)
 	}
 	if (getWall(row, col, row_minus) != wall)
 	{
-		cmp = getDistance(row - 1, col);
+		cmp = getDis(row - 1, col);
 		if (cmp > tmp)
 		{
 			tmp = cmp;
@@ -111,7 +122,7 @@ MouseController::getHighestNeighbouringDistance (int row, int col)
 	}
 	if (getWall(row, col, col_minus) != wall)
 	{
-		cmp = getDistance(row, col - 1);
+		cmp = getDis(row, col - 1);
 		if (cmp > tmp)
 		{
 			tmp = cmp;
@@ -140,9 +151,9 @@ MouseController::getShortestPath ()
 		isFound = false;
 		//copy the next position
 		position = availablePositionStack.peekFromBack();
-		currentDistance = getDistance(position);
+		currentDistance = getDis(position);
 		//if currentposition is goal, break
-		if (position.isInGoal())
+		if (position.getCurrentPos() == (pos_t){index_goal_row, index_goal_col})
 		{
 			isFound = true;
 			pathStack.pushToBack(availablePositionStack.popFromBack());
@@ -153,7 +164,7 @@ MouseController::getShortestPath ()
 		/* Look around in counter-clockwise */
 		for (i = (int) row_plus; i <= (int) col_minus; i++)
 		{
-			if (getNextDistance(position, (direction_e) i)
+			if (getNextDis(position, (dir_e) i)
 					== (currentDistance + 1))
 			{
 				if (!isFound)
@@ -163,8 +174,8 @@ MouseController::getShortestPath ()
 				}
 				availablePositionStack.pushToBack(
 						PositionController(
-								position.getNextPosition((direction_e) i),
-								(direction_e) i));
+								position.getNextPos((dir_e) i),
+								(dir_e) i));
 			}
 		}
 
@@ -173,14 +184,14 @@ MouseController::getShortestPath ()
 			/* if no available next cell */
 			availablePositionStack.popFromBack();
 			/* pop pathstack until it meet next availableStack */
-			while (!((pathStack.peekFromBack().getNextPosition(row_plus)
-					== availablePositionStack.peekFromBack().getCurrentPosition())
-					|| (pathStack.peekFromBack().getNextPosition(col_plus)
-							== availablePositionStack.peekFromBack().getCurrentPosition())
-					|| (pathStack.peekFromBack().getNextPosition(row_minus)
-							== availablePositionStack.peekFromBack().getCurrentPosition())
-					|| (pathStack.peekFromBack().getNextPosition(col_minus)
-							== availablePositionStack.peekFromBack().getCurrentPosition())))
+			while (!((pathStack.peekFromBack().getNextPos(row_plus)
+					== availablePositionStack.peekFromBack().getCurrentPos())
+					|| (pathStack.peekFromBack().getNextPos(col_plus)
+							== availablePositionStack.peekFromBack().getCurrentPos())
+					|| (pathStack.peekFromBack().getNextPos(row_minus)
+							== availablePositionStack.peekFromBack().getCurrentPos())
+					|| (pathStack.peekFromBack().getNextPos(col_minus)
+							== availablePositionStack.peekFromBack().getCurrentPos())))
 			{
 				pathStack.popFromBack();
 			}
@@ -190,13 +201,13 @@ MouseController::getShortestPath ()
 	pathStack.popFromFront();
 }
 
-direction_e
+dir_e
 MouseController::getDirectionToGo ()
 {
 	/* get the next position */
 	PositionController nextPosition = pathStack.peekFromFront();
-	position_t pos_delta = nextPosition.getCurrentPosition()
-			- this->getCurrentPosition();
+	pos_t pos_delta = nextPosition.getCurrentPos()
+			- this->getCurrentPos();
 	switch (pos_delta.row)
 	{
 		case 1:
@@ -227,6 +238,19 @@ MouseController::getDirectionToGo ()
 void
 MouseController::setDirectionToGo ()
 {
-	setDirection(getDirectionToGo());
+	setDir(getDirectionToGo());
 }
 
+bool
+MouseController::isInGoal ()
+{
+	pos_t tmp = getCurrentPos();
+	return (tmp.row == index_goal_row && tmp.col == index_goal_col) ?
+			true : false;
+}
+
+void
+MouseController::moveNextCell()
+{
+	updateMousePosition();
+}

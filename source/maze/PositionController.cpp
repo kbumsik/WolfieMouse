@@ -42,15 +42,15 @@ operator-- (Direction& orig, int)
 	return rVal;
 }
 
-PositionController::PositionController (int row, int col, direction_e dirTo)
+PositionController::PositionController (int row, int col, dir_e dirTo)
 {
 	pos.row = row;
 	pos.col = col;
 	dir = dirTo;
 }
 
-PositionController::PositionController (struct position_t pos,
-										direction_e dirTo)
+PositionController::PositionController (struct pos_t pos,
+										dir_e dirTo)
 {
 	PositionController(pos.row, pos.col, dirTo);
 }
@@ -117,10 +117,10 @@ PositionController::goForward ()
 	return mazeERROR;
 }
 
-position_t
-PositionController::getNextPosition (direction_e dirTo)
+pos_t
+PositionController::getNextPos (dir_e dirTo)
 {
-	position_t tmp = pos;
+	pos_t tmp = pos;
 	switch (dirTo)
 	{
 		case row_plus:
@@ -138,12 +138,4 @@ PositionController::getNextPosition (direction_e dirTo)
 		default:
 			return tmp;
 	}
-}
-
-bool
-PositionController::isInGoal ()
-{
-	position_t tmp = getCurrentPosition();
-	return (tmp.row == mazeINDEX_GOAL_ROW && tmp.col == mazeINDEX_GOAL_COL) ?
-			true : false;
 }

@@ -6,47 +6,45 @@
 class PositionController
 {
 private:
-	position_t pos; /**< current position of the mouse */
-	direction_e dir; /**< direction of the mouse */
+	struct pos_t pos; /**< current position of the mouse */
+	dir_e dir; /**< direction of the mouse */
 
 public:
-	PositionController (int row, int col, direction_e dirTo);
-	PositionController (struct position_t pos, direction_e dirTo);
+	PositionController (int row, int col, dir_e dirTo);
+	PositionController (struct pos_t pos, dir_e dirTo);
 	PositionController ();
 	virtual void turnRight ();
 	virtual void turnLeft ();
 	virtual int goForward ();
 
-	inline void setDirection (direction_e dirToSet)
+	inline void setDir (dir_e dirToSet)
 	{
 		dir = dirToSet;
 	}
 
-	inline void setPosition (position_t posToSet)
+	inline void setPos (pos_t posToSet)
 	{
 		pos = posToSet;
 	}
 
-	inline direction_e getCurrentDirection ()
+	inline dir_e getCurrentDir ()
 	{
 		return dir;
 	}
-	inline position_t getCurrentPosition ()
+	inline pos_t getCurrentPos ()
 	{
 		return pos;
 	}
-	position_t getNextPosition (direction_e dirTo);
+	pos_t getNextPos (dir_e dirTo);
 
-	inline position_t getNextPosition ()
+	inline pos_t getNextPos ()
 	{
-		return PositionController::getNextPosition(dir);
+		return PositionController::getNextPos(dir);
 	}
-
-	bool isInGoal ();
 
 	bool operator== (PositionController& rVal)
 	{
-		return (getCurrentPosition() == rVal.getCurrentPosition());
+		return (getCurrentPos() == rVal.getCurrentPos());
 	}
 };
 

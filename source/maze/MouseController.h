@@ -13,58 +13,55 @@
  *  2. call @getShortestPath
  *  3. call @setDirectionToGo
  */
-class MouseController : Maze, PositionController
+class MouseController : public Maze, public PositionController
 {
 private:
 	Queue<PositionController> pathStack; /**< This is an assistant stack. When @getShortestPath invoked the path to the goal is cunstructed. */
 	Queue<PositionController> availablePositionStack; /**< I don't even know what is this. */
-	int distance[mazeMAX_ROW_SIZE][mazeMAX_COL_SIZE]; /**< To store cost of moving of each cell */
+	PositionController priviousPos(PositionController); /** To store previous position */
 
-	inline int getDistance (int row, int col)
+	inline int getDis(int row, int col)
 	{
-		if (mazeIS_POS_OUT_BOUNDS(row, col))
-		{
-			return mazeERROR;
-		}
-		return distance[row][col];
+		return Maze::getDistance(row, col);
 	}
-	inline int getDistance (struct position_t pos)
+	inline int getDis (struct pos_t pos)
 	{
-		return getDistance(pos.row, pos.col);
+		return Maze::getDistance(pos.row, pos.col);
 	}
-	inline int getDistance (PositionController pos)
+	inline int getDis (PositionController pos)
 	{
-		position_t position = pos.getCurrentPosition();
-		return getDistance(position.row, position.col);
+		pos_t position = pos.getCurrentPos();
+		return Maze::getDistance(position.row, position.col);
 	}
-	inline int getNextDistance (PositionController pos, direction_e dirTo)
+	inline int getNextDis (PositionController pos, dir_e dirTo)
 	{
-		PositionController tmp = PositionController(pos.getCurrentPosition(),
+		PositionController tmp = PositionController(pos.getCurrentPos(),
 													dirTo);
-		return getDistance(tmp.getNextPosition());
+		return getDis(tmp.getNextPos());
 	}
-	inline int getNextDistance (PositionController pos)
+	inline int getNextDis (PositionController pos)
 	{
-		return getDistance(pos.getNextPosition());
-	}
-
-	inline void setDistance (int row, int col, int dis)
-	{
-		/* TODO: Wrap it with max? */
-		distance[row][col] = dis;
+		return getDis(pos.getNextPos());
 	}
 
-	inline void setDistance (struct position_t pos, int dis)
+	inline int setDis(int row, int col, int dis)
 	{
-		setDistance(pos.row, pos.col, dis);
+		return Maze::setDistance(row, col, dis);
+	}
+	inline void setDis (struct pos_t pos, int dis)
+	{
+		setDis(pos.row, pos.col, dis);
 	}
 
 	void initDistance ();
 	int getHighestNeighbouringDistance (int row, int col);
-	direction_e getDirectionToGo ();
+	dir_e getDirectionToGo ();
+	void updateMousePosition();
 
 public:
 	MouseController ();
+
+	MouseController (char *filename);
 
 	void getDistanceAllCell ();
 
@@ -72,6 +69,7 @@ public:
 
 	void setDirectionToGo ();
 
+	void moveNextCell();
 	/** On development
 	 void moveNextCell();
 	 void movingCompleted();
@@ -85,5 +83,6 @@ public:
 	 virtual void setWall(int row, int col, direction_e dir, wall_e status);
 	 virtual void updateCell(int row, int col);
 	 */
+	bool isInGoal ();
 };
 #endif

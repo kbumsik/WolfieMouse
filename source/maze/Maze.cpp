@@ -1,11 +1,17 @@
 #include "Maze.h"
+#include <stdio.h>
 
-void
-Maze::initMaze ()
+Maze::Maze ()
 {
+	
 	int i = 0;
 	int j = 0;
 	int k = 0;
+
+	index_start_row = 0;
+	index_start_col = 0;
+	index_goal_row = 7;
+	index_goal_col = 7;
 
 	/* init the wall with unknown */
 	for (i = 0; i < mazeMAX_ROW_SIZE; i++)
@@ -14,7 +20,7 @@ Maze::initMaze ()
 		{
 			for (k = (int) row_plus; k <= (int) col_minus; k++)
 			{
-				setWall(i, j, (direction_e) k, unknown);
+				setWall(i, j, (dir_e) k, unknown);
 			}
 		}
 	}
@@ -41,17 +47,18 @@ Maze::initMaze ()
 	updateCell();
 }
 
-Maze::Maze ()
+Maze::Maze(char *filename)
 {
-	initMaze();
+	Maze();
+	readMazeFromFile(filename);
 }
 
-wall_e
-Maze::getWall (int row, int col, direction_e dir)
+enum wall
+Maze::getWall (int row, int col, dir_e dir)
 {
 	if (mazeIS_POS_OUT_BOUNDS(row, col))
 	{
-		return (wall_e) mazeERROR;
+		return (enum wall) mazeERROR;
 	}
 	switch (dir)
 	{
@@ -64,19 +71,24 @@ Maze::getWall (int row, int col, direction_e dir)
 		case col_minus:
 			return colWall[row][col];
 		default:
-			return (wall_e) mazeERROR;
+			return (enum wall) mazeERROR;
 	}
-	return (wall_e) mazeERROR;
+	return (enum wall) mazeERROR;
 }
 
-cell_e
+cell_t
 Maze::getCell (int row, int col)
 {
-	return mazeIS_POS_OUT_BOUNDS(row,col) ? (cell_e) mazeERROR : cell[row][col];
+	if (mazeIS_POS_OUT_BOUNDS(row,col))
+	{
+		printf("invalid cell!");
+		return {0};
+	}
+	return cell[row][col];
 }
 
 int
-Maze::setWall (int row, int col, direction_e dir, wall_e status)
+Maze::setWall (int row, int col, dir_e dir, enum wall status)
 {
 	if (mazeIS_POS_OUT_BOUNDS(row, col))
 	{
@@ -108,17 +120,39 @@ Maze::updateCell (int row, int col)
 	{
 		return mazeERROR;
 	}
+	/* checking status */
 	if (Maze::getWall(row, col, row_plus) != unknown
 			&& Maze::getWall(row, col, col_plus) != unknown
 			&& Maze::getWall(row, col, row_minus) != unknown
 			&& Maze::getWall(row, col, col_minus) != unknown)
 	{
-		cell[row][col] = searched;
+		cell[row][col].status = searched;
 	}
 	else
 	{
-		cell[row][col] = unsearched;
+		cell[row][col].status = unsearched;
 	}
+	/* checking goal */
+	if ((row == index_goal_row) && (col == index_goal_col))
+	{
+		cell[row][col].isGoal = true;
+	}
+	else
+	{
+		cell[row][col].isGoal = false;
+	}
+	/* checking start */
+	if ((row == index_start_row) && (col == index_start_col))
+	{
+		cell[row][col].isStart = true;
+	}
+	else
+	{
+		cell[row][col].isStart = false;
+	}
+	/* TODO: checking mouse */
+	cell[row][col].isMouse = false;
+
 	return mazeSUCCESS;
 }
 
