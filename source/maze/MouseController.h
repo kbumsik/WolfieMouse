@@ -11,14 +11,13 @@
  * @details    ===== MOUSE CONTROL PROCEDURE =====
  *  1. call @getDistanceAllCell
  *  2. call @getShortestPath
- *  3. call @setDirectionToGo
+ *  3. call @moveNextCell
  */
 class MouseController : public Maze, public PositionController
 {
 private:
 	Queue<PositionController> pathStack; /**< This is an assistant stack. When @getShortestPath invoked the path to the goal is cunstructed. */
 	Queue<PositionController> availablePositionStack; /**< I don't even know what is this. */
-	PositionController priviousPos(PositionController); /** To store previous position */
 
 	inline int getDis(int row, int col)
 	{
@@ -56,20 +55,10 @@ private:
 	void initDistance ();
 	int getHighestNeighbouringDistance (int row, int col);
 	dir_e getDirectionToGo ();
-	void updateMousePosition();
-
-public:
-	MouseController ();
-
-	MouseController (char *filename);
-
-	void getDistanceAllCell ();
-
-	void getShortestPath ();
+	struct cell getCell(pos_t pos);
+	void updateCell();
 
 	void setDirectionToGo ();
-
-	void moveNextCell();
 	/** On development
 	 void moveNextCell();
 	 void movingCompleted();
@@ -83,6 +72,17 @@ public:
 	 virtual void setWall(int row, int col, direction_e dir, wall_e status);
 	 virtual void updateCell(int row, int col);
 	 */
-	bool isInGoal ();
+public:
+	MouseController ();
+
+	void readMazeFromFile(char *filename);
+
+	void getDistanceAllCell ();
+
+	void getShortestPath ();
+
+	void moveNextCell();
+	bool isGoal ();
+	bool isStart ();
 };
 #endif

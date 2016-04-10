@@ -22,9 +22,9 @@
 #define mazeIS_POS_OUT_BOUNDS(row, col)	(mazeIS_ROW_OUT_BOUNDS(row) || mazeIS_COL_OUT_BOUNDS(col))
 
 #define mazeSTART_DISTANCE 0
+#define UNREACHED	-1
 
 #define mazeSUCCESS	1
-#define UNREACHED	-1
 #define mazeERROR	-2
 
 #endif /* __CONFIG_MAZE_H */

@@ -85,7 +85,7 @@ Maze::readMazeFromFile (char* fileName)
 void
 Maze::printMaze ()
 {
-	writeMazeToFile(stdout);
+	writeMazeToFile(stdout, true);
 }
 
 void
@@ -99,11 +99,11 @@ Maze::saveMazeFile (char* fileName)
 	{
 		printf("Failed to open file");
 	}
-	writeMazeToFile(pFile);
+	writeMazeToFile(pFile, false);
 }
 
 void
-Maze::writeMazeToFile (void *pFile)
+Maze::writeMazeToFile (void *pFile, bool isShowMouse)
 {
 	char buf;
 
@@ -158,7 +158,7 @@ Maze::writeMazeToFile (void *pFile)
 				fputc(buf, (FILE*) pFile);
 				if(!(j >= mazeMAX_COL_SIZE))
 				{
-					printCell(i/2, j, pFile);
+					printCell(i/2, j, isShowMouse, pFile);
 				}
 			}
 		}
@@ -180,10 +180,10 @@ clearLine (FILE *pFILE)
 }
 
 void
-Maze::printCell(int row, int col, void *pFile)
+Maze::printCell(int row, int col, bool isShowMouse, void *pFile)
 {
 	/* Check if this is mouse position */
-	if (getCell(row, col).isMouse)
+	if (getCell(row, col).isMouse && isShowMouse)
 	{
 		fputc('M', (FILE*) pFile);
 	}
@@ -194,6 +194,11 @@ Maze::printCell(int row, int col, void *pFile)
 	else if (getCell(row, col).isGoal)
 	{
 		fputc('G', (FILE*) pFile);
+	}
+	else if (isShowMouse)
+	{
+		fputc((getCell(row, col).distance == UNREACHED)
+			  ? 'x' : '0'+getCell(row, col).distance, (FILE*) pFile);
 	}
 	else if (col != mazeMAX_COL_SIZE)
 	{

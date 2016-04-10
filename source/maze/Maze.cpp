@@ -18,6 +18,7 @@ Maze::Maze ()
 	{
 		for (j = 0; j < mazeMAX_COL_SIZE; j++)
 		{
+			setDistance(i,j,UNREACHED);
 			for (k = (int) row_plus; k <= (int) col_minus; k++)
 			{
 				setWall(i, j, (dir_e) k, unknown);
@@ -76,13 +77,13 @@ Maze::getWall (int row, int col, dir_e dir)
 	return (enum wall) mazeERROR;
 }
 
-cell_t
+struct cell
 Maze::getCell (int row, int col)
 {
 	if (mazeIS_POS_OUT_BOUNDS(row,col))
 	{
 		printf("invalid cell!");
-		return {0};
+		return (struct cell){0};
 	}
 	return cell[row][col];
 }
@@ -168,4 +169,16 @@ Maze::updateCell ()
 			Maze::updateCell(i, j);
 		}
 	}
+}
+
+void
+Maze::setMouse(int row, int col)
+{
+	cell[row][col].isMouse = true;
+}
+
+void
+Maze::resetMouse(int row, int col)
+{
+	cell[row][col].isMouse = false;
 }

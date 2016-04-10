@@ -27,7 +27,7 @@ enum status
 /**
  * @brief Status of cell
  */
-struct cell_t{
+struct cell{
 	int distance;
 	enum status status;
 	bool isMouse, isGoal, isStart;
@@ -74,18 +74,11 @@ class Maze
 private:
 	enum wall rowWall[mazeMAX_ROW_SIZE + 1][mazeMAX_COL_SIZE]; /* walls in y-direction (or row-increasing) */
 	enum wall colWall[mazeMAX_ROW_SIZE][mazeMAX_COL_SIZE + 1]; /* walls in x-direction (or column-increasing)*/
-	cell_t cell[mazeMAX_ROW_SIZE][mazeMAX_COL_SIZE]; /* each cells in the maze */
+	cell cell[mazeMAX_ROW_SIZE][mazeMAX_COL_SIZE]; /* each cells in the maze */
 
-	void writeMazeToFile(void *pFile);
-	
-	/**
-	 * @brief      construct Maze from file
-	 *
-	 * @param      fileName  filename to construct
-	 */
-	void readMazeFromFile(char* fileName);
+	void writeMazeToFile(void *pFile, bool isShowMouse);
 
-	void printCell(int row, int col, void *pFile);
+	void printCell(int row, int col, bool isShowMouse, void *pFile);
 public:
 	int index_goal_row;
 	int index_goal_col;
@@ -123,8 +116,10 @@ public:
 	 *
 	 * @return     status of cell
 	 */
-	cell_t getCell (int row, int col);
+	struct cell getCell (int row, int col);
 
+	void setMouse(int row, int col);
+	void resetMouse(int row, int col);
 	/**
 	 * @brief      set status of a wall
 	 *
@@ -174,6 +169,12 @@ public:
 	 * @brief      update status of all cell
 	 */
 	void updateCell ();
+	/**
+	 * @brief      construct Maze from file
+	 *
+	 * @param      fileName  filename to construct
+	 */
+	void readMazeFromFile(char* fileName);
 
 	/**
 	 * @brief      print the current maze

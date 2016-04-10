@@ -8,13 +8,16 @@ MouseController::MouseController ()
 	/* FIXME: Set the default start point */
 	setPos({index_start_row, index_start_col});
 	setDir(mazeDIRECTION_START);
-	updateMousePosition();
+	updateCell();
 }
 
-MouseController::MouseController(char *filename)
-: Maze(filename)
+void
+MouseController::readMazeFromFile(char* filename)
 {
-	MouseController();
+	Maze::readMazeFromFile(filename);
+	setPos({index_start_row, index_start_col});
+	setDir(mazeDIRECTION_START);
+	updateCell();
 }
 
 void
@@ -48,9 +51,9 @@ MouseController::getDistanceAllCell ()
 	while (1)
 	{
 		/* Creating a loop which scans the whole maze */
-		for (row = 0; row <= mazeMAX_ROW_SIZE; row++)
+		for (row = 0; row < mazeMAX_ROW_SIZE; row++)
 		{
-			for (col = 0; col <= mazeMAX_COL_SIZE; col++)
+			for (col = 0; col < mazeMAX_COL_SIZE; col++)
 			{
 				/* If the cell has already been reached, then continue to the next cell */
 				if (getDis(row, col) != UNREACHED)
@@ -58,7 +61,7 @@ MouseController::getDistanceAllCell ()
 					continue;
 				}
 				/* If there is a neighbouring cell which has been */
-				if (getHighestNeighbouringDistance(row, col) != UNREACHED)
+				if (getHighestNeighbouringDistance(row, col) == (currentPathDistance -1))
 				{
 					/* you have reached the current cell */
 					setDis(row, col, currentPathDistance);
@@ -242,15 +245,47 @@ MouseController::setDirectionToGo ()
 }
 
 bool
-MouseController::isInGoal ()
+MouseController::isGoal ()
 {
-	pos_t tmp = getCurrentPos();
-	return (tmp.row == index_goal_row && tmp.col == index_goal_col) ?
+	return (getCell(getCurrentPos()).isGoal) ?
+			true : false;
+}
+
+bool
+MouseController::isStart ()
+{
+	return (getCell(getCurrentPos()).isStart) ?
 			true : false;
 }
 
 void
 MouseController::moveNextCell()
 {
-	updateMousePosition();
+	/* 1. turn first */
+	dir_e tmp_d = getDirectionToGo();
+		/* before setting direction we need to set how much trun */
+	setDirectionToGo();
+	/* 2. scan side wall */
+	/* 3. move */
+	pos_t tmp_p = getNextPos();
+		/* move command */
+	setPos(tmp_p);
+	/* 4. scan the front wall */
+	/* 5. update */
+	updateCell();
+}
+
+
+struct cell
+MouseController::getCell(pos_t pos)
+{
+	return Maze::getCell(pos.row, pos.col);
+}
+
+void
+MouseController::updateCell()
+{
+	pos_t tmp = getCurrentPos();
+	Maze::updateCell();
+	Maze::setMouse(tmp.row, tmp.col);
 }
