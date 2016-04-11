@@ -142,6 +142,46 @@ PositionController::getNextPos (dir_e dirTo)
 			tmp.col--;
 			return tmp;
 		default:
+			printf("invalid direction!");
 			return tmp;
 	}
+}
+
+dir_e
+PositionController::getNextDir (pos_t posTo)
+{
+	/* get the next position */
+	pos_t nextPosition = posTo;
+	pos_t pos_delta = nextPosition - getCurrentPos();
+	switch (pos_delta.row)
+	{
+	case 1:
+		return row_plus;
+	break;
+	case -1:
+		return row_minus;
+	break;
+	default:
+	break;
+	}
+	switch (pos_delta.col)
+	{
+	case 1:
+		return col_plus;
+	break;
+	case -1:
+		return col_minus;
+	break;
+	default:
+	break;
+	}
+	/* return value should not this one */
+	/* we can make a strange code ablow to indicate there is an error */
+	return eDirError;
+}
+
+void
+PositionController::print(PositionController obj)
+{
+	printf("(%d,%d) ", obj.pos.row, obj.pos.col);
 }

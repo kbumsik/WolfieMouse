@@ -43,10 +43,18 @@ public:
 		return PositionController::getNextPos(dir);
 	}
 
+	dir_e getNextDir (pos_t posTo);
+
+	inline dir_e getNextDir (PositionController posTo)
+	{
+		return getNextDir (posTo.getCurrentPos());
+	}
 	bool operator== (PositionController& rVal)
 	{
 		return (getCurrentPos() == rVal.getCurrentPos());
 	}
+
+	void print(PositionController obj);
 };
 
 #endif

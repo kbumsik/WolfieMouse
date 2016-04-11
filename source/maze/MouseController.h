@@ -86,5 +86,8 @@ public:
 	void moveNextCell();
 	bool isGoal ();
 	bool isStart ();
+
+	void printPathStack();
+	void printAvailablePositionStack();
 };
 #endif
