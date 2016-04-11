@@ -32,6 +32,7 @@
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
 									<listOptionValue builtIn="false" value="__FPU_PRESENT=1"/>
 									<listOptionValue builtIn="false" value="STM32F446xx"/>
+									<listOptionValue builtIn="false" value="configDEBUG"/>
 								</option>
 								<option id="com.atollic.truestudio.as.general.incpath.157373842" name="Include path" superClass="com.atollic.truestudio.as.general.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${WorkspaceDirPath}/source/Drivers/CMSIS/Device/ST/STM32F4xx/Include&quot;"/>
@@ -53,6 +54,7 @@
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
 									<listOptionValue builtIn="false" value="__FPU_PRESENT=1"/>
 									<listOptionValue builtIn="false" value="STM32F446xx"/>
+									<listOptionValue builtIn="false" value="configDEBUG"/>
 								</option>
 								<option id="com.atollic.truestudio.gcc.directories.select.721231356" name="Include path" superClass="com.atollic.truestudio.gcc.directories.select" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${WorkspaceDirPath}/source/Drivers/CMSIS/Device/ST/STM32F4xx/Include&quot;"/>
@@ -91,6 +93,7 @@
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
 									<listOptionValue builtIn="false" value="__FPU_PRESENT=1"/>
 									<listOptionValue builtIn="false" value="STM32F446xx"/>
+									<listOptionValue builtIn="false" value="configDEBUG"/>
 								</option>
 								<option id="com.atollic.truestudio.gpp.directories.select.1859862199" name="Include path" superClass="com.atollic.truestudio.gpp.directories.select" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${WorkspaceDirPath}/source/Drivers/CMSIS/Device/ST/STM32F4xx/Include&quot;"/>
@@ -168,6 +171,8 @@
 								<option id="com.atollic.truestudio.as.symbols.defined.245338566" name="Defined symbols" superClass="com.atollic.truestudio.as.symbols.defined" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
 									<listOptionValue builtIn="false" value="__FPU_PRESENT=1"/>
+									<listOptionValue builtIn="false" value="DEBUG_ERROR"/>
+									<listOptionValue builtIn="false" value="configDEBUG"/>
 								</option>
 								<option id="com.atollic.truestudio.as.general.incpath.46888126" name="Include path" superClass="com.atollic.truestudio.as.general.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test_atollic-studio/source/CMSIS/CMSIS/Device/ST/STM32F4xx/Include}&quot;"/>
@@ -198,6 +203,8 @@
 									<listOptionValue builtIn="false" value="STM32F446xx"/>
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
 									<listOptionValue builtIn="false" value="__FPU_PRESENT=1"/>
+									<listOptionValue builtIn="false" value="DEBUG_ERROR"/>
+									<listOptionValue builtIn="false" value="configDEBUG"/>
 								</option>
 								<option id="com.atollic.truestudio.gcc.directories.select.699175615" name="Include path" superClass="com.atollic.truestudio.gcc.directories.select" valueType="includePath">
 									<listOptionValue builtIn="false" value="../src"/>
@@ -249,6 +256,8 @@
 									<listOptionValue builtIn="false" value="STM32F446xx"/>
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
 									<listOptionValue builtIn="false" value="__FPU_PRESENT=1"/>
+									<listOptionValue builtIn="false" value="DEBUG_ERROR"/>
+									<listOptionValue builtIn="false" value="configDEBUG"/>
 								</option>
 								<option id="com.atollic.truestudio.gpp.directories.select.2011471763" name="Include path" superClass="com.atollic.truestudio.gpp.directories.select" valueType="includePath">
 									<listOptionValue builtIn="false" value="../src"/>

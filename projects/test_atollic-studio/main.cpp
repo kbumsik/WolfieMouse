@@ -191,7 +191,7 @@ void vScanInputTask(void *pvParameters)
 extern "C"{
 #endif
 
-I2C_HandleTypeDef hi2c1;
+extern I2C_HandleTypeDef hi2c1; /* located in tca9545.h */
 
 #include <string.h>
 #include <stdlib.h>
@@ -431,6 +431,9 @@ void vRangeFinderTask(void *pvParameters) {
     /* Initialize all configured peripherals */
     MX_I2C1_Init();
 
+    tca9545_init();
+    tca9545_set(Channel_0);
+
     /* these almost just redo what already done just above by CubeMx Init */
     XNUCLEO6180XA1_GPIO_Init();
     XNUCLEO6180XA1_I2C1_Init(&hi2c1);
@@ -473,7 +476,6 @@ void MX_I2C1_Init(void)
 #ifdef __cplusplus
 }
 #endif
-
 
 #ifdef USE_FULL_ASSERT
 

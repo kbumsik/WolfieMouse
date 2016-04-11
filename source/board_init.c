@@ -272,10 +272,12 @@ void MX_GPIO_Init(void)
   __GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin : B1_Pin */
+  /* TODO: THis button is not used!
   GPIO_InitStruct.Pin = B1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
+  */
 
   /*Configure GPIO pin : LD2_Pin */
   GPIO_InitStruct.Pin = LD2_Pin;

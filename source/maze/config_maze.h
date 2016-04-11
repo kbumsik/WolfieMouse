@@ -5,11 +5,7 @@
 #define mazeMAX_ROW_SIZE	16
 #define mazeMAX_COL_SIZE	16
 #define mazeQUEUE_MAX_BUFFER (mazeMAX_COL_SIZE*mazeMAX_ROW_SIZE)
-#define mazeINDEX_GOAL_ROW	7
-#define mazeINDEX_GOAL_COL	7
-#define mazeINDEX_START_ROW	0
-#define mazeINDEX_START_COL	0
-#define mazeDIRECTION_START col_plus
+#define mazeDIRECTION_START row_plus
 
 #define mazeIS_ROW_SAFE_TO_MOVE_FORWARD(row)	(row < (mazeMAX_ROW_SIZE - 1))
 #define mazeIS_ROW_SAFE_TO_MOVE_BACKWARD(row)	(row > 0)
@@ -26,9 +22,9 @@
 #define mazeIS_POS_OUT_BOUNDS(row, col)	(mazeIS_ROW_OUT_BOUNDS(row) || mazeIS_COL_OUT_BOUNDS(col))
 
 #define mazeSTART_DISTANCE 0
+#define UNREACHED	-1
 
 #define mazeSUCCESS	1
-#define UNREACHED	-1
 #define mazeERROR	-2
 
 #endif /* __CONFIG_MAZE_H */
