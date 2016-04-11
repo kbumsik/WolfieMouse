@@ -87,8 +87,7 @@ Maze::getCell (int row, int col)
 {
 	if (mazeIS_POS_OUT_BOUNDS(row,col))
 	{
-		printf("invalid cell!");
-		return (struct cell){0};
+		return (struct cell){-2, eCellerror, false, false, false};
 	}
 	return cell[row][col];
 }

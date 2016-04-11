@@ -171,33 +171,36 @@ MouseController::getShortestPath ()
 		for (i = (int) row_plus; i <= (int) col_minus; i++)
 		{
 			if (getNextDis(position, (dir_e) i)
-					== (currentDistance + 1))
+					== (currentDistance + 1)) /* FIXME: check walls too */
 			{
+				if (wall == getWall(position.getCurrentPos().row, position.getCurrentPos().col, (dir_e)i))
+				{
+					continue;
+				}
 				if (!isFound)
 				{
 					pathStack.pushToBack(availablePositionStack.popFromBack());
 					isFound = true;
 				}
 				availablePositionStack.pushToBack(
-						PositionController(
-								position.getNextPos((dir_e) i),
-								(dir_e) i));
+											PositionController(
+													position.getNextPos((dir_e) i),
+													(dir_e) i));
+
 			}
 		}
 
 		if (!isFound)
 		{
 			/* if no available next cell */
-			availablePositionStack.popFromBack();
+			position = availablePositionStack.popFromBack();
 			/* pop pathstack until it meet next availableStack */
-			while (!((pathStack.peekFromBack().getNextPos(row_plus)
-					== availablePositionStack.peekFromBack().getCurrentPos())
-					|| (pathStack.peekFromBack().getNextPos(col_plus)
-							== availablePositionStack.peekFromBack().getCurrentPos())
-					|| (pathStack.peekFromBack().getNextPos(row_minus)
-							== availablePositionStack.peekFromBack().getCurrentPos())
-					|| (pathStack.peekFromBack().getNextPos(col_minus)
-							== availablePositionStack.peekFromBack().getCurrentPos())))
+			while (!(
+					   ( (pathStack.peekFromBack().getNextPos(row_plus) == availablePositionStack.peekFromBack().getCurrentPos()) && (wall != getWall(pathStack.peekFromBack().getCurrentPos().row, pathStack.peekFromBack().getCurrentPos().col, row_plus))  )
+					|| ( (pathStack.peekFromBack().getNextPos(col_plus) == availablePositionStack.peekFromBack().getCurrentPos()) && (wall != getWall(pathStack.peekFromBack().getCurrentPos().row, pathStack.peekFromBack().getCurrentPos().col, col_plus))  )
+					|| ( (pathStack.peekFromBack().getNextPos(row_minus)== availablePositionStack.peekFromBack().getCurrentPos()) && (wall != getWall(pathStack.peekFromBack().getCurrentPos().row, pathStack.peekFromBack().getCurrentPos().col, row_minus)) )
+					|| ( (pathStack.peekFromBack().getNextPos(col_minus)== availablePositionStack.peekFromBack().getCurrentPos()) && (wall != getWall(pathStack.peekFromBack().getCurrentPos().row, pathStack.peekFromBack().getCurrentPos().col, col_minus)) )
+					))
 			{
 				pathStack.popFromBack();
 			}
@@ -212,33 +215,7 @@ MouseController::getDirectionToGo ()
 {
 	/* get the next position */
 	PositionController nextPosition = pathStack.peekFromFront();
-	pos_t pos_delta = nextPosition.getCurrentPos()
-			- this->getCurrentPos();
-	switch (pos_delta.row)
-	{
-		case 1:
-			return row_plus;
-		break;
-		case -1:
-			return row_minus;
-		break;
-		default:
-		break;
-	}
-	switch (pos_delta.col)
-	{
-		case 1:
-			return col_plus;
-		break;
-		case -1:
-			return col_minus;
-		break;
-		default:
-		break;
-	}
-	/* return value should not this one */
-	/* we can make a strange code ablow to indicate there is an error */
-	return row_plus;
+	return getNextDir(nextPosition);
 }
 
 void
@@ -291,4 +268,21 @@ MouseController::updateCell()
 	pos_t tmp = getCurrentPos();
 	Maze::updateCell();
 	Maze::setMouse(tmp.row, tmp.col);
+}
+
+
+void
+MouseController::printPathStack()
+{
+	void (PositionController::*pvFunc)(PositionController) = &PositionController::print;
+	printf("pathStack: ");
+	pathStack.print(pvFunc);
+	printf("\r\n");
+}
+void
+MouseController::printAvailablePositionStack()
+{
+	printf("availableStack: ");
+	availablePositionStack.print(&PositionController::print);
+	printf("\r\n");
 }
