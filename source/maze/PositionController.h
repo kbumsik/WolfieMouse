@@ -8,6 +8,7 @@ class PositionController
 private:
 	struct pos_t pos; /**< current position of the mouse */
 	dir_e dir; /**< direction of the mouse */
+	void init(int row, int col, dir_e dirTo);
 
 public:
 	PositionController (int row, int col, dir_e dirTo);

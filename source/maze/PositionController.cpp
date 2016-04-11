@@ -42,22 +42,28 @@ operator-- (Direction& orig, int)
 	return rVal;
 }
 
-PositionController::PositionController (int row, int col, dir_e dirTo)
+void
+PositionController::init(int row, int col, dir_e dirTo)
 {
 	pos.row = row;
 	pos.col = col;
 	dir = dirTo;
 }
 
+PositionController::PositionController (int row, int col, dir_e dirTo)
+{
+	init(row, col, dirTo);
+}
+
 PositionController::PositionController (struct pos_t pos,
 										dir_e dirTo)
 {
-	PositionController(pos.row, pos.col, dirTo);
+	init(pos.row, pos.col, dirTo);
 }
 
 PositionController::PositionController ()
 {
-	PositionController(0, 0, mazeDIRECTION_START);
+	init(0, 0, mazeDIRECTION_START);
 }
 
 void

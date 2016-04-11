@@ -9,8 +9,7 @@ void flush_input_buf();
 
 int main() {
 	char tmp;
-	MouseController mouse;
-	mouse.readMazeFromFile("1.txt");
+	MouseController mouse ("1.txt");
 	while (true)
 	{
 		/* First just print maze */

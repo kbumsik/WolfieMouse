@@ -1,9 +1,9 @@
 #include "Maze.h"
 #include <stdio.h>
 
-Maze::Maze ()
+void
+Maze::init()
 {
-	
 	int i = 0;
 	int j = 0;
 	int k = 0;
@@ -48,9 +48,14 @@ Maze::Maze ()
 	updateCell();
 }
 
+Maze::Maze ()
+{
+	init();
+}
+
 Maze::Maze(char *filename)
 {
-	Maze();
+	init();
 	readMazeFromFile(filename);
 }
 

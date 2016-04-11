@@ -1,7 +1,7 @@
 #include "MouseController.h"
 
-MouseController::MouseController ()
-: Maze()
+void
+MouseController::init()
 {
 	pathStack = Queue<PositionController>();
 	availablePositionStack = Queue<PositionController>();
@@ -11,13 +11,16 @@ MouseController::MouseController ()
 	updateCell();
 }
 
-void
-MouseController::readMazeFromFile(char* filename)
+MouseController::MouseController ()
+: Maze()
 {
-	Maze::readMazeFromFile(filename);
-	setPos({index_start_row, index_start_col});
-	setDir(mazeDIRECTION_START);
-	updateCell();
+	init();
+}
+
+MouseController::MouseController (char *filename)
+: Maze(filename)
+{
+	init();
 }
 
 void
@@ -147,7 +150,7 @@ MouseController::getShortestPath ()
 	pathStack.init();
 
 	/* set first stack = the current position */
-	availablePositionStack.pushToBack(position);
+	availablePositionStack.pushToBack(PositionController(getCurrentPos(),getCurrentDir()));
 
 	while (1)
 	{

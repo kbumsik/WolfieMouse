@@ -76,6 +76,8 @@ private:
 	enum wall colWall[mazeMAX_ROW_SIZE][mazeMAX_COL_SIZE + 1]; /* walls in x-direction (or column-increasing)*/
 	cell cell[mazeMAX_ROW_SIZE][mazeMAX_COL_SIZE]; /* each cells in the maze */
 
+	void init();
+
 	void writeMazeToFile(void *pFile, bool isShowMouse);
 
 	void printCell(int row, int col, bool isShowMouse, void *pFile);
