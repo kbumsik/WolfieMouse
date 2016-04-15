@@ -74,7 +74,7 @@ class Maze
 private:
 	enum wall rowWall[mazeMAX_ROW_SIZE + 1][mazeMAX_COL_SIZE]; /* walls in y-direction (or row-increasing) */
 	enum wall colWall[mazeMAX_ROW_SIZE][mazeMAX_COL_SIZE + 1]; /* walls in x-direction (or column-increasing)*/
-	cell cell[mazeMAX_ROW_SIZE][mazeMAX_COL_SIZE]; /* each cells in the maze */
+	struct cell cell[mazeMAX_ROW_SIZE][mazeMAX_COL_SIZE]; /* each cells in the maze */
 
 	void init();
 

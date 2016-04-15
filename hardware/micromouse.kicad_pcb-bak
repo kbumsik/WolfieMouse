@@ -6,7 +6,7 @@
     (area -79.714284 -88.698791 339 268.698791)
     (thickness 1.6)
     (drawings 42)
-    (tracks 1281)
+    (tracks 1282)
     (zones 0)
     (modules 79)
     (nets 114)
@@ -14,7 +14,7 @@
 
   (page A4)
   (layers
-    (0 F.Cu signal)
+    (0 F.Cu signal hide)
     (31 B.Cu signal)
     (32 B.Adhes user hide)
     (33 F.Adhes user hide)
@@ -37,7 +37,7 @@
   )
 
   (setup
-    (last_trace_width 0.25)
+    (last_trace_width 0.8)
     (user_trace_width 0.2)
     (user_trace_width 0.28)
     (user_trace_width 0.4)
@@ -4153,6 +4153,8 @@
   (segment (start 175.98 93.85) (end 182.84 100.71) (width 0.28) (layer B.Cu) (net 5) (tstamp 5701F193))
   (via (at 175.98 93.85) (size 0.6) (drill 0.4) (layers F.Cu B.Cu) (net 5))
   (segment (start 175.879938 93.749938) (end 175.98 93.85) (width 0.28) (layer F.Cu) (net 5) (tstamp 5701F190))
+  (segment (start 155.5 64) (end 154.75 64) (width 0.8) (layer F.Cu) (net 6))
+  (segment (start 154.75 64) (end 146 72.75) (width 0.8) (layer F.Cu) (net 6) (tstamp 570854B6))
   (segment (start 218 96.25) (end 216.26 96.25) (width 0.4) (layer F.Cu) (net 6))
   (segment (start 219.75 92.76) (end 219.75 89.5) (width 0.4) (layer B.Cu) (net 6) (tstamp 57027F5C))
   (segment (start 216.06 96.45) (end 219.75 92.76) (width 0.4) (layer B.Cu) (net 6) (tstamp 57027F5B))
@@ -4262,9 +4264,8 @@
   (segment (start 145.075 87.05) (end 144.8 86.775) (width 0.4) (layer F.Cu) (net 6))
   (segment (start 144.8 86.775) (end 144.8 86) (width 0.4) (layer F.Cu) (net 6) (tstamp 56FE0130))
   (segment (start 147.592102 76.592102) (end 146 75) (width 0.8) (layer F.Cu) (net 6))
-  (segment (start 146 68) (end 146 75) (width 0.8) (layer F.Cu) (net 6) (tstamp 56FE0104))
-  (segment (start 150 64) (end 160.87931 64) (width 0.8) (layer F.Cu) (net 6) (tstamp 56FE00F2))
-  (segment (start 150 64) (end 146 68) (width 0.8) (layer F.Cu) (net 6))
+  (segment (start 146 72.75) (end 146 75) (width 0.8) (layer F.Cu) (net 6) (tstamp 570854BA))
+  (segment (start 155.5 64) (end 160.87931 64) (width 0.8) (layer F.Cu) (net 6) (tstamp 570854B4))
   (segment (start 147.592102 76.592102) (end 147.592102 77.407898) (width 0.8) (layer F.Cu) (net 6) (tstamp 56FE010B))
   (segment (start 160.882133 63.997177) (end 160.87931 64) (width 0.8) (layer F.Cu) (net 6))
   (segment (start 167.6 64.2) (end 169.2 65.8) (width 0.8) (layer F.Cu) (net 6))
