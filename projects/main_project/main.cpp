@@ -99,20 +99,15 @@ int main(void)
 		  	  NULL,							/* Pointer to a task parameters */
 		  	  1,		                    /* The task priority */
 		  	  &xBlinkyHandle);                        /* Pointer of its task handler, if you don't want to use, you can leave it NULL */
+
   /*
-  xTaskCreate(vScanInputTask,
-                "Scan",
-                configMINIMAL_STACK_SIZE+1500,
-                NULL,
-                configMAX_PRIORITIES-1,
-                &xScanInputHandle);
-                */
   xTaskCreate(vRangeFinderTask,
                   "Range",
                   configMINIMAL_STACK_SIZE+2500,
                   NULL,
                   configMAX_PRIORITIES-1,
                   &xScanInputHandle);
+                  */
   /* USER CODE BEGIN RTOS_QUEUES */
   /* definition and creation of xQueueUARTReceive */
   quUARTReceive = xQueueCreate(confUART_RECEIVE_QUEUE_LENGTH, /* length of queue */
@@ -137,50 +132,13 @@ void vBlinkyTask(void *pvParameters)
 
   for(;;)
     {
-      vLED_0_Toggle();
+      vLED_1_Toggle();
+      vLED_2_Toggle();
+      vLED_3_Toggle();
+      vLED_4_Toggle();
       /* Call this Task explicitly every 50ms ,NOT Delay for 50ms */
       vTaskDelayUntil(&xLastWakeTime, (200/portTICK_RATE_MS));
     }
-
-  /* It never goes here, but the task should be deleted when it reached here */
-  vTaskDelete(NULL);
-}
-
-/* vScanInputTask Task function */
-void vScanInputTask(void *pvParameters)
-{
-  uint32_t uwCount = 1;
-  int32_t swCheck = 0;
-  int swInput = 0;
-  char pcStr[30];
-
-  /* Infinite loop */
-  for (;;)
-  {
-    printf("ready\r\n");
-    /* Set Blinky task less than this task, meaning stop blinking */
-    //vTaskPrioritySet(xBlinkyHandle, uxPriority-1);
-    swCheck = scanf("%d", &swInput);
-    if (swCheck != 1)
-    {
-      printf("Wrong Input!: ");
-      // flush the buffer
-      scanf("%s", pcStr);
-      printf("%s\r\n", pcStr);
-    }
-    else
-    {
-      printf("%d\r\n", swInput);
-      /* Print the Idle count */
-      printf("count=%d\r\n", uwCount++);
-    }
-
-    /* Set Blinky back */
-    //vTaskPrioritySet(xBlinkyHandle, uxPriority);
-    /* Set the task into blocking mode for 1000ms */
-    /* The task becomes ready state after 1000ms */
-    vTaskDelay(1000 / portTICK_RATE_MS);
-  }
 
   /* It never goes here, but the task should be deleted when it reached here */
   vTaskDelete(NULL);

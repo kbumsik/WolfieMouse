@@ -61,7 +61,8 @@
 /* definition for NUCLEO Board */
 /* Define only one board!!! */
 //#define INCLUDE_NUCLEO_F411RE
-#define INCLUDE_NUCLEO_F466RE
+//#define INCLUDE_NUCLEO_F466RE
+#define INCLUDE_WOLFIEMOUSE_F466RE
 /* Add custom board here */
 
 /**
@@ -91,6 +92,10 @@
 
 #ifdef INCLUDE_NUCLEO_F466RE
   #include "config_NUCLEO_F446RE.h"
+#endif
+
+#ifdef INCLUDE_WOLFIEMOUSE_F466RE
+  #include "config_WolfieMouse_F446RE.h"
 #endif
 
 /**
