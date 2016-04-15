@@ -27,6 +27,7 @@ osThreadId defaultTaskHandle;
 
 
 /* private functions */
+static void LED_Init(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2C2_Init(void);
@@ -47,6 +48,7 @@ void board_Init(void)
   SystemClock_Config();
 
   /* Initialize all configured peripherals */
+  LED_Init();
   MX_GPIO_Init();
   //MX_I2C1_Init(); /* TODO: Init */
   MX_I2C2_Init();
@@ -76,7 +78,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL.PLLM = 16;
   RCC_OscInitStruct.PLL.PLLN = 360;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4; /* FIXME: change the freq */
   RCC_OscInitStruct.PLL.PLLQ = 4;
   RCC_OscInitStruct.PLL.PLLR = 2;
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
@@ -89,11 +91,11 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV4;
-  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
-
-  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq() / 1000);
+  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_8);
 
   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
+
+  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq() / 1000);
 
   /* SysTick_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
@@ -279,13 +281,6 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
   */
 
-  /*Configure GPIO pin : LD2_Pin */
-  GPIO_InitStruct.Pin = LD2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
-  HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
-
   /*Configure GPIO pin : rotaryPIN_CH2_A_INT_Pin */
   GPIO_InitStruct.Pin = rotaryPIN_CH2_A_INT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
@@ -311,6 +306,30 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
   HAL_GPIO_Init(rotaryPIN_CH1_B_GPIO_Port, &GPIO_InitStruct);
 
+}
+
+
+static void LED_Init(void)
+{
+  __GPIOC_CLK_ENABLE();
+  __GPIOB_CLK_ENABLE();
+
+    GPIO_InitTypeDef GPIO_InitStruct;
+
+	  GPIO_InitStruct.Pin = portLED_1_PIN;
+	  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
+	  HAL_GPIO_Init(portLED_1_PORT, &GPIO_InitStruct);
+
+	  GPIO_InitStruct.Pin = portLED_2_PIN;
+	  HAL_GPIO_Init(portLED_2_PORT, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = portLED_3_PIN;
+    HAL_GPIO_Init(portLED_3_PORT, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = portLED_4_PIN;
+    HAL_GPIO_Init(portLED_4_PORT, &GPIO_InitStruct);
 }
 
 /* USER CODE BEGIN 4 */

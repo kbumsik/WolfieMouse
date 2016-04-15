@@ -15,9 +15,9 @@
   (page A4)
   (layers
     (0 F.Cu signal hide)
-    (31 B.Cu signal)
-    (32 B.Adhes user hide)
-    (33 F.Adhes user hide)
+    (31 B.Cu signal hide)
+    (32 B.Adhes user)
+    (33 F.Adhes user)
     (34 B.Paste user)
     (35 F.Paste user)
     (36 B.SilkS user)
@@ -37,7 +37,7 @@
   )
 
   (setup
-    (last_trace_width 0.8)
+    (last_trace_width 0.25)
     (user_trace_width 0.2)
     (user_trace_width 0.28)
     (user_trace_width 0.4)
@@ -1330,13 +1330,13 @@
     )
   )
 
-  (module footprints_micromouse:R_0603 (layer F.Cu) (tedit 570273E8) (tstamp 56FC67F9)
+  (module footprints_micromouse:R_0603 (layer F.Cu) (tedit 570C1E87) (tstamp 56FC67F9)
     (at 171.25 84 270)
     (descr "Resistor SMD 0603, reflow soldering, Vishay (see dcrcw.pdf)")
     (tags "resistor 0603")
     (path /5702CAA7)
     (attr smd)
-    (fp_text reference L_BEAD1 (at -3.75 -1.5 270) (layer F.SilkS)
+    (fp_text reference L_BEAD1 (at -3 0 270) (layer F.SilkS)
       (effects (font (size 0.5 0.5) (thickness 0.1)))
     )
     (fp_text value 10uH (at -5.5 0 270) (layer F.Fab) hide
@@ -2608,13 +2608,13 @@
     )
   )
 
-  (module footprints_micromouse:C_0603 (layer F.Cu) (tedit 570273D7) (tstamp 56FC676B)
+  (module footprints_micromouse:C_0603 (layer F.Cu) (tedit 570C1E83) (tstamp 56FC676B)
     (at 172.75 83.5 90)
     (descr "Capacitor SMD 0603, reflow soldering, AVX (see smccp.pdf)")
     (tags "capacitor 0603")
     (path /57015E11)
     (attr smd)
-    (fp_text reference C_V3 (at 2 -1.5 90) (layer F.SilkS)
+    (fp_text reference C_V3 (at 2.5 0 90) (layer F.SilkS)
       (effects (font (size 0.5 0.5) (thickness 0.1)))
     )
     (fp_text value 0.1uF (at 7 0 90) (layer F.Fab) hide

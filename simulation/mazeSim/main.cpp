@@ -5,7 +5,6 @@
 
 
 void clear_screen();
-void flush_input_buf();
 
 int main() {
 	char tmp;
@@ -31,7 +30,7 @@ int main() {
 		mouse.getDistanceAllCell();
 		mouse.printMaze();
 		printf("please input a command\r\n");
-		printf("q: exit\r\n");
+		printf("q: exit, n:next\r\n");
 		fflush(stdout);
 		while (true)
 		{
@@ -47,7 +46,7 @@ int main() {
 		mouse.getShortestPath();
 		mouse.printMaze();
 		printf("please input a command\r\n");
-		printf("q: exit\r\n");
+		printf("q: exit, n:next, p: print stack\r\n");
 		fflush(stdout);
 		while (true)
 		{
@@ -56,6 +55,11 @@ int main() {
 				break;
 			else if (tmp == 'q')
 				goto end;
+			else if (tmp == 'p')
+			{
+				mouse.printPathStack();
+				fflush(stdout);
+			}
 			else
 				continue;
 		}
@@ -63,7 +67,7 @@ int main() {
 		mouse.moveNextCell();
 		mouse.printMaze();
 		printf("please input a command\r\n");
-		printf("q: exit\r\n");
+		printf("q: exit, n:next\r\n");
 		fflush(stdout);
 		while (true)
 		{

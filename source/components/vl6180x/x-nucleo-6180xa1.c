@@ -266,7 +266,7 @@ void XNUCLEO6180XA1_I2C1_Init(I2C_HandleTypeDef *hi2c1) {
         _V2_GPIO_Init();
     }
     else{
-        _V1_GPIO_Init();
+    	_V2_GPIO_Init(); /** Changed */
     }
 }
 
