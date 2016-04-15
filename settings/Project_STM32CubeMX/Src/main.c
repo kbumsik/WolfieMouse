@@ -43,11 +43,12 @@
 I2C_HandleTypeDef hi2c1;
 I2C_HandleTypeDef hi2c2;
 
+SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi2;
-SPI_HandleTypeDef hspi3;
 
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim4;
 
 UART_HandleTypeDef huart2;
 
@@ -63,12 +64,16 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2C2_Init(void);
+static void MX_SPI1_Init(void);
 static void MX_SPI2_Init(void);
-static void MX_SPI3_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_TIM3_Init(void);
+static void MX_TIM4_Init(void);
 static void MX_USART2_UART_Init(void);
 void StartDefaultTask(void const * argument);
+
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+                
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -98,10 +103,11 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   MX_I2C2_Init();
+  MX_SPI1_Init();
   MX_SPI2_Init();
-  MX_SPI3_Init();
   MX_TIM1_Init();
   MX_TIM3_Init();
+  MX_TIM4_Init();
   MX_USART2_UART_Init();
 
   /* USER CODE BEGIN 2 */
@@ -160,7 +166,7 @@ void SystemClock_Config(void)
   RCC_OscInitTypeDef RCC_OscInitStruct;
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
 
-  __PWR_CLK_ENABLE();
+  __HAL_RCC_PWR_CLK_ENABLE();
 
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
@@ -176,10 +182,10 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLR = 2;
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
 
-  HAL_PWREx_ActivateOverDrive();
+  HAL_PWREx_EnableOverDrive();
 
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_SYSCLK|RCC_CLOCKTYPE_PCLK1
-                              |RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
@@ -203,10 +209,10 @@ void MX_I2C1_Init(void)
   hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
   hi2c1.Init.OwnAddress1 = 0;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLED;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
   hi2c1.Init.OwnAddress2 = 0;
-  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLED;
-  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLED;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
   HAL_I2C_Init(&hi2c1);
 
 }
@@ -220,11 +226,31 @@ void MX_I2C2_Init(void)
   hi2c2.Init.DutyCycle = I2C_DUTYCYCLE_2;
   hi2c2.Init.OwnAddress1 = 0;
   hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLED;
+  hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
   hi2c2.Init.OwnAddress2 = 0;
-  hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLED;
-  hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLED;
+  hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
   HAL_I2C_Init(&hi2c2);
+
+}
+
+/* SPI1 init function */
+void MX_SPI1_Init(void)
+{
+
+  hspi1.Instance = SPI1;
+  hspi1.Init.Mode = SPI_MODE_MASTER;
+  hspi1.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi1.Init.NSS = SPI_NSS_SOFT;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi1.Init.CRCPolynomial = 10;
+  HAL_SPI_Init(&hspi1);
 
 }
 
@@ -241,30 +267,10 @@ void MX_SPI2_Init(void)
   hspi2.Init.NSS = SPI_NSS_SOFT;
   hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
   hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  hspi2.Init.TIMode = SPI_TIMODE_DISABLED;
-  hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLED;
+  hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
   hspi2.Init.CRCPolynomial = 10;
   HAL_SPI_Init(&hspi2);
-
-}
-
-/* SPI3 init function */
-void MX_SPI3_Init(void)
-{
-
-  hspi3.Instance = SPI3;
-  hspi3.Init.Mode = SPI_MODE_MASTER;
-  hspi3.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi3.Init.DataSize = SPI_DATASIZE_8BIT;
-  hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
-  hspi3.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi3.Init.NSS = SPI_NSS_SOFT;
-  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-  hspi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  hspi3.Init.TIMode = SPI_TIMODE_DISABLED;
-  hspi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLED;
-  hspi3.Init.CRCPolynomial = 10;
-  HAL_SPI_Init(&hspi3);
 
 }
 
@@ -272,7 +278,6 @@ void MX_SPI3_Init(void)
 void MX_TIM1_Init(void)
 {
 
-  TIM_ClockConfigTypeDef sClockSourceConfig;
   TIM_MasterConfigTypeDef sMasterConfig;
   TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig;
   TIM_OC_InitTypeDef sConfigOC;
@@ -283,11 +288,6 @@ void MX_TIM1_Init(void)
   htim1.Init.Period = 0;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
-  HAL_TIM_Base_Init(&htim1);
-
-  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  HAL_TIM_ConfigClockSource(&htim1, &sClockSourceConfig);
-
   HAL_TIM_PWM_Init(&htim1);
 
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
@@ -312,7 +312,9 @@ void MX_TIM1_Init(void)
   sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
   HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_1);
 
-  HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_2);
+  HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_4);
+
+  HAL_TIM_MspPostInit(&htim1);
 
 }
 
@@ -322,7 +324,7 @@ void MX_TIM3_Init(void)
 
   TIM_ClockConfigTypeDef sClockSourceConfig;
   TIM_MasterConfigTypeDef sMasterConfig;
-  TIM_OC_InitTypeDef sConfigOC;
+  TIM_IC_InitTypeDef sConfigIC;
 
   htim3.Instance = TIM3;
   htim3.Init.Prescaler = 0;
@@ -334,17 +336,47 @@ void MX_TIM3_Init(void)
   sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
   HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig);
 
-  HAL_TIM_PWM_Init(&htim3);
+  HAL_TIM_IC_Init(&htim3);
 
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
   HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig);
 
-  sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 0;
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1);
+  sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_RISING;
+  sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
+  sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
+  sConfigIC.ICFilter = 0;
+  HAL_TIM_IC_ConfigChannel(&htim3, &sConfigIC, TIM_CHANNEL_1);
+
+  HAL_TIM_IC_ConfigChannel(&htim3, &sConfigIC, TIM_CHANNEL_2);
+
+}
+
+/* TIM4 init function */
+void MX_TIM4_Init(void)
+{
+
+  TIM_MasterConfigTypeDef sMasterConfig;
+  TIM_IC_InitTypeDef sConfigIC;
+
+  htim4.Instance = TIM4;
+  htim4.Init.Prescaler = 0;
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim4.Init.Period = 0;
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  HAL_TIM_IC_Init(&htim4);
+
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig);
+
+  sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_RISING;
+  sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
+  sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
+  sConfigIC.ICFilter = 0;
+  HAL_TIM_IC_ConfigChannel(&htim4, &sConfigIC, TIM_CHANNEL_1);
+
+  HAL_TIM_IC_ConfigChannel(&htim4, &sConfigIC, TIM_CHANNEL_2);
 
 }
 
@@ -377,48 +409,73 @@ void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct;
 
   /* GPIO Ports Clock Enable */
-  __GPIOC_CLK_ENABLE();
-  __GPIOH_CLK_ENABLE();
-  __GPIOA_CLK_ENABLE();
-  __GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOH_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
-  /*Configure GPIO pin : B1_Pin */
-  GPIO_InitStruct.Pin = B1_Pin;
+  /*Configure GPIO pin : rangePIN_RESET_BAR_Pin */
+  GPIO_InitStruct.Pin = rangePIN_RESET_BAR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(rangePIN_RESET_BAR_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : LD2_Pin */
-  GPIO_InitStruct.Pin = LD2_Pin;
+  /*Configure GPIO pins : disPIN_CE_BAR_Pin motorPIN_R_DIR_Pin */
+  GPIO_InitStruct.Pin = disPIN_CE_BAR_Pin|motorPIN_R_DIR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
-  HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : rotaryPIN_CH2_A_INT_Pin */
-  GPIO_InitStruct.Pin = rotaryPIN_CH2_A_INT_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(rotaryPIN_CH2_A_INT_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : rotaryPIN_CH2_B_Pin */
-  GPIO_InitStruct.Pin = rotaryPIN_CH2_B_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(rotaryPIN_CH2_B_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : rotaryPIN_CH1_A_INT_Pin */
-  GPIO_InitStruct.Pin = rotaryPIN_CH1_A_INT_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(rotaryPIN_CH1_A_INT_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : rotaryPIN_CH1_B_Pin */
-  GPIO_InitStruct.Pin = rotaryPIN_CH1_B_Pin;
+  /*Configure GPIO pins : disPIN_RS_Pin disPIN_RESET_BAR_Pin motorPIN_L_DIR_Pin LED4_PIN_Pin 
+                           LED3_PIN_Pin */
+  GPIO_InitStruct.Pin = disPIN_RS_Pin|disPIN_RESET_BAR_Pin|motorPIN_L_DIR_Pin|LED4_PIN_Pin 
+                          |LED3_PIN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
-  HAL_GPIO_Init(rotaryPIN_CH1_B_GPIO_Port, &GPIO_InitStruct);
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LED1_PIN_Pin LED2_PIN_Pin */
+  GPIO_InitStruct.Pin = LED1_PIN_Pin|LED2_PIN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : imuPIN_INT_Pin */
+  GPIO_InitStruct.Pin = imuPIN_INT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(imuPIN_INT_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : motorPIN_L_FAULT_BAR_Pin */
+  GPIO_InitStruct.Pin = motorPIN_L_FAULT_BAR_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(motorPIN_L_FAULT_BAR_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PB2_PIN_Pin PB1_PIN_Pin */
+  GPIO_InitStruct.Pin = PB2_PIN_Pin|PB1_PIN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : VOL_METER_PIN_Pin */
+  GPIO_InitStruct.Pin = VOL_METER_PIN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(VOL_METER_PIN_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, disPIN_CE_BAR_Pin|motorPIN_R_DIR_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, disPIN_RS_Pin|disPIN_RESET_BAR_Pin|motorPIN_L_DIR_Pin|LED4_PIN_Pin 
+                          |LED3_PIN_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, LED1_PIN_Pin|LED2_PIN_Pin, GPIO_PIN_RESET);
 
 }
 

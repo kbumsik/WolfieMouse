@@ -28,10 +28,12 @@
  *    3) each time HAL_RCC_ClockConfig() is called to configure the system clock frequency
  *-----------------------------------------------------------------------
  * *GPIO Pin Configuration: 
- *     Channel 1: PA0
- *     Channel 2: PA1
- *     Channel 3: PA2
- *     Channel 4: PA3
+ *     left_PWM: PA8
+ *     left_dir: PC9
+ *     left_fault: PC8
+ *     right_PWM: PA11
+ *     right_dir: PA10
+ *     right_fault: PA9
  *-----------------------------------------------------------------------
  */
 
@@ -48,21 +50,19 @@
 /* User can use this section to tailor TIMx instance used and associated
    resources */
 /* Definition for TIMx clock resources */
-#define MOTOR_TIMx							TIM4
-#define MOTOR_TIMx_CLK_ENABLE()				__HAL_RCC_TIM4_CLK_ENABLE()
-#define MOTOR_TIMx_CLK_DISABLE()			__HAL_RCC_TIM4_CLK_DISABLE()
+#define MOTOR_TIMx							TIM1
+#define MOTOR_TIMx_CLK_ENABLE()				__HAL_RCC_TIM1_CLK_ENABLE()
+#define MOTOR_TIMx_CLK_DISABLE()			__HAL_RCC_TIM1_CLK_DISABLE()
 
 /* Prescaler Definition at f = 50MHz */
 #define MOTOR_TIM_PRESCALER					(((SystemCoreClock)/2000000) - 1)
 
 /* Definition for TIMx Channel Pins */
-#define MOTOR_GPIO_PORT 					GPIOB
-#define MOTOR_TIMx_CHANNEL_GPIO_PORT()		__HAL_RCC_GPIOB_CLK_ENABLE()
-#define MOTOR_GPIO_ALTERNATE				GPIO_AF2_TIM4
-#define MOTOR_GPIO_PIN_CHANNEL_1			GPIO_PIN_6
-#define MOTOR_GPIO_PIN_CHANNEL_2			GPIO_PIN_7
-#define MOTOR_GPIO_PIN_CHANNEL_3			GPIO_PIN_8
-#define MOTOR_GPIO_PIN_CHANNEL_4			GPIO_PIN_9
+#define MOTOR_GPIO_PORT 					GPIOA
+#define MOTOR_TIMx_CHANNEL_GPIO_PORT()		__HAL_RCC_GPIOA_CLK_ENABLE()
+#define MOTOR_GPIO_ALTERNATE				GPIO_AF1_TIM1
+#define MOTOR_GPIO_PIN_RIGHT				GPIO_PIN_11
+#define MOTOR_GPIO_PIN_LEFT					GPIO_PIN_8
 
 /* Definition for PWM pulse */
 #define MOTOR_PERIOD_VALUE		(19999 - 1)  /* Period Value  */
@@ -77,11 +77,9 @@
  */
 
 typedef enum{
-  eMOTOR_CHANNEL_1 = 0x0,
-  eMOTOR_CHANNEL_2 = 0x1,
-  eMOTOR_CHANNEL_3 = 0x2,
-  eMOTOR_CHANNEL_4 = 0x3,
-  eMOTOR_CHANNEL_ALL = 0x4
+  right = 0x0,
+  left = 0x1,
+  all = 0x4
 }eMotorChannel_t;
 
 /* External Variables */
@@ -99,12 +97,12 @@ extern TIM_HandleTypeDef xMotorHandle;
  *
  * @return     Status of the result
  */
-eStatus_t eMotorInit(TIM_HandleTypeDef* pxTIMHandle);
+eStatus_t eMotorInit(void);
 
 /**
  * @brief      Initialize all configured GPIO Pins
  */
-void vMotorGPIOInit(TIM_HandleTypeDef* pxTIMHandle);
+void vMotorGPIOInit(void);
 
 /**
  * @brief Set speed of a motor
@@ -117,28 +115,28 @@ void vMotorGPIOInit(TIM_HandleTypeDef* pxTIMHandle);
  * @return
  */
 // FIXME:Seems like it needs xMotorStart again after this function. Make it that function is not need
-int32_t swMotorSetSpeed(TIM_HandleTypeDef* pxTIMHandle, int32_t swSpeed, eMotorChannel_t eChannel);
+int32_t swMotorSetSpeed(int32_t swSpeed, eMotorChannel_t eChannel);
 
 /**
  * @brief      Start rotating the motors
  *
  * @return     Status of the result
  */
-eStatus_t eMotorStart(TIM_HandleTypeDef* pxTIMHandle, eMotorChannel_t eChannel);
+eStatus_t eMotorStart(eMotorChannel_t eChannel);
 
 /**
  * @brief      Stop rotation the motors
  *
  * @return     Status of the result
  */
-eStatus_t eMotorStop(TIM_HandleTypeDef* pxTIMHandle, eMotorChannel_t eChannel);
+eStatus_t eMotorStop(eMotorChannel_t eChannel);
 
 /**
  * @brief      Deinitialize the motors
  *
  * @return     Status of the result
  */
-eStatus_t xMotorDeInit(TIM_HandleTypeDef* pxTIMHandle);
+eStatus_t xMotorDeInit(void);
 
 #ifdef __cplusplus
 }

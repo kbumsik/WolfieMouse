@@ -54,6 +54,7 @@ void SysTick_Handler(void)
   /* USER CODE BEGIN SysTick_IRQn 0 */
 
   /* USER CODE END SysTick_IRQn 0 */
+  HAL_IncTick();
   osSystickHandler();
   /* USER CODE BEGIN SysTick_IRQn 1 */
 
