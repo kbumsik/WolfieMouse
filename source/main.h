@@ -12,5 +12,10 @@
 #include "PWMInput.h"
 #include "Motor.h"
 
+/*****************************************
+ * global variables
+ */
+
+extern int range[4];
 
 #endif /* MAIN_H_ */
