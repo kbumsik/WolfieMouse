@@ -414,13 +414,7 @@ int PusbButton_WaitUnPress(void) {
     return tick - TimeStarted > PressBPSwicthTime;
 }
 
-void Sample_FreeRunningRanging(void);
 void Sample_SimpleRanging(void);
-void Sample_SimpleAls(void);
-uint8_t Sample_OffsetCalibrate(void);
-void Sample_XTalkCalibrate(int initDevice);
-void Sample_AlternateRangeAls(void);
-void Sample_Interrupt(void);
 
 void vRangeFinderTask(void *pvParameters) {
     uint8_t offset;
@@ -442,17 +436,6 @@ void vRangeFinderTask(void *pvParameters) {
 
         Sample_SimpleRanging();
 
-        Sample_FreeRunningRanging();
-
-        Sample_SimpleAls();
-
-        Sample_AlternateRangeAls();
-
-        offset = Sample_OffsetCalibrate();
-
-        Sample_XTalkCalibrate(offset);
-
-        Sample_Interrupt();
     }
     /* USER CODE END 3 */
 

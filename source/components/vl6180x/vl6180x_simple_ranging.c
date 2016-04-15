@@ -38,6 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "vl6180x_api.h"
 #include "vl6180x_sample_plat.h" /* contain all device/platform specific code */
+#include "tca9545.h"
 
 /**
  * @brief  Simplest polling range
@@ -47,13 +48,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 void Sample_SimpleRanging(void) {
     VL6180xDev_t myDev;
     VL6180x_RangeData_t Range;
+    tca9545Channel_e channel;
 
-    MyDev_Init(myDev);           // your code init device variable
-    MyDev_SetChipEnable(myDev);  // your code assert chip enable
-    MyDev_uSleep(1000);          // your code sleep at least 1 msec
-    VL6180x_InitData(myDev);
-    VL6180x_Prepare(myDev);
+    for(channel = Channel_0; channel <= Channel_3; channel++)
+    {
+        tca9545_set(channel);
+        MyDev_Init(myDev);           // your code init device variable
+        MyDev_SetChipEnable(myDev);  // your code assert chip enable
+        MyDev_uSleep(1000);          // your code sleep at least 1 msec
+        VL6180x_InitData(myDev);
+        VL6180x_Prepare(myDev);
+    }
+    channel = Channel_0;
     do {
+    	tca9545_set(channel++);
+    	if (channel > Channel_3)
+    		channel = Channel_0;
         VL6180x_RangePollMeasurement(myDev, &Range);
         if (Range.errorStatus == 0 )
             MyDev_ShowRange(myDev, Range.range_mm,0); // your code display range in mm

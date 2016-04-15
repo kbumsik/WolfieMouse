@@ -69,7 +69,7 @@
  * @brief Defines board-specific settings
  * @{
  */
-#define confMCU_CLOCK_MHZ 100
+#define confMCU_CLOCK_MHZ 90
 #define confNUCLEO_USE_STLINK_COM_PORT_FOR_UART
  /**
   * @}
