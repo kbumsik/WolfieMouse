@@ -62,6 +62,7 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 0 */
   osSystickHandler();
   /* USER CODE BEGIN SysTick_IRQn 1 */
+  /*
   newRightEnc = getRightEncCount();
   newLeftEnc = getLeftEncCount();
   leftSpeed = (newLeftEnc - oldLeftEnc)*configLenPerCnt;
@@ -69,6 +70,7 @@ void SysTick_Handler(void)
   diffSpeed = rightSpeed - leftSpeed;
   oldLeftEnc = newLeftEnc;
   oldRightEnc = newRightEnc;
+  */
   /* USER CODE END SysTick_IRQn 1 */
 }
 

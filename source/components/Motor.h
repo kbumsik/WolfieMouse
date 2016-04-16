@@ -65,10 +65,10 @@
 #define MOTOR_GPIO_PIN_LEFT					GPIO_PIN_8
 
 /* Definition for PWM pulse */
-#define MOTOR_PERIOD_VALUE		1000//(19999 - 1)  /* Period Value  */
+#define MOTOR_PERIOD_VALUE		10000//(19999 - 1)  /* Period Value  */
 /* Motor Maxium and minimum speed */
-#define motorSPEED_MAX		(900)
-#define motorSPEED_MID      (500)
+#define motorSPEED_MAX		(9000)
+#define motorSPEED_MID      (5000)
 #define motorSPEED_MIN		(0)
 
 /**

@@ -42,6 +42,8 @@
 #include "Motor.h"
 #include "encoder.h"
 
+#include "pidMotor.h"
+
 /* for vRangeFinderTask() */
 
 /* Global Variables ----------------------------------------------------------*/
@@ -52,12 +54,17 @@ int diffSpeed = 0;
 /* Task Handlers */
 TaskHandle_t xBlinkyHandle;
 TaskHandle_t xScanInputHandle;
+TaskHandle_t xMainHandle;
+
+/* Mutex Handlers */
+SemaphoreHandle_t muRange;
 
 /* Queue Handlers */
 QueueHandle_t quUARTReceive;
 
 /* ranges */
-int range[4];
+int range[4] = {255, 255, 255, 255};
+int motorSpeed[2] = {0, 0};
 
 /* Global function prototypes ------------------------------------------------*/
 void Error_Handler(void);
@@ -69,7 +76,8 @@ extern "C"{
 
 void vBlinkyTask(void *pvParameters);
 void vRangeFinderTask(void *pvParameters);
-void vEncoderTask(void *pvParameters);
+//void vEncoderTask(void *pvParameters);
+void vMainTask(void *pvParameters);
 
 #ifdef __cplusplus
 }
@@ -89,6 +97,7 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
+  muRange = xSemaphoreCreateMutex();
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
@@ -107,18 +116,25 @@ int main(void)
   /*
   xTaskCreate(vRangeFinderTask,
                   "Range",
-                  configMINIMAL_STACK_SIZE+2500,
+                  configMINIMAL_STACK_SIZE+500,
                   NULL,
                   configMAX_PRIORITIES-1,
                   &xScanInputHandle);
-                  */
-
+*/
+  /*
   xTaskCreate(vEncoderTask,
                   "Encoder",
                   configMINIMAL_STACK_SIZE+500,
                   NULL,
                   configMAX_PRIORITIES-1,
                   &xScanInputHandle);
+                  */
+  xTaskCreate(vMainTask,
+                    "Main",
+                    configMINIMAL_STACK_SIZE+2500,
+                    NULL,
+                    configMAX_PRIORITIES-1,
+                    &xMainHandle);
   /* USER CODE BEGIN RTOS_QUEUES */
   /* definition and creation of xQueueUARTReceive */
   quUARTReceive = xQueueCreate(confUART_RECEIVE_QUEUE_LENGTH, /* length of queue */
@@ -127,10 +143,10 @@ int main(void)
 
   /* Init components */
   eMotorInit();
-  //swMotorSetSpeed(100, all);
-  //eMotorStart(all);
-  //HAL_Delay(1000);
-  eMotorStop(all);
+  vMotorGoForward();
+
+  encoder_init();
+
 
   /* Start scheduler */
   vTaskStartScheduler();
@@ -165,28 +181,82 @@ void vBlinkyTask(void *pvParameters)
 
 void vRangeFinderTask(void *pvParameters) {
 
+	  portTickType xLastWakeTime;
+	  /* Initialize xLastWakeTime for vTaskDelayUntil */
+	  /* This variable is updated every vTaskDelayUntil is called */
+	  xLastWakeTime = xTaskGetTickCount();
 	range_finder_init();
 
     while (1) {
+        xSemaphoreTake(muRange, portMAX_DELAY); /* Take Mutext */
     	range[0] = range_finder_get(left_side);
     	range[1] = range_finder_get(right_side);
     	range[2] = range_finder_get(left_front);
     	range[3] = range_finder_get(right_front);
+    	xSemaphoreGive(muRange);
+        /* Call this Task explicitly every 50ms ,NOT Delay for 50ms */
+        vTaskDelayUntil(&xLastWakeTime, (5/portTICK_RATE_MS));
     }
     /* USER CODE END 3 */
 
 }
 
 
+
+
+/*
 void vEncoderTask(void *pvParameters) {
 
 	  int count_l = 0, count_r = 0;
-	  encoder_init();
 	  while (1) {
 		  count_l = getLeftEncCount();
 		  count_r = getRightEncCount();
 	  }
+
+
 }
+*/
+
+void vMainTask(void *pvParameters)
+{
+
+
+	vTaskDelay(1000);
+
+	for (int speed = 500; speed < 10000; speed = speed + 50)
+	{
+		  swMotorSetSpeed(speed, all);
+		  eMotorStart(all);
+		  HAL_Delay(1000);
+		  eMotorStop(all);
+
+		  vMotorGoBackward();
+		  swMotorSetSpeed(speed, all);
+		  eMotorStart(all);
+		  HAL_Delay(500);
+		  eMotorStop(all);
+
+		  vMotorTurnRight();
+		  swMotorSetSpeed(speed, all);
+		  eMotorStart(all);
+		  HAL_Delay(500);
+		  eMotorStop(all);
+
+		  vMotorTurnLeft();
+		  swMotorSetSpeed(speed, all);
+		  eMotorStart(all);
+		  HAL_Delay(500);
+		  eMotorStop(all);
+	}
+
+	 // pidMotorMoveFor1Cell(85);
+
+	while(1)
+	{
+
+	}
+}
+
 
 #ifdef USE_FULL_ASSERT
 

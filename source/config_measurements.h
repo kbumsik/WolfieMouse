@@ -23,5 +23,13 @@
 #define configLeftCenter	100
 #define configRightCenter	100
 #define configFrontWallRange 52
+#define configRangeOffset	0	/* the offset between left and right sensor when mouse in the middle of cell */
+
+
+/**
+ * PID control
+ */
+#define kP	0.9
+#define kD	0.2
 
 #endif /* CONFIG_MEASUREMENTS_H_ */
