@@ -40,6 +40,7 @@
 #include <stdio.h>
 #include "range_finder.h"
 #include "Motor.h"
+#include "encoder.h"
 
 /* for vRangeFinderTask() */
 
@@ -65,8 +66,8 @@ extern "C"{
 #endif
 
 void vBlinkyTask(void *pvParameters);
-void vScanInputTask(void *pvParameters);
 void vRangeFinderTask(void *pvParameters);
+void vEncoderTask(void *pvParameters);
 
 #ifdef __cplusplus
 }
@@ -117,10 +118,13 @@ int main(void)
 
   /* Init components */
   eMotorInit();
+  /*
   swMotorSetSpeed(300, all);
   eMotorStart(all);
   HAL_Delay(1000);
+  */
   eMotorStop(all);
+
   /* Start scheduler */
   vTaskStartScheduler();
   /* NOTE: We should never get here as control is now taken by the scheduler */
@@ -164,6 +168,17 @@ void vRangeFinderTask(void *pvParameters) {
     }
     /* USER CODE END 3 */
 
+}
+
+
+void vEncoderTask(void *pvParameters) {
+
+	  int count_l = 0, count_r = 0;
+	  encoder_init();
+	  while (1) {
+		  count_l = getLeftEncCount();
+		  count_r = getRightEncCount();
+	  }
 }
 
 #ifdef USE_FULL_ASSERT

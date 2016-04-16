@@ -38,18 +38,18 @@ void encoder_init(void)
 
 	Encoder_Handle.Init.Period            = 65535; //0xFFFF
 	Encoder_Handle.Init.Prescaler         = 0;
-	Encoder_Handle.Init.ClockDivision     = 0;
+	Encoder_Handle.Init.ClockDivision     = TIM_CLOCKDIVISION_DIV1;
 	Encoder_Handle.Init.CounterMode       = TIM_COUNTERMODE_UP;
 	Encoder_Handle.Init.RepetitionCounter = 0;
 
 	sEncoderConfig.EncoderMode        = TIM_ENCODERMODE_TI12;
 
-	sEncoderConfig.IC1Polarity        = TIM_ICPOLARITY_BOTHEDGE; //TIM_ICPOLARITY_RISING;
+	sEncoderConfig.IC1Polarity        = TIM_ICPOLARITY_RISING; //TIM_ICPOLARITY_RISING;
 	sEncoderConfig.IC1Selection       = TIM_ICSELECTION_DIRECTTI;
 	sEncoderConfig.IC1Prescaler       = TIM_ICPSC_DIV1;
 	sEncoderConfig.IC1Filter          = 0;
 
-	sEncoderConfig.IC2Polarity        = TIM_ICPOLARITY_BOTHEDGE; //TIM_ICPOLARITY_RISING;
+	sEncoderConfig.IC2Polarity        = TIM_ICPOLARITY_FALLING; //TIM_ICPOLARITY_RISING;
 	sEncoderConfig.IC2Selection       = TIM_ICSELECTION_DIRECTTI;
 	sEncoderConfig.IC2Prescaler       = TIM_ICPSC_DIV1;
 	sEncoderConfig.IC2Filter          = 0;
@@ -57,8 +57,38 @@ void encoder_init(void)
 	if(HAL_TIM_Encoder_Init(&Encoder_Handle, &sEncoderConfig) != HAL_OK)
 	{
 	  /* Initialization Error */
-	  Error_Handler();
+	  //Error_Handler();
 	}
+	/* Start the encoder interface */
+	  HAL_TIM_Encoder_Start(&Encoder_Handle, TIM_CHANNEL_ALL);
+
+	Encoder_Handle.Instance = TIM3;
+
+		Encoder_Handle.Init.Period            = 65535; //0xFFFF
+		Encoder_Handle.Init.Prescaler         = 0;
+		Encoder_Handle.Init.ClockDivision     = TIM_CLOCKDIVISION_DIV1;
+		Encoder_Handle.Init.CounterMode       = TIM_COUNTERMODE_UP;
+		Encoder_Handle.Init.RepetitionCounter = 0;
+
+		sEncoderConfig.EncoderMode        = TIM_ENCODERMODE_TI12;
+
+		sEncoderConfig.IC1Polarity        = TIM_ICPOLARITY_RISING; //TIM_ICPOLARITY_RISING;
+		sEncoderConfig.IC1Selection       = TIM_ICSELECTION_DIRECTTI;
+		sEncoderConfig.IC1Prescaler       = TIM_ICPSC_DIV1;
+		sEncoderConfig.IC1Filter          = 0;
+
+		sEncoderConfig.IC2Polarity        = TIM_ICPOLARITY_FALLING; //TIM_ICPOLARITY_RISING;
+		sEncoderConfig.IC2Selection       = TIM_ICSELECTION_DIRECTTI;
+		sEncoderConfig.IC2Prescaler       = TIM_ICPSC_DIV1;
+		sEncoderConfig.IC2Filter          = 0;
+
+		if(HAL_TIM_Encoder_Init(&Encoder_Handle, &sEncoderConfig) != HAL_OK)
+		{
+		  /* Initialization Error */
+		  //Error_Handler();
+		}
+		/* Start the encoder interface */
+		  HAL_TIM_Encoder_Start(&Encoder_Handle, TIM_CHANNEL_ALL);
 }
 
 int32_t getRightEncCount(void) {
@@ -97,7 +127,7 @@ static void encoder_gpio_init()
 	/* in push-pull, alternate function mode */
 	GPIO_InitStruct.Pin = GPIO_PIN_7;
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Pull = GPIO_PULLUP;
 	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
 	GPIO_InitStruct.Alternate = GPIO_AF2_TIM4;
 	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
@@ -109,7 +139,7 @@ static void encoder_gpio_init()
 	/* in push-pull, alternate function mode */
 	GPIO_InitStruct.Pin = GPIO_PIN_7;
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Pull = GPIO_PULLUP;
 	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
 	GPIO_InitStruct.Alternate = GPIO_AF2_TIM3;
 	HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
