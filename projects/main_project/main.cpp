@@ -45,7 +45,9 @@
 /* for vRangeFinderTask() */
 
 /* Global Variables ----------------------------------------------------------*/
-
+int rightSpeed = 0;
+int leftSpeed = 0;
+int diffSpeed = 0;
 /* Private variables ---------------------------------------------------------*/
 /* Task Handlers */
 TaskHandle_t xBlinkyHandle;
@@ -110,6 +112,13 @@ int main(void)
                   configMAX_PRIORITIES-1,
                   &xScanInputHandle);
                   */
+
+  xTaskCreate(vEncoderTask,
+                  "Encoder",
+                  configMINIMAL_STACK_SIZE+500,
+                  NULL,
+                  configMAX_PRIORITIES-1,
+                  &xScanInputHandle);
   /* USER CODE BEGIN RTOS_QUEUES */
   /* definition and creation of xQueueUARTReceive */
   quUARTReceive = xQueueCreate(confUART_RECEIVE_QUEUE_LENGTH, /* length of queue */
@@ -118,11 +127,9 @@ int main(void)
 
   /* Init components */
   eMotorInit();
-  /*
-  swMotorSetSpeed(300, all);
-  eMotorStart(all);
-  HAL_Delay(1000);
-  */
+  //swMotorSetSpeed(100, all);
+  //eMotorStart(all);
+  //HAL_Delay(1000);
   eMotorStop(all);
 
   /* Start scheduler */

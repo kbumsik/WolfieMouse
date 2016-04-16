@@ -34,8 +34,15 @@
 #include "stm32f4xx_it.h"
 #include "config.h"
 
+#include "encoder.h"
+#include "config_measurements.h"
+
 /* Global variables --------------------------------------------------------*/
 UART_HandleTypeDef xUARTHandle;         /* Located in UART.h */
+extern int rightSpeed;
+extern int leftSpeed;
+extern int diffSpeed;
+int oldRightEnc = 0, oldLeftEnc = 0;
 
 /* External variables --------------------------------------------------------*/
 
@@ -48,13 +55,20 @@ UART_HandleTypeDef xUARTHandle;         /* Located in UART.h */
 */
 void SysTick_Handler(void)
 {
+  int newRightEnc, newLeftEnc;
   /* USER CODE BEGIN SysTick_IRQn 0 */
   vTimerIncMillis();
   HAL_IncTick();
   /* USER CODE END SysTick_IRQn 0 */
   osSystickHandler();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-
+  newRightEnc = getRightEncCount();
+  newLeftEnc = getLeftEncCount();
+  leftSpeed = (newLeftEnc - oldLeftEnc)*configLenPerCnt;
+  rightSpeed = (newRightEnc - oldRightEnc)*configLenPerCnt;
+  diffSpeed = rightSpeed - leftSpeed;
+  oldLeftEnc = newLeftEnc;
+  oldRightEnc = newRightEnc;
   /* USER CODE END SysTick_IRQn 1 */
 }
 
