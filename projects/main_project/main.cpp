@@ -39,6 +39,7 @@
 #include "fatfs.h"
 #include <stdio.h>
 #include "range_finder.h"
+#include "Motor.h"
 
 /* for vRangeFinderTask() */
 
@@ -114,6 +115,12 @@ int main(void)
                               sizeof(uint8_t)*confUART_RECEIVE_BUFFER_SIZE); /* size in byte of each item */
   /* USER CODE END RTOS_QUEUES */
 
+  /* Init components */
+  eMotorInit();
+  swMotorSetSpeed(300, all);
+  eMotorStart(all);
+  HAL_Delay(1000);
+  eMotorStop(all);
   /* Start scheduler */
   vTaskStartScheduler();
   /* NOTE: We should never get here as control is now taken by the scheduler */
