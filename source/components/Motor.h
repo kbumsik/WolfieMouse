@@ -48,7 +48,7 @@
 #include "control.h"
 
 /* User can use this section to tailor TIMx instance used and associated
-   resources */
+ resources */
 /* Definition for TIMx clock resources */
 #define MOTOR_TIMx							TIM1
 #define MOTOR_TIMx_CLK_ENABLE()				__HAL_RCC_TIM1_CLK_ENABLE()
@@ -65,28 +65,25 @@
 #define MOTOR_GPIO_PIN_LEFT					GPIO_PIN_8
 
 /* Definition for PWM pulse */
-#define MOTOR_PERIOD_VALUE		(19999 - 1)  /* Period Value  */
-
+#define MOTOR_PERIOD_VALUE		10000//(19999 - 1)  /* Period Value  */
 /* Motor Maxium and minimum speed */
-#define motorSPEED_MAX		(1800)
-#define motorSPEED_MID      (1400)
-#define motorSPEED_MIN		(1000)
+#define motorSPEED_MAX		(9000)
+#define motorSPEED_MID      (5000)
+#define motorSPEED_MIN		(0)
 
 /**
  * Typedef
  */
 
-typedef enum{
-  right = 0x0,
-  left = 0x1,
-  all = 0x4
-}eMotorChannel_t;
+typedef enum {
+	right = 0x0, left = 0x1, all = 0x4
+} eMotorChannel_t;
 
 /* External Variables */
 extern TIM_HandleTypeDef xMotorHandle;
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 /**
  * Function delaration
@@ -117,6 +114,13 @@ void vMotorGPIOInit(void);
 // FIXME:Seems like it needs xMotorStart again after this function. Make it that function is not need
 int32_t swMotorSetSpeed(int32_t swSpeed, eMotorChannel_t eChannel);
 
+void vMotorGoForward(void);
+
+void vMotorGoBackward(void);
+
+void vMotorTurnRight(void);
+
+void vMotorTurnLeft(void);
 /**
  * @brief      Start rotating the motors
  *

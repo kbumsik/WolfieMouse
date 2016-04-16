@@ -17,5 +17,6 @@
  */
 
 extern int range[4];
+extern int motorSpeed[2];
 
 #endif /* MAIN_H_ */

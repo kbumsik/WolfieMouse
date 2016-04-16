@@ -94,10 +94,13 @@
  * @brief Pin and Peripheral settings for Motor
  */
 /* definition of motor */
+/*
 #define MOTOR_TIMx                          TIM4
 #define MOTOR_TIMx_CLK_ENABLE()             __HAL_RCC_TIM4_CLK_ENABLE()
 #define MOTOR_TIMx_CLK_DISABLE()            __HAL_RCC_TIM4_CLK_DISABLE()
+*/
 /* Definition for TIMx Channel Pins */
+/*
 #define MOTOR_GPIO_PORT                     GPIOB
 #define MOTOR_TIMx_CHANNEL_GPIO_PORT()      __HAL_RCC_GPIOB_CLK_ENABLE()
 #define MOTOR_GPIO_ALTERNATE                GPIO_AF2_TIM4
@@ -105,7 +108,7 @@
 #define MOTOR_GPIO_PIN_CHANNEL_2            GPIO_PIN_7
 #define MOTOR_GPIO_PIN_CHANNEL_3            GPIO_PIN_8
 #define MOTOR_GPIO_PIN_CHANNEL_4            GPIO_PIN_9
-
+*/
 
 /**
  * @defgroup NRF24L01+ Settings
