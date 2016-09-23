@@ -19,12 +19,12 @@
 extern "C" {
 #endif
 
-void vTimerInit(void);
-void vTimerIncMillis(void);
-uint32_t uwTimerGetMillis(void);
-uint32_t uwTimerGetMicros(void);
-void vTimerDelayMillis(uint32_t uwInput);
-void vTimerDelayMicros(uint32_t uwInput);
+void timer_init(void);
+void timer_inc_mil(void);
+uint32_t timer_mil(void);
+uint32_t timer_micro(void);
+void timer_delay_mil(uint32_t uwInput);
+void timer_delay_micro(uint32_t uwInput);
 
 #ifdef __cplusplus
 }

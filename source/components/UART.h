@@ -63,8 +63,8 @@ extern UART_HandleTypeDef xUARTHandle;
 extern QueueHandle_t quUARTReceive;
 
 /* Function prototypes */
-eStatus_t eUARTInit(UART_HandleTypeDef* pxUARTHandle, USART_TypeDef* pxUARTx);
-eStatus_t eUARTGPIOInit(UART_HandleTypeDef* pxUARTHandle);
+status_t eUARTInit(UART_HandleTypeDef* pxUARTHandle, USART_TypeDef* pxUARTx);
+status_t eUARTGPIOInit(UART_HandleTypeDef* pxUARTHandle);
 void vUARTIRQHandler(UART_HandleTypeDef *pxUARTHandle);
 
 #ifdef __cplusplus

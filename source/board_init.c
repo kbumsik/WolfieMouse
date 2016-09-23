@@ -42,7 +42,7 @@ void board_Init(void)
   HAL_Init();
 
   /* Init Timer */
-  vTimerInit();
+  timer_init();
 
   /* Configure the system clock */
   SystemClock_Config();

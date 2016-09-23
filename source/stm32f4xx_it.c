@@ -57,7 +57,7 @@ void SysTick_Handler(void)
 {
   int newRightEnc, newLeftEnc;
   /* USER CODE BEGIN SysTick_IRQn 0 */
-  vTimerIncMillis();
+  timer_inc_mil();
   HAL_IncTick();
   /* USER CODE END SysTick_IRQn 0 */
   osSystickHandler();

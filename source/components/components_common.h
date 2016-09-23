@@ -14,6 +14,6 @@
 typedef enum{
   STATUS_ERROR = 0,  /* Something is wrong */
   STATUS_OK = 1      /* Everything is OK */
-}eStatus_t;
+}status_t;
 
 #endif /* COMPONENTS_COMMON_H_ */

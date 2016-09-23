@@ -59,9 +59,9 @@ void Error_Handler(void);
 extern "C"{
 #endif
 
-void vBlinkyTask(void *pvParameters);
+void task_blinky(void *pvParameters);
 void vScanInputTask(void *pvParameters);
-void vRangeFinderTask(void *pvParameters);
+void task_range_finder(void *pvParameters);
 
 static void MX_I2C1_Init(void);
 
@@ -91,7 +91,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  xTaskCreate(vBlinkyTask,			        /* Pointer to the function that implements the task */
+  xTaskCreate(task_blinky,			        /* Pointer to the function that implements the task */
 		  	  "Blinky",						/* Text name for the task. This is to facilitate debugging only. It is not used in the scheduler */
 		  	  configMINIMAL_STACK_SIZE,		/* Stack depth in words */
 		  	  NULL,							/* Pointer to a task parameters */
@@ -105,7 +105,7 @@ int main(void)
                 configMAX_PRIORITIES-1,
                 &xScanInputHandle);
                 */
-  xTaskCreate(vRangeFinderTask,
+  xTaskCreate(task_range_finder,
                   "Range",
                   configMINIMAL_STACK_SIZE+2500,
                   NULL,
@@ -126,7 +126,7 @@ int main(void)
 }
 
 /* vBlinkyTask function */
-void vBlinkyTask(void *pvParameters)
+void task_blinky(void *pvParameters)
 {
   portTickType xLastWakeTime;
   /* Initialize xLastWakeTime for vTaskDelayUntil */
@@ -422,7 +422,7 @@ void Sample_XTalkCalibrate(int initDevice);
 void Sample_AlternateRangeAls(void);
 void Sample_Interrupt(void);
 
-void vRangeFinderTask(void *pvParameters) {
+void task_range_finder(void *pvParameters) {
     uint8_t offset;
 
     /* MCU Configuration----------------------------------------------------------*/

@@ -78,7 +78,7 @@ int tca9545_set(tca9545Channel_e ch){
 		return -1;
 	}
 	/* FIXME: Delay needed, but what is the minimum? */
-	vTimerDelayMicros(100);
+	timer_delay_micro(100);
 	return 0;
 }
 uint8_t tca9545_get(){

@@ -8,54 +8,60 @@
 
 #include "timer.h"
 
-static uint32_t uwMillis;
-static uint32_t uwMicros;
+static volatile uint32_t _milis;
+static void _set_mil(uint32_t mil);
+
+
+static void _set_mil(uint32_t mil)
+{
+	_milis = mil;
+}
 
 /**
  * @brief Initialize Timer
  */
-void vTimerInit(void)
+void timer_init(void)
 {
-  uwMillis = 0;
-  uwMicros = 0;
+  _set_mil(0);
 }
 
 /**
  * @brief Increase ::uwMillis. Should be call every milliseconds.
  */
-void vTimerIncMillis(void)
+void timer_inc_mil(void)
 {
-  uwMillis++;
+  _milis++;
 }
 
 /**
  * @brief get current time in milliseconds
  * @return current time in milliseconds.
  */
-uint32_t uwTimerGetMillis(void)
+uint32_t timer_mil(void)
 {
-  return uwMillis;
+  return _milis;
 }
 
 /**
  * @brief get current time in microseconds
  * @return current time in microseconds
  */
-uint32_t uwTimerGetMicros(void)
+uint32_t timer_micro(void)
 {
-  /* TODO: must be shorten by getting SystemCoreClock */
-  uwMicros = uwMillis*1000 + (SystemCoreClock/1000 - SysTick->VAL)/confMCU_CLOCK_MHZ;
-  return uwMicros;
+	/* TODO: must be shorten by getting SystemCoreClock */
+	volatile uint32_t tmp_mil = timer_mil();
+	volatile uint32_t micros = tmp_mil*1000 + (SystemCoreClock/1000 - SysTick->VAL)/confMCU_CLOCK_MHZ;
+	return micros;
 }
 
 /**
  * @brief Delay system in Milliseconds
  * @param uwInput   time to delay in milliseconds
  */
-void vTimerDelayMillis(uint32_t uwInput)
+void timer_delay_mil(uint32_t input)
 {
-  uint32_t uwCurrent = uwMillis;
-  while (uwInput - (uwMillis - uwCurrent) > 0);
+  uint32_t current = timer_mil();
+  while (input - (timer_mil() - current) > 0);
 }
 
 /**
@@ -63,8 +69,10 @@ void vTimerDelayMillis(uint32_t uwInput)
  * @param uwInput   time to delay in microseconds
  * @warning Might not accurate depends on compiler code compression rate and clock rate of the MCU.
  */
-void vTimerDelayMicros(uint32_t uwInput)
+void timer_delay_micro(uint32_t input)
 {
-  uint32_t uwCurrent = uwTimerGetMicros();
-  while (uwInput - (uwTimerGetMicros() - uwCurrent) > 0);
+  uint32_t current = timer_micro();
+  while (input - (timer_micro() - current) > 0)
+  {
+  }
 }

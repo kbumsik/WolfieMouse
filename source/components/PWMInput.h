@@ -24,8 +24,8 @@ extern "C"{
 #endif
 
 /* Function Prototypes */
-eStatus_t ePWMInputInit(TIM_HandleTypeDef* pxTIMHandle, TIM_TypeDef* pxTIMx, uint32_t eChannel);
-eStatus_t ePWMInputStart(TIM_HandleTypeDef* pxTIMHandle);
+status_t ePWMInputInit(TIM_HandleTypeDef* pxTIMHandle, TIM_TypeDef* pxTIMx, uint32_t eChannel);
+status_t ePWMInputStart(TIM_HandleTypeDef* pxTIMHandle);
 uint32_t uwPWMInputPeriod(TIM_HandleTypeDef* pxTIMHandle);
 uint32_t uwPWMInputDutyCycle(TIM_HandleTypeDef* pxTIMHandle);
 

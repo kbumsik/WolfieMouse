@@ -20,13 +20,13 @@ extern int motorSpeed[2];
 void pidMotorInit(void){
 
 }
-void pidMotorStart(eMotorChannel_t channel){
+void pidMotorStart(motor_ch_t channel){
 
 }
-void pidMotorStop(eMotorChannel_t channel){
+void pidMotorStop(motor_ch_t channel){
 
 }
-void pidMotorSetSpeed(eMotorChannel_t channel, int speed){
+void pidMotorSetSpeed(motor_ch_t channel, int speed){
 
 }
 void pidMotorUpdateToCenter(void){
@@ -69,8 +69,8 @@ void pidMotorUpdateToCenter(void){
     }
     totalError = kP * errorP + kD * errorD;
     oldErrorP = errorP;
-    swMotorSetSpeed(motorSpeed[left] - totalError, left);
-    swMotorSetSpeed(motorSpeed[right] + totalError, right);
+    motor_speed_set(motorSpeed[motor_ch_left] - totalError, motor_ch_left);
+    motor_speed_set(motorSpeed[motor_ch_right] + totalError, motor_ch_right);
 }
 
 
@@ -78,18 +78,18 @@ void pidMotorMoveFor1Cell(int speed)
 {
 	int start_count;
 	start_count = getLeftEncCount();
-	eMotorStop(all);
-	vMotorGoForward();
+	motor_stop(motor_ch_all);
+	motor_go_forward();
 
-	motorSpeed[left] = speed;
-	motorSpeed[right] = speed;
+	motorSpeed[motor_ch_left] = speed;
+	motorSpeed[motor_ch_right] = speed;
 	pidMotorUpdateToCenter();
-	eMotorStart(all);
+	motor_start(motor_ch_all);
 	while ( (getLeftEncCount() - start_count)  < ((int)configCntPerCell) )
 	{
 		pidMotorUpdateToCenter();
 	}
-	eMotorStop(all);
+	motor_stop(motor_ch_all);
 
 }
 void pidMotorRotateFor90Degree(int speed)

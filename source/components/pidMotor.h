@@ -15,9 +15,9 @@ extern "C" {
 #endif
 
 void pidMotorInit(void);
-void pidMotorStart(eMotorChannel_t channel);
-void pidMotorStop(eMotorChannel_t channel);
-void pidMotorSetSpeed(eMotorChannel_t channel, int speed);
+void pidMotorStart(motor_ch_t channel);
+void pidMotorStop(motor_ch_t channel);
+void pidMotorSetSpeed(motor_ch_t channel, int speed);
 void pidMotorUpdateToCenter(void);
 
 void pidMotorMoveFor1Cell(int speed);

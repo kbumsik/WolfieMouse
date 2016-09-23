@@ -55,11 +55,14 @@
 #define MOTOR_TIMx_CLK_DISABLE()			__HAL_RCC_TIM1_CLK_DISABLE()
 
 /* Prescaler Definition at f = 50MHz */
-#define MOTOR_TIM_PRESCALER					(((SystemCoreClock)/2000000) - 1)
+/*
+ * TIM Update Frequency = TIM Clock / (P * Q), Where Prescaler = P - 1, and Period = Q - 1
+ */
+#define MOTOR_TIM_PRESCALER					(((SystemCoreClock)/6000000) - 1)
 
 /* Definition for TIMx Channel Pins */
 #define MOTOR_GPIO_PORT 					GPIOA
-#define MOTOR_TIMx_CHANNEL_GPIO_PORT()		__HAL_RCC_GPIOA_CLK_ENABLE()
+#define MOTOR_TIMx_CHANNEL_GPIO_PORT()	__HAL_RCC_GPIOA_CLK_ENABLE()
 #define MOTOR_GPIO_ALTERNATE				GPIO_AF1_TIM1
 #define MOTOR_GPIO_PIN_RIGHT				GPIO_PIN_11
 #define MOTOR_GPIO_PIN_LEFT					GPIO_PIN_8
@@ -67,17 +70,19 @@
 /* Definition for PWM pulse */
 #define MOTOR_PERIOD_VALUE		10000//(19999 - 1)  /* Period Value  */
 /* Motor Maxium and minimum speed */
-#define motorSPEED_MAX		(9000)
-#define motorSPEED_MID      (5000)
-#define motorSPEED_MIN		(0)
+#define MOTOR_SPEED_MAX		(9000)
+#define MOTOR_SPEED_MID      (5000)
+#define MOTOR_SPEED_MIN		(0)
 
 /**
  * Typedef
  */
 
 typedef enum {
-	right = 0x0, left = 0x1, all = 0x4
-} eMotorChannel_t;
+	motor_ch_right = 0x0,
+	motor_ch_left = 0x1,
+	motor_ch_all = 0x4
+} motor_ch_t;
 
 /* External Variables */
 extern TIM_HandleTypeDef xMotorHandle;
@@ -94,12 +99,12 @@ extern "C" {
  *
  * @return     Status of the result
  */
-eStatus_t eMotorInit(void);
+status_t motor_init(void);
 
 /**
  * @brief      Initialize all configured GPIO Pins
  */
-void vMotorGPIOInit(void);
+void motor_gpio_init(void);
 
 /**
  * @brief Set speed of a motor
@@ -112,35 +117,35 @@ void vMotorGPIOInit(void);
  * @return
  */
 // FIXME:Seems like it needs xMotorStart again after this function. Make it that function is not need
-int32_t swMotorSetSpeed(int32_t swSpeed, eMotorChannel_t eChannel);
+int32_t motor_speed_set(int32_t swSpeed, motor_ch_t eChannel);
 
-void vMotorGoForward(void);
+void motor_go_forward(void);
 
-void vMotorGoBackward(void);
+void motor_go_backward(void);
 
-void vMotorTurnRight(void);
+void motor_turn_right(void);
 
-void vMotorTurnLeft(void);
+void motor_turn_left(void);
 /**
  * @brief      Start rotating the motors
  *
  * @return     Status of the result
  */
-eStatus_t eMotorStart(eMotorChannel_t eChannel);
+status_t motor_start(motor_ch_t eChannel);
 
 /**
  * @brief      Stop rotation the motors
  *
  * @return     Status of the result
  */
-eStatus_t eMotorStop(eMotorChannel_t eChannel);
+status_t motor_stop(motor_ch_t eChannel);
 
 /**
  * @brief      Deinitialize the motors
  *
  * @return     Status of the result
  */
-eStatus_t xMotorDeInit(void);
+status_t motor_deinit(void);
 
 #ifdef __cplusplus
 }

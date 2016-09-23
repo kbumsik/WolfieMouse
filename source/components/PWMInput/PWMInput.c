@@ -21,7 +21,7 @@ static uint32_t ulTIM3RawDutyCycle;
 static uint32_t ulTIM5RawPeriod;
 static uint32_t ulTIM5RawDutyCycle;
 
-eStatus_t ePWMInputInit(TIM_HandleTypeDef* pxTIMHandle, TIM_TypeDef* pxTIMx, uint32_t eChannel)
+status_t ePWMInputInit(TIM_HandleTypeDef* pxTIMHandle, TIM_TypeDef* pxTIMx, uint32_t eChannel)
 {
   /* Check the parameters -------------------------------------*/
   assert_param(IS_TIM_CCX_INSTANCE(pxTIMx, eChannel));
@@ -132,7 +132,7 @@ eStatus_t ePWMInputInit(TIM_HandleTypeDef* pxTIMHandle, TIM_TypeDef* pxTIMx, uin
   return STATUS_OK;
 }
 
-eStatus_t ePWMInputStart(TIM_HandleTypeDef* pxTIMHandle)
+status_t ePWMInputStart(TIM_HandleTypeDef* pxTIMHandle)
 {
   /*##- Start the Input Capture in interrupt mode ##########################*/
   if(HAL_TIM_IC_Start_IT(pxTIMHandle, TIM_CHANNEL_2) != HAL_OK)

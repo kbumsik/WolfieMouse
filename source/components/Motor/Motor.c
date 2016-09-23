@@ -12,25 +12,45 @@ TIM_HandleTypeDef xMotorHandle;
 
 #define motorRIGHT_PORT 		GPIOA
 #define motorRIGHT_PIN			GPIO_PIN_10
-#define right_set_toggle()		HAL_GPIO_TogglePin(motorRIGHT_PORT, motorRIGHT_PIN)
-#define right_set_forward()		HAL_GPIO_WritePin(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_RESET)
-#define right_set_backward()	HAL_GPIO_WritePin(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET)
+static inline void _right_set_toggle(void)
+{
+	HAL_GPIO_TogglePin(motorRIGHT_PORT, motorRIGHT_PIN);
+}
+static inline void _right_set_forward(void)
+{
+	HAL_GPIO_WritePin(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_RESET);
+}
+static inline void _right_set_backward(void)
+{
+	HAL_GPIO_WritePin(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET);
+}
 
 #define motorLEFT_PORT 			GPIOC
 #define motorLEFT_PIN			GPIO_PIN_9
-#define left_set_toggle()		HAL_GPIO_TogglePin(motorLEFT_PORT, motorLEFT_PIN)
-#define left_set_forward()		HAL_GPIO_WritePin(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_SET)
-#define left_set_backward()		HAL_GPIO_WritePin(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_RESET)
+static inline void _left_set_toggle(void)
+{
+	HAL_GPIO_TogglePin(motorLEFT_PORT, motorLEFT_PIN);
+}
+static inline void _left_set_forward(void)
+{
+	HAL_GPIO_WritePin(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_SET);
+}
+static inline void _left_set_backward()
+{
+	HAL_GPIO_WritePin(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_RESET);
+}
+
+
 /**
  * Function Implementations
  */
-eStatus_t eMotorInit(void) {
+status_t motor_init(void) {
 	/* Counter Prescaler value */
 	uint32_t uhPrescalerValue;
 
 	/* init GPIO */
-	vMotorGPIOInit();
-	vMotorGoForward();
+	motor_gpio_init();
+	motor_go_forward();
 
 	/* Enable MOTOR_TIMx Clock */
 	MOTOR_TIMx_CLK_ENABLE()
@@ -57,20 +77,19 @@ eStatus_t eMotorInit(void) {
 	}
 
 	/* Firstly set speed 0 */
-	swMotorSetSpeed(0, left);
-	swMotorSetSpeed(0, right);
+	motor_speed_set(0, motor_ch_left);
+	motor_speed_set(0, motor_ch_right);
 	return STATUS_OK;
 }
 
 /**
  * @brief      Initialize all configured GPIO Pins
  */
-void vMotorGPIOInit(void) {
+void motor_gpio_init(void) {
 	GPIO_InitTypeDef GPIO_InitStruct;
 
 	/* GPIO Ports Clock Enable */
-	MOTOR_TIMx_CHANNEL_GPIO_PORT()
-	;
+	MOTOR_TIMx_CHANNEL_GPIO_PORT();
 
 	/* GPIO Setting for PWM */
 	GPIO_InitStruct.Pin = (MOTOR_GPIO_PIN_RIGHT |
@@ -121,7 +140,7 @@ void vMotorGPIOInit(void) {
 	HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 }
 
-int32_t swMotorSetSpeed(int32_t swSpeed, eMotorChannel_t eChannel) {
+int32_t motor_speed_set(int32_t speed, motor_ch_t channel) {
 	/* Timer Output Compare Configuration Structure declaration */
 	TIM_OC_InitTypeDef sConfig;
 
@@ -130,21 +149,21 @@ int32_t swMotorSetSpeed(int32_t swSpeed, eMotorChannel_t eChannel) {
 	sConfig.OCMode = TIM_OCMODE_PWM1;
 	sConfig.OCPolarity = TIM_OCPOLARITY_HIGH;
 	sConfig.OCFastMode = TIM_OCFAST_DISABLE;
-	sConfig.Pulse = (uint32_t) swSpeed;
+	sConfig.Pulse = (uint32_t) speed;
 	sConfig.OCIdleState = TIM_OCIDLESTATE_RESET;
 	sConfig.OCNIdleState = TIM_OCNIDLESTATE_RESET;
-	switch (eChannel) {
-	case left:
+	switch (channel) {
+	case motor_ch_left:
 		/* Set the pulse value for channel 1 */
 		HAL_TIM_PWM_ConfigChannel(&xMotorHandle, &sConfig, TIM_CHANNEL_1);
 		break;
 
-	case right:
+	case motor_ch_right:
 		/* Set the pulse value for channel 4 */
 		HAL_TIM_PWM_ConfigChannel(&xMotorHandle, &sConfig, TIM_CHANNEL_4);
 		break;
 
-	case all:
+	case motor_ch_all:
 		/* Set the pulse value for all channel */
 		HAL_TIM_PWM_ConfigChannel(&xMotorHandle, &sConfig, TIM_CHANNEL_1);
 		HAL_TIM_PWM_ConfigChannel(&xMotorHandle, &sConfig, TIM_CHANNEL_4);
@@ -156,47 +175,47 @@ int32_t swMotorSetSpeed(int32_t swSpeed, eMotorChannel_t eChannel) {
 	}
 
 	/* return OK */
-	return swSpeed;
+	return speed;
 }
 
-void vMotorGoForward(void) {
-	right_set_forward();
-	left_set_forward();
+void motor_go_forward(void) {
+	_right_set_forward();
+	_left_set_forward();
 }
 
-void vMotorGoBackward(void) {
-	right_set_backward();
-	left_set_backward();
+void motor_go_backward(void) {
+	_right_set_backward();
+	_left_set_backward();
 }
 
-void vMotorTurnRight(void) {
-	right_set_backward();
-	left_set_forward();
+void motor_turn_right(void) {
+	_right_set_backward();
+	_left_set_forward();
 }
 
-void vMotorTurnLeft(void) {
-	right_set_forward();
-	left_set_backward();
+void motor_turn_left(void) {
+	_right_set_forward();
+	_left_set_backward();
 }
 
-eStatus_t eMotorStart(eMotorChannel_t eChannel) {
+status_t motor_start(motor_ch_t channel) {
 	/*##- Start PWM signals generation #######################################*/
-	switch (eChannel) {
-	case left:
+	switch (channel) {
+	case motor_ch_left:
 		/* Start channel 1 */
 		if (HAL_TIM_PWM_Start(&xMotorHandle, TIM_CHANNEL_1) != HAL_OK) {
 			/* PWM Generation Error */
 			return STATUS_ERROR;
 		}
 		break;
-	case right:
+	case motor_ch_right:
 		/* Start channel 4 */
 		if (HAL_TIM_PWM_Start(&xMotorHandle, TIM_CHANNEL_4) != HAL_OK) {
 			/* PWM Generation Error */
 			return STATUS_ERROR;
 		}
 		break;
-	case all:
+	case motor_ch_all:
 		/* Start channel 1 */
 		if (HAL_TIM_PWM_Start(&xMotorHandle, TIM_CHANNEL_1) != HAL_OK) {
 			/* PWM Generation Error */
@@ -216,24 +235,24 @@ eStatus_t eMotorStart(eMotorChannel_t eChannel) {
 	return STATUS_OK;
 }
 
-eStatus_t eMotorStop(eMotorChannel_t eChannel) {
+status_t motor_stop(motor_ch_t channel) {
 	/*##- Stop PWM signals generation #######################################*/
-	switch (eChannel) {
-	case left:
+	switch (channel) {
+	case motor_ch_left:
 		/* Start channel 1 */
 		if (HAL_TIM_PWM_Stop(&xMotorHandle, TIM_CHANNEL_1) != HAL_OK) {
 			/* PWM Generation Error */
 			return STATUS_ERROR;
 		}
 		break;
-	case right:
+	case motor_ch_right:
 		/* Start channel 4 */
 		if (HAL_TIM_PWM_Stop(&xMotorHandle, TIM_CHANNEL_4) != HAL_OK) {
 			/* PWM Generation Error */
 			return STATUS_ERROR;
 		}
 		break;
-	case all:
+	case motor_ch_all:
 		/* Start channel 1 */
 		if (HAL_TIM_PWM_Stop(&xMotorHandle, TIM_CHANNEL_1) != HAL_OK) {
 			/* PWM Generation Error */
@@ -253,7 +272,7 @@ eStatus_t eMotorStop(eMotorChannel_t eChannel) {
 	return STATUS_OK;
 }
 
-eStatus_t eMotorDeInit(void) {
+status_t motor_deinit(void) {
 	if (HAL_TIM_PWM_DeInit(&xMotorHandle) != HAL_OK) {
 		/* Initialization Error */
 		return STATUS_ERROR;

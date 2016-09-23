@@ -14,7 +14,7 @@
 //PC7	TIM3_CH1	Encoder_L_CHA
 //PC6	TIM3_CH2	Encoder_L_CHB
 
-static void encoder_gpio_init(void);
+static void _encoder_gpio_init(void);
 
 /* Timer handler declaration */
 TIM_HandleTypeDef Encoder_Handle;
@@ -25,13 +25,11 @@ TIM_Encoder_InitTypeDef sEncoderConfig;
 void encoder_init(void) {
 	/* Timer Output Compare Configuration Structure declaration */
 	TIM_OC_InitTypeDef sConfig;
-	encoder_gpio_init();
+	_encoder_gpio_init();
 
 	/* Enable TIM clock */
-	__HAL_RCC_TIM4_CLK_ENABLE()
-	;
-	__HAL_RCC_TIM3_CLK_ENABLE()
-	;
+	__HAL_RCC_TIM4_CLK_ENABLE();
+	__HAL_RCC_TIM3_CLK_ENABLE();
 
 	Encoder_Handle.Instance = TIM4;
 
@@ -108,7 +106,7 @@ void resetLeftEncCount(void) {
 	TIM3->CNT = 10000;
 }
 
-static void encoder_gpio_init() {
+static void _encoder_gpio_init() {
 
 	//PB7	TIM4_CH1	Encoder_R_CHA
 	//PB6	TIM4_CH2	Encoder_R_CHB
@@ -118,10 +116,8 @@ static void encoder_gpio_init() {
 	GPIO_InitTypeDef GPIO_InitStruct;
 
 	/* Enable TIM GPIOs Clock */
-	__GPIOB_CLK_ENABLE()
-	;
-	__GPIOC_CLK_ENABLE()
-	;
+	__GPIOB_CLK_ENABLE();
+	__GPIOC_CLK_ENABLE();
 
 	/* in push-pull, alternate function mode */
 	GPIO_InitStruct.Pin = GPIO_PIN_7;

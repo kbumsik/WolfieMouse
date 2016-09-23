@@ -43,6 +43,7 @@
 #include "encoder.h"
 
 #include "pidMotor.h"
+#include "pushbutton.h"
 
 /* for vRangeFinderTask() */
 
@@ -74,10 +75,10 @@ void Error_Handler(void);
 extern "C"{
 #endif
 
-void vBlinkyTask(void *pvParameters);
-void vRangeFinderTask(void *pvParameters);
+void task_blinky(void *pvParameters);
+void task_range_finder(void *pvParameters);
 //void vEncoderTask(void *pvParameters);
-void vMainTask(void *pvParameters);
+void task_main(void *pvParameters);
 
 #ifdef __cplusplus
 }
@@ -92,6 +93,13 @@ int main(void)
    * and the Systick. */
   board_Init();
 
+  /* Init components */
+    motor_init();
+    motor_stop(motor_ch_all);
+    motor_go_forward();
+
+    pb_init();
+    encoder_init();
   /* USER CODE BEGIN RTOS_MUTEX */
   /* USER CODE END RTOS_MUTEX */
 
@@ -106,7 +114,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  xTaskCreate(vBlinkyTask,			        /* Pointer to the function that implements the task */
+  xTaskCreate(task_blinky,			        /* Pointer to the function that implements the task */
 		  	  "Blinky",						/* Text name for the task. This is to facilitate debugging only. It is not used in the scheduler */
 		  	  configMINIMAL_STACK_SIZE,		/* Stack depth in words */
 		  	  NULL,							/* Pointer to a task parameters */
@@ -129,7 +137,7 @@ int main(void)
                   configMAX_PRIORITIES-1,
                   &xScanInputHandle);
                   */
-  xTaskCreate(vMainTask,
+  xTaskCreate(task_main,
                     "Main",
                     configMINIMAL_STACK_SIZE+2500,
                     NULL,
@@ -141,12 +149,6 @@ int main(void)
                               sizeof(uint8_t)*confUART_RECEIVE_BUFFER_SIZE); /* size in byte of each item */
   /* USER CODE END RTOS_QUEUES */
 
-  /* Init components */
-  eMotorInit();
-  vMotorGoForward();
-
-  encoder_init();
-
 
   /* Start scheduler */
   vTaskStartScheduler();
@@ -157,7 +159,7 @@ int main(void)
 }
 
 /* vBlinkyTask function */
-void vBlinkyTask(void *pvParameters)
+void task_blinky(void *pvParameters)
 {
   portTickType xLastWakeTime;
   /* Initialize xLastWakeTime for vTaskDelayUntil */
@@ -179,7 +181,7 @@ void vBlinkyTask(void *pvParameters)
 }
 
 
-void vRangeFinderTask(void *pvParameters) {
+void task_range_finder(void *pvParameters) {
 
 	  portTickType xLastWakeTime;
 	  /* Initialize xLastWakeTime for vTaskDelayUntil */
@@ -217,36 +219,44 @@ void vEncoderTask(void *pvParameters) {
 }
 */
 
-void vMainTask(void *pvParameters)
+void task_main(void *pvParameters)
 {
 
-
+	while(pb_read(pb2) == 0)
+	{
+		// wait for button pressed.
+	}
 	vTaskDelay(1000);
 
-	for (int speed = 500; speed < 10000; speed = speed + 50)
+	for (int speed = 1000; speed < 10000; speed = speed + 50)
 	{
-		  swMotorSetSpeed(speed, all);
-		  eMotorStart(all);
-		  HAL_Delay(1000);
-		  eMotorStop(all);
+		motor_go_forward();
+		  motor_speed_set(speed, motor_ch_all);
+		  motor_start(motor_ch_all);
+		  timer_delay_mil(1000);
+		  motor_stop(motor_ch_all);
+		  timer_delay_mil(500);
 
-		  vMotorGoBackward();
-		  swMotorSetSpeed(speed, all);
-		  eMotorStart(all);
-		  HAL_Delay(500);
-		  eMotorStop(all);
+		  motor_go_backward();
+		  motor_speed_set(speed, motor_ch_all);
+		  motor_start(motor_ch_all);
+		  timer_delay_mil(1000);
+		  motor_stop(motor_ch_all);
+		  timer_delay_mil(500);
 
-		  vMotorTurnRight();
-		  swMotorSetSpeed(speed, all);
-		  eMotorStart(all);
-		  HAL_Delay(500);
-		  eMotorStop(all);
+		  motor_turn_right();
+		  motor_speed_set(speed, motor_ch_all);
+		  motor_start(motor_ch_all);
+		  timer_delay_mil(1000);
+		  motor_stop(motor_ch_all);
+		  timer_delay_mil(500);
 
-		  vMotorTurnLeft();
-		  swMotorSetSpeed(speed, all);
-		  eMotorStart(all);
-		  HAL_Delay(500);
-		  eMotorStop(all);
+		  motor_turn_left();
+		  motor_speed_set(speed, motor_ch_all);
+		  motor_start(motor_ch_all);
+		  timer_delay_mil(1000);
+		  motor_stop(motor_ch_all);
+		  timer_delay_mil(500);
 	}
 
 	 // pidMotorMoveFor1Cell(85);

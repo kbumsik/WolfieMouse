@@ -23,7 +23,7 @@ void vUARTReceive(UART_HandleTypeDef *pxUARTHandle);
   *                the configuration information for the specified UART module.
   * @retval None
   */
-eStatus_t eUARTInit(UART_HandleTypeDef* pxUARTHandle, USART_TypeDef* pxUARTx)
+status_t eUARTInit(UART_HandleTypeDef* pxUARTHandle, USART_TypeDef* pxUARTx)
 {
   pxUARTHandle->Instance = pxUARTx;
   pxUARTHandle->Init.BaudRate = uartBAUD_RATE;
@@ -41,7 +41,7 @@ eStatus_t eUARTInit(UART_HandleTypeDef* pxUARTHandle, USART_TypeDef* pxUARTx)
  * @brief Initialize GPIO for UART
  * @param pxUARTHandle
  */
-eStatus_t eUARTGPIOInit(UART_HandleTypeDef* pxUARTHandle)
+status_t eUARTGPIOInit(UART_HandleTypeDef* pxUARTHandle)
 {
   GPIO_InitTypeDef GPIO_InitStruct;
   if(pxUARTHandle->Instance==uartUARTx)
