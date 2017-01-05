@@ -32,7 +32,6 @@ static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2C2_Init(void);
 static void MX_SPI2_Init(void);
-static void MX_SPI3_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_TIM3_Init(void);
 
@@ -53,7 +52,6 @@ void board_Init(void)
   //MX_I2C1_Init(); /* TODO: Init */
   MX_I2C2_Init();
   MX_SPI2_Init();
-  MX_SPI3_Init();
   MX_TIM1_Init();
   MX_TIM3_Init();
   eUARTInit(&xUARTHandle, uartUARTx);
@@ -155,26 +153,6 @@ void MX_SPI2_Init(void)
 
 }
 
-/* SPI3 init function */
-void MX_SPI3_Init(void)
-{
-
-  hspi3.Instance = SPI3;
-  hspi3.Init.Mode = SPI_MODE_MASTER;
-  hspi3.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi3.Init.DataSize = SPI_DATASIZE_8BIT;
-  hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
-  hspi3.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi3.Init.NSS = SPI_NSS_SOFT;
-  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-  hspi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  hspi3.Init.TIMode = SPI_TIMODE_DISABLED;
-  hspi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLED;
-  hspi3.Init.CRCPolynomial = 10;
-  HAL_SPI_Init(&hspi3);
-
-}
-
 /* TIM1 init function */
 void MX_TIM1_Init(void)
 {
@@ -272,14 +250,6 @@ void MX_GPIO_Init(void)
   __GPIOH_CLK_ENABLE();
   __GPIOA_CLK_ENABLE();
   __GPIOB_CLK_ENABLE();
-
-  /*Configure GPIO pin : B1_Pin */
-  /* TODO: THis button is not used!
-  GPIO_InitStruct.Pin = B1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
-  */
 
   /*Configure GPIO pin : rotaryPIN_CH2_A_INT_Pin */
   GPIO_InitStruct.Pin = rotaryPIN_CH2_A_INT_Pin;

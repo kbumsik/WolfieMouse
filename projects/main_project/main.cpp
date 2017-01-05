@@ -44,6 +44,7 @@
 
 #include "pidMotor.h"
 #include "pushbutton.h"
+#include "chardisplay.h"
 
 /* for vRangeFinderTask() */
 
@@ -100,6 +101,7 @@ int main(void)
 
     pb_init();
     encoder_init();
+    display_init();
   /* USER CODE BEGIN RTOS_MUTEX */
   /* USER CODE END RTOS_MUTEX */
 
@@ -221,7 +223,7 @@ void vEncoderTask(void *pvParameters) {
 
 void task_main(void *pvParameters)
 {
-
+	display_matrix("press");
 	while(pb_read(pb2) == 0)
 	{
 		// wait for button pressed.
