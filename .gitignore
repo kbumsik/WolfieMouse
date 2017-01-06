@@ -4,3 +4,5 @@ AtollicWebServices_app.log.lck
 board_init.cpp
 **/.settings/
 **/Debug/
+.vagrant
+*.log
