@@ -1,11 +1,17 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+WOLFIEBASE ||= "./"
+
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
+
+  # Enable X11 forwarding
+  config.ssh.forward_x11 = true
+  
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
@@ -38,7 +44,8 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  # config.vm.synced_folder "./data", "/vagrant_data"
+
+  config.vm.synced_folder WOLFIEBASE, "/home/ubuntu/wolfieMouse"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
