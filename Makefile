@@ -1,3 +1,3 @@
 
 trustudio:
-	./tools/run_trustudio.sh
+	./scripts/run.trustudio.sh
