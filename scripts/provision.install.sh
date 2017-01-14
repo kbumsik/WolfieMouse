@@ -93,6 +93,7 @@ cat > /home/vagrant/.vnc/xstartup <<EOF
 startxfce4 &
 EOF
 chmod +x /home/vagrant/.vnc/xstartup
+sudo chown -R vagrant:vagrant /home/vagrant/.vnc
 
 # xrdp configuration
 sudo bash -c 'cat > /etc/xrdp/xrdp.ini <<EOF

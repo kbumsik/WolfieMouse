@@ -108,7 +108,7 @@ Vagrant.configure("2") do |config|
     vb.name = "WolfieMouse"
 
     # Customize the amount of memory on the VM:
-    vb.memory = "2048"
+    vb.memory = "1024"
 
     # Enable USB device
     vb.customize ["modifyvm", :id, "--usb", "on"]
@@ -135,5 +135,5 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   
   config.vm.provision "shell", path: "scripts/provision.install.sh"
-  #config.vm.provision "shell", inline: "echo 'vagrant' | su - vagrant && vncserver -geometry 1980x1080", run: 'always'
+  config.vm.provision "shell", inline: "vncserver -geometry 1980x1080", run: 'always', privileged: false
 end
