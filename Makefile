@@ -1,7 +1,7 @@
 
-.PHONY: trustudio eclipse
-trustudio:
-	./scripts/run.trustudio.sh
+.PHONY: truestudio eclipse
+truestudio:
+	./scripts/run_truestudio.sh
 
 eclipse:
-	./scripts/run.eclipse.sh
+	./scripts/run_eclipse.sh

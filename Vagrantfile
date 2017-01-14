@@ -108,7 +108,7 @@ Vagrant.configure("2") do |config|
     vb.name = "WolfieMouse"
 
     # Customize the amount of memory on the VM:
-    vb.memory = "1024"
+    vb.memory = "2048"
 
     # Enable USB device
     vb.customize ["modifyvm", :id, "--usb", "on"]
@@ -134,6 +134,9 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   
-  config.vm.provision "shell", path: "scripts/provision.install.sh"
+  config.vm.provision "shell", path: "scripts/install_ide.sh"
+  config.vm.provision "shell", path: "scripts/install_rdp_vnc.sh"
+  config.vm.provision "shell", path: "scripts/modify_bashrc.sh"
+  config.vm.provision "shell", inline: "sudo apt-get install -y xfce4-terminal"
   config.vm.provision "shell", inline: "vncserver -geometry 1980x1080", run: 'always', privileged: false
 end
