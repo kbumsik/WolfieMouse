@@ -3,6 +3,49 @@
 
 WOLFIEBASE ||= "./"
 
+# A function that add a usb device without duplication.
+# See: https://github.com/mitchellh/vagrant/issues/5774
+
+def usbfilter_exists(name)
+  #
+  # Determine if a usbfilter with the provided Vendor/Product ID combination
+  # already exists on this VM.
+  #
+  # TODO: Use a more reliable way of retrieving this information.
+  #
+  # NOTE: The "machinereadable" output for usbfilters is more
+  #       complicated to work with (due to variable names including
+  #       the numeric filter index) so we don't use it here.
+  #
+  machine_id_filepath = ".vagrant/machines/default/virtualbox/id"
+  if not File.exists? machine_id_filepath
+    # VM hasn't been created yet.
+    return false
+  end
+  file = File.open(machine_id_filepath, "r")
+  machine_id = file.read
+  vm_info = `VBoxManage showvminfo #{machine_id}`
+  filter_match = "Name:             #{name}\n"
+  return vm_info.include? filter_match
+end
+
+def better_usbfilter_add(vb, filter_name, manufacturer, product)
+  #
+  # This is a workaround for the fact VirtualBox doesn't provide
+  # a way for preventing duplicate USB filters from being added.
+  #
+  # TODO: Implement this in a way that it doesn't get run multiple
+  #       times on each Vagrantfile parsing.
+  #
+  if not usbfilter_exists(filter_name)
+    vb.customize ["usbfilter", "add", "0", 
+       "--target", :id, 
+       "--name", filter_name,
+       "--manufacturer", manufacturer,
+       "--product", product]
+  end
+end
+
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -19,7 +62,11 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
 
-  config.vm.box = "ubuntu/xenial64"
+  #config.vm.box = "ubuntu/xenial64"
+  # Currently the official Ubuntu Xenial box is COMPLETELY BROKEN with Vagrant (what are you doing? Ubuntu?)
+  # https://bugs.launchpad.net/cloud-images/+bug/1569237
+  # Use a temporary box instead.
+  config.vm.box = "bento/ubuntu-16.04"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -29,7 +76,10 @@ Vagrant.configure("2") do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+  # RDP
+  config.vm.network "forwarded_port", guest: 3389, host: 33890
+  # VNC
+  config.vm.network "forwarded_port", guest: 5901, host: 59010
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -45,26 +95,20 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
 
-  config.vm.synced_folder WOLFIEBASE, "/home/ubuntu/wolfieMouse"
+  config.vm.synced_folder WOLFIEBASE, "/home/vagrant/wolfieMouse"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
-  #
-  # config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
-  #
-  #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
-  #
-  # View the documentation for the provider you are using for more
-  # information on available options.
-
   config.vm.provider "virtualbox" do |vb|
+    # # Display the VirtualBox GUI when booting the machine
+    # vb.gui = true
+
     # Set virtualbox name
-    vb.name = "Ubuntu-MCU-Development-VM"
+    vb.name = "WolfieMouse"
+
+    # Customize the amount of memory on the VM:
+    vb.memory = "2048"
 
     # Enable USB device
     vb.customize ["modifyvm", :id, "--usb", "on"]
@@ -72,13 +116,12 @@ Vagrant.configure("2") do |config|
 
     # Add USB device filter.
     # Reference: http://code-chronicle.blogspot.com/2014/08/connect-usb-device-through-vagrant.html
-
-    # vb.customize ["usbfilter", "add", "0", 
-    #   "--target", :id, 
-    #   "--name", "This is the identifier",
-    #   "--manufacturer", "SuYin",
-    #   "--product", "Laptop_Integrated_Webcam_HD"]
+    # https://github.com/mitchellh/vagrant/issues/5774
+    better_usbfilter_add(vb, "J-Link Debugger", "SEGGER", "J-Link")
+    better_usbfilter_add(vb, "STLink Debugger", "STMicroelectronics", "STM32 STLink")
   end
+  # View the documentation for the provider you are using for more
+  # information on available options.
 
   # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
   # such as FTP and Heroku are also available. See the documentation at
@@ -91,49 +134,6 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   
-  config.vm.provision "shell", inline: <<-SHELL
-    apt-get update &&  apt-get -y install wget make
-
-    # Install TrueSTUDIO
-    echo "Downloading Atollic TrueSTUDIO (IDE)..."
-    cd /opt && wget -nv https://dl.dropboxusercontent.com/u/78819851/Atollic_TrueSTUDIO_for_ARM_linux_x86_64_v7.0.1_20161219-1526-alpha1.tar.gz -O 'Atollic_TrueSTUDIO.tar.gz'
-    echo "Installing IDE..."
-    sudo tar -C /opt -xf Atollic_TrueSTUDIO.tar.gz
-    cd /opt/Atollic_TrueSTUDIO_for_ARM_7.0.1 && yes 1 | sudo ./install.sh
-    sudo rm /opt/Atollic_TrueSTUDIO.tar.gz
-
-    # Install GNU ARM toolchain
-    sudo apt-get -y install lib32ncurses5
-    cd /home/ubuntu && wget -nv https://launchpad.net/gcc-arm-embedded/5.0/5-2016-q3-update/+download/gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2
-    cd /usr/local
-    sudo tar xjf /home/ubuntu/gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2
-    rm /home/ubuntu/gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2
-    
-    # Install OpenOCD
-    # Reference: http://gnuarmeclipse.github.io/openocd/install/
-    cd /home/ubuntu && wget -nv https://github.com/gnuarmeclipse/openocd/releases/download/gae-0.10.0-20161028/gnuarmeclipse-openocd-debian64-0.10.0-201610281609-dev.tgz
-    sudo mkdir -p /opt/gnuarmeclipse
-    cd /opt/gnuarmeclipse
-    sudo tar xf /home/ubuntu/gnuarmeclipse-openocd-debian64-0.10.0-201610281609-dev.tgz
-    rm /home/ubuntu/gnuarmeclipse-openocd-debian64-0.10.0-201610281609-dev.tgz
-
-    # Add udev rule for OpenOCD
-    sudo cp /opt/gnuarmeclipse/openocd/0.10.0-201610281609-dev/contrib/99-openocd.rules /etc/udev/rules.d/
-    sudo udevadm control --reload-rules
-    sudo usermod -aG plugdev ubuntu
-
-    # Install QEMU
-    # Reference: http://gnuarmeclipse.github.io/qemu/install/
-    cd /home/ubuntu && wget -nv https://github.com/gnuarmeclipse/qemu/releases/download/gae-2.8.0-20161227/gnuarmeclipse-qemu-debian64-2.8.0-201612271623-dev.tgz
-    cd /opt/gnuarmeclipse
-    sudo tar xf /home/ubuntu/gnuarmeclipse-qemu-debian64-2.8.0-201612271623-dev.tgz
-    rm /home/ubuntu/gnuarmeclipse-qemu-debian64-2.8.0-201612271623-dev.tgz
-
-    # Install J-Link
-    # Reference: http://gnuarmeclipse.github.io/debug/jlink/install/
-    # Used personal Dropbox link as JEGGER homepage requires addtional sign-in
-    cd /home/ubuntu && wget -nv https://dl.dropboxusercontent.com/u/78819851/JLink_Linux_V612e_x86_64.deb
-    sudo dpkg -i /home/ubuntu/JLink_Linux_V612e_x86_64.deb
-    rm /home/ubuntu/JLink_Linux_V612e_x86_64.deb
-  SHELL
+  config.vm.provision "shell", path: "scripts/provision.install.sh"
+  #config.vm.provision "shell", inline: "echo 'vagrant' | su - vagrant && vncserver -geometry 1980x1080", run: 'always'
 end
