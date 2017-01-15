@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>mazeSim</name>
+	<name>maze_solving</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -28,7 +28,7 @@
 		<link>
 			<name>maze</name>
 			<type>2</type>
-			<location>C:/Users/Bumsik Kim/Dropbox/Documents/Projects/2016_Micromouse/git_Micromouse_2016/source/maze</location>
+			<locationURI>PARENT-2-PROJECT_LOC/source/maze</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
