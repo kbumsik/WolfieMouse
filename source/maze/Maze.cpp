@@ -14,11 +14,11 @@ Maze::init()
 	index_goal_col = 7;
 
 	/* init the wall with unknown */
-	for (i = 0; i < mazeMAX_ROW_SIZE; i++)
+	for (i = 0; i < CONFIG_MAX_ROW_SIZE; i++)
 	{
-		for (j = 0; j < mazeMAX_COL_SIZE; j++)
+		for (j = 0; j < CONFIG_MAX_COL_SIZE; j++)
 		{
-			setDistance(i,j,UNREACHED);
+			setDistance(i,j,MAZE_UNREACHED);
 			for (k = (int) row_plus; k <= (int) col_minus; k++)
 			{
 				setWall(i, j, (dir_e) k, unknown);
@@ -27,15 +27,15 @@ Maze::init()
 	}
 
 	/* wrap the wall */
-	for (i = 0; i < mazeMAX_ROW_SIZE; i++)
+	for (i = 0; i < CONFIG_MAX_ROW_SIZE; i++)
 	{
 		setWall(i, 0, col_minus, wall);
-		setWall(i, mazeMAX_ROW_SIZE - 1, col_plus, wall);
+		setWall(i, CONFIG_MAX_ROW_SIZE - 1, col_plus, wall);
 	}
-	for (j = 0; j < mazeMAX_COL_SIZE; j++)
+	for (j = 0; j < CONFIG_MAX_COL_SIZE; j++)
 	{
 		setWall(0, j, row_minus, wall);
-		setWall(mazeMAX_COL_SIZE - 1, j, row_plus, wall);
+		setWall(CONFIG_MAX_COL_SIZE - 1, j, row_plus, wall);
 	}
 
 	/* fill the first cell */
@@ -62,9 +62,9 @@ Maze::Maze(char *filename)
 enum wall
 Maze::getWall (int row, int col, dir_e dir)
 {
-	if (mazeIS_POS_OUT_BOUNDS(row, col))
+	if (MAZE_IS_POS_OUT_BOUNDS(row, col))
 	{
-		return (enum wall) mazeERROR;
+		return (enum wall) MAZE_ERROR;
 	}
 	switch (dir)
 	{
@@ -77,17 +77,17 @@ Maze::getWall (int row, int col, dir_e dir)
 		case col_minus:
 			return colWall[row][col];
 		default:
-			return (enum wall) mazeERROR;
+			return (enum wall) MAZE_ERROR;
 	}
-	return (enum wall) mazeERROR;
+	return (enum wall) MAZE_ERROR;
 }
 
 struct cell
 Maze::getCell (int row, int col)
 {
-	if (mazeIS_POS_OUT_BOUNDS(row,col))
+	if (MAZE_IS_POS_OUT_BOUNDS(row,col))
 	{
-		return (struct cell){-2, eCellerror, false, false, false};
+		return (struct cell){-2, cellError, false, false, false};
 	}
 	return cell[row][col];
 }
@@ -95,35 +95,35 @@ Maze::getCell (int row, int col)
 int
 Maze::setWall (int row, int col, dir_e dir, enum wall status)
 {
-	if (mazeIS_POS_OUT_BOUNDS(row, col))
+	if (MAZE_IS_POS_OUT_BOUNDS(row, col))
 	{
-		return mazeERROR;
+		return MAZE_ERROR;
 	}
 	switch (dir)
 	{
 		case row_plus:
 			rowWall[row + 1][col] = status;
-			return mazeSUCCESS;
+			return MAZE_SUCCESS;
 		case col_plus:
 			colWall[row][col + 1] = status;
-			return mazeSUCCESS;
+			return MAZE_SUCCESS;
 		case row_minus:
 			rowWall[row][col] = status;
-			return mazeSUCCESS;
+			return MAZE_SUCCESS;
 		case col_minus:
 			colWall[row][col] = status;
-			return mazeSUCCESS;
+			return MAZE_SUCCESS;
 		default:
-			return mazeERROR;
+			return MAZE_ERROR;
 	}
 }
 
 int
 Maze::updateCell (int row, int col)
 {
-	if (mazeIS_POS_OUT_BOUNDS(row, col))
+	if (MAZE_IS_POS_OUT_BOUNDS(row, col))
 	{
-		return mazeERROR;
+		return MAZE_ERROR;
 	}
 	/* checking status */
 	if (Maze::getWall(row, col, row_plus) != unknown
@@ -158,7 +158,7 @@ Maze::updateCell (int row, int col)
 	/* TODO: checking mouse */
 	cell[row][col].isMouse = false;
 
-	return mazeSUCCESS;
+	return MAZE_SUCCESS;
 }
 
 void
@@ -166,9 +166,9 @@ Maze::updateCell ()
 {
 	int i = 0;
 	int j = 0;
-	for (i = 0; i < mazeMAX_ROW_SIZE; i++)
+	for (i = 0; i < CONFIG_MAX_ROW_SIZE; i++)
 	{
-		for (j = 0; j < mazeMAX_COL_SIZE; j++)
+		for (j = 0; j < CONFIG_MAX_COL_SIZE; j++)
 		{
 			Maze::updateCell(i, j);
 		}

@@ -30,9 +30,9 @@ Maze::readMazeFromFile (char* fileName)
 	 * Reading part
 	 */
 	enum wall wallToPut;
-	for (int i = 0; i < (mazeMAX_ROW_SIZE * 2 + 1); i++)
+	for (int i = 0; i < (CONFIG_MAX_ROW_SIZE * 2 + 1); i++)
 	{
-		for (int j = 0; j < (mazeMAX_COL_SIZE * 2 + 1); j++)
+		for (int j = 0; j < (CONFIG_MAX_COL_SIZE * 2 + 1); j++)
 		{
 			if ((buf = fgetc(pFile)) == EOF)
 			{
@@ -53,16 +53,16 @@ Maze::readMazeFromFile (char* fileName)
 			case 'S': /* Starting point */
 				index_start_row = i / 2;
 				index_start_col = j / 2;
-				wallToPut = eWallError;
+				wallToPut = wallError;
 				continue;
 			case 'G':
 				index_goal_row = i / 2;
 				index_goal_col = j / 2;
-				wallToPut = eWallError;
+				wallToPut = wallError;
 				continue;
 			case ' ':
 			default:
-				wallToPut = eWallError;
+				wallToPut = wallError;
 				continue;
 			break;
 			}
@@ -107,11 +107,11 @@ Maze::writeMazeToFile (void *pFile, bool isShowMouse)
 {
 	char buf;
 
-	for (int i = 0; i < (mazeMAX_ROW_SIZE * 2 + 1); i++)
+	for (int i = 0; i < (CONFIG_MAX_ROW_SIZE * 2 + 1); i++)
 	{
 		if (i % 2 == 0)
 		{
-			for (int j = 0; j < mazeMAX_COL_SIZE; j++)
+			for (int j = 0; j < CONFIG_MAX_COL_SIZE; j++)
 			{
 				switch (rowWall[i / 2][j])
 				{
@@ -124,7 +124,7 @@ Maze::writeMazeToFile (void *pFile, bool isShowMouse)
 				case unknown:
 					buf = '*';
 				break;
-				case eWallError:
+				case wallError:
 				default:
 					printf("Error on rowWall!");
 				break;
@@ -136,7 +136,7 @@ Maze::writeMazeToFile (void *pFile, bool isShowMouse)
 		}
 		else
 		{
-			for (int j = 0; j < mazeMAX_COL_SIZE + 1; j++)
+			for (int j = 0; j < CONFIG_MAX_COL_SIZE + 1; j++)
 			{
 				switch (colWall[i / 2][j])
 				{
@@ -149,14 +149,14 @@ Maze::writeMazeToFile (void *pFile, bool isShowMouse)
 				case unknown:
 					buf = '*';
 				break;
-				case eWallError:
+				case wallError:
 				default:
 					printf("Error on rowWall!");
 				break;
 				}
 				/* print wall first */
 				fputc(buf, (FILE*) pFile);
-				if(!(j >= mazeMAX_COL_SIZE))
+				if(!(j >= CONFIG_MAX_COL_SIZE))
 				{
 					printCell(i/2, j, isShowMouse, pFile);
 				}
@@ -197,10 +197,10 @@ Maze::printCell(int row, int col, bool isShowMouse, void *pFile)
 	}
 	else if (isShowMouse)
 	{
-		fputc((getCell(row, col).distance == UNREACHED)
+		fputc((getCell(row, col).distance == MAZE_UNREACHED)
 			  ? 'x' : '0'+getCell(row, col).distance, (FILE*) pFile);
 	}
-	else if (col != mazeMAX_COL_SIZE)
+	else if (col != CONFIG_MAX_COL_SIZE)
 	{
 		fputc(' ', (FILE*) pFile);
 	}

@@ -7,7 +7,7 @@ MouseController::init()
 	availablePositionStack = Queue<PositionController>();
 	/* FIXME: Set the default start point */
 	setPos({index_start_row, index_start_col});
-	setDir(mazeDIRECTION_START);
+	setDir(CONFIG_DIRECTION_START);
 	updateCell();
 }
 
@@ -29,11 +29,11 @@ MouseController::initDistance ()
 	int row;
 	int col;
 	//Fill the last
-	for (row = 0; row < mazeMAX_ROW_SIZE; row++)
+	for (row = 0; row < CONFIG_MAX_ROW_SIZE; row++)
 	{
-		for (col = 0; col < mazeMAX_COL_SIZE; col++)
+		for (col = 0; col < CONFIG_MAX_COL_SIZE; col++)
 		{
-			setDis(row, col, UNREACHED);
+			setDis(row, col, MAZE_UNREACHED);
 		}
 	}
 }
@@ -41,7 +41,7 @@ MouseController::initDistance ()
 void
 MouseController::getDistanceAllCell ()
 {
-	int currentPathDistance = mazeSTART_DISTANCE + 1; /* This is how far the 'water' has flowed */
+	int currentPathDistance = MAZE_START_DISTANCE + 1; /* This is how far the 'water' has flowed */
 	int row;
 	int col;
 
@@ -49,17 +49,17 @@ MouseController::getDistanceAllCell ()
 	initDistance();
 
 	/* Firstly set the distance of the current opsition to 0 */
-	setDis(getCurrentPos(), mazeSTART_DISTANCE);
+	setDis(getCurrentPos(), MAZE_START_DISTANCE);
 
 	while (1)
 	{
 		/* Creating a loop which scans the whole maze */
-		for (row = 0; row < mazeMAX_ROW_SIZE; row++)
+		for (row = 0; row < CONFIG_MAX_ROW_SIZE; row++)
 		{
-			for (col = 0; col < mazeMAX_COL_SIZE; col++)
+			for (col = 0; col < CONFIG_MAX_COL_SIZE; col++)
 			{
 				/* If the cell has already been reached, then continue to the next cell */
-				if (getDis(row, col) != UNREACHED)
+				if (getDis(row, col) != MAZE_UNREACHED)
 				{
 					continue;
 				}
@@ -71,7 +71,7 @@ MouseController::getDistanceAllCell ()
 				}
 			}
 		}
-		if (getDis(index_goal_row, index_goal_col) != UNREACHED) //If the destination cell has a value after a sweep, the algorithm ends
+		if (getDis(index_goal_row, index_goal_col) != MAZE_UNREACHED) //If the destination cell has a value after a sweep, the algorithm ends
 		{
 			break;
 		}
@@ -94,12 +94,12 @@ MouseController::getDistanceAllCell ()
 int
 MouseController::getHighestNeighbouringDistance (int row, int col)
 {
-	int tmp = UNREACHED;
+	int tmp = MAZE_UNREACHED;
 	int cmp;
 	/* Check out of bounds first */
-	if (mazeIS_POS_OUT_BOUNDS(row, col))
+	if (MAZE_IS_POS_OUT_BOUNDS(row, col))
 	{
-		return mazeERROR;
+		return MAZE_ERROR;
 	}
 
 	if (getWall(row, col, row_plus) != wall)

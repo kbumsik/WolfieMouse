@@ -63,7 +63,7 @@ PositionController::PositionController (struct pos_t pos,
 
 PositionController::PositionController ()
 {
-	init(0, 0, mazeDIRECTION_START);
+	init(0, 0, CONFIG_DIRECTION_START);
 }
 
 void
@@ -86,41 +86,41 @@ PositionController::goForward ()
 	switch (dir)
 	{
 		case row_plus:
-			if (mazeIS_ROW_SAFE_TO_MOVE_FORWARD(pos.row))
+			if (MAZE_IS_ROW_SAFE_FORWARD(pos.row))
 			{
 				/* TODO: Do move operation of the mouse */
 				pos.row++;
-				return mazeSUCCESS;
+				return MAZE_SUCCESS;
 			}
 		break;
 		case col_plus:
-			if (mazeIS_COL_SAFE_TO_MOVE_FORWARD(pos.col))
+			if (MAZE_IS_COL_SAFE_FORWARD(pos.col))
 			{
 				/* TODO: Do move operation of the mouse */
 				pos.col++;
-				return mazeSUCCESS;
+				return MAZE_SUCCESS;
 			}
 		break;
 		case row_minus:
-			if (mazeIS_ROW_SAFE_TO_MOVE_BACKWARD(pos.row))
+			if (MAZE_IS_ROW_SAFE_BACKWARD(pos.row))
 			{
 				/* TODO: Do move operation of the mouse */
 				pos.row--;
-				return mazeSUCCESS;
+				return MAZE_SUCCESS;
 			}
 		break;
 		case col_minus:
-			if (mazeIS_COL_SAFE_TO_MOVE_BACKWARD(pos.col))
+			if (MAZE_IS_COL_SAFE_BACKWARD(pos.col))
 			{
 				/* TODO: Do move operation of the mouse */
 				pos.col--;
-				return mazeSUCCESS;
+				return MAZE_SUCCESS;
 			}
 		break;
 		default:
 		break;
 	}
-	return mazeERROR;
+	return MAZE_ERROR;
 }
 
 pos_t

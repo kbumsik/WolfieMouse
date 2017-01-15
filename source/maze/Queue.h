@@ -5,18 +5,18 @@
 #include "config_maze.h"
 
 #ifndef mazeQUEUE_MAX_BUFFER
-#define mazeQUEUE_MAX_BUFFER 1000
+#define CONFIG_QUEUE_MAX_BUFFER 1000
 #warning "mazeQUEUE_MAX_BUFFER is not defined to we use default size 1000"
 #endif
 
-#define safeIncrease(index) if(index != (mazeQUEUE_MAX_BUFFER - 1)) \
+#define safeIncrease(index) if(index != (CONFIG_QUEUE_MAX_BUFFER - 1)) \
         index++; \
       else \
         index = 0
 #define safeDecrease(index) if(index != 0) \
         index--; \
       else \
-        index = mazeQUEUE_MAX_BUFFER - 1
+        index = CONFIG_QUEUE_MAX_BUFFER - 1
 
 /**
  * @brief      Double-sided queue without using dynamic memory allocation
@@ -27,7 +27,7 @@ template<class T>
 	class Queue
 	{
 	private:
-		T buffer[mazeQUEUE_MAX_BUFFER]; /* buffer inside the queue */
+		T buffer[CONFIG_QUEUE_MAX_BUFFER]; /* buffer inside the queue */
 		int front; /* index of front */
 		int back; /* index of back */
 		int size; /* number of objects currently stored in the queue */
@@ -197,7 +197,7 @@ template<class T>
 		bool
 		isFull ()
 		{
-			if (size != mazeQUEUE_MAX_BUFFER)
+			if (size != CONFIG_QUEUE_MAX_BUFFER)
 			{
 				return false;
 			}

@@ -6,25 +6,25 @@
 
 void clear_screen();
 
-int main() {
+int main()
+{
 	char tmp;
 	MouseController mouse ("1.txt");
-	while (true)
-	{
+	while (true) {
 		/* First just print maze */
 		mouse.printMaze();
 		printf("please input a command\r\n");
 		printf("q: exit, n:next\r\n");
 		fflush(stdout);
-		while (true)
-		{
+		while (true) {
 			tmp= getchar();
-			if (tmp == 'n')
+			if (tmp == 'n') {
 				break;
-			else if (tmp == 'q')
+			} else if (tmp == 'q') {
 				goto end;
-			else
+			} else {
 				continue;
+			}
 		}
 		/* Then calcluate the distance */
 		mouse.getDistanceAllCell();
@@ -32,15 +32,15 @@ int main() {
 		printf("please input a command\r\n");
 		printf("q: exit, n:next\r\n");
 		fflush(stdout);
-		while (true)
-		{
+		while (true) {
 			tmp= getchar();
-			if (tmp == 'n')
+			if (tmp == 'n') {
 				break;
-			else if (tmp == 'q')
+			} else if (tmp == 'q') {
 				goto end;
-			else
+			} else {
 				continue;
+			}
 		}
 		/* then get shortest path */
 		mouse.getShortestPath();
@@ -48,20 +48,18 @@ int main() {
 		printf("please input a command\r\n");
 		printf("q: exit, n:next, p: print stack\r\n");
 		fflush(stdout);
-		while (true)
-		{
+		while (true) {
 			tmp= getchar();
-			if (tmp == 'n')
+			if (tmp == 'n') {
 				break;
-			else if (tmp == 'q')
+			} else if (tmp == 'q') {
 				goto end;
-			else if (tmp == 'p')
-			{
+			} else if (tmp == 'p') {
 				mouse.printPathStack();
 				fflush(stdout);
-			}
-			else
+			} else {
 				continue;
+			}
 		}
 		/* Then move */
 		mouse.moveNextCell();
@@ -69,15 +67,15 @@ int main() {
 		printf("please input a command\r\n");
 		printf("q: exit, n:next\r\n");
 		fflush(stdout);
-		while (true)
-		{
+		while (true) {
 			tmp= getchar();
-			if (tmp == 'n')
+			if (tmp == 'n') {
 				break;
-			else if (tmp == 'q')
+			} else if (tmp == 'q') {
 				goto end;
-			else
+			} else {
 				continue;
+			}
 		}
 
 		clear_screen();

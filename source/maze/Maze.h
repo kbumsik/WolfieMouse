@@ -4,12 +4,34 @@
 #include "config_maze.h"
 #include <stdio.h>
 
+
+#define MAZE_IS_ROW_SAFE_FORWARD(row)	(row < (CONFIG_MAX_ROW_SIZE - 1))
+#define MAZE_IS_ROW_SAFE_BACKWARD(row)	(row > 0)
+#define MAZE_IS_ROW_SAFE_TO_MOVE(row)	(MAZE_IS_ROW_SAFE_FORWARD(row) && MAZE_IS_ROW_SAFE_BACKWARD(row))
+
+#define MAZE_IS_COL_SAFE_FORWARD(col)	(col < (CONFIG_MAX_COL_SIZE - 1))
+#define MAZE_IS_COL_SAFE_BACKWARD(col)	(col > 0)
+#define MAZE_IS_COL_SAFE_TO_MOVE(col)	(MAZE_IS_COL_SAFE_FORWARD(col) && MAZE_IS_COL_SAFE_BACKWARD(col))
+
+#define MAZE_IS_POS_SAFE_TO_MOVE(row, col)	(MAZE_IS_ROW_SAFE_TO_MOVE(row) && MAZE_IS_COL_SAFE_TO_MOVE(col))
+
+#define MAZE_IS_ROW_OUT_BOUNDS(row)	((row >= CONFIG_MAX_ROW_SIZE) || (row < 0))
+#define MAZE_IS_COL_OUT_BOUNDS(col)	((col >= CONFIG_MAX_COL_SIZE) || (col < 0))
+#define MAZE_IS_POS_OUT_BOUNDS(row, col)	(MAZE_IS_ROW_OUT_BOUNDS(row) || MAZE_IS_COL_OUT_BOUNDS(col))
+
+#define MAZE_START_DISTANCE 0
+#define MAZE_UNREACHED	-1
+
+#define MAZE_SUCCESS	1
+#define MAZE_ERROR	-2
+
+
 /**
  * @brief Status of wall
  */
 enum wall
 {
-	eWallError = mazeERROR, /* indicating error */
+	wallError = MAZE_ERROR, /* indicating error */
 	empty = 0, /* indicating there is no wall */
 	wall = 1, /* indicating there is wall */
 	unknown = 2 /* indicating we haven't searched yet
@@ -19,7 +41,7 @@ enum wall
 
 enum status
 {
-	eCellerror = mazeERROR, /* indicating error */
+	cellError = MAZE_ERROR, /* indicating error */
 	unsearched = 0, /* there is unknown wall around a cell */
 	searched = 1 /* all walls around a cell are searched */
 };
@@ -72,9 +94,9 @@ struct pos_t
 class Maze
 {
 private:
-	enum wall rowWall[mazeMAX_ROW_SIZE + 1][mazeMAX_COL_SIZE]; /* walls in y-direction (or row-increasing) */
-	enum wall colWall[mazeMAX_ROW_SIZE][mazeMAX_COL_SIZE + 1]; /* walls in x-direction (or column-increasing)*/
-	struct cell cell[mazeMAX_ROW_SIZE][mazeMAX_COL_SIZE]; /* each cells in the maze */
+	enum wall rowWall[CONFIG_MAX_ROW_SIZE + 1][CONFIG_MAX_COL_SIZE]; /* walls in y-direction (or row-increasing) */
+	enum wall colWall[CONFIG_MAX_ROW_SIZE][CONFIG_MAX_COL_SIZE + 1]; /* walls in x-direction (or column-increasing)*/
+	struct cell cell[CONFIG_MAX_ROW_SIZE][CONFIG_MAX_COL_SIZE]; /* each cells in the maze */
 
 	void init();
 
@@ -137,21 +159,21 @@ public:
 
 	inline int setDistance(int row, int col, int dis)
 	{
-		if (mazeIS_POS_OUT_BOUNDS(row, col))
+		if (MAZE_IS_POS_OUT_BOUNDS(row, col))
 		{
 			printf("invalid cell!\n");
-			return mazeERROR;
+			return MAZE_ERROR;
 		}
 		cell[row][col].distance = dis;
-		return mazeSUCCESS;
+		return MAZE_SUCCESS;
 	}
 
 	inline int getDistance(int row, int col)
 	{
-		if (mazeIS_POS_OUT_BOUNDS(row, col))
+		if (MAZE_IS_POS_OUT_BOUNDS(row, col))
 		{
 			printf("invalid cell!\n");
-			return mazeERROR;
+			return MAZE_ERROR;
 		}
 		return cell[row][col].distance;
 	}
