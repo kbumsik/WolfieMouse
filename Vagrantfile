@@ -138,5 +138,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "scripts/install_rdp_vnc.sh"
   config.vm.provision "shell", path: "scripts/modify_bashrc.sh"
   config.vm.provision "shell", inline: "sudo apt-get install -y xfce4-terminal"
+  config.vm.provision "shell", inline: "sudo apt-get install -y build-essential"
+  config.vm.provision "shell", inline: "sudo apt-get install -y gdb"
+  config.vm.provision "shell", inline: "sudo apt-get install -y git"
   config.vm.provision "shell", inline: "vncserver -geometry 1980x1080", run: 'always', privileged: false
 end
