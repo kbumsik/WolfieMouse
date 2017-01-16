@@ -16,9 +16,9 @@ This is project for IEEE Region 1 Micromouse competition.
     * [Vagrant](https://www.vagrantup.com/)
     * [MobaXterm](http://mobaxterm.mobatek.net/) for windows, [XQuartz](https://www.xquartz.org/) for macOS
     * Add to `PATH` with following folders:
-        * git: `<your-git-installation-path>/Git/bin` and `<your-git-installation-path>/Git/usr/bin`
-        * VirtualBox: `<your-VirtualBox-installation-path>/Oracle/VirtualBox`
-2. [Fork this repo and clone it](doc/Github_HOWTO.md#Set_up_your_repository)
+        * git: `{your-git-installation-path}/Git/bin` and `{your-git-installation-path}/Git/usr/bin`
+        * VirtualBox: `{your-VirtualBox-installation-path}/Oracle/VirtualBox`
+2. [Fork this repo and clone it](doc/Github_HOWTO.md#Set-up-your-repository)
 3. Run `$ vagrant up`
     * This is a virtual machine installation command. Requires around 8GB.
     * This will take at least 20 minutes. Have a cup of coffee :)
