@@ -74,10 +74,10 @@ enum Wall Maze::getWall(int row, int col, Direction dir)
     return (enum Wall) COMMON_MAZE_ERROR;
 }
 
-struct cell Maze::getCell(int row, int col)
+Cell Maze::getCell(int row, int col)
 {
     if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
-        return (struct cell ) { -2, cellError, false, false, false } ;
+        return (Cell) { -2, cellError, false, false, false } ;
     } else {
         return cell[row][col];
     }

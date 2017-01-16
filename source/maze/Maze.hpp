@@ -1,12 +1,12 @@
 #ifndef Maze_h
 #define Maze_h
 
+#include <Cell.hpp>
 #include "common_maze.h"
 #include "config_maze.h"
 #include <stdio.h>
 #include "Direction.hpp"
 #include "Wall.hpp"
-#include "cell.hpp"
 
 
 #define MAZE_IS_ROW_SAFE_FORWARD(row)	(row < (CONFIG_MAX_ROW_SIZE - 1))
@@ -31,7 +31,7 @@ class Maze
 private:
     enum Wall rowWall[CONFIG_MAX_ROW_SIZE + 1][CONFIG_MAX_COL_SIZE]; /* walls in y-direction (or row-increasing) */
     enum Wall colWall[CONFIG_MAX_ROW_SIZE][CONFIG_MAX_COL_SIZE + 1]; /* walls in x-direction (or column-increasing)*/
-    struct cell cell[CONFIG_MAX_ROW_SIZE][CONFIG_MAX_COL_SIZE]; /* each cells in the maze */
+    Cell cell[CONFIG_MAX_ROW_SIZE][CONFIG_MAX_COL_SIZE]; /* each cells in the maze */
 
     void init();
 
@@ -75,7 +75,7 @@ public:
      *
      * @return     status of cell
      */
-    struct cell getCell(int row, int col);
+    Cell getCell(int row, int col);
 
     void setMouse(int row, int col);
     void resetMouse(int row, int col);
