@@ -1,7 +1,7 @@
 
+#include <Maze.hpp>
+#include <MouseController.hpp>
 #include <stdlib.h>
-#include "MouseController.h"
-#include "Maze.h"
 
 
 void clear_screen();

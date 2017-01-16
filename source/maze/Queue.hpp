@@ -1,8 +1,8 @@
 #ifndef Queue_h
 #define Queue_h
 
+#include <config_maze.h>
 #include <stdlib.h>
-#include "config_maze.h"
 
 #ifndef mazeQUEUE_MAX_BUFFER
 #define CONFIG_QUEUE_MAX_BUFFER 1000
