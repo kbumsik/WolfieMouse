@@ -54,10 +54,10 @@ Maze::Maze(char *filename)
     readMazeFromFile(filename);
 }
 
-enum Wall Maze::getWall(int row, int col, Direction dir)
+Wall Maze::getWall(int row, int col, Direction dir)
 {
     if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
-        return (enum Wall) COMMON_MAZE_ERROR;
+        return (Wall) COMMON_MAZE_ERROR;
     }
     switch (dir) {
     case row_plus:
@@ -69,9 +69,9 @@ enum Wall Maze::getWall(int row, int col, Direction dir)
     case col_minus:
         return colWall[row][col];
     default:
-        return (enum Wall) COMMON_MAZE_ERROR;
+        return (Wall) COMMON_MAZE_ERROR;
     }
-    return (enum Wall) COMMON_MAZE_ERROR;
+    return (Wall) COMMON_MAZE_ERROR;
 }
 
 Cell Maze::getCell(int row, int col)
@@ -83,7 +83,7 @@ Cell Maze::getCell(int row, int col)
     }
 }
 
-int Maze::setWall(int row, int col, Direction dir, enum Wall status)
+int Maze::setWall(int row, int col, Direction dir, Wall status)
 {
     if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
         return COMMON_MAZE_ERROR;

@@ -29,8 +29,8 @@
 class Maze
 {
 private:
-    enum Wall rowWall[CONFIG_MAX_ROW_SIZE + 1][CONFIG_MAX_COL_SIZE]; /* walls in y-direction (or row-increasing) */
-    enum Wall colWall[CONFIG_MAX_ROW_SIZE][CONFIG_MAX_COL_SIZE + 1]; /* walls in x-direction (or column-increasing)*/
+    Wall rowWall[CONFIG_MAX_ROW_SIZE + 1][CONFIG_MAX_COL_SIZE]; /* walls in y-direction (or row-increasing) */
+    Wall colWall[CONFIG_MAX_ROW_SIZE][CONFIG_MAX_COL_SIZE + 1]; /* walls in x-direction (or column-increasing)*/
     Cell cell[CONFIG_MAX_ROW_SIZE][CONFIG_MAX_COL_SIZE]; /* each cells in the maze */
 
     void init();
@@ -65,7 +65,7 @@ public:
      *
      * @return     status of wall
      */
-    enum Wall getWall(int row, int col, Direction dir);
+    Wall getWall(int row, int col, Direction dir);
 
     /**
      * @brief      get status of a cell
@@ -90,7 +90,7 @@ public:
      * @return     mazeERROR (that is, -1) if failed
      *             mazeSUCCESS otherwise
      */
-    int setWall(int row, int col, Direction dir, enum Wall status);
+    int setWall(int row, int col, Direction dir, Wall status);
 
     inline int setDistance(int row, int col, int dis)
     {

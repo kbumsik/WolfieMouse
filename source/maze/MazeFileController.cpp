@@ -25,7 +25,7 @@ void Maze::readMazeFromFile(char* fileName)
     /**
      * Reading part
      */
-    enum Wall wallToPut;
+    Wall wallToPut;
     for (int i = 0; i < (CONFIG_MAX_ROW_SIZE * 2 + 1); i++) {
         for (int j = 0; j < (CONFIG_MAX_COL_SIZE * 2 + 1); j++) {
             if ((buf = fgetc(pFile)) == EOF) {

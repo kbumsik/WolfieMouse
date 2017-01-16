@@ -8,6 +8,8 @@
 #ifndef CELL_HPP_
 #define CELL_HPP_
 
+#include "common_maze.h"
+
 /**
  * @brief Status of cell
  */
