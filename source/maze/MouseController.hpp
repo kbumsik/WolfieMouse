@@ -56,7 +56,7 @@ private:
     void initDistance();
     int getHighestNeighbouringDistance(int row, int col);
     Direction getDirectionToGo();
-    struct cell getCell(Position pos);
+    Cell getCell(Position pos);
     void updateCell();
 
     void setDirectionToGo();

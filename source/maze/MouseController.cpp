@@ -219,7 +219,7 @@ void MouseController::moveNextCell()
     updateCell();
 }
 
-struct cell MouseController::getCell(Position pos)
+Cell MouseController::getCell(Position pos)
 {
     return Maze::getCell(pos.row, pos.col);
 }

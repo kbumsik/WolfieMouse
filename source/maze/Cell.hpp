@@ -11,7 +11,7 @@
 /**
  * @brief Status of cell
  */
-struct cell
+struct Cell
 {
     int distance;
     enum common_maze_status status;
