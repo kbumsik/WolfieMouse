@@ -21,6 +21,7 @@ private:
 
     void init();
 
+    /* Distance getter and setters */ 
     inline int getDis(int row, int col)
     {
         return Maze::getDistance(row, col);
@@ -57,13 +58,14 @@ private:
     {
         setDis(pos.row, pos.col, dis);
     }
-
-    void initDistance();
-    int getHighestNeighbouringDistance(int row, int col);
-    Direction getDirectionToGo();
+    /* Cell getter and setter */
     Cell getCell(Position pos);
     void updateCell();
-
+    /* Used in algorithm implementation */
+    void initDistance();
+    int getHighestNeighbouringDistance(int row, int col);
+    /* Setting Direction */
+    Direction getDirectionToGo();
     void setDirectionToGo();
     /** On development
      void moveNextCell();
@@ -79,18 +81,17 @@ private:
      virtual void updateCell(int row, int col);
      */
 public:
+    /* Constructors */
     MouseController();
-
     MouseController(char *filename);
-
+    /* Algorithm solver */
     void getDistanceAllCell();
-
     void getShortestPath();
-
     void moveNextCell();
-    bool isGoal();
-    bool isStart();
-
+    /* Goad and Start */
+    bool isInGoal();
+    bool isInStart();
+    /* print information of stack used in the algorithm */
     void printPathStack();
     void printAvailablePositionStack();
 };

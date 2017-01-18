@@ -1,16 +1,9 @@
 #include <common_maze.h>
 #include <MouseController.hpp>
 
-void MouseController::init()
-{
-    pathStack = Queue<PositionController>();
-    availablePositionStack = Queue<PositionController>();
-    /* FIXME: Set the default start point */
-    setPos( { index_start_row, index_start_col });
-    setDir(CONFIG_DIRECTION_START);
-    updateCell();
-}
-
+/*******************************************************************************
+ * Constructor
+ ******************************************************************************/
 MouseController::MouseController() :
         Maze()
 {
@@ -23,18 +16,9 @@ MouseController::MouseController(char *filename) :
     init();
 }
 
-void MouseController::initDistance()
-{
-    int row;
-    int col;
-    //Fill the last
-    for (row = 0; row < CONFIG_MAX_ROW_SIZE; row++) {
-        for (col = 0; col < CONFIG_MAX_COL_SIZE; col++) {
-            setDis(row, col, CELL_DISTANCE_UNREACHED);
-        }
-    }
-}
-
+/*******************************************************************************
+ * Public Methods
+ ******************************************************************************/
 void MouseController::getDistanceAllCell()
 {
     int currentPathDistance = CELL_DISTANCE_START + 1; /* This is how far the 'water' has flowed */
@@ -79,43 +63,6 @@ void MouseController::getDistanceAllCell()
      * a (non-UNREACHED) value. That value is 1. This is repeated untill the
      * destination cell has been given a (non-UNREACHED) value.
      */
-}
-
-/* TODO: Could be a bottleneck */
-int MouseController::getHighestNeighbouringDistance(int row, int col)
-{
-    int tmp = CELL_DISTANCE_UNREACHED;
-    int cmp;
-    /* Check out of bounds first */
-    if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
-        return COMMON_MAZE_ERROR;
-    }
-
-    if (getWall(row, col, row_plus) != wall) {
-        cmp = Maze::getDistance(row + 1, col);
-        if (cmp > tmp) {
-            tmp = cmp;
-        }
-    }
-    if (getWall(row, col, col_plus) != wall) {
-        cmp = getDis(row, col + 1);
-        if (cmp > tmp) {
-            tmp = cmp;
-        }
-    }
-    if (getWall(row, col, row_minus) != wall) {
-        cmp = getDis(row - 1, col);
-        if (cmp > tmp) {
-            tmp = cmp;
-        }
-    }
-    if (getWall(row, col, col_minus) != wall) {
-        cmp = getDis(row, col - 1);
-        if (cmp > tmp) {
-            tmp = cmp;
-        }
-    }
-    return tmp;
 }
 
 void MouseController::getShortestPath()
@@ -181,28 +128,6 @@ void MouseController::getShortestPath()
 	pathStack.popFromFront();
 }
 
-Direction MouseController::getDirectionToGo()
-{
-    /* get the next position */
-    PositionController nextPosition = pathStack.peekFromFront();
-    return getNextDir(nextPosition);
-}
-
-void MouseController::setDirectionToGo ()
-{
-	setDir(getDirectionToGo());
-}
-
-bool MouseController::isGoal()
-{
-    return (getCell(getCurrentPos()).attribute == goal) ? true : false;
-}
-
-bool MouseController::isStart()
-{
-    return (getCell(getCurrentPos()).attribute == start) ? true : false;
-}
-
 void MouseController::moveNextCell()
 {
     /* 1. turn first */
@@ -219,17 +144,14 @@ void MouseController::moveNextCell()
     updateCell();
 }
 
-Cell MouseController::getCell(Position pos)
+bool MouseController::isInGoal()
 {
-    return Maze::getCell(pos.row, pos.col);
+    return (getCell(getCurrentPos()).attribute == goal) ? true : false;
 }
 
-void
-MouseController::updateCell()
+bool MouseController::isInStart()
 {
-	Position tmp = getCurrentPos();
-	Maze::updateCell();
-	Maze::setMouse(tmp.row, tmp.col);
+    return (getCell(getCurrentPos()).attribute == start) ? true : false;
 }
 
 void MouseController::printPathStack()
@@ -246,4 +168,90 @@ void MouseController::printAvailablePositionStack()
     printf("availableStack: ");
     availablePositionStack.print(&PositionController::print);
     printf("\r\n");
+}
+
+/*******************************************************************************
+ * Private Methods
+ ******************************************************************************/
+void MouseController::init()
+{
+    pathStack = Queue<PositionController>();
+    availablePositionStack = Queue<PositionController>();
+    /* FIXME: Set the default start point */
+    setPos( { index_start_row, index_start_col });
+    setDir(CONFIG_DIRECTION_START);
+    updateCell();
+}
+
+Cell MouseController::getCell(Position pos)
+{
+    return Maze::getCell(pos.row, pos.col);
+}
+
+void MouseController::updateCell()
+{
+	Position tmp = getCurrentPos();
+	Maze::updateCell();
+	Maze::setMouse(tmp.row, tmp.col);
+}
+
+void MouseController::initDistance()
+{
+    int row;
+    int col;
+    //Fill the last
+    for (row = 0; row < CONFIG_MAX_ROW_SIZE; row++) {
+        for (col = 0; col < CONFIG_MAX_COL_SIZE; col++) {
+            setDis(row, col, CELL_DISTANCE_UNREACHED);
+        }
+    }
+}
+
+/* TODO: Could be a bottleneck */
+int MouseController::getHighestNeighbouringDistance(int row, int col)
+{
+    int tmp = CELL_DISTANCE_UNREACHED;
+    int cmp;
+    /* Check out of bounds first */
+    if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
+        return COMMON_MAZE_ERROR;
+    }
+
+    if (getWall(row, col, row_plus) != wall) {
+        cmp = Maze::getDistance(row + 1, col);
+        if (cmp > tmp) {
+            tmp = cmp;
+        }
+    }
+    if (getWall(row, col, col_plus) != wall) {
+        cmp = getDis(row, col + 1);
+        if (cmp > tmp) {
+            tmp = cmp;
+        }
+    }
+    if (getWall(row, col, row_minus) != wall) {
+        cmp = getDis(row - 1, col);
+        if (cmp > tmp) {
+            tmp = cmp;
+        }
+    }
+    if (getWall(row, col, col_minus) != wall) {
+        cmp = getDis(row, col - 1);
+        if (cmp > tmp) {
+            tmp = cmp;
+        }
+    }
+    return tmp;
+}
+
+Direction MouseController::getDirectionToGo()
+{
+    /* get the next position */
+    PositionController nextPosition = pathStack.peekFromFront();
+    return getNextDir(nextPosition);
+}
+
+void MouseController::setDirectionToGo ()
+{
+	setDir(getDirectionToGo());
 }

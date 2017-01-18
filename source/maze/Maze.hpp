@@ -42,53 +42,28 @@ public:
     int index_start_row;
     int index_start_col;
 
-    /**
-     * @brief      maze constructor
-     */
+    /* Constructors */
     Maze();
-
-    /**
-     * @brief      maze constructor. Maze is built based on the file
-     *
-     * @param      filename  the name of the file to read
-     */
     Maze(char* filename);
-
-    /**
-     * @brief      get status of a wall
-     *
-     * @param[in]  col   column index of cell
-     * @param[in]  row   row index of cell
-     * @param[in]  dir   direction of wall you are looking at
-     *
-     * @return     status of wall
-     */
-    Wall getWall(int row, int col, Direction dir);
-
-    /**
-     * @brief      get status of a cell
-     *
-     * @param[in]  col   column index of cell
-     * @param[in]  row   row index of cell
-     *
-     * @return     status of cell
-     */
-    Cell getCell(int row, int col);
-
+    /* Position of mouse */
     void setMouse(int row, int col);
     void resetMouse(int row, int col);
-    /**
-     * @brief      set status of a wall
-     *
-     * @param[in]  row     row index of cell
-     * @param[in]  col     column index of cell
-     * @param[in]  dir     direction of wall you are looking at
-     * @param[in]  status  staus of cell updating
-     *
-     * @return     mazeERROR (that is, -1) if failed
-     *             mazeSUCCESS otherwise
-     */
+    /* Related to wall */
+    Wall getWall(int row, int col, Direction dir);
     int setWall(int row, int col, Direction dir, Wall status);
+    /* Related to Cell */
+    Cell getCell(int row, int col);
+    int updateCell(int row, int col);
+    void updateCell();
+    /* getter and setter of Distance of cell */
+    inline int getDistance(int row, int col)
+    {
+        if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
+            printf("invalid cell!\n");
+            return COMMON_MAZE_ERROR;
+        }
+        return cell[row][col].distance;
+    }
 
     inline int setDistance(int row, int col, int dis)
     {
@@ -99,48 +74,9 @@ public:
         cell[row][col].distance = dis;
         return COMMON_MAZE_SUCCESS;
     }
-
-    inline int getDistance(int row, int col)
-    {
-        if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
-            printf("invalid cell!\n");
-            return COMMON_MAZE_ERROR;
-        }
-        return cell[row][col].distance;
-    }
-
-    /**
-     * @brief      update status of a cell
-     *
-     * @param[in]  row   row index of cell
-     * @param[in]  col   column index of cell
-     *
-     * @return     mazeERROR (that is, -1) if failed
-     *             mazeSUCCESS otherwise
-     */
-    int updateCell(int row, int col);
-
-    /**
-     * @brief      update status of all cell
-     */
-    void updateCell();
-    /**
-     * @brief      construct Maze from file
-     *
-     * @param      fileName  filename to construct
-     */
+    /* IO Related */
     void readMazeFromFile(char* fileName);
-
-    /**
-     * @brief      print the current maze
-     */
     void printMaze();
-
-    /**
-     * @brief      save the maze as file
-     *
-     * @param      fileName  filename to save
-     */
     void saveMazeFile(char* fileName);
 };
 

@@ -1,13 +1,9 @@
 #include <common_maze.h>
 #include <PositionController.hpp>
 
-void PositionController::init(int row, int col, Direction dirTo)
-{
-    pos.row = row;
-    pos.col = col;
-    dir = dirTo;
-}
-
+/*******************************************************************************
+ * Constructor
+ ******************************************************************************/
 PositionController::PositionController(int row, int col, Direction dirTo)
 {
     init(row, col, dirTo);
@@ -23,6 +19,9 @@ PositionController::PositionController()
     init(0, 0, CONFIG_DIRECTION_START);
 }
 
+/*******************************************************************************
+ * Public Methods
+ ******************************************************************************/
 void PositionController::turnRight()
 {
     /* TODO: Do turn operation of the mouse */
@@ -72,28 +71,6 @@ int PositionController::goForward()
     return COMMON_MAZE_ERROR;
 }
 
-Position PositionController::getNextPos(Direction dirTo)
-{
-    Position tmp = pos;
-    switch (dirTo) {
-    case row_plus:
-        tmp.row++;
-        return tmp;
-    case col_plus:
-        tmp.col++;
-        return tmp;
-    case row_minus:
-        tmp.row--;
-        return tmp;
-    case col_minus:
-        tmp.col--;
-        return tmp;
-    default:
-        printf("invalid direction!");
-        return tmp;
-    }
-}
-
 Direction PositionController::getNextDir(Position posTo)
 {
     /* get the next Position */
@@ -124,7 +101,39 @@ Direction PositionController::getNextDir(Position posTo)
     return eDirError;
 }
 
+Position PositionController::getNextPos(Direction dirTo)
+{
+    Position tmp = pos;
+    switch (dirTo) {
+    case row_plus:
+        tmp.row++;
+        return tmp;
+    case col_plus:
+        tmp.col++;
+        return tmp;
+    case row_minus:
+        tmp.row--;
+        return tmp;
+    case col_minus:
+        tmp.col--;
+        return tmp;
+    default:
+        printf("invalid direction!");
+        return tmp;
+    }
+}
+
 void PositionController::print(PositionController obj)
 {
     printf("(%d,%d) ", obj.pos.row, obj.pos.col);
+}
+
+/*******************************************************************************
+ * Private Methods
+ ******************************************************************************/
+void PositionController::init(int row, int col, Direction dirTo)
+{
+    pos.row = row;
+    pos.col = col;
+    dir = dirTo;
 }
