@@ -13,8 +13,8 @@ int main()
 	while (true) {
 		/* First just print maze */
 		mouse.printMaze();
-		printf("please input a command\r\n");
-		printf("q: exit, n:next\r\n");
+		printf("please input a command\n");
+		printf("q: exit, n:next\n");
 		fflush(stdout);
 		while (true) {
 			tmp= getchar();
@@ -29,8 +29,8 @@ int main()
 		/* Then calcluate the distance */
 		mouse.getDistanceAllCell();
 		mouse.printMaze();
-		printf("please input a command\r\n");
-		printf("q: exit, n:next\r\n");
+		printf("please input a command\n");
+		printf("q: exit, n:next\n");
 		fflush(stdout);
 		while (true) {
 			tmp= getchar();
@@ -45,8 +45,8 @@ int main()
 		/* then get shortest path */
 		mouse.getShortestPath();
 		mouse.printMaze();
-		printf("please input a command\r\n");
-		printf("q: exit, n:next, p: print stack\r\n");
+		printf("please input a command\n");
+		printf("q: exit, n:next, p: print stack\n");
 		fflush(stdout);
 		while (true) {
 			tmp= getchar();
@@ -64,8 +64,8 @@ int main()
 		/* Then move */
 		mouse.moveNextCell();
 		mouse.printMaze();
-		printf("please input a command\r\n");
-		printf("q: exit, n:next\r\n");
+		printf("please input a command\n");
+		printf("q: exit, n:next\n");
 		fflush(stdout);
 		while (true) {
 			tmp= getchar();

@@ -10,14 +10,32 @@
 
 #include "common_maze.h"
 
+
+#define CELL_DISTANCE_START     0
+#define CELL_DISTANCE_UNREACHED -1
+#define CELL_DISTANCE_ERROR     -2
+
+enum Status
+{
+    cellError = COMMON_MAZE_ERROR, /* indicating error */
+    unsearched = 0, /* there is unknown wall around a cell */
+    searched = 1 /* all walls around a cell are searched */
+};
+
+enum Attribute
+{
+    nothing, goal, start
+};
+
 /**
  * @brief Status of cell
  */
 struct Cell
 {
     int distance;
-    enum common_maze_status status;
-    bool isMouse, isGoal, isStart;
+    Status status;
+    Attribute attribute;
+    bool isMouse; //, isGoal, isStart;
     /** FIXME: maybe put isDestination? */
     /** TODO: put turning? */
 };

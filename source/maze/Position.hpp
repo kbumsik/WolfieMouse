@@ -19,8 +19,8 @@ struct Position
     Position operator-(const Position& rVal)
     {
         Position result;
-        result.col = col - rVal.col;
         result.row = row - rVal.row;
+        result.col = col - rVal.col;
         return result;
     }
 

@@ -34,10 +34,12 @@ public:
     {
         return dir;
     }
+
     inline Position getCurrentPos()
     {
         return pos;
     }
+
     Position getNextPos(Direction dirTo);
 
     inline Position getNextPos()
@@ -51,6 +53,7 @@ public:
     {
         return getNextDir(posTo.getCurrentPos());
     }
+
     bool operator==(PositionController& rVal)
     {
         return (getCurrentPos() == rVal.getCurrentPos());

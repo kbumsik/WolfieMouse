@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "Direction.hpp"
 #include "Wall.hpp"
+#include "MazeIO.hpp"
 
 
 #define MAZE_IS_ROW_SAFE_FORWARD(row)	(row < (CONFIG_MAX_ROW_SIZE - 1))
@@ -23,21 +24,18 @@
 #define MAZE_IS_COL_OUT_BOUNDS(col)	((col >= CONFIG_MAX_COL_SIZE) || (col < 0))
 #define MAZE_IS_POS_OUT_BOUNDS(row, col)	(MAZE_IS_ROW_OUT_BOUNDS(row) || MAZE_IS_COL_OUT_BOUNDS(col))
 
-#define MAZE_START_DISTANCE 0
-#define MAZE_UNREACHED	-1
 
 class Maze
 {
+    friend class MazeIO;
 private:
     Wall rowWall[CONFIG_MAX_ROW_SIZE + 1][CONFIG_MAX_COL_SIZE]; /* walls in y-direction (or row-increasing) */
     Wall colWall[CONFIG_MAX_ROW_SIZE][CONFIG_MAX_COL_SIZE + 1]; /* walls in x-direction (or column-increasing)*/
     Cell cell[CONFIG_MAX_ROW_SIZE][CONFIG_MAX_COL_SIZE]; /* each cells in the maze */
-
+    // Maze printer
+    MazeIO mazeIO;
+    // initialization
     void init();
-
-    void writeMazeToFile(void *pFile, bool isShowMouse);
-
-    void printCell(int row, int col, bool isShowMouse, void *pFile);
 public:
     int index_goal_row;
     int index_goal_col;

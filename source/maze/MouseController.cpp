@@ -30,14 +30,14 @@ void MouseController::initDistance()
     //Fill the last
     for (row = 0; row < CONFIG_MAX_ROW_SIZE; row++) {
         for (col = 0; col < CONFIG_MAX_COL_SIZE; col++) {
-            setDis(row, col, MAZE_UNREACHED);
+            setDis(row, col, CELL_DISTANCE_UNREACHED);
         }
     }
 }
 
 void MouseController::getDistanceAllCell()
 {
-    int currentPathDistance = MAZE_START_DISTANCE + 1; /* This is how far the 'water' has flowed */
+    int currentPathDistance = CELL_DISTANCE_START + 1; /* This is how far the 'water' has flowed */
     int row;
     int col;
 
@@ -45,14 +45,14 @@ void MouseController::getDistanceAllCell()
     initDistance();
 
     /* Firstly set the distance of the current opsition to 0 */
-    setDis(getCurrentPos(), MAZE_START_DISTANCE);
+    setDis(getCurrentPos(), CELL_DISTANCE_START);
 
     while (1) {
         /* Creating a loop which scans the whole maze */
         for (row = 0; row < CONFIG_MAX_ROW_SIZE; row++) {
             for (col = 0; col < CONFIG_MAX_COL_SIZE; col++) {
                 /* If the cell has already been reached, then continue to the next cell */
-                if (getDis(row, col) != MAZE_UNREACHED) {
+                if (getDis(row, col) != CELL_DISTANCE_UNREACHED) {
                     continue;
                 }
                 /* If there is a neighbouring cell which has been */
@@ -63,7 +63,7 @@ void MouseController::getDistanceAllCell()
                 }
             }
         }
-        if (getDis(index_goal_row, index_goal_col) != MAZE_UNREACHED) {
+        if (getDis(index_goal_row, index_goal_col) != CELL_DISTANCE_UNREACHED) {
             break; //If the destination cell has a value after a sweep, the algorithm ends
         }
         /* Increment the distance because we are scanning again. */
@@ -84,7 +84,7 @@ void MouseController::getDistanceAllCell()
 /* TODO: Could be a bottleneck */
 int MouseController::getHighestNeighbouringDistance(int row, int col)
 {
-    int tmp = MAZE_UNREACHED;
+    int tmp = CELL_DISTANCE_UNREACHED;
     int cmp;
     /* Check out of bounds first */
     if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
@@ -195,12 +195,12 @@ void MouseController::setDirectionToGo ()
 
 bool MouseController::isGoal()
 {
-    return (getCell(getCurrentPos()).isGoal) ? true : false;
+    return (getCell(getCurrentPos()).attribute == goal) ? true : false;
 }
 
 bool MouseController::isStart()
 {
-    return (getCell(getCurrentPos()).isStart) ? true : false;
+    return (getCell(getCurrentPos()).attribute == start) ? true : false;
 }
 
 void MouseController::moveNextCell()

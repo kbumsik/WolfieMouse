@@ -25,20 +25,24 @@ private:
     {
         return Maze::getDistance(row, col);
     }
+
     inline int getDis(Position pos)
     {
         return Maze::getDistance(pos.row, pos.col);
     }
+
     inline int getDis(PositionController pos)
     {
         Position position = pos.getCurrentPos();
         return Maze::getDistance(position.row, position.col);
     }
+
     inline int getNextDis(PositionController pos, Direction dirTo)
     {
         PositionController tmp = PositionController(pos.getCurrentPos(), dirTo);
         return getDis(tmp.getNextPos());
     }
+
     inline int getNextDis(PositionController pos)
     {
         return getDis(pos.getNextPos());
@@ -48,6 +52,7 @@ private:
     {
         return Maze::setDistance(row, col, dis);
     }
+
     inline void setDis(Position pos, int dis)
     {
         setDis(pos.row, pos.col, dis);

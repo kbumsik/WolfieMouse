@@ -3,10 +3,11 @@
 
 #include <config_maze.h>
 #include <stdlib.h>
+#include "config_maze.h"
 
-#ifndef mazeQUEUE_MAX_BUFFER
-#define CONFIG_QUEUE_MAX_BUFFER 1000
-#warning "mazeQUEUE_MAX_BUFFER is not defined to we use default size 1000"
+#ifndef CONFIG_QUEUE_MAX_BUFFER
+    #define CONFIG_QUEUE_MAX_BUFFER 1000
+    #warning "CONFIG_QUEUE_MAX_BUFFER is not defined to we use default size 1000"
 #endif
 
 #define safeIncrease(index) if(index != (CONFIG_QUEUE_MAX_BUFFER - 1)) \

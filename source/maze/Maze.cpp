@@ -16,7 +16,7 @@ void Maze::init()
     /* init the wall with unknown */
     for (i = 0; i < CONFIG_MAX_ROW_SIZE; i++) {
         for (j = 0; j < CONFIG_MAX_COL_SIZE; j++) {
-            setDistance(i, j, MAZE_UNREACHED);
+            setDistance(i, j, CELL_DISTANCE_UNREACHED);
             for (k = (int) row_plus; k <= (int) col_minus; k++) {
                 setWall(i, j, (Direction) k, unknown);
             }
@@ -43,12 +43,14 @@ void Maze::init()
     updateCell();
 }
 
-Maze::Maze()
+Maze::Maze() :
+        mazeIO(this)
 {
     init();
 }
 
-Maze::Maze(char *filename)
+Maze::Maze(char *filename) :
+        mazeIO(this)
 {
     init();
     readMazeFromFile(filename);
@@ -77,7 +79,7 @@ Wall Maze::getWall(int row, int col, Direction dir)
 Cell Maze::getCell(int row, int col)
 {
     if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
-        return (Cell) { -2, cellError, false, false, false } ;
+        return (Cell) { CELL_DISTANCE_ERROR, cellError, nothing } ;
     } else {
         return cell[row][col];
     }
@@ -120,17 +122,15 @@ int Maze::updateCell(int row, int col)
     } else {
         cell[row][col].status = unsearched;
     }
-    /* checking goal */
+
     if ((row == index_goal_row) && (col == index_goal_col)) {
-        cell[row][col].isGoal = true;
+        /* checking goal */
+        cell[row][col].attribute = goal;
+    } else if ((row == index_start_row) && (col == index_start_col)) {
+        /* checking start */
+        cell[row][col].attribute = start;
     } else {
-        cell[row][col].isGoal = false;
-    }
-    /* checking start */
-    if ((row == index_start_row) && (col == index_start_col)) {
-        cell[row][col].isStart = true;
-    } else {
-        cell[row][col].isStart = false;
+        cell[row][col].attribute = nothing;
     }
     /* TODO: checking mouse */
     cell[row][col].isMouse = false;
@@ -146,6 +146,21 @@ void Maze::updateCell()
             Maze::updateCell(i, j);
         }
     }
+}
+
+void Maze::readMazeFromFile(char* fileName)
+{
+    mazeIO.loadMaze(fileName);
+}
+
+void Maze::printMaze()
+{
+    mazeIO.printMaze();
+}
+
+void Maze::saveMazeFile(char* fileName)
+{
+    mazeIO.saveMaze(fileName);
 }
 
 void Maze::setMouse(int row, int col)
