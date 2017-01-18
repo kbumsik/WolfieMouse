@@ -9,9 +9,8 @@
  * @brief      maze constructor
  */
 Maze::Maze() :
-        mazeIO(this)
+    Maze(NULL)
 {
-    init();
 }
 
 /**
@@ -20,9 +19,47 @@ Maze::Maze() :
  * @param      filename  the name of the file to read
  */
 Maze::Maze(char *filename) :
-        mazeIO(this)
+    mazeIO(this)
 {
-    init();
+    int i = 0;
+    int j = 0;
+    int k = 0;
+
+    index_start_row = 0;
+    index_start_col = 0;
+    index_goal_row = 7;
+    index_goal_col = 7;
+
+    /* init the wall with unknown */
+    for (i = 0; i < CONFIG_MAX_ROW_SIZE; i++) {
+        for (j = 0; j < CONFIG_MAX_COL_SIZE; j++) {
+            setDistance(i, j, CELL_DISTANCE_UNREACHED);
+            for (k = (int) row_plus; k <= (int) col_minus; k++) {
+                setWall(i, j, (Direction) k, unknown);
+            }
+        }
+    }
+
+    /* wrap the wall */
+    for (i = 0; i < CONFIG_MAX_ROW_SIZE; i++) {
+        setWall(i, 0, col_minus, wall);
+        setWall(i, CONFIG_MAX_ROW_SIZE - 1, col_plus, wall);
+    }
+    for (j = 0; j < CONFIG_MAX_COL_SIZE; j++) {
+        setWall(0, j, row_minus, wall);
+        setWall(CONFIG_MAX_COL_SIZE - 1, j, row_plus, wall);
+    }
+
+    /* fill the first cell */
+    setWall(0, 0, row_plus, wall);
+    setWall(0, 0, col_plus, empty);
+    setWall(0, 0, row_minus, wall);
+    setWall(0, 0, col_minus, wall);
+
+    /* update the cell */
+    updateCell();
+
+    /* Load maze */
     readMazeFromFile(filename);
 }
 
@@ -202,43 +239,3 @@ void Maze::saveMazeFile(char* fileName)
 /*******************************************************************************
  * Private Methods
  ******************************************************************************/
-void Maze::init()
-{
-    int i = 0;
-    int j = 0;
-    int k = 0;
-
-    index_start_row = 0;
-    index_start_col = 0;
-    index_goal_row = 7;
-    index_goal_col = 7;
-
-    /* init the wall with unknown */
-    for (i = 0; i < CONFIG_MAX_ROW_SIZE; i++) {
-        for (j = 0; j < CONFIG_MAX_COL_SIZE; j++) {
-            setDistance(i, j, CELL_DISTANCE_UNREACHED);
-            for (k = (int) row_plus; k <= (int) col_minus; k++) {
-                setWall(i, j, (Direction) k, unknown);
-            }
-        }
-    }
-
-    /* wrap the wall */
-    for (i = 0; i < CONFIG_MAX_ROW_SIZE; i++) {
-        setWall(i, 0, col_minus, wall);
-        setWall(i, CONFIG_MAX_ROW_SIZE - 1, col_plus, wall);
-    }
-    for (j = 0; j < CONFIG_MAX_COL_SIZE; j++) {
-        setWall(0, j, row_minus, wall);
-        setWall(CONFIG_MAX_COL_SIZE - 1, j, row_plus, wall);
-    }
-
-    /* fill the first cell */
-    setWall(0, 0, row_plus, wall);
-    setWall(0, 0, col_plus, empty);
-    setWall(0, 0, row_minus, wall);
-    setWall(0, 0, col_minus, wall);
-
-    /* update the cell */
-    updateCell();
-}

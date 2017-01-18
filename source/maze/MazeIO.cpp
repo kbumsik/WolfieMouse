@@ -51,6 +51,11 @@ void MazeIO::loadMaze(char* fileName)
     FILE *pFile;
     char buf;
 
+    if (NULL == fileName) {
+        printf("No file to load maze.\n");
+        return;
+    }
+
     pFile = fopen(fileName, "r");
     if (NULL == pFile) {
         printf("Failed to open file");

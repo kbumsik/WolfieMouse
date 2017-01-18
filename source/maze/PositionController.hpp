@@ -10,7 +10,6 @@ class PositionController
 private:
     Position pos; /**< current position of the mouse */
     Direction dir; /**< direction of the mouse */
-    void init(int row, int col, Direction dirTo);
 
 public:
     /* Constructors */

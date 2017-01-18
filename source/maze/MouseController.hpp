@@ -19,8 +19,6 @@ private:
     Queue<PositionController> pathStack; /**< This is an assistant stack. When @getShortestPath invoked the path to the goal is cunstructed. */
     Queue<PositionController> availablePositionStack; /**< I don't even know what is this. */
 
-    void init();
-
     /* Distance getter and setters */ 
     inline int getDis(int row, int col)
     {

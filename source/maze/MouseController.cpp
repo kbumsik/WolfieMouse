@@ -5,15 +5,19 @@
  * Constructor
  ******************************************************************************/
 MouseController::MouseController() :
-        Maze()
+        MouseController(NULL)
 {
-    init();
 }
 
 MouseController::MouseController(char *filename) :
         Maze(filename)
 {
-    init();
+    pathStack = Queue<PositionController>();
+    availablePositionStack = Queue<PositionController>();
+    /* FIXME: Set the default start point */
+    setPos( { index_start_row, index_start_col });
+    setDir(CONFIG_DIRECTION_START);
+    updateCell();
 }
 
 /*******************************************************************************
@@ -173,16 +177,6 @@ void MouseController::printAvailablePositionStack()
 /*******************************************************************************
  * Private Methods
  ******************************************************************************/
-void MouseController::init()
-{
-    pathStack = Queue<PositionController>();
-    availablePositionStack = Queue<PositionController>();
-    /* FIXME: Set the default start point */
-    setPos( { index_start_row, index_start_col });
-    setDir(CONFIG_DIRECTION_START);
-    updateCell();
-}
-
 Cell MouseController::getCell(Position pos)
 {
     return Maze::getCell(pos.row, pos.col);

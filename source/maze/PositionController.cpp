@@ -4,19 +4,20 @@
 /*******************************************************************************
  * Constructor
  ******************************************************************************/
-PositionController::PositionController(int row, int col, Direction dirTo)
+PositionController::PositionController(int row, int col, Direction dirTo) :
+        dir(dirTo),
+        pos({row, col})
 {
-    init(row, col, dirTo);
 }
 
-PositionController::PositionController(Position pos, Direction dirTo)
+PositionController::PositionController(Position pos, Direction dirTo) :
+        PositionController(pos.row, pos.col, dirTo)
 {
-    init(pos.row, pos.col, dirTo);
 }
 
-PositionController::PositionController()
+PositionController::PositionController() :
+        PositionController(0, 0, CONFIG_DIRECTION_START)
 {
-    init(0, 0, CONFIG_DIRECTION_START);
 }
 
 /*******************************************************************************
@@ -131,9 +132,3 @@ void PositionController::print(PositionController obj)
 /*******************************************************************************
  * Private Methods
  ******************************************************************************/
-void PositionController::init(int row, int col, Direction dirTo)
-{
-    pos.row = row;
-    pos.col = col;
-    dir = dirTo;
-}

@@ -34,8 +34,6 @@ private:
     Cell cell[CONFIG_MAX_ROW_SIZE][CONFIG_MAX_COL_SIZE]; /* each cells in the maze */
     // Maze printer
     MazeIO mazeIO;
-    // initialization
-    void init();
 public:
     int index_goal_row;
     int index_goal_col;
