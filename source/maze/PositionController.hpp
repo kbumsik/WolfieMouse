@@ -5,6 +5,9 @@
 #include "Direction.hpp"
 #include "Position.hpp"
 
+/*******************************************************************************
+ * Class Declaration
+ ******************************************************************************/
 class PositionController
 {
 private:
@@ -21,39 +24,15 @@ public:
     virtual void turnLeft();
     virtual int goForward();
     /* Direction getter and setters */
+    inline Direction getCurrentDir();
     Direction getNextDir(Position posTo);
-    
-    inline Direction getCurrentDir()
-    {
-        return dir;
-    }
-
-    inline Direction getNextDir(PositionController posTo)
-    {
-        return getNextDir(posTo.getCurrentPos());
-    }
-
-    inline void setDir(Direction dirToSet)
-    {
-        dir = dirToSet;
-    }
+    inline Direction getNextDir(PositionController posTo);
+    inline void setDir(Direction dirToSet);
     /* Position getter and setters */
+    inline Position getCurrentPos();
     Position getNextPos(Direction dirTo);
-
-    inline Position getCurrentPos()
-    {
-        return pos;
-    }
-
-    inline Position getNextPos()
-    {
-        return getNextPos(dir);
-    }
-
-    inline void setPos(Position posToSet)
-    {
-        pos = posToSet;
-    }
+    inline Position getNextPos();
+    inline void setPos(Position posToSet);
     /* just printer of debugging */
     void print(PositionController obj);
     /* Comparation operator overloading */
@@ -62,5 +41,38 @@ public:
         return (getCurrentPos() == rVal.getCurrentPos());
     }
 };
+
+/*******************************************************************************
+ * Inline function definition
+ ******************************************************************************/
+inline Direction PositionController::getCurrentDir()
+{
+    return dir;
+}
+
+inline Direction PositionController::getNextDir(PositionController posTo)
+{
+    return getNextDir(posTo.getCurrentPos());
+}
+
+inline void PositionController::setDir(Direction dirToSet)
+{
+    dir = dirToSet;
+}
+
+inline Position PositionController::getCurrentPos()
+{
+    return pos;
+}
+
+inline Position PositionController::getNextPos()
+{
+    return getNextPos(dir);
+}
+
+inline void PositionController::setPos(Position posToSet)
+{
+    pos = posToSet;
+}
 
 #endif

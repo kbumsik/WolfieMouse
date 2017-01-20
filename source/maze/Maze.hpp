@@ -25,6 +25,9 @@
 #define MAZE_IS_POS_OUT_BOUNDS(row, col)	(MAZE_IS_ROW_OUT_BOUNDS(row) || MAZE_IS_COL_OUT_BOUNDS(col))
 
 
+/*******************************************************************************
+ * Class Declaration
+ ******************************************************************************/
 class Maze
 {
     friend class MazeIO;
@@ -54,28 +57,34 @@ public:
     int updateCell(int row, int col);
     void updateCell();
     /* getter and setter of Distance of cell */
-    inline int getDistance(int row, int col)
-    {
-        if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
-            printf("invalid cell!\n");
-            return COMMON_MAZE_ERROR;
-        }
-        return cell[row][col].distance;
-    }
-
-    inline int setDistance(int row, int col, int dis)
-    {
-        if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
-            printf("invalid cell!\n");
-            return COMMON_MAZE_ERROR;
-        }
-        cell[row][col].distance = dis;
-        return COMMON_MAZE_SUCCESS;
-    }
+    inline int getDistance(int row, int col);
+    inline int setDistance(int row, int col, int dis);
     /* IO Related */
     void readMazeFromFile(char* fileName);
     void printMaze();
     void saveMazeFile(char* fileName);
 };
+
+/*******************************************************************************
+ * Inline function definition
+ ******************************************************************************/
+inline int Maze::getDistance(int row, int col)
+{
+    if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
+        printf("invalid cell!\n");
+        return COMMON_MAZE_ERROR;
+    }
+    return cell[row][col].distance;
+}
+
+inline int Maze::setDistance(int row, int col, int dis)
+{
+    if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
+        printf("invalid cell!\n");
+        return COMMON_MAZE_ERROR;
+    }
+    cell[row][col].distance = dis;
+    return COMMON_MAZE_SUCCESS;
+}
 
 #endif

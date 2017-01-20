@@ -6,6 +6,9 @@
 #include "PositionController.hpp"
 #include "Queue.hpp"
 
+/*******************************************************************************
+ * Class Declaration
+ ******************************************************************************/
 /**
  * @brief      This class it the top level of the mouse control.
  * @details    ===== MOUSE CONTROL PROCEDURE =====
@@ -20,42 +23,13 @@ private:
     Queue<PositionController> availablePositionStack; /**< I don't even know what is this. */
 
     /* Distance getter and setters */ 
-    inline int getDis(int row, int col)
-    {
-        return Maze::getDistance(row, col);
-    }
-
-    inline int getDis(Position pos)
-    {
-        return Maze::getDistance(pos.row, pos.col);
-    }
-
-    inline int getDis(PositionController pos)
-    {
-        Position position = pos.getCurrentPos();
-        return Maze::getDistance(position.row, position.col);
-    }
-
-    inline int getNextDis(PositionController pos, Direction dirTo)
-    {
-        PositionController tmp = PositionController(pos.getCurrentPos(), dirTo);
-        return getDis(tmp.getNextPos());
-    }
-
-    inline int getNextDis(PositionController pos)
-    {
-        return getDis(pos.getNextPos());
-    }
-
-    inline int setDis(int row, int col, int dis)
-    {
-        return Maze::setDistance(row, col, dis);
-    }
-
-    inline void setDis(Position pos, int dis)
-    {
-        setDis(pos.row, pos.col, dis);
-    }
+    inline int getDis(int row, int col);
+    inline int getDis(Position pos);
+    inline int getDis(PositionController pos);
+    inline int getNextDis(PositionController pos, Direction dirTo);
+    inline int getNextDis(PositionController pos);
+    inline int setDis(int row, int col, int dis);
+    inline void setDis(Position pos, int dis);
     /* Cell getter and setter */
     Cell getCell(Position pos);
     void updateCell();
@@ -93,5 +67,45 @@ public:
     void printPathStack();
     void printAvailablePositionStack();
 };
+
+/*******************************************************************************
+ * Inline function definition
+ ******************************************************************************/
+inline int MouseController::getDis(int row, int col)
+{
+    return Maze::getDistance(row, col);
+}
+
+inline int MouseController::getDis(Position pos)
+{
+    return Maze::getDistance(pos.row, pos.col);
+}
+
+inline int MouseController::getDis(PositionController pos)
+{
+    Position position = pos.getCurrentPos();
+    return Maze::getDistance(position.row, position.col);
+}
+
+inline int MouseController::getNextDis(PositionController pos, Direction dirTo)
+{
+    PositionController tmp = PositionController(pos.getCurrentPos(), dirTo);
+    return getDis(tmp.getNextPos());
+}
+
+inline int MouseController::getNextDis(PositionController pos)
+{
+    return getDis(pos.getNextPos());
+}
+
+inline int MouseController::setDis(int row, int col, int dis)
+{
+    return Maze::setDistance(row, col, dis);
+}
+
+inline void MouseController::setDis(Position pos, int dis)
+{
+    setDis(pos.row, pos.col, dis);
+}
 
 #endif
