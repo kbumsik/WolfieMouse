@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdtprojectproperties>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.IncludePaths">
+<language name="S,s,asm">
+<includepath>${WorkspaceDirPath}/source/Drivers/CMSIS/Device/ST/STM32F4xx/Include</includepath>
+<includepath>${WorkspaceDirPath}/source/Drivers/CMSIS/Include</includepath>
+<includepath>${WorkspaceDirPath}/source/Drivers/STM32F4xx_HAL_Driver/Inc</includepath>
+<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS</includepath>
+<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/include</includepath>
+<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F</includepath>
+<includepath>${WorkspaceDirPath}/source</includepath>
+<includepath>${WorkspaceDirPath}/source/components</includepath>
+<includepath>${WorkspaceDirPath}/source/math</includepath>
+<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FatFs/src</includepath>
+
+</language>
+<language name="C Source File">
+<includepath>${WorkspaceDirPath}/source/Drivers/CMSIS/Device/ST/STM32F4xx/Include</includepath>
+<includepath>${WorkspaceDirPath}/source/Drivers/CMSIS/Include</includepath>
+<includepath>${WorkspaceDirPath}/source/Drivers/STM32F4xx_HAL_Driver/Inc</includepath>
+<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS</includepath>
+<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/include</includepath>
+<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F</includepath>
+<includepath>${WorkspaceDirPath}/source</includepath>
+<includepath>${WorkspaceDirPath}/source/components</includepath>
+<includepath>${WorkspaceDirPath}/source/math</includepath>
+<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FatFs/src</includepath>
+
+</language>
+<language name="C++ Source File">
+<includepath>${WorkspaceDirPath}/source/Drivers/CMSIS/Device/ST/STM32F4xx/Include</includepath>
+<includepath>${WorkspaceDirPath}/source/Drivers/CMSIS/Include</includepath>
+<includepath>${WorkspaceDirPath}/source/Drivers/STM32F4xx_HAL_Driver/Inc</includepath>
+<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS</includepath>
+<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/include</includepath>
+<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F</includepath>
+<includepath>${WorkspaceDirPath}/source</includepath>
+<includepath>${WorkspaceDirPath}/source/components</includepath>
+<includepath>${WorkspaceDirPath}/source/math</includepath>
+<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FatFs/src</includepath>
+
+</language>
+<language name="Object File">
+
+</language>
+</section>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.Macros">
+<language name="S,s,asm">
+<macro>
+<name>ARM_MATH_CM4</name><value/>
+</macro>
+<macro>
+<name>__FPU_PRESENT</name><value>1</value>
+</macro>
+<macro>
+<name>STM32F446xx</name><value/>
+</macro>
+
+</language>
+<language name="C Source File">
+<macro>
+<name>ARM_MATH_CM4</name><value/>
+</macro>
+<macro>
+<name>__FPU_PRESENT</name><value>1</value>
+</macro>
+<macro>
+<name>STM32F446xx</name><value/>
+</macro>
+
+</language>
+<language name="C++ Source File">
+<macro>
+<name>ARM_MATH_CM4</name><value/>
+</macro>
+<macro>
+<name>__FPU_PRESENT</name><value>1</value>
+</macro>
+<macro>
+<name>STM32F446xx</name><value/>
+</macro>
+
+</language>
+<language name="Object File">
+
+</language>
+</section>
+</cdtprojectproperties>

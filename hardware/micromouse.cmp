@@ -1,0 +1,739 @@
+Cmp-Mod V01 Created by PcbNew   date = 3/30/2016 10:01:27 PM
+
+BeginCmp
+TimeStamp = 56FC698B
+Path = /56EB6D2D/56EB6D73
+Reference = U5;
+ValeurCmp = VL6180X_POLOLU;
+IdModule  = footprints_micromouse:VL6180X_POLOLU_Pin_Header_Straight_1x07;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6996
+Path = /56EB6D2D/56EB6DF6
+Reference = U6;
+ValeurCmp = VL6180X_POLOLU;
+IdModule  = footprints_micromouse:VL6180X_POLOLU_Pin_Header_Straight_1x07;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC69AC
+Path = /56EB6D2D/56EB6DD7
+Reference = U8;
+ValeurCmp = VL6180X_POLOLU;
+IdModule  = footprints_micromouse:VL6180X_POLOLU_Pin_Header_Straight_1x07;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC69A1
+Path = /56EB6D2D/56EB6DBE
+Reference = U7;
+ValeurCmp = VL6180X_POLOLU;
+IdModule  = footprints_micromouse:VL6180X_POLOLU_Pin_Header_Straight_1x07;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC69ED
+Path = /56F9D522
+Reference = U12;
+ValeurCmp = TPS73633;
+IdModule  = footprints_micromouse:TPS73633_SOT-23;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC69E4
+Path = /56F9D350
+Reference = U11;
+ValeurCmp = TPS76850;
+IdModule  = footprints_micromouse:TPS76850_SOIC-8;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC69D8
+Path = /56EC020E/56EC0A9B
+Reference = U10;
+ValeurCmp = MPU-9250;
+IdModule  = MPU-9250:QFN-24%2f3MM;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC69BC
+Path = /56EC020E/56EC0A44
+Reference = U9;
+ValeurCmp = HCMS-2901;
+IdModule  = footprints_micromouse:HCMS-2903;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6980
+Path = /56EB6D2D/56EB7021
+Reference = U4;
+ValeurCmp = TCA9545A;
+IdModule  = Housings_SSOP:TSSOP-20_4.4x6.5mm_Pitch0.65mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6968
+Path = /56EB60D6/56EB6417
+Reference = U3;
+ValeurCmp = MAX14871;
+IdModule  = Housings_SSOP:TSSOP-16-1EP_4.4x5mm_Pitch0.65mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC694C
+Path = /56EB60D6/56EB63E4
+Reference = U2;
+ValeurCmp = MAX14871;
+IdModule  = Housings_SSOP:TSSOP-16-1EP_4.4x5mm_Pitch0.65mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6930
+Path = /56E8ACCC
+Reference = U1;
+ValeurCmp = STM32F446RE_LQFP64;
+IdModule  = footprints_micromouse:STM32F446_LQFP64;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68EC
+Path = /56FB91BA
+Reference = SW3;
+ValeurCmp = SWITCH_DPST;
+IdModule  = Buttons_Switches_SMD:SW_SPST_PTS645;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68E4
+Path = /56FB88CA
+Reference = SW2;
+ValeurCmp = SWITCH_DPST;
+IdModule  = Buttons_Switches_SMD:SW_SPST_PTS645;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68DC
+Path = /56FC2E61
+Reference = SW1;
+ValeurCmp = SWITCH_DPST;
+IdModule  = Buttons_Switches_SMD:SW_SPST_PTS645;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68D4
+Path = /57032C7D
+Reference = R_VOL2;
+ValeurCmp = 10k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68CE
+Path = /57031C5B
+Reference = R_VOL1;
+ValeurCmp = 20k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68C8
+Path = /56EC020E/56EC2210
+Reference = R_uSD1;
+ValeurCmp = 1k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68C2
+Path = /56EB6D2D/56ED49CB
+Reference = R_RANGE7;
+ValeurCmp = 10k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68BC
+Path = /56EB6D2D/56ED499B
+Reference = R_RANGE6;
+ValeurCmp = 10k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68B6
+Path = /56EB6D2D/56ED495C
+Reference = R_RANGE5;
+ValeurCmp = 10k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68B0
+Path = /56EB6D2D/56ED479B
+Reference = R_RANGE4;
+ValeurCmp = 10k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68AA
+Path = /56EB6D2D/56ED511C
+Reference = R_RANGE3;
+ValeurCmp = 10k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68A4
+Path = /56EB6D2D/56ED5200
+Reference = R_RANGE2;
+ValeurCmp = 10k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC689E
+Path = /56EB6D2D/56ED5235
+Reference = R_RANGE1;
+ValeurCmp = 10k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6898
+Path = /56FACFAB
+Reference = R_PWR1;
+ValeurCmp = 1k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6892
+Path = /56FB5719
+Reference = R_PB2;
+ValeurCmp = 47k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC688C
+Path = /56FC2E59
+Reference = R_PB1;
+ValeurCmp = 47k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6886
+Path = /56EB60D6/56ED76B9
+Reference = R_MOTOR2;
+ValeurCmp = 10k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6880
+Path = /56EB60D6/56ED74EF
+Reference = R_MOTOR1;
+ValeurCmp = 10k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC687A
+Path = /56EC020E/56EC6DA0
+Reference = R_IMU2;
+ValeurCmp = 10k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6874
+Path = /56EC020E/56EC6E04
+Reference = R_IMU1;
+ValeurCmp = 10k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC686E
+Path = /570090AC
+Reference = R_BOOT1;
+ValeurCmp = 10k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6868
+Path = /56EB60D6/56ED90B0
+Reference = R14;
+ValeurCmp = 62.5m;
+IdModule  = Resistors_SMD:R_1206_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6862
+Path = /56EB60D6/56ED8689
+Reference = R13;
+ValeurCmp = 62.5m;
+IdModule  = Resistors_SMD:R_1206_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC685C
+Path = /56F54D14
+Reference = R11;
+ValeurCmp = 1k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6856
+Path = /56F54D0E
+Reference = R10;
+ValeurCmp = 1k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6850
+Path = /56F54D08
+Reference = R9;
+ValeurCmp = 1k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC684A
+Path = /56F54D02
+Reference = R8;
+ValeurCmp = 1k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6844
+Path = /56F54CFC
+Reference = R7;
+ValeurCmp = 1k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC683E
+Path = /56F51EB2
+Reference = R6;
+ValeurCmp = 1k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6838
+Path = /56F51DDC
+Reference = R5;
+ValeurCmp = 1k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6832
+Path = /56F51D0B
+Reference = R4;
+ValeurCmp = 1k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC682C
+Path = /56F51C39
+Reference = R3;
+ValeurCmp = 1k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6826
+Path = /56F51B66
+Reference = R2;
+ValeurCmp = 1k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6820
+Path = /56F519B8
+Reference = R1;
+ValeurCmp = 1k;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC681A
+Path = /56F97E9E
+Reference = M3;
+ValeurCmp = 2.54MM-SLIDE-SWITCH_TS02_SWITCH;
+IdModule  = pcb1:2.54MM-SLIDE-SWITCH_TS02_SWITCH;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6813
+Path = /56F94214
+Reference = M2;
+ValeurCmp = JST_CONNECTOR_FEMALE.-THROUGH;
+IdModule  = pcb1:JST_CONNECTOR_FEMALE.-THROUGH-HOLE_JST_CONNECTOR_FEMALE;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67F9
+Path = /5702CAA7
+Reference = L_BEAD1;
+ValeurCmp = 10uH;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67F3
+Path = /56F54CF0
+Reference = LED_RED3;
+ValeurCmp = Led_Small;
+IdModule  = LEDs:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67ED
+Path = /56F518F4
+Reference = LED_RED2;
+ValeurCmp = Led_Small;
+IdModule  = LEDs:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67E7
+Path = /56F517D6
+Reference = LED_RED1;
+ValeurCmp = Led_Small;
+IdModule  = LEDs:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67E1
+Path = /56F54CEA
+Reference = LED_GREEN4;
+ValeurCmp = Led_Small;
+IdModule  = LEDs:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67DB
+Path = /56F54CE4
+Reference = LED_GREEN3;
+ValeurCmp = Led_Small;
+IdModule  = LEDs:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67D5
+Path = /56F5171B
+Reference = LED_GREEN2;
+ValeurCmp = Led_Small;
+IdModule  = LEDs:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67CF
+Path = /56F51543
+Reference = LED_GREEN1;
+ValeurCmp = Led_Small;
+IdModule  = LEDs:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67C9
+Path = /56F54CDE
+Reference = LED_BLUE4;
+ValeurCmp = Led_Small;
+IdModule  = LEDs:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67C3
+Path = /56F54CD8
+Reference = LED_BLUE3;
+ValeurCmp = Led_Small;
+IdModule  = LEDs:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67BD
+Path = /56F51490
+Reference = LED_BLUE2;
+ValeurCmp = Led_Small;
+IdModule  = LEDs:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67B7
+Path = /56F5000C
+Reference = LED_BLUE1;
+ValeurCmp = Led_Small;
+IdModule  = LEDs:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67B1
+Path = /56EC020E/56EC0AE2
+Reference = J1;
+ValeurCmp = uSD_SLOT_47219-2001;
+IdModule  = footprints_micromouse:uSD_MOLEX_47219-2001;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67A1
+Path = /56FADB78
+Reference = D_PWR1;
+ValeurCmp = Led_Small;
+IdModule  = LEDs:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC679B
+Path = /56EC020E/56EC2147
+Reference = D1;
+ValeurCmp = Led_Small;
+IdModule  = LEDs:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6795
+Path = /570141AB
+Reference = C_VCAP2;
+ValeurCmp = 2.2uF;
+IdModule  = Capacitors_SMD:C_1206_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC678F
+Path = /5700DD9A
+Reference = C_VCAP1;
+ValeurCmp = 2.2uF;
+IdModule  = Capacitors_SMD:C_1206_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6789
+Path = /56FA06D4
+Reference = C_VBAT2;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6783
+Path = /56FA029D
+Reference = C_VBAT1;
+ValeurCmp = 100uF;
+IdModule  = Capacitors_SMD:C_1210_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC677D
+Path = /5701457B
+Reference = C_V6;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6777
+Path = /5700F570
+Reference = C_V5;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6771
+Path = /57034880
+Reference = C_V4;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC676B
+Path = /57015E11
+Reference = C_V3;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6765
+Path = /57027029
+Reference = C_V2;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC675F
+Path = /5702798E
+Reference = C_V1;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6759
+Path = /56EC020E/56ED3391
+Reference = C_uSD1;
+ValeurCmp = 10uF;
+IdModule  = Capacitors_SMD:C_1206_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6753
+Path = /56FBB40A
+Reference = C_RESET1;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC674D
+Path = /56EB6D2D/56ED575B
+Reference = C_RANGE1;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6747
+Path = /56EB60D6/56ED7065
+Reference = C_MOTOR2;
+ValeurCmp = 1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6741
+Path = /56EB60D6/56ED6CB6
+Reference = C_MOTOR1;
+ValeurCmp = 1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC673B
+Path = /57036A2D
+Reference = C_M1;
+ValeurCmp = 220uF;
+IdModule  = Capacitors_Tantalum_SMD:TantalC_SizeD_EIA-7343_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6735
+Path = /56EC020E/56EC4156
+Reference = C_IMU3;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC672F
+Path = /56EC020E/56EC41B1
+Reference = C_IMU2;
+ValeurCmp = 10nF;
+IdModule  = Capacitors_SMD:C_0805_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6729
+Path = /56EC020E/56EC3C79
+Reference = C_IMU1;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6723
+Path = /56EC020E/56EC16B0
+Reference = C_DIS2;
+ValeurCmp = 10uF;
+IdModule  = Capacitors_SMD:C_1206_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC671D
+Path = /56EC020E/56EC1356
+Reference = C_DIS1;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6717
+Path = /56FA4776
+Reference = C_5V2;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6711
+Path = /56FA489D
+Reference = C_5V1;
+ValeurCmp = 100uF;
+IdModule  = Capacitors_SMD:C_1210_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC670B
+Path = /56FAA471
+Reference = C_3.3V2;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6705
+Path = /56FAA0FA
+Reference = C_3.3V1;
+ValeurCmp = 10uF;
+IdModule  = Capacitors_SMD:C_1206_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC66FF
+Path = /56FA8846
+Reference = CNR1;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC66F9
+Path = /5703E5D5
+Reference = CN2;
+ValeurCmp = 5_PIN_HEADER;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x05;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC66F0
+Path = /57042F20
+Reference = CN1;
+ValeurCmp = 5_PIN_HEADER;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x05;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC680D
+Path = /56EB60D6/56EB6456
+Reference = M1;
+ValeurCmp = MOTOR_MOUNTS_AND_ENCODERS;
+IdModule  = footprints_micromouse:FUTURA-1.0-MOTOR-MOUNT-TEMPLATE;
+EndCmp
+
+EndListe
