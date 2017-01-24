@@ -31,8 +31,6 @@ This is project for IEEE Region 1 Micromouse competition.
 
 To be added.
 
-![micromouse](doc/images/micromouse_old.jpg)
-
 ## Get started
 
 ### Quick setup using a virtual machine (recommended)
