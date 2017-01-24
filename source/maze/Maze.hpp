@@ -59,7 +59,7 @@ public:
     inline int setDistance(int row, int col, int dis);
     /* IO Related */
     void readMazeFromFile(char* fileName);
-    void printMaze();
+    virtual void printMaze();
     void saveMazeFile(char* fileName);
 };
 
