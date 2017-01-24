@@ -5,8 +5,8 @@
  * Constructor
  ******************************************************************************/
 PositionController::PositionController(int row, int col, Direction dirTo) :
-        dir(dirTo),
-        pos({row, col})
+        pos({row, col}),
+        dir(dirTo)
 {
 }
 

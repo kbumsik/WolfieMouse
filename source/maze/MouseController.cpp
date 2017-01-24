@@ -89,7 +89,7 @@ void MouseController::getShortestPath()
         position = availablePositionStack.peekFromBack();
         currentDistance = getDis(position);
         //if currentposition is goal, break
-        if (position.getCurrentPos() == (Position){index_goal_row, index_goal_col}) {
+        if (position.getCurrentPos() == Position {index_goal_row, index_goal_col}) {
             isFound = true;
             pathStack.pushToBack(availablePositionStack.popFromBack());
             break;
@@ -158,20 +158,27 @@ bool MouseController::isInStart()
     return (getCell(getCurrentPos()).attribute == start) ? true : false;
 }
 
+void MouseController::printMaze()
+{
+    Maze::updateCell();
+    mazeIO.setMousePosition(getCurrentPos());
+    Maze::printMaze();
+}
+
 void MouseController::printPathStack()
 {
     void (PositionController::*pvFunc)(
             PositionController) = &PositionController::print;
     printf("pathStack: ");
     pathStack.print(pvFunc);
-    printf("\r\n");
+    printf("\n");
 }
 
 void MouseController::printAvailablePositionStack()
 {
     printf("availableStack: ");
     availablePositionStack.print(&PositionController::print);
-    printf("\r\n");
+    printf("\n");
 }
 
 /*******************************************************************************
@@ -182,12 +189,6 @@ Cell MouseController::getCell(Position pos)
     return Maze::getCell(pos.row, pos.col);
 }
 
-void MouseController::printMaze()
-{
-    Maze::updateCell();
-    mazeIO.setMousePosition(getCurrentPos());
-    Maze::printMaze();
-}
 
 void MouseController::initDistance()
 {
