@@ -32,7 +32,6 @@ private:
     inline void setDis(Position pos, int dis);
     /* Cell getter and setter */
     Cell getCell(Position pos);
-    void updateCell();
     /* Used in algorithm implementation */
     void initDistance();
     int getHighestNeighbouringDistance(int row, int col);
@@ -60,12 +59,13 @@ public:
     void getDistanceAllCell();
     void getShortestPath();
     void moveNextCell();
-    /* Goad and Start */
+    /* Goal and Start */
     bool isInGoal();
     bool isInStart();
     /* print information of stack used in the algorithm */
     void printPathStack();
     void printAvailablePositionStack();
+    void printMaze();
 };
 
 /*******************************************************************************

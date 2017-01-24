@@ -47,8 +47,6 @@ public:
     /* Constructors */
     Maze();
     Maze(char* filename);
-    /* Position of mouse */
-    void setMouse(int row, int col);
     /* Related to wall */
     Wall getWall(int row, int col, Direction dir);
     int setWall(int row, int col, Direction dir, Wall status);
