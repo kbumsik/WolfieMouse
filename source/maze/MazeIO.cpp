@@ -16,9 +16,9 @@ static void clearLine(FILE *pFile);
  * Constructor
  ******************************************************************************/
 MazeIO::MazeIO(Maze *mazePtr) :
+    maze(mazePtr),
     maxRowSize(CONFIG_MAX_ROW_SIZE),
-    maxColSize(CONFIG_MAX_COL_SIZE),
-    maze(mazePtr)
+    maxColSize(CONFIG_MAX_COL_SIZE)
 {
     // The initializer does it all
 }
@@ -119,7 +119,6 @@ void MazeIO::saveMaze(char* fileName)
     }
 
     FILE *pFile;
-    char buf;
     // try opening file
     pFile = fopen(fileName, "w");
     if (NULL == pFile) {
@@ -134,7 +133,6 @@ void MazeIO::saveMaze(char* fileName)
  ******************************************************************************/
 void MazeIO::writeBufferFromMaze(bool isShowMouse)
 {
-    char buf;
     char *ptr = buffer;
     for (int i = 0; i < (CONFIG_MAX_ROW_SIZE * 2 + 1); i++) {
         if (i % 2 == 0) {

@@ -107,7 +107,7 @@ Wall Maze::getWall(int row, int col, Direction dir)
 Cell Maze::getCell(int row, int col)
 {
     if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
-        return (Cell) { CELL_DISTANCE_ERROR, cellError, nothing } ;
+        return Cell { CELL_DISTANCE_ERROR, cellError, nothing };
     } else {
         return cell[row][col];
     }

@@ -63,9 +63,9 @@ public:
     bool isInGoal();
     bool isInStart();
     /* print information of stack used in the algorithm */
+    void printMaze() override;
     void printPathStack();
     void printAvailablePositionStack();
-    void printMaze();
 };
 
 /*******************************************************************************
