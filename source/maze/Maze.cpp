@@ -66,15 +66,6 @@ Maze::Maze(char *filename) :
 /*******************************************************************************
  * Public Methods
  ******************************************************************************/
-void Maze::setMouse(int row, int col)
-{
-    cell[row][col].isMouse = true;
-}
-
-void Maze::resetMouse(int row, int col)
-{
-    cell[row][col].isMouse = false;
-}
 
 /**
  * @brief      get status of a wall
@@ -190,7 +181,6 @@ int Maze::updateCell(int row, int col)
         cell[row][col].attribute = nothing;
     }
     /* TODO: checking mouse */
-    cell[row][col].isMouse = false;
     return COMMON_MAZE_SUCCESS;
 }
 

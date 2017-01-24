@@ -182,11 +182,11 @@ Cell MouseController::getCell(Position pos)
     return Maze::getCell(pos.row, pos.col);
 }
 
-void MouseController::updateCell()
+void MouseController::printMaze()
 {
-	Position tmp = getCurrentPos();
-	Maze::updateCell();
-	Maze::setMouse(tmp.row, tmp.col);
+    Maze::updateCell();
+    mazeIO.setMousePosition(getCurrentPos());
+    Maze::printMaze();
 }
 
 void MouseController::initDistance()

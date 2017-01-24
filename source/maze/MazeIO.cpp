@@ -110,7 +110,6 @@ void MazeIO::loadMaze(char* fileName)
     maze->updateCell();
 }
 
-
 void MazeIO::saveMaze(char* fileName)
 {
     // check maze object
@@ -201,7 +200,7 @@ void MazeIO::writeFileFromBuffer(FILE *pFile)
 void MazeIO::printCell(int row, int col, bool isShowMouse, char* buf)
 {
     /* Check if this is mouse position */
-    if (maze->getCell(row, col).isMouse && isShowMouse) {
+    if (mousePosition.col == col && mousePosition.row == row && isShowMouse) {
         *buf = 'M';
     } else if (maze->getCell(row, col).attribute == start) {
         *buf = 'S';

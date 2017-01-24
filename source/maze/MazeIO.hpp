@@ -24,7 +24,6 @@ class Maze;
  ******************************************************************************/
 class MazeIO
 {
-    friend class Maze;
 private:
     Maze *maze;
     int maxRowSize;
