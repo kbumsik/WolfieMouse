@@ -186,7 +186,7 @@ void MouseController::updateCell()
 {
 	Position tmp = getCurrentPos();
 	Maze::updateCell();
-	Maze::setMouse(tmp.row, tmp.col);
+	mazeIO.setMousePosition(tmp);
 }
 
 void MouseController::initDistance()
