@@ -13,6 +13,7 @@
 #include "Cell.hpp"
 #include "Direction.hpp"
 #include "Position.hpp"
+#include "StdIO.hpp"
 #include <stdio.h>
 #include <stddef.h>
 
@@ -31,6 +32,8 @@ private:
     Position mousePosition;
     /* Printing buffer (the last + 1 is for newline charater */
     char buffer[(CONFIG_MAX_ROW_SIZE * 2 + 1) * (CONFIG_MAX_COL_SIZE * 2 + 1 + 1)];
+    // IOInterface objects for IO
+    StdIO stdIO;
     // printing helper
     void writeBufferFromMaze (bool isShowMouse);
     void writeFileFromBuffer (FILE *pFile);

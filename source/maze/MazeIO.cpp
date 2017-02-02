@@ -1,16 +1,15 @@
-/*
- * MazeIO.cpp
- *
- *  Created on: Jan 17, 2017
- *      Author: vagrant
- */
+/********************************
+ * Name:    IOInterface.hpp
+ * Author:  Bumsik Kim; Bryant Gonzaga
+ * Date Modified:   2 Feb. 2017
+ ********************************/
 
 #include "MazeIO.hpp"
 #include "Maze.hpp"
 
 
 static void clearLine(FILE *pFile);
-/** FIXME: dynamically decide the starting dirction */
+/** FIXME: dynamically decide the starting direction */
 
 /*******************************************************************************
  * Constructor
@@ -18,7 +17,8 @@ static void clearLine(FILE *pFile);
 MazeIO::MazeIO(Maze *mazePtr) :
     maze(mazePtr),
     maxRowSize(CONFIG_MAX_ROW_SIZE),
-    maxColSize(CONFIG_MAX_COL_SIZE)
+    maxColSize(CONFIG_MAX_COL_SIZE),
+    stdIO()
 {
     // The initializer does it all
 }
@@ -48,26 +48,18 @@ void MazeIO::printMaze(void)
 
 void MazeIO::loadMaze(char* fileName)
 {
-    FILE *pFile;
     char buf;
-
     if (NULL == fileName) {
         printf("No file to load maze.\n");
         return;
     }
-
-    pFile = fopen(fileName, "r");
-    if (NULL == pFile) {
-        printf("Failed to open file");
-        return;
-    }
-    /**
-     * Reading part
-     */
+    //Open maze file
+    stdIO.open(fileName, "r");
+    // Reading part
     Wall wallToPut;
     for (int i = 0; i < (CONFIG_MAX_ROW_SIZE * 2 + 1); i++) {
         for (int j = 0; j < (CONFIG_MAX_COL_SIZE * 2 + 1); j++) {
-            if ((buf = fgetc(pFile)) == EOF) {
+            if ((buf = stdIO.getchar()) == EOF) {
                 printf("error?"); /* TODO: check error condition of fgets */
             }
             switch (buf) {
@@ -103,7 +95,7 @@ void MazeIO::loadMaze(char* fileName)
                 maze->colWall[i / 2][j / 2] = wallToPut;
             }
         }
-        clearLine(pFile);
+        stdIO.clearLine();
     }
 
     /* update the cell */
