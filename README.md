@@ -26,10 +26,10 @@ See [documentation section.](doc/)
 
 ## Gallery
 
-Schematic overview. See the whole schemetic [here (PDF)](doc/hardware_design/schematic_2017_Feb.pdf) 
+Schematic overview. See the whole schemetic [here (PDF).](doc/hardware_design/schematic_2017_Feb.pdf) 
 
-![schematic_overview](doc/hardware_design/schematic_2017_Feb-p1.png)
+![schematic_overview](doc/hardware_design/schematic_2017_Feb-p1.jpg)
 
 PCB Footprint overview. Use [KiCad](http://kicad-pcb.org/) and open `hardware` dicrectory to see footprint.
 
-![pcb_overview](doc/hardware_design/Footprint_2017_Feb.png)
+![pcb_overview](doc/hardware_design/Footprint_2017_Feb.jpg)
