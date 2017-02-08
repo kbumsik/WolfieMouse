@@ -3,7 +3,7 @@
 ## How Was 2016 Micromouse Competition
 
 We had [a competiton in 2016](https://meetings.vtools.ieee.org/m/37907). Although
-we had some achivements, such as making the actual mouse hardware, it was a big fail!
+we had some achievements, such as making the actual mouse hardware, it was a big fail!
 The mouse didn't work in the maze. The main reason was because we spent too much time
 doing trial and error with hardware and couldn't finish driver software parts.
 
