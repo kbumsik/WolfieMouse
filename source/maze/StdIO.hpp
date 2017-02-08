@@ -13,13 +13,14 @@
 
 class StdIO: public IOInterface
 {
+	bool allowFile = false;
 public:
-    //Overridden methods
-    void open(char *filename, char *mode);
-    int getchar();
-    size_t write(const void *ptr, size_t size, size_t nmemb);
-    //other methods
-    void clearLine();
+	// Constructor
+	StdIO(bool allowFile);
+    // Overridden methods
+    void open(char *filename, char *mode) override;
+    int getchar() override;
+    size_t write(const void *ptr, size_t size, size_t nmemb) override;
 };
 
 #endif /* STDIO_HPP_ */

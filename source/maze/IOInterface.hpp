@@ -13,8 +13,9 @@
 class IOInterface
 {
 protected:
-    FILE *file;
+    FILE *_file;
 public:
+    IOInterface(void) : _file(NULL) {}
     // replacement for fopen()
     virtual void open(char *filename, char *mode) = 0;
     // replacement for fgetc()

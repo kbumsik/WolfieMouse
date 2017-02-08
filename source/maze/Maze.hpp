@@ -8,6 +8,7 @@
 #include "Direction.hpp"
 #include "Wall.hpp"
 #include "MazeIO.hpp"
+#include "IOInterface.hpp"
 
 
 #define MAZE_IS_ROW_SAFE_FORWARD(row)	(row < (CONFIG_MAX_ROW_SIZE - 1))
@@ -45,8 +46,8 @@ public:
     int index_start_col;
 
     /* Constructors */
-    Maze();
-    Maze(char* filename);
+    Maze(IOInterface *fileIO, IOInterface *printIO);
+    Maze(char* filename, IOInterface *fileIO, IOInterface *printIO);
     /* Related to wall */
     Wall getWall(int row, int col, Direction dir);
     int setWall(int row, int col, Direction dir, Wall status);

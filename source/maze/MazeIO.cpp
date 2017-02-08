@@ -8,17 +8,18 @@
 #include "Maze.hpp"
 
 
-static void clearLine(FILE *pFile);
+static void clearLine(IOInterface* io);
 /** FIXME: dynamically decide the starting direction */
 
 /*******************************************************************************
  * Constructor
  ******************************************************************************/
-MazeIO::MazeIO(Maze *mazePtr) :
+MazeIO::MazeIO(Maze *mazePtr,  IOInterface *fileIO, IOInterface *printIO) :
     maze(mazePtr),
     maxRowSize(CONFIG_MAX_ROW_SIZE),
     maxColSize(CONFIG_MAX_COL_SIZE),
-    stdIO()
+	fileIO(fileIO),
+	printIO(printIO)
 {
     // The initializer does it all
 }
@@ -43,7 +44,7 @@ void MazeIO::printMaze(void)
         return;
     }
     writeBufferFromMaze(true);
-    writeFileFromBuffer(stdout);
+    writeIOFromBuffer(printIO);
 }
 
 void MazeIO::loadMaze(char* fileName)
@@ -54,12 +55,12 @@ void MazeIO::loadMaze(char* fileName)
         return;
     }
     //Open maze file
-    stdIO.open(fileName, "r");
+    fileIO->open(fileName, "r");
     // Reading part
     Wall wallToPut;
     for (int i = 0; i < (CONFIG_MAX_ROW_SIZE * 2 + 1); i++) {
         for (int j = 0; j < (CONFIG_MAX_COL_SIZE * 2 + 1); j++) {
-            if ((buf = stdIO.getchar()) == EOF) {
+            if ((buf = fileIO->getchar()) == EOF) {
                 printf("error?"); /* TODO: check error condition of fgets */
             }
             switch (buf) {
@@ -95,7 +96,8 @@ void MazeIO::loadMaze(char* fileName)
                 maze->colWall[i / 2][j / 2] = wallToPut;
             }
         }
-        stdIO.clearLine();
+        // TODO: Wait. Do we really need this function?
+        clearLine(fileIO);
     }
 
     /* update the cell */
@@ -110,15 +112,11 @@ void MazeIO::saveMaze(char* fileName)
         return;
     }
 
-    FILE *pFile;
     // try opening file
-    pFile = fopen(fileName, "w");
-    if (NULL == pFile) {
-        printf("Failed to open file");
-        return;
-    }
+    fileIO->open(fileName, "w");
+
     writeBufferFromMaze(false);
-    writeFileFromBuffer(pFile);
+    writeIOFromBuffer(fileIO);
 }
 /*******************************************************************************
  * Private Methods
@@ -182,9 +180,9 @@ void MazeIO::writeBufferFromMaze(bool isShowMouse)
     }
 }
 
-void MazeIO::writeFileFromBuffer(FILE *pFile)
+void MazeIO::writeIOFromBuffer(IOInterface *io)
 {
-    fwrite(buffer, sizeof(char), sizeof(buffer), pFile);
+	io->write(buffer, sizeof(char), sizeof(buffer));
 }
 
 void MazeIO::printCell(int row, int col, bool isShowMouse, char* buf)
@@ -207,10 +205,10 @@ void MazeIO::printCell(int row, int col, bool isShowMouse, char* buf)
 /*******************************************************************************
  * Private Functions
  ******************************************************************************/
-static void clearLine(FILE *pFILE)
+static void clearLine(IOInterface* io)
 {
     char buf;
-    while ((buf = fgetc(pFILE)) != '\n') {
+    while ((buf = io->getchar()) != '\n') {
         if (buf == EOF)
             break;
     }
