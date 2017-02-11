@@ -13,6 +13,7 @@
 #include "Cell.hpp"
 #include "Direction.hpp"
 #include "Position.hpp"
+#include "IOInterface.hpp"
 #include <stdio.h>
 #include <stddef.h>
 
@@ -31,13 +32,16 @@ private:
     Position mousePosition;
     /* Printing buffer (the last + 1 is for newline charater */
     char buffer[(CONFIG_MAX_ROW_SIZE * 2 + 1) * (CONFIG_MAX_COL_SIZE * 2 + 1 + 1)];
+    // IOInterface objects for IO
+    IOInterface *fileIO;
+    IOInterface *printIO;
     // printing helper
     void writeBufferFromMaze (bool isShowMouse);
-    void writeFileFromBuffer (FILE *pFile);
+    void writeIOFromBuffer (IOInterface *io);
     void printCell(int row, int col, bool isShowMouse, char* buf);
 public:
     // Constructor
-    MazeIO(Maze *mazePtr);
+    MazeIO(Maze *mazePtr, IOInterface *fileIO, IOInterface *printIO);
     // mouse
     Position getMousePosition(void);
     void setMousePosition(Position pos);

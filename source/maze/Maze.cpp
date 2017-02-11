@@ -8,8 +8,8 @@
 /**
  * @brief      maze constructor
  */
-Maze::Maze() :
-    Maze(NULL)
+Maze::Maze(IOInterface *fileIO, IOInterface *printIO) :
+    Maze(NULL, fileIO, printIO)
 {
 }
 
@@ -18,8 +18,8 @@ Maze::Maze() :
  *
  * @param      filename  the name of the file to read
  */
-Maze::Maze(char *filename) :
-    mazeIO(this)
+Maze::Maze(char *filename, IOInterface *fileIO, IOInterface *printIO) :
+    mazeIO(this, fileIO, printIO)
 {
     int i = 0;
     int j = 0;

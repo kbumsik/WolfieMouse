@@ -5,12 +5,12 @@
  * Constructor
  ******************************************************************************/
 MouseController::MouseController() :
-        MouseController(NULL)
+        MouseController(NULL, NULL, NULL)
 {
 }
 
-MouseController::MouseController(char *filename) :
-        Maze(filename)
+MouseController::MouseController(char *filename, IOInterface *fileIO, IOInterface *printIO) :
+        Maze(filename, fileIO, printIO)
 {
     pathStack = Queue<PositionController>();
     availablePositionStack = Queue<PositionController>();

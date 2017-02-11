@@ -54,7 +54,7 @@ private:
 public:
     /* Constructors */
     MouseController();
-    MouseController(char *filename);
+    MouseController(char *filename, IOInterface *fileIO, IOInterface *printIO);
     /* Algorithm solver */
     void getDistanceAllCell();
     void getShortestPath();
