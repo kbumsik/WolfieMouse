@@ -10,7 +10,6 @@
 
 * [Github-HOWTO](HOWTO/Github_HOWTO.md)
 * [Vagrant-HOWTO](HOWTO/Vagrant_HOWTO.md)
-* [SSH-HOWTO](HOWTO/SSH_HOWTO.md)
 
 ### Code Documentation
 
