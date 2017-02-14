@@ -1,7 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-WOLFIEBASE ||= "./"
+KB_LIB_BASE ||= "./"
+VB_NAME ||= "WolfieVM"
+FOLDER_NAME ||= "WolfieMouse"
 
 # A function that add a usb device without duplication.
 # See: https://github.com/mitchellh/vagrant/issues/5774
@@ -95,7 +97,7 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
 
-  config.vm.synced_folder WOLFIEBASE, "/home/vagrant/wolfieMouse"
+  config.vm.synced_folder KB_LIB_BASE, "/home/vagrant/" + FOLDER_NAME
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -105,7 +107,7 @@ Vagrant.configure("2") do |config|
     # vb.gui = true
 
     # Set virtualbox name
-    vb.name = "WolfieMouse"
+    vb.name = VB_NAME
 
     # Customize the amount of memory on the VM:
     vb.memory = "2048"
@@ -134,9 +136,10 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   
-  config.vm.provision "shell", path: "scripts/install_ide.sh"
-  config.vm.provision "shell", path: "scripts/install_rdp_vnc.sh"
-  config.vm.provision "shell", path: "scripts/modify_bashrc.sh"
+  config.vm.provision "shell", path: "scripts/install-apps/GNU-ARM-Eclipse.sh"
+  config.vm.provision "shell", path: "scripts/install-apps/TrueSTUDIO.sh"
+  config.vm.provision "shell", path: "scripts/install-apps/RDP-VNC.sh"
+  config.vm.provision "shell", path: "scripts/setup/modify_bashrc.sh"
   config.vm.provision "shell", inline: "sudo apt-get install -y xfce4-terminal"
   config.vm.provision "shell", inline: "sudo apt-get install -y build-essential"
   config.vm.provision "shell", inline: "sudo apt-get install -y gdb"

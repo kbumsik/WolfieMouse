@@ -1,7 +1,9 @@
 #!/bin/sh
 
-# Set user first!
-USER='vagrant'
+# For Vagrant provisioning - Check root and change to vagrant user
+if [ $(id -u) = 0 ]; then
+   USER='vagrant'
+fi
 
 # append .bashrc
 echo -e "\n\nModifying .bashrc..."
@@ -12,7 +14,7 @@ cat >> /home/$USER/.bashrc <<'EOF'
 LS_COLORS="ow=01;36;40" && export LS_COLORS
 
 # Cowsay
-echo -e "WolfieMouse says:\n\n"$(fortune) | cowsay
+fortune | cowsay
 EOF
 
 #echo -e '\n\n# Change console folder colors shard with windows\nLS_COLORS="ow=01;36;40" && export LS_COLORS\n\n# Cowsay\necho -e "WolfieMouse says:\n\n"$(fortune) | cowsay\n' >> /home/$USER/.bashrc

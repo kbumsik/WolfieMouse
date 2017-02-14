@@ -1,7 +1,9 @@
 #!/bin/sh
 
-# Set user first!
-USER='vagrant'
+# For Vagrant provisioning - Check root and change to vagrant user
+if [ $(id -u) = 0 ]; then
+   USER='vagrant'
+fi
 
 # RDP and desktop. Reference: https://peteris.rocks/blog/remote-desktop-and-vnc-on-ubuntu-server/
 
