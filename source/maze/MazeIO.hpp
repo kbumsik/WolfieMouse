@@ -31,7 +31,7 @@ private:
     int maxColSize;
     Position mousePosition;
     /* Printing buffer (the last + 1 is for newline charater */
-    char buffer[(CONFIG_MAX_ROW_SIZE * 2 + 1) * (CONFIG_MAX_COL_SIZE * 2 + 1 + 1)];
+    char buffer[(CONFIG_MAX_ROW_SIZE * 2 + 1) * (CONFIG_MAX_COL_SIZE * 3 + 1 + 1)];
     // IOInterface objects for IO
     IOInterface *fileIO;
     IOInterface *printIO;
