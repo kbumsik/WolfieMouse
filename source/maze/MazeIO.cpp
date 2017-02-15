@@ -61,18 +61,23 @@ void MazeIO::loadMaze(char* fileName)
     for (int i = 0; i < (CONFIG_MAX_ROW_SIZE * 2 + 1); i++) {
         for (int j = 0; j < (CONFIG_MAX_COL_SIZE * 2 + 1); j++) {
             if ((buf = fileIO->getchar()) == EOF) {
-                printf("error?"); /* TODO: check error condition of fgets */
+                printf("error?\n"); /* TODO: check error condition of fgets */
             }
             switch (buf) {
             case '_':
             case '|':
                 wallToPut = wall;
+                if (j != CONFIG_MAX_COL_SIZE * 2) {
+                	fileIO->getchar();
+                }
                 break;
             case '.':
                 wallToPut = empty;
+				fileIO->getchar();
                 break;
             case '*':
                 wallToPut = unknown;
+				fileIO->getchar();
                 break;
             case 'S': /* Starting point */
                 maze->index_start_row = i / 2;
@@ -133,11 +138,16 @@ void MazeIO::writeBufferFromMaze(bool isShowMouse)
                 switch (maze->rowWall[i / 2][j]) {
                 case empty:
                     *ptr++ = '.';
+                    *ptr++ = '.';
                     break;
                 case wall:
+                	// The cell size is twice as long
+                    *ptr++ = '_';
                     *ptr++ = '_';
                     break;
                 case unknown:
+                	// The cell size is twice as long
+                    *ptr++ = '*';
                     *ptr++ = '*';
                     break;
                 case wallError:
@@ -171,7 +181,7 @@ void MazeIO::writeBufferFromMaze(bool isShowMouse)
                 // then print cell
                 if (!(j >= CONFIG_MAX_COL_SIZE)) {
                     printCell(i / 2, j, isShowMouse, ptr);
-                    ptr++;
+                    ptr += 2;
                 }
             }
         }
@@ -189,15 +199,25 @@ void MazeIO::printCell(int row, int col, bool isShowMouse, char* buf)
 {
     /* Check if this is mouse position */
     if (mousePosition.col == col && mousePosition.row == row && isShowMouse) {
-        *buf = 'M';
+        *buf++ = 'M';
+        *buf = ' ';
     } else if (maze->getCell(row, col).attribute == start) {
-        *buf = 'S';
+        *buf++ = 'S';
+        *buf = ' ';
     } else if (maze->getCell(row, col).attribute == goal) {
-        *buf = 'G';
+        *buf++ = 'G';
+        *buf = ' ';
     } else if (isShowMouse) {
-        *buf = (maze->getCell(row, col).distance == CELL_DISTANCE_UNREACHED) ?
-                        'x' : '0' + maze->getCell(row, col).distance;
+    	if (maze->getCell(row, col).distance == CELL_DISTANCE_UNREACHED) {
+    		*buf++ = 'x';
+    		*buf = ' ';
+    	} else {
+    		int dis = maze->getCell(row, col).distance;
+    		*buf++ = (char) (dis/10 + 48);
+    		*buf = (char) (dis%10 + 48);
+    	}
     } else if (col != CONFIG_MAX_COL_SIZE) {
+        *buf++ = ' ';
         *buf = ' ';
     }
 }
