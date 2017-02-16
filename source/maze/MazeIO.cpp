@@ -199,18 +199,18 @@ void MazeIO::printCell(int row, int col, bool isShowMouse, char* buf)
 {
     /* Check if this is mouse position */
     if (mousePosition.col == col && mousePosition.row == row && isShowMouse) {
-        *buf++ = 'M';
-        *buf = ' ';
+        *buf++ = ' ';
+        *buf = 'M';
     } else if (maze->getCell(row, col).attribute == start) {
-        *buf++ = 'S';
-        *buf = ' ';
+        *buf++ = ' ';
+        *buf = 'S';
     } else if (maze->getCell(row, col).attribute == goal) {
-        *buf++ = 'G';
-        *buf = ' ';
+        *buf++ = ' ';
+        *buf = 'G';
     } else if (isShowMouse) {
     	if (maze->getCell(row, col).distance == CELL_DISTANCE_UNREACHED) {
-    		*buf++ = 'x';
-    		*buf = ' ';
+    		*buf++ = ' ';
+    		*buf = 'x';
     	} else {
     		int dis = maze->getCell(row, col).distance;
     		*buf++ = (char) (dis/10 + 48);
