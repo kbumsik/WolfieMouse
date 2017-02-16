@@ -1,0 +1,4 @@
+# Attendance Check!
+
+* Luci:
+* Ben:

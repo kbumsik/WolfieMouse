@@ -24,11 +24,21 @@ Reference: https://help.github.com/articles/syncing-a-fork/
 
 * Update your local repo with `upstream`
 
-> $ git merge upstream/master
+First get information of `upstream`
+
+> $ git fetch upstream
+
+next,
+
+> $ git pull upstream master
 
 or
 
 > $ git rebase upstream/master
+
+Then
+
+> $ git submodule update
 
 * push it to `origin` repo, your forked repository
 
