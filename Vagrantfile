@@ -13,7 +13,7 @@ if File.exists?(kb_lib_vagrantfile)
     load kb_lib_vagrantfile
 else
     abort "No Vagrantfile found in the source/kb_lib directory. 
-          Did you do git pull --recurse-submodules? ABORTING!"
+          Did you do git submodule update --init --recursive? ABORTING!"
 end
 
 Vagrant.configure(2) do |config|

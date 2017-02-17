@@ -7,7 +7,7 @@ Reference: https://help.github.com/articles/syncing-a-fork/
 * Fork our github repo https://github.com/kbumsik/WolfieMouse
 * Clone your forked repo. e.g:
 
-> $ git clone https://github.com/{your-id}/WolfieMouse
+> $ git clone --recursive https://github.com/{your-id}/WolfieMouse
 
 * Add our repo as a new remote `upstream`
 
@@ -56,7 +56,7 @@ or
 
 Then
 
-> $ git submodule update
+> $ git submodule update --recursive
 
 * push it to `origin` repo, your forked repository
 
