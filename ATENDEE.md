@@ -1,4 +1,4 @@
 # Attendance Check!
 
-* Luci:
-* Ben:
+* Luci: I'm Here!
+* Ben: Hola
