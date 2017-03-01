@@ -31,7 +31,7 @@ int main()
 				continue;
 			}
 		}
-		/* Then calcluate the distance */
+		/* Then calculate the distance */
 		mouse.getDistanceAllCell();
 		mouse.printMaze();
 		printf("please input a command\n");
@@ -82,20 +82,8 @@ int main()
 				continue;
 			}
 		}
-
-		clear_screen();
 	}
 end:
 	mouse.saveMazeFile("2.txt");
 	return 0;
-}
-
-void clear_screen()
-{
-#ifdef WINDOWS
-    system("cls");
-#else
-    // Assume POSIX
-    system ("clear");
-#endif
 }

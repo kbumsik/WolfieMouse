@@ -25,14 +25,13 @@ MouseController::MouseController(char *filename, IOInterface *fileIO, IOInterfac
  ******************************************************************************/
 void MouseController::getDistanceAllCell()
 {
-    int currentPathDistance = CELL_DISTANCE_START + 1; /* This is how far the 'water' has flowed */
+    int currentPathDistance = CELL_DISTANCE_START + 1;  //This is how far the 'water' has flowed
     int row;
     int col;
-
     /* set all distance as UNREACHED */
     initDistance();
 
-    /* Firstly set the distance of the current opsition to 0 */
+    /* Firstly set the distance of the current position to 0 */
     setDis(getCurrentPos(), CELL_DISTANCE_START);
 
     while (1) {
@@ -88,18 +87,17 @@ void MouseController::getShortestPath()
         //copy the next position
         position = availablePositionStack.peekFromBack();
         currentDistance = getDis(position);
-        //if currentposition is goal, break
+        //if current position is goal, break
         if (position.getCurrentPos() == Position {index_goal_row, index_goal_col}) {
             isFound = true;
             pathStack.pushToBack(availablePositionStack.popFromBack());
             break;
         }
-        /* Now look for next available cells, meaning neighbour cells that has
+        /* Now look for next available cells, meaning neighboring cells that has
          distance of 1 more */
         /* Look around in counter-clockwise */
         for (i = (int) row_plus; i <= (int) col_minus; i++) {
-            if (getNextDis(position, (Direction) i) == (currentDistance + 1))
-            { /* FIXME: check walls too */
+            if (getNextDis(position, (Direction) i) == (currentDistance + 1)){/* FIXME: check walls too */
                 if (wall == getWall(position.getCurrentPos().row,
                                 position.getCurrentPos().col, (Direction) i)) {
                     continue;
@@ -118,8 +116,8 @@ void MouseController::getShortestPath()
 		if (!isFound) {
 			/* if no available next cell */
 			position = availablePositionStack.popFromBack();
-			/* pop pathstack until it meet next availableStack */
-			while (!(( (pathStack.peekFromBack().getNextPos(row_plus) == availablePositionStack.peekFromBack().getCurrentPos()) && (wall != getWall(pathStack.peekFromBack().getCurrentPos().row, pathStack.peekFromBack().getCurrentPos().col, row_plus))  )
+			/* pop path stack until it meet next availableStack */
+			while (!(( (  pathStack.peekFromBack().getNextPos(row_plus) == availablePositionStack.peekFromBack().getCurrentPos()) && (wall != getWall(pathStack.peekFromBack().getCurrentPos().row, pathStack.peekFromBack().getCurrentPos().col, row_plus))  )
 					|| ( (pathStack.peekFromBack().getNextPos(col_plus) == availablePositionStack.peekFromBack().getCurrentPos()) && (wall != getWall(pathStack.peekFromBack().getCurrentPos().row, pathStack.peekFromBack().getCurrentPos().col, col_plus))  )
 					|| ( (pathStack.peekFromBack().getNextPos(row_minus)== availablePositionStack.peekFromBack().getCurrentPos()) && (wall != getWall(pathStack.peekFromBack().getCurrentPos().row, pathStack.peekFromBack().getCurrentPos().col, row_minus)) )
 					|| ( (pathStack.peekFromBack().getNextPos(col_minus)== availablePositionStack.peekFromBack().getCurrentPos()) && (wall != getWall(pathStack.peekFromBack().getCurrentPos().row, pathStack.peekFromBack().getCurrentPos().col, col_minus)) )
