@@ -57,6 +57,7 @@ public:
     void updateCell();
     /* getter and setter of Distance of cell */
     inline int getDistance(int row, int col);
+    inline int getDistancePrint(int row, int col);
     inline int setDistance(int row, int col, int dis);
     /* IO Related */
     void readMazeFromFile(char* fileName);
@@ -68,6 +69,14 @@ public:
  * Inline function definition
  ******************************************************************************/
 inline int Maze::getDistance(int row, int col)
+{
+	if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
+	        return COMMON_MAZE_ERROR;
+	    }
+	    return cell[row][col].distance;
+}
+
+inline int Maze::getDistancePrint(int row, int col)
 {
     if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
         printf("invalid cell!\n");
