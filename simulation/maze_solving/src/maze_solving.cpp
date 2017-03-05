@@ -4,14 +4,18 @@
 #include <stdlib.h>
 #include "IOInterface.hpp"
 #include "StdIO.hpp"
+#include "SimulMouse.hpp"
 
 StdIO fileIO(true);
 StdIO printIO(false);
+SimulMouse virtualMouse;
+
 
 int main()
 {
 	char tmp;
-	MouseController mouse ("1.txt", &fileIO, &printIO);
+	MouseController mouse ("1.txt", &fileIO, &printIO,
+			(FinderInterface*)&virtualMouse, (MoverInterface*)&virtualMouse);
 	while (true) {
 		/* First just print maze */
 		mouse.printMaze();

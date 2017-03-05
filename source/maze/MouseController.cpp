@@ -5,12 +5,15 @@
  * Constructor
  ******************************************************************************/
 MouseController::MouseController() :
-        MouseController(NULL, NULL, NULL)
+        MouseController(NULL, NULL, NULL, NULL, NULL)
 {
 }
 
-MouseController::MouseController(char *filename, IOInterface *fileIO, IOInterface *printIO) :
-        Maze(filename, fileIO, printIO)
+MouseController::MouseController(char *filename, IOInterface *fileIO,
+            IOInterface *printIO, FinderInterface *finder, MoverInterface *mover) :
+        Maze(filename, fileIO, printIO),
+		finder(finder),
+		mover(mover)
 {
     pathStack = Queue<PositionController>();
     availablePositionStack = Queue<PositionController>();
@@ -179,6 +182,34 @@ void MouseController::printAvailablePositionStack()
     printf("\n");
 }
 
+void MouseController::turnRight()
+{
+	/* Use MovingInterface */
+
+	/* Call parent method */
+	PositionController::turnRight();
+}
+
+void MouseController::turnLeft()
+{
+	/* Use MovingInterface */
+
+	/* Call parent method */
+	PositionController::turnLeft();
+}
+
+int MouseController::goForward()
+{
+	/* Call parent method */
+	int ret = PositionController::goForward();
+	/* Check if it is really OK to move */
+	if (ret != COMMON_MAZE_SUCCESS) {
+		return ret;
+	}
+	/* Use MovingInterface */
+	// TODO: What if the mouse actually failed to movce??
+	return COMMON_MAZE_SUCCESS;
+}
 /*******************************************************************************
  * Private Methods
  ******************************************************************************/
