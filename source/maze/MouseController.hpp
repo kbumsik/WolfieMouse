@@ -19,7 +19,7 @@
 class MouseController: public Maze, public PositionController
 {
 private:
-    Queue<PositionController> pathStack; /**< This is an assistant stack. When @getShortestPath invoked the path to the goal is cunstructed. */
+    Queue<PositionController> pathStack; /**< This is an assistant stack. When @getShortestPath invoked the path to the goal is constructed. */
     Queue<PositionController> availablePositionStack; /**< I don't even know what is this. */
 
     /* Distance getter and setters */ 

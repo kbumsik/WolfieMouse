@@ -42,7 +42,7 @@ void MouseController::getDistanceAllCell()
                 if (getDis(row, col) != CELL_DISTANCE_UNREACHED) {
                     continue;
                 }
-                /* If there is a neighbouring cell which has been */
+                /* If there is a neighboring cell which has been */
                 if (getHighestNeighbouringDistance(row, col)
                         == (currentPathDistance - 1)) {
                     /* you have reached the current cell */
@@ -58,12 +58,12 @@ void MouseController::getDistanceAllCell()
     }
     /**
      * The highestNeighbouringCell(x,y) function returns the value of the highest,
-     * accessible (ie there are no separating walls) neighbouring cell. Initially,
+     * accessible (ie there are no separating walls) neighboring cell. Initially,
      * all the cells are given a value of UNREACHED(which is -1), except the
      * micromouse's current cell, which is given value 0.
      * Then the grid of cell values is scanned. On the first scan, only the cells
-     * next to, and accessible to the cellwhere the micromouse is, will be given
-     * a (non-UNREACHED) value. That value is 1. This is repeated untill the
+     * next to, and accessible to the cell where the micromouse is, will be given
+     * a (non-UNREACHED) value. That value is 1. This is repeated until the
      * destination cell has been given a (non-UNREACHED) value.
      */
 }

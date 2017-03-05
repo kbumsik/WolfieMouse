@@ -5,9 +5,6 @@
 #include "IOInterface.hpp"
 #include "StdIO.hpp"
 
-
-void clear_screen();
-
 StdIO fileIO(true);
 StdIO printIO(false);
 
