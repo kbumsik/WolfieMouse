@@ -10,16 +10,21 @@
 
 #include "FinderInterface.hpp"
 #include "MoverInterface.hpp"
+#include "Maze.hpp"
+#include "IOInterface.hpp"
+#include <stdio.h>
 
 class SimulMouse: public FinderInterface, public MoverInterface
 {
+private:
+	Maze maze;
 public:
 	// Constructor
-	SimulMouse();
+	SimulMouse(char *mazeFile, IOInterface *fileIO, IOInterface *printIO);
     /* Overriding FinderInterface methods */
-	void find(void) override;
+	Wall examineWall(int row, int col, Direction wallDir, PositionController &mousePos) override;
     /* Overriding MoverInterface methods */
-	void move(void) override;
+	void moveTo(int row, int col, Direction destDir, PositionController &mousePos) override;
 };
 
 #endif /* SIMULMOUSE_HPP_ */

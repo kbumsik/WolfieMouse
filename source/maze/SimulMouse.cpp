@@ -10,7 +10,8 @@
 /*******************************************************************************
  * Constructor
  ******************************************************************************/
-SimulMouse::SimulMouse()
+SimulMouse::SimulMouse(char *mazeFile, IOInterface *fileIO, IOInterface *printIO):
+	maze(mazeFile, fileIO, printIO)
 {
     // The initializer does it all
 }
@@ -19,12 +20,13 @@ SimulMouse::SimulMouse()
  * Public Methods
  ******************************************************************************/
 /* Overriding FinderInterface methods */
-void SimulMouse::find(void)
+Wall SimulMouse::examineWall(int row, int col, Direction wallDir, PositionController &mousePos)
 {
-	return;
+	return maze.getWall(row, col, wallDir);
 }
+
 /* Overriding MoverInterface methods */
-void SimulMouse::move(void)
+void SimulMouse::moveTo(int row, int col, Direction destDir, PositionController &mousePos)
 {
 	return;
 }

@@ -62,6 +62,7 @@ public:
     MouseController(char *filename, IOInterface *fileIO, IOInterface *printIO,
                     FinderInterface *finder, MoverInterface *mover);
     /* Algorithm solver */
+    void scanWalls(void);     // Detect and update walls while not moving.
     void getDistanceAllCell();
     void getShortestPath();
     void moveNextCell();

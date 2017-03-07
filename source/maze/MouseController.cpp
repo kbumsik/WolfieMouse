@@ -26,6 +26,25 @@ MouseController::MouseController(char *filename, IOInterface *fileIO,
 /*******************************************************************************
  * Public Methods
  ******************************************************************************/
+void MouseController::scanWalls(void)
+{
+    Position curPos = getCurrentPos();
+    Direction curDir = getCurrentDir();
+    Position nextPos = getNextPos();
+    // Firstly detect a wall right in front of the mouse
+    Wall result = finder->examineWall(curPos.row, curPos.col, curDir, *this);
+    setWall(curPos.row, curPos.col, curDir, result);
+    // Then search walls of facing cells 
+    for (int i = (int) row_plus; i <= (int) col_minus; i++) {
+    	Direction dir = (Direction) i;
+        result = finder->examineWall(nextPos.row, nextPos.col, dir, *this);
+        setWall(nextPos.row, nextPos.col, dir, result);
+    }
+    // Lastly, update state of cells.
+    updateCell(curPos.row, curPos.col);
+    updateCell(nextPos.row, nextPos.col);
+}
+
 void MouseController::getDistanceAllCell()
 {
     int currentPathDistance = CELL_DISTANCE_START + 1;  //This is how far the 'water' has flowed
@@ -112,7 +131,6 @@ void MouseController::getShortestPath()
                 availablePositionStack.pushToBack(
                         PositionController(position.getNextPos((Direction) i),
                                 (Direction) i));
-
             }
         }
 
@@ -140,6 +158,7 @@ void MouseController::moveNextCell()
     /* before setting direction we need to set how much trun */
     setDirectionToGo();
     /* 2. scan side wall */
+    scanWalls();		// TODO: Try using this outside
     /* 3. move */
     Position tmp_p = getNextPos();
     /* move command */
