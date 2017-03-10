@@ -1,11 +1,12 @@
 #ifndef Maze_h
 #define Maze_h
 
-#include <Cell.hpp>
+#include "Cell.hpp"
 #include "common_maze.h"
 #include "config_maze.h"
 #include <stdio.h>
 #include "Direction.hpp"
+#include "Position.hpp"
 #include "Wall.hpp"
 #include "MazeIO.hpp"
 #include "IOInterface.hpp"
@@ -57,8 +58,11 @@ public:
     void updateCell();
     /* getter and setter of Distance of cell */
     inline int getDistance(int row, int col);
+    inline int getDistance(Position pos);
     inline int getDistancePrint(int row, int col);
+    inline int getDistancePrint(Position pos);
     inline int setDistance(int row, int col, int dis);
+    inline int setDistance(Position pos, int dis);
     /* IO Related */
     void readMazeFromFile(char* fileName);
     virtual void printMaze();
@@ -71,9 +75,14 @@ public:
 inline int Maze::getDistance(int row, int col)
 {
 	if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
-	        return COMMON_MAZE_ERROR;
-	    }
-	    return cell[row][col].distance;
+	    return COMMON_MAZE_ERROR;
+	}
+    return cell[row][col].distance;
+}
+
+inline int Maze::getDistance(Position pos)
+{
+    return getDistance(pos.row, pos.col);
 }
 
 inline int Maze::getDistancePrint(int row, int col)
@@ -85,6 +94,11 @@ inline int Maze::getDistancePrint(int row, int col)
     return cell[row][col].distance;
 }
 
+inline int Maze::getDistancePrint(Position pos)
+{
+    return getDistancePrint(pos.row, pos.col);
+}
+
 inline int Maze::setDistance(int row, int col, int dis)
 {
     if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
@@ -93,6 +107,11 @@ inline int Maze::setDistance(int row, int col, int dis)
     }
     cell[row][col].distance = dis;
     return COMMON_MAZE_SUCCESS;
+}
+
+inline int Maze::setDistance(Position pos, int dis)
+{
+    return setDistance(pos.row, pos.col, dis);
 }
 
 #endif
