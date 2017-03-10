@@ -51,10 +51,14 @@ public:
     Maze(char* filename, IOInterface *fileIO, IOInterface *printIO);
     /* Related to wall */
     Wall getWall(int row, int col, Direction dir);
+    inline Wall getWall(Position pos, Direction dir);
     int setWall(int row, int col, Direction dir, Wall status);
+    inline int setWall(Position pos, Direction dir, Wall status);
     /* Related to Cell */
     Cell getCell(int row, int col);
+    inline Cell getCell(Position pos);
     int updateCell(int row, int col);
+    inline int updateCell(Position pos);
     void updateCell();
     /* getter and setter of Distance of cell */
     inline int getDistance(int row, int col);
@@ -72,6 +76,29 @@ public:
 /*******************************************************************************
  * Inline function definition
  ******************************************************************************/
+/* Related to wall */
+inline Wall Maze::getWall(Position pos, Direction dir)
+{
+    return getWall(pos.row, pos.col, dir);
+}
+
+inline int Maze::setWall(Position pos, Direction dir, Wall status)
+{
+    return setWall(pos.row, pos.col, dir, status);
+}
+
+/* Related to Cell */
+inline Cell Maze::getCell(Position pos)
+{
+    return getCell(pos.row, pos.col);
+}
+
+inline int Maze::updateCell(Position pos)
+{
+    return updateCell(pos.row, pos.col);
+}
+
+/* getter and setter of Distance of cell */
 inline int Maze::getDistance(int row, int col)
 {
 	if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
