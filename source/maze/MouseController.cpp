@@ -32,17 +32,17 @@ void MouseController::scanWalls(void)
     Direction curDir = getCurrentDir();
     Position nextPos = getNextPos();
     // Firstly detect a wall right in front of the mouse
-    Wall result = finder->examineWall(curPos.row, curPos.col, curDir, *this);
-    setWall(curPos.row, curPos.col, curDir, result);
+    Wall result = finder->examineWall(curPos, curDir, *this);
+    setWall(curPos, curDir, result);
     // Then search walls of facing cells 
     for (int i = (int) row_plus; i <= (int) col_minus; i++) {
     	Direction dir = (Direction) i;
-        result = finder->examineWall(nextPos.row, nextPos.col, dir, *this);
-        setWall(nextPos.row, nextPos.col, dir, result);
+        result = finder->examineWall(nextPos, dir, *this);
+        setWall(nextPos, dir, result);
     }
     // Lastly, update state of cells.
-    updateCell(curPos.row, curPos.col);
-    updateCell(nextPos.row, nextPos.col);
+    updateCell(curPos);
+    updateCell(nextPos);
 }
 
 void MouseController::getDistanceAllCell()
@@ -119,19 +119,18 @@ void MouseController::getShortestPath()
          distance of 1 more */
         /* Look around in counter-clockwise */
         for (i = (int) row_plus; i <= (int) col_minus; i++) {
-            if (getNextDis(position, (Direction) i) == (currentDistance + 1)){
+        	Direction dir = (Direction) i;
+            if (getNextDis(position, dir) == (currentDistance + 1)){
                 // Check if that cell is reachable. In other words, check if the
                 // cell is not blocked by a wall.
-                if (wall == getWall(position.getCurrentPos().row,
-                                position.getCurrentPos().col, (Direction) i)) {
+                if (wall == getWall(position.getCurrentPos(), dir)) {
                     continue;
                 }
                 if (!isFound) {
                     isFound = true;
                 }
                 availablePositionStack.pushToBack(
-                        PositionController(position.getNextPos((Direction) i),
-                                (Direction) i));
+                		PositionController(position.getNextPos(dir), dir));
             }
         }
 		if (!isFound) {
