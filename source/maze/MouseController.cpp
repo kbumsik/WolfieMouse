@@ -80,53 +80,65 @@ void MouseController::getShortestPath()
 	pathStack.init();
 
 	/* set first stack = the current position */
-	availablePositionStack.pushToBack(PositionController(getCurrentPos(),getCurrentDir()));
+	pathStack.pushToBack(PositionController(getCurrentPos(),getCurrentDir()));
 
 	while (1) {
         isFound = false;
         //copy the next position
-        position = availablePositionStack.peekFromBack();
+        position = pathStack.peekFromBack();
         currentDistance = getDis(position);
         //if current position is goal, break
         if (position.getCurrentPos() == Position {index_goal_row, index_goal_col}) {
             isFound = true;
-            pathStack.pushToBack(availablePositionStack.popFromBack());
+            //pathStack.pushToBack(availablePositionStack.popFromBack());
             break;
         }
         /* Now look for next available cells, meaning neighboring cells that has
          distance of 1 more */
         /* Look around in counter-clockwise */
         for (i = (int) row_plus; i <= (int) col_minus; i++) {
-            if (getNextDis(position, (Direction) i) == (currentDistance + 1)){/* FIXME: check walls too */
+            if (getNextDis(position, (Direction) i) == (currentDistance + 1)){
+                // Check if that cell is reachable. In other words, check if the
+                // cell is not blocked by a wall.
                 if (wall == getWall(position.getCurrentPos().row,
                                 position.getCurrentPos().col, (Direction) i)) {
                     continue;
                 }
                 if (!isFound) {
-                    pathStack.pushToBack(availablePositionStack.popFromBack());
                     isFound = true;
                 }
                 availablePositionStack.pushToBack(
                         PositionController(position.getNextPos((Direction) i),
                                 (Direction) i));
-
             }
         }
-
 		if (!isFound) {
-			/* if no available next cell */
-			position = availablePositionStack.popFromBack();
-			/* pop path stack until it meet next availableStack */
-			while (!(( (  pathStack.peekFromBack().getNextPos(row_plus) == availablePositionStack.peekFromBack().getCurrentPos()) && (wall != getWall(pathStack.peekFromBack().getCurrentPos().row, pathStack.peekFromBack().getCurrentPos().col, row_plus))  )
-					|| ( (pathStack.peekFromBack().getNextPos(col_plus) == availablePositionStack.peekFromBack().getCurrentPos()) && (wall != getWall(pathStack.peekFromBack().getCurrentPos().row, pathStack.peekFromBack().getCurrentPos().col, col_plus))  )
-					|| ( (pathStack.peekFromBack().getNextPos(row_minus)== availablePositionStack.peekFromBack().getCurrentPos()) && (wall != getWall(pathStack.peekFromBack().getCurrentPos().row, pathStack.peekFromBack().getCurrentPos().col, row_minus)) )
-					|| ( (pathStack.peekFromBack().getNextPos(col_minus)== availablePositionStack.peekFromBack().getCurrentPos()) && (wall != getWall(pathStack.peekFromBack().getCurrentPos().row, pathStack.peekFromBack().getCurrentPos().col, col_minus)) )
-					)) {
+			/* When not found available next cell?
+			 * pop(pathStack) until the peek(pathStack) is adjacent to peek(availablePathStack)
+			 * Should also check if they are adjacent distance.
+			 */
+			bool isAdjacent;
+			bool isNextDistance;
+			PositionController posFromPath;
+			PositionController posFromAvailable;
+			do {
 				pathStack.popFromBack();
-			}
+				posFromPath = pathStack.peekFromBack();
+				posFromAvailable = availablePositionStack.peekFromBack();
+				isAdjacent =
+						(  (posFromPath.getNextPos(row_plus)  == posFromAvailable.getCurrentPos())
+						|| (posFromPath.getNextPos(col_plus)  == posFromAvailable.getCurrentPos())
+						|| (posFromPath.getNextPos(row_minus) == posFromAvailable.getCurrentPos())
+						|| (posFromPath.getNextPos(col_minus) == posFromAvailable.getCurrentPos())
+						);
+				isNextDistance = (getDis(posFromPath) + 1) == getDis(posFromAvailable);
+			} while (!(isAdjacent && isNextDistance));
 		}
+        pathStack.pushToBack(availablePositionStack.popFromBack());
 	}
 	/* Delete the top element - it is the current position! */
+	// FIXME: Do not delete it?
+	// FIXME: When not poping, the Front is always (0,0)
 	pathStack.popFromFront();
 }
 
