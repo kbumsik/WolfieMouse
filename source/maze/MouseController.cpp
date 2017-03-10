@@ -5,12 +5,15 @@
  * Constructor
  ******************************************************************************/
 MouseController::MouseController() :
-        MouseController(NULL, NULL, NULL)
+        MouseController(NULL, NULL, NULL, NULL, NULL)
 {
 }
 
-MouseController::MouseController(char *filename, IOInterface *fileIO, IOInterface *printIO) :
-        Maze(filename, fileIO, printIO)
+MouseController::MouseController(char *filename, IOInterface *fileIO,
+            IOInterface *printIO, FinderInterface *finder, MoverInterface *mover) :
+        Maze(filename, fileIO, printIO),
+		finder(finder),
+		mover(mover)
 {
     pathStack = Queue<PositionController>();
     availablePositionStack = Queue<PositionController>();
@@ -23,6 +26,25 @@ MouseController::MouseController(char *filename, IOInterface *fileIO, IOInterfac
 /*******************************************************************************
  * Public Methods
  ******************************************************************************/
+void MouseController::scanWalls(void)
+{
+    Position curPos = getCurrentPos();
+    Direction curDir = getCurrentDir();
+    Position nextPos = getNextPos();
+    // Firstly detect a wall right in front of the mouse
+    Wall result = finder->examineWall(curPos.row, curPos.col, curDir, *this);
+    setWall(curPos.row, curPos.col, curDir, result);
+    // Then search walls of facing cells 
+    for (int i = (int) row_plus; i <= (int) col_minus; i++) {
+    	Direction dir = (Direction) i;
+        result = finder->examineWall(nextPos.row, nextPos.col, dir, *this);
+        setWall(nextPos.row, nextPos.col, dir, result);
+    }
+    // Lastly, update state of cells.
+    updateCell(curPos.row, curPos.col);
+    updateCell(nextPos.row, nextPos.col);
+}
+
 void MouseController::getDistanceAllCell()
 {
     int currentPathDistance = CELL_DISTANCE_START + 1;  //This is how far the 'water' has flowed
@@ -149,6 +171,7 @@ void MouseController::moveNextCell()
     /* before setting direction we need to set how much trun */
     setDirectionToGo();
     /* 2. scan side wall */
+    scanWalls();		// TODO: Try using this outside
     /* 3. move */
     Position tmp_p = getNextPos();
     /* move command */
@@ -191,6 +214,34 @@ void MouseController::printAvailablePositionStack()
     printf("\n");
 }
 
+void MouseController::turnRight()
+{
+	/* Use MovingInterface */
+
+	/* Call parent method */
+	PositionController::turnRight();
+}
+
+void MouseController::turnLeft()
+{
+	/* Use MovingInterface */
+
+	/* Call parent method */
+	PositionController::turnLeft();
+}
+
+int MouseController::goForward()
+{
+	/* Call parent method */
+	int ret = PositionController::goForward();
+	/* Check if it is really OK to move */
+	if (ret != COMMON_MAZE_SUCCESS) {
+		return ret;
+	}
+	/* Use MovingInterface */
+	// TODO: What if the mouse actually failed to movce??
+	return COMMON_MAZE_SUCCESS;
+}
 /*******************************************************************************
  * Private Methods
  ******************************************************************************/

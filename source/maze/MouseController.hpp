@@ -5,6 +5,8 @@
 #include "Maze.hpp"
 #include "PositionController.hpp"
 #include "Queue.hpp"
+#include "FinderInterface.hpp"
+#include "MoverInterface.hpp"
 
 /*******************************************************************************
  * Class Declaration
@@ -19,9 +21,12 @@
 class MouseController: public Maze, public PositionController
 {
 private:
+	/* Helper objects for shortest path algorithm */
     Queue<PositionController> pathStack; /**< This is an assistant stack. When @getShortestPath invoked the path to the goal is constructed. */
     Queue<PositionController> availablePositionStack; /**< I don't even know what is this. */
-
+    /* Interfaces */
+    FinderInterface *finder;
+    MoverInterface *mover;
     /* Distance getter and setters */ 
     inline int getDis(int row, int col);
     inline int getDis(Position pos);
@@ -38,15 +43,15 @@ private:
     /* Setting Direction */
     Direction getDirectionToGo();
     void setDirectionToGo();
+    /* Moving methods */
+    void turnRight() override;
+    void turnLeft() override;
+    int goForward() override;
     /** On development
      void moveNextCell();
      void movingCompleted();
 
      Cell* getNextCell();
-
-     virtual void turnRight();
-     virtual void turnLeft();
-     virtual void goForward();
 
      virtual void setWall(int row, int col, direction_e dir, wall_e status);
      virtual void updateCell(int row, int col);
@@ -54,8 +59,10 @@ private:
 public:
     /* Constructors */
     MouseController();
-    MouseController(char *filename, IOInterface *fileIO, IOInterface *printIO);
+    MouseController(char *filename, IOInterface *fileIO, IOInterface *printIO,
+                    FinderInterface *finder, MoverInterface *mover);
     /* Algorithm solver */
+    void scanWalls(void);     // Detect and update walls while not moving.
     void getDistanceAllCell();
     void getShortestPath();
     void moveNextCell();

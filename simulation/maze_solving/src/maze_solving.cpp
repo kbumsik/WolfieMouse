@@ -4,14 +4,18 @@
 #include <stdlib.h>
 #include "IOInterface.hpp"
 #include "StdIO.hpp"
+#include "SimulMouse.hpp"
 
 StdIO fileIO(true);
 StdIO printIO(false);
+// Create virtual mouse hardware for simulation
+SimulMouse virtualMouse("1.txt", &fileIO, &printIO);
 
 int main()
 {
 	char tmp;
-	MouseController mouse ("1.txt", &fileIO, &printIO);
+	MouseController mouse (NULL, &fileIO, &printIO,
+			(FinderInterface*)&virtualMouse, (MoverInterface*)&virtualMouse);
 	while (true) {
 		/* First just print maze */
 		mouse.printMaze();
@@ -28,7 +32,8 @@ int main()
 				continue;
 			}
 		}
-		/* Then calculate the distance */
+		/* Then scan walls then calculate the distance */
+		mouse.scanWalls();
 		mouse.getDistanceAllCell();
 		mouse.printMaze();
 		printf("please input a command\n");

@@ -8,7 +8,7 @@
 #ifndef WALL_HPP_
 #define WALL_HPP_
 
-#include <common_maze.h>
+#include "common_maze.h"
 
 /**
  * @brief Status of wall
