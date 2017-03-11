@@ -18,8 +18,8 @@ MouseController::MouseController(char *filename, IOInterface *fileIO,
     pathStack = Queue<PositionController>();
     availablePositionStack = Queue<PositionController>();
     /* FIXME: Set the default start point */
-    setPos( { index_start_row, index_start_col });
-    setDir(CONFIG_DIRECTION_START);
+    setPos(startPos);
+    setDir(CONFIG_DEFAULT_START_DIRECTION);
     updateCell();
 }
 
@@ -72,7 +72,7 @@ void MouseController::getDistanceAllCell()
                 }
             }
         }
-        if (getDis(index_goal_row, index_goal_col) != CELL_DISTANCE_UNREACHED) {
+        if (getDis(goalPos.row, goalPos.col) != CELL_DISTANCE_UNREACHED) {
             break; //If the destination cell has a value after a sweep, the algorithm ends
         }
         /* Increment the distance because we are scanning again. */
@@ -110,7 +110,7 @@ void MouseController::getShortestPath()
         position = pathStack.peekFromBack();
         currentDistance = getDis(position);
         //if current position is goal, break
-        if (position.getCurrentPos() == Position {index_goal_row, index_goal_col}) {
+        if (position.getCurrentPos() == Position {goalPos.row, goalPos.col}) {
             isFound = true;
             //pathStack.pushToBack(availablePositionStack.popFromBack());
             break;

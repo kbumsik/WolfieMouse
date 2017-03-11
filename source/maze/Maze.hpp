@@ -41,10 +41,8 @@ protected:
     // Maze printer
     MazeIO mazeIO;
 public:
-    int index_goal_row;
-    int index_goal_col;
-    int index_start_row;
-    int index_start_col;
+    Position startPos;
+    Position goalPos;
 
     /* Constructors */
     Maze(IOInterface *fileIO, IOInterface *printIO);
