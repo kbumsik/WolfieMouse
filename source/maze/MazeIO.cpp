@@ -80,13 +80,13 @@ void MazeIO::loadMaze(char* fileName)
 				fileIO->getchar();
                 break;
             case 'S': /* Starting point */
-                maze->index_start_row = i / 2;
-                maze->index_start_col = j / 2;
+                maze->startPos.row = i / 2;
+                maze->startPos.col = j / 2;
                 wallToPut = wallError;
                 continue;
             case 'G':
-                maze->index_goal_row = i / 2;
-                maze->index_goal_col = j / 2;
+                maze->goalPos.row = i / 2;
+                maze->goalPos.col = j / 2;
                 wallToPut = wallError;
                 continue;
             case ' ':

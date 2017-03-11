@@ -9,7 +9,7 @@
 StdIO fileIO(true);
 StdIO printIO(false);
 // Create virtual mouse hardware for simulation
-SimulMouse virtualMouse("1.txt", &fileIO, &printIO);
+SimulMouse virtualMouse("maze_ieee_region_1_2015.txt", &fileIO, &printIO);
 
 int main()
 {
@@ -86,6 +86,6 @@ int main()
 		}
 	}
 end:
-	mouse.saveMazeFile("2.txt");
+	mouse.saveMazeFile("out.txt");
 	return 0;
 }

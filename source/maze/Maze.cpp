@@ -1,5 +1,5 @@
-#include <common_maze.h>
-#include <Maze.hpp>
+#include "common_maze.h"
+#include "Maze.hpp"
 #include <stdio.h>
 
 /*******************************************************************************
@@ -19,16 +19,13 @@ Maze::Maze(IOInterface *fileIO, IOInterface *printIO) :
  * @param      filename  the name of the file to read
  */
 Maze::Maze(char *filename, IOInterface *fileIO, IOInterface *printIO) :
-    mazeIO(this, fileIO, printIO)
+    mazeIO(this, fileIO, printIO),
+	startPos(CONFIG_DEFAULT_MAZE_START),
+	goalPos(CONFIG_DEFAULT_MAZE_GOAL)
 {
     int i = 0;
     int j = 0;
     int k = 0;
-
-    index_start_row = 0;
-    index_start_col = 0;
-    index_goal_row = 7;
-    index_goal_col = 7;
 
     /* init the wall with unknown */
     for (i = 0; i < CONFIG_MAX_ROW_SIZE; i++) {
@@ -51,10 +48,10 @@ Maze::Maze(char *filename, IOInterface *fileIO, IOInterface *printIO) :
     }
 
     /* fill the first cell */
-    setWall(0, 0, row_plus, wall);
-    setWall(0, 0, col_plus, empty);
-    setWall(0, 0, row_minus, wall);
-    setWall(0, 0, col_minus, wall);
+    CONFIG_SET_DEFAULT_FIRST_CELL();
+
+    /* fill walls around the goal */
+    CONFIG_SET_DEFAULT_GOAL_CELLS();
 
     /* update the cell */
     updateCell();
@@ -171,10 +168,10 @@ int Maze::updateCell(int row, int col)
         cell[row][col].status = unsearched;
     }
 
-    if ((row == index_goal_row) && (col == index_goal_col)) {
+    if ((row == goalPos.row) && (col == goalPos.col)) {
         /* checking goal */
         cell[row][col].attribute = goal;
-    } else if ((row == index_start_row) && (col == index_start_col)) {
+    } else if ((row == startPos.row) && (col == startPos.col)) {
         /* checking start */
         cell[row][col].attribute = start;
     } else {

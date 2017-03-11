@@ -16,7 +16,7 @@ PositionController::PositionController(Position pos, Direction dirTo) :
 }
 
 PositionController::PositionController() :
-        PositionController(0, 0, CONFIG_DIRECTION_START)
+        PositionController(0, 0, eDirError)
 {
 }
 
