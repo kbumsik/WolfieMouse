@@ -13,6 +13,7 @@
 #include "Cell.hpp"
 #include "Direction.hpp"
 #include "Position.hpp"
+#include "PositionController.hpp"
 #include "IOInterface.hpp"
 #include <stdio.h>
 #include <stddef.h>
@@ -29,8 +30,8 @@ private:
     Maze *maze;
     int maxRowSize;
     int maxColSize;
-    Position mousePosition;
-    /* Printing buffer (the last + 1 is for newline charater */
+    PositionController mousePosition;
+    /* Printing buffer (the last + 1 is for newline character */
     char buffer[(CONFIG_MAX_ROW_SIZE * 2 + 1) * (CONFIG_MAX_COL_SIZE * 3 + 1 + 1)];
     // IOInterface objects for IO
     IOInterface *fileIO;
@@ -45,6 +46,7 @@ public:
     // mouse
     Position getMousePosition(void);
     void setMousePosition(Position pos);
+    void setMousePosition(PositionController posCon);
     // Actual IO
     void printMaze(void);
     void loadMaze(char* fileName);

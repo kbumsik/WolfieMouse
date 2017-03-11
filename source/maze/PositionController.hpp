@@ -1,7 +1,6 @@
 #ifndef PositionController_h
 #define PositionController_h
 
-#include "Maze.hpp"
 #include "Direction.hpp"
 #include "Position.hpp"
 

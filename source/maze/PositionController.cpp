@@ -1,5 +1,6 @@
 #include <common_maze.h>
 #include <PositionController.hpp>
+#include "Maze.hpp"
 
 /*******************************************************************************
  * Constructor
