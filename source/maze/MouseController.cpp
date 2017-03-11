@@ -193,7 +193,7 @@ bool MouseController::isInStart()
 void MouseController::printMaze()
 {
     Maze::updateCell();
-    mazeIO.setMousePosition(getCurrentPos());
+    mazeIO.setMousePosition(*this);
     Maze::printMaze();
 }
 

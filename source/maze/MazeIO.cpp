@@ -29,12 +29,17 @@ MazeIO::MazeIO(Maze *mazePtr,  IOInterface *fileIO, IOInterface *printIO) :
  ******************************************************************************/
 Position MazeIO::getMousePosition(void)
 {
-    return mousePosition;
+    return mousePosition.getCurrentPos();
 }
 
 void MazeIO::setMousePosition(Position pos)
 {
-    mousePosition = pos;
+    mousePosition = PositionController(pos, eDirError);
+}
+
+void MazeIO::setMousePosition(PositionController posCon)
+{
+	mousePosition = posCon;
 }
 
 void MazeIO::printMaze(void)
@@ -198,9 +203,34 @@ void MazeIO::writeIOFromBuffer(IOInterface *io)
 void MazeIO::printCell(int row, int col, bool isShowMouse, char* buf)
 {
     /* Check if this is mouse position */
-    if (mousePosition.col == col && mousePosition.row == row && isShowMouse) {
-        *buf++ = ' ';
-        *buf = 'M';
+    if (mousePosition.getCurrentPos().col == col &&
+    	mousePosition.getCurrentPos().row == row && isShowMouse) {
+    	switch(mousePosition.getCurrentDir()) {
+			case row_minus:		//mouse pointing up
+				*buf++ = 'M';
+				*buf = '^';
+				break;
+			case col_minus:
+				*buf++ = '<';	//mouse pointing left
+				*buf = 'M';
+				break;
+			case row_plus:		//mouse pointing down
+				*buf++ = 'M';
+				*buf = 'v';
+				break;
+			case col_plus:		//mouse pointing right
+				*buf++ = 'M';
+				*buf = '>';
+				break;
+			case eDirError:
+				*buf++ = 'M';
+				*buf = 'M';
+				break;
+			default:
+				*buf++ = ' ';
+				*buf = 'M';
+				break;
+    	}
     } else if (maze->getCell(row, col).attribute == start) {
         *buf++ = ' ';
         *buf = 'S';
