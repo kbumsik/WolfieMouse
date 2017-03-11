@@ -36,6 +36,7 @@ void MazeIO::setMousePosition(Position pos)
 {
     mousePosition = PositionController(pos, eDirError);
 }
+
 void MazeIO::setMousePosition(PositionController posCon)
 {
 	mousePosition = posCon;
