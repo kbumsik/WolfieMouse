@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cdtprojectproperties>
 <section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.IncludePaths">
-<language name="S,s,asm">
-<includepath>${WorkspaceDirPath}/source/Drivers/CMSIS/Device/ST/STM32F4xx/Include</includepath>
-<includepath>${WorkspaceDirPath}/source/Drivers/CMSIS/Include</includepath>
-<includepath>${WorkspaceDirPath}/source/Drivers/STM32F4xx_HAL_Driver/Inc</includepath>
-<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS</includepath>
-<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/include</includepath>
-<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F</includepath>
-<includepath>${WorkspaceDirPath}/source</includepath>
-<includepath>${WorkspaceDirPath}/source/components</includepath>
-<includepath>${WorkspaceDirPath}/source/math</includepath>
-<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FatFs/src</includepath>
+<language name="Assembly Source File">
+<includepath>${ProjDirPath}/../../source/kb_lib/src/manufacturer_drivers/CMSIS/Device/ST/STM32F4xx/Include</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/system</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/peripheral</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/module</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/manufacturer_drivers/CMSIS/Include</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/FreeRTOS/Source/include</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/FreeRTOS/Source/portable/GCC/ARM_CM4F</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc/Legacy</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/bsp/WolfieMouse</includepath>
 
 </language>
 <language name="C Source File">
-<includepath>${WorkspaceDirPath}/source/Drivers/CMSIS/Device/ST/STM32F4xx/Include</includepath>
-<includepath>${WorkspaceDirPath}/source/Drivers/CMSIS/Include</includepath>
-<includepath>${WorkspaceDirPath}/source/Drivers/STM32F4xx_HAL_Driver/Inc</includepath>
-<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS</includepath>
-<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/include</includepath>
-<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F</includepath>
-<includepath>${WorkspaceDirPath}/source</includepath>
-<includepath>${WorkspaceDirPath}/source/components</includepath>
-<includepath>${WorkspaceDirPath}/source/math</includepath>
-<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FatFs/src</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/manufacturer_drivers/CMSIS/Device/ST/STM32F4xx/Include</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/system</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/peripheral</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/module</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/manufacturer_drivers/CMSIS/Include</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/FreeRTOS/Source/include</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/FreeRTOS/Source/portable/GCC/ARM_CM4F</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc/Legacy</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/bsp/WolfieMouse</includepath>
 
 </language>
 <language name="C++ Source File">
-<includepath>${WorkspaceDirPath}/source/Drivers/CMSIS/Device/ST/STM32F4xx/Include</includepath>
-<includepath>${WorkspaceDirPath}/source/Drivers/CMSIS/Include</includepath>
-<includepath>${WorkspaceDirPath}/source/Drivers/STM32F4xx_HAL_Driver/Inc</includepath>
-<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS</includepath>
-<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/include</includepath>
-<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F</includepath>
-<includepath>${WorkspaceDirPath}/source</includepath>
-<includepath>${WorkspaceDirPath}/source/components</includepath>
-<includepath>${WorkspaceDirPath}/source/math</includepath>
-<includepath>${WorkspaceDirPath}/source/Middlewares/Third_Party/FatFs/src</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/manufacturer_drivers/CMSIS/Device/ST/STM32F4xx/Include</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/system</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/peripheral</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/module</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/manufacturer_drivers/CMSIS/Include</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/FreeRTOS/Source/include</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/FreeRTOS/Source/portable/GCC/ARM_CM4F</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc/Legacy</includepath>
+<includepath>${ProjDirPath}/../../source/kb_lib/src/bsp/WolfieMouse</includepath>
 
 </language>
 <language name="Object File">
@@ -45,39 +45,93 @@
 </language>
 </section>
 <section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.Macros">
-<language name="S,s,asm">
+<language name="Assembly Source File">
+<macro>
+<name>DEBUG</name><value/>
+</macro>
+<macro>
+<name>USE_FULL_ASSERT</name><value/>
+</macro>
+<macro>
+<name>TRACE</name><value/>
+</macro>
+<macro>
+<name>OS_USE_TRACE_SEMIHOSTING_DEBUG</name><value/>
+</macro>
+<macro>
+<name>STM32F446xx</name><value/>
+</macro>
+<macro>
+<name>USE_HAL_DRIVER</name><value/>
+</macro>
+<macro>
+<name>HSE_VALUE</name><value>8000000</value>
+</macro>
 <macro>
 <name>ARM_MATH_CM4</name><value/>
 </macro>
 <macro>
-<name>__FPU_PRESENT</name><value>1</value>
-</macro>
-<macro>
-<name>STM32F446xx</name><value/>
+<name>__FPU_PRESENT</name><value/>
 </macro>
 
 </language>
 <language name="C Source File">
 <macro>
-<name>ARM_MATH_CM4</name><value/>
+<name>DEBUG</name><value/>
 </macro>
 <macro>
-<name>__FPU_PRESENT</name><value>1</value>
+<name>USE_FULL_ASSERT</name><value/>
+</macro>
+<macro>
+<name>TRACE</name><value/>
+</macro>
+<macro>
+<name>OS_USE_TRACE_SEMIHOSTING_DEBUG</name><value/>
 </macro>
 <macro>
 <name>STM32F446xx</name><value/>
+</macro>
+<macro>
+<name>USE_HAL_DRIVER</name><value/>
+</macro>
+<macro>
+<name>HSE_VALUE</name><value>8000000</value>
+</macro>
+<macro>
+<name>ARM_MATH_CM4</name><value/>
+</macro>
+<macro>
+<name>__FPU_PRESENT</name><value/>
 </macro>
 
 </language>
 <language name="C++ Source File">
 <macro>
-<name>ARM_MATH_CM4</name><value/>
+<name>DEBUG</name><value/>
 </macro>
 <macro>
-<name>__FPU_PRESENT</name><value>1</value>
+<name>USE_FULL_ASSERT</name><value/>
+</macro>
+<macro>
+<name>TRACE</name><value/>
+</macro>
+<macro>
+<name>OS_USE_TRACE_SEMIHOSTING_DEBUG</name><value/>
 </macro>
 <macro>
 <name>STM32F446xx</name><value/>
+</macro>
+<macro>
+<name>USE_HAL_DRIVER</name><value/>
+</macro>
+<macro>
+<name>HSE_VALUE</name><value>8000000</value>
+</macro>
+<macro>
+<name>ARM_MATH_CM4</name><value/>
+</macro>
+<macro>
+<name>__FPU_PRESENT</name><value/>
 </macro>
 
 </language>
