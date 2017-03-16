@@ -104,3 +104,7 @@ AUTHORS text
 *.woff binary
 *.pyc binary
 *.pdf binary
+
+# (c object and library files)
+*.lib binary
+*.a binary
