@@ -159,24 +159,30 @@ int Maze::updateCell(int row, int col)
         return COMMON_MAZE_ERROR;
     }
     /* checking status */
-    if (Maze::getWall(row, col, row_plus) != unknown
-            && Maze::getWall(row, col, col_plus) != unknown
-            && Maze::getWall(row, col, row_minus) != unknown
-            && Maze::getWall(row, col, col_minus) != unknown) {
+    if (   Maze::getWall(row, col, row_plus) != unknown
+		&& Maze::getWall(row, col, col_plus) != unknown
+		&& Maze::getWall(row, col, row_minus)!= unknown
+		&& Maze::getWall(row, col, col_minus)!= unknown) {
         cell[row][col].status = searched;
     } else {
         cell[row][col].status = unsearched;
     }
 
-    if ((row == goalPos.row) && (col == goalPos.col)) {
-        /* checking goal */
-        cell[row][col].attribute = goal;
-    } else if ((row == startPos.row) && (col == startPos.col)) {
+    if ((row == startPos.row) && (col == startPos.col)) {
         /* checking start */
         cell[row][col].attribute = start;
-    } else {
-        cell[row][col].attribute = nothing;
+        return COMMON_MAZE_SUCCESS;
     }
+
+    for (int i = 0; i < goalPos.size(); i++) {
+    	  /* checking goal */
+    	if ((row == goalPos[i].row) && (col == goalPos[i].col)) {
+    		cell[row][col].attribute = goal;
+    		return COMMON_MAZE_SUCCESS;
+    	}
+    }
+
+    cell[row][col].attribute = nothing;
     /* TODO: checking mouse */
     return COMMON_MAZE_SUCCESS;
 }

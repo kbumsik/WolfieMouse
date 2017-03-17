@@ -1,6 +1,8 @@
 #ifndef Maze_h
 #define Maze_h
 
+#include <vector>
+
 #include "Cell.hpp"
 #include "common_maze.h"
 #include "config_maze.h"
@@ -42,7 +44,7 @@ protected:
     MazeIO mazeIO;
 public:
     Position startPos;
-    Position goalPos;
+    std::vector<Position> goalPos;
 
     /* Constructors */
     Maze(IOInterface *fileIO, IOInterface *printIO);

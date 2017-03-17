@@ -72,7 +72,10 @@ void MouseController::getDistanceAllCell()
                 }
             }
         }
-        if (getDis(goalPos.row, goalPos.col) != CELL_DISTANCE_UNREACHED) {
+        if ((getDis(goalPos[0].row, goalPos[0].col) != CELL_DISTANCE_UNREACHED) ||
+        	(getDis(goalPos[1].row, goalPos[1].col) != CELL_DISTANCE_UNREACHED) ||
+			(getDis(goalPos[2].row, goalPos[2].col) != CELL_DISTANCE_UNREACHED) ||
+			(getDis(goalPos[3].row, goalPos[3].col) != CELL_DISTANCE_UNREACHED) ) {
             break; //If the destination cell has a value after a sweep, the algorithm ends
         }
         /* Increment the distance because we are scanning again. */
@@ -110,7 +113,10 @@ void MouseController::getShortestPath()
         position = pathStack.peekFromBack();
         currentDistance = getDis(position);
         //if current position is goal, break
-        if (position.getCurrentPos() == Position {goalPos.row, goalPos.col}) {
+        if ((position.getCurrentPos() == Position {goalPos[0].row, goalPos[0].col}) ||
+        	(position.getCurrentPos() == Position {goalPos[1].row, goalPos[1].col}) ||
+			(position.getCurrentPos() == Position {goalPos[2].row, goalPos[2].col}) ||
+			(position.getCurrentPos() == Position {goalPos[3].row, goalPos[3].col}) ){
             isFound = true;
             //pathStack.pushToBack(availablePositionStack.popFromBack());
             break;
@@ -238,7 +244,7 @@ int MouseController::goForward()
 		return ret;
 	}
 	/* Use MovingInterface */
-	// TODO: What if the mouse actually failed to movce??
+	// TODO: What if the mouse actually failed to move??
 	return COMMON_MAZE_SUCCESS;
 }
 /*******************************************************************************

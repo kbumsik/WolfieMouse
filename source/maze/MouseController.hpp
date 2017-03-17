@@ -1,6 +1,8 @@
 #ifndef MouseController_h
 #define MouseController_h
 
+#include <vector>
+
 #include "config_maze.h"
 #include "Maze.hpp"
 #include "PositionController.hpp"
@@ -56,6 +58,8 @@ private:
      virtual void setWall(int row, int col, direction_e dir, wall_e status);
      virtual void updateCell(int row, int col);
      */
+    /* Vector destination */
+    std::vector<Position> destinations;
 public:
     /* Constructors */
     MouseController();

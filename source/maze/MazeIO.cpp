@@ -89,9 +89,9 @@ void MazeIO::loadMaze(char* fileName)
                 maze->startPos.col = j / 2;
                 wallToPut = wallError;
                 continue;
-            case 'G':
-                maze->goalPos.row = i / 2;
-                maze->goalPos.col = j / 2;
+            case 'G':		/* needs to be tested */
+                maze->goalPos[(i%5) + (j%2)].row = i / 2;
+                maze->goalPos[(i%5) + (j%2)].col = j / 2;
                 wallToPut = wallError;
                 continue;
             case ' ':

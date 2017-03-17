@@ -6,7 +6,7 @@
 #define CONFIG_MAX_COL_SIZE	16
 #define CONFIG_QUEUE_MAX_BUFFER (CONFIG_MAX_COL_SIZE*CONFIG_MAX_ROW_SIZE)
 #define CONFIG_DEFAULT_MAZE_START		Position{15,0}
-#define CONFIG_DEFAULT_MAZE_GOAL		Position{7,7}
+#define CONFIG_DEFAULT_MAZE_GOAL		{Position{7,7}, Position{7,8}, Position{8,7}, Position{8,8}}
 #define CONFIG_DEFAULT_START_DIRECTION (row_minus)
 
 #define CONFIG_SET_DEFAULT_FIRST_CELL() do{ \
