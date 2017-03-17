@@ -1,6 +1,5 @@
-#include "kb_tick.h"
 // KB library
-#include "system_config.h"
+#include "kb_tick.h"
 #include "kb_trace.h"
 #include "kb_gpio.h"
 #include "kb_HCMS-290X_display.h"
@@ -8,6 +7,9 @@
 #include "kb_timer.h"
 #include "kb_TCA9545A_i2c_mux.h"
 #include "kb_VL6180X_range_finder.h"
+
+// User config
+#include "system_config.h"
 #include "encoder.h"
 #include "motor.h"
 
@@ -58,7 +60,6 @@ int main(void)
     kb_gpio_toggle(LED4_PORT, LED4_PIN);
     trace_puts("Hello ARM World!");
     kb_terminal_puts("Hello World!\r\n");
-
 
     // motor_stop(CH_BOTH);
     uint32_t seconds = 0;
