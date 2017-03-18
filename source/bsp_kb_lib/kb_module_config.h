@@ -1,0 +1,80 @@
+/*
+ * module_config.h
+ *
+ *  Created on: Oct 26, 2016
+ *      Author: Bumsik Kim
+ */
+
+#ifndef BSP_WOLFIEMOUSE_KB_MODULE_CONFIG_H_
+#define BSP_WOLFIEMOUSE_KB_MODULE_CONFIG_H_
+
+// Push button settings
+#define B1_PORT 		PORTA
+#define B1_PIN 			PIN_13
+
+#define B2_PORT 		PORTA
+#define B2_PIN 			PIN_12
+
+// LED1 settings
+#define LED1_PORT	PORTB
+#define LED1_PIN	PIN_0
+
+#define LED2_PORT	PORTB
+#define LED2_PIN	PIN_1
+
+#define LED3_PORT	PORTC
+#define LED3_PIN	PIN_11
+
+#define LED4_PORT	PORTC
+#define LED4_PIN	PIN_10
+
+// Terminal settings
+#define TERMINAL_UART			USART2
+#define TERMINAL_BAUD_RATE		9600 // or 115200
+
+#define TERMINAL_TX_PORT 		GPIOA
+#define TERMINAL_TX_PIN 		GPIO_PIN_2
+
+#define TERMINAL_RX_PORT 		GPIOA
+#define TERMINAL_RX_PIN 		GPIO_PIN_3
+
+// HCMS_290X settings
+#define HCMS_290X_SPI			SPI1
+
+#define HCMS_290X_RS_PORT		PORTC
+#define HCMS_290X_RS_PIN		PIN_4
+
+#define HCMS_290X_RESET_PORT 	PORTC
+#define HCMS_290X_RESET_PIN		PIN_5
+
+#define HCMS_290X_CE_PORT		PORTA
+#define HCMS_290X_CE_PIN		PIN_4
+
+#define HCMS_290X_MOSI_PORT 	PORTA
+#define HCMS_290X_MOSI_PIN		PIN_7
+
+#define HCMS_290X_SCK_PORT		PORTA
+#define HCMS_290X_SCK_PIN		PIN_5
+
+// TCA9545A
+#define TCA9545A_I2C		I2C1
+
+#define TCA9545A_SDA_PORT	PORTB
+#define TCA9545A_SDA_PIN	PIN_9
+
+#define TCA9545A_SCL_PORT	PORTB
+#define TCA9545A_SCL_PIN	PIN_8
+
+#define TCA9545A_RESET_PORT	PORTC
+#define TCA9545A_RESET_PIN	PIN_13
+
+// VL6180X
+#define VL6180X_I2C			I2C1
+
+#define VL6180X_SDA_PORT	GPIOB
+#define VL6180X_SDA_PIN		GPIO_PIN_9
+
+#define VL6180X_SCL_PORT	GPIOB
+#define VL6180X_SCL_PIN		GPIO_PIN_8
+
+#endif /* BSP_WOLFIEMOUSE_KB_MODULE_CONFIG_H_ */
