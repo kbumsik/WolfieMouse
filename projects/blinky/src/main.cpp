@@ -28,15 +28,31 @@
 	#define KB_MSG_BASE "Main"
 #endif
 
+/*******************************************************************************
+ * Function declarations
+ ******************************************************************************/
 // Event declarations
 static void on_b1_pressed(void);
 static void on_b2_pressed(void);
 
 // Task declarations
+static void task_main(void *pvParameters);
 static void task_blinky(void *pvParameters);
+static void task_range(void *pvParameters);
 
+/*******************************************************************************
+ * Global variables
+ ******************************************************************************/
 // Task Handlers
+TaskHandle_t task_main_handler;
 TaskHandle_t task_blinky_handler;
+TaskHandle_t task_range_handler;
+
+// Mutex Handlers
+SemaphoreHandle_t mutex_range;
+
+// range finder variable
+int range[4] = {255, 255, 255, 255};
 
 /*******************************************************************************
  * Main function
@@ -84,7 +100,10 @@ int main(void)
 
     // motor_stop(CH_BOTH);
 
-    /* definition and creation of defaultTask */
+    /* Mutex creation */
+    mutex_range = xSemaphoreCreateMutex();
+
+    /* Task creation and definition */
     BaseType_t result;
     result = xTaskCreate(
             task_blinky,            /* Pointer to the function that implements the task */
@@ -93,10 +112,32 @@ int main(void)
             NULL,                   /* Pointer to a task parameters */
             1,                      /* The task priority */
             &task_blinky_handler);  /* Pointer of its task handler, if you don't want to use, you can leave it NULL */
-
     if (result != pdPASS) {
         KB_DEBUG_ERROR("Creating task failed!!");
     }
+
+    result = xTaskCreate(
+            task_range,
+            "Finder",
+            configMINIMAL_STACK_SIZE+500,
+            NULL,
+            configMAX_PRIORITIES-1,
+            &task_range_handler);
+    if (result != pdPASS) {
+        KB_DEBUG_ERROR("Creating task failed!!");
+    }
+
+    result = xTaskCreate(
+            task_main,
+            "Main",
+            configMINIMAL_STACK_SIZE+2500,
+            NULL,
+            configMAX_PRIORITIES-1,
+            &task_main_handler);
+    if (result != pdPASS) {
+        KB_DEBUG_ERROR("Creating task failed!!");
+    }
+
     /* Do not put delay function in this section!
      * Because xTaskCreate will stop systick until the scheduler called */
     // TODO: check if it is true
@@ -109,11 +150,41 @@ int main(void)
 /*******************************************************************************
  * Tasks
  ******************************************************************************/
-void task_blinky(void *pvParameters)
+static void task_main(void *pvParameters)
 {
     portTickType xLastWakeTime;
     /* Initialize xLastWakeTime for vTaskDelayUntil */
     /* This variable is updated every vTaskDelayUntil is called */
+    xLastWakeTime = xTaskGetTickCount();
+
+    while (1) {
+        /* Call this Task every 50ms */
+        vTaskDelayUntil(&xLastWakeTime, (1000 / portTICK_RATE_MS));
+    }
+    /* It never goes here, but the task should be deleted when it reached here */
+    vTaskDelete(NULL);
+}
+
+static void task_range(void *pvParameters)
+{
+    portTickType xLastWakeTime;
+    xLastWakeTime = xTaskGetTickCount();
+
+    while (1) {
+        xSemaphoreTake(mutex_range, portMAX_DELAY); /* Take Mutext */
+        //range[0] = range_finder_get(left_side);
+        //range[1] = range_finder_get(right_side);
+        //range[2] = range_finder_get(left_front);
+        //range[3] = range_finder_get(right_front);
+        xSemaphoreGive(mutex_range);
+        /* Call this Task every 50ms */
+        vTaskDelayUntil(&xLastWakeTime, (50 / portTICK_RATE_MS));
+    }
+}
+
+static void task_blinky(void *pvParameters)
+{
+    portTickType xLastWakeTime;
     xLastWakeTime = xTaskGetTickCount();
 
     uint32_t seconds = 0;
@@ -126,11 +197,9 @@ void task_blinky(void *pvParameters)
         ++seconds;        // Count seconds on the trace device.
         trace_printf("Second %u\n", seconds);
 
-        /* Call this Task explicitly every 1000ms ,NOT Delay for 50ms */
+        /* Call this Task every 1000ms */
         vTaskDelayUntil(&xLastWakeTime, (1000 / portTICK_RATE_MS));
     }
-
-    /* It never goes here, but the task should be deleted when it reached here */
     vTaskDelete(NULL);
 }
 
