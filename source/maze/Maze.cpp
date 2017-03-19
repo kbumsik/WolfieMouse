@@ -20,8 +20,7 @@ Maze::Maze(IOInterface *fileIO, IOInterface *printIO) :
  */
 Maze::Maze(char *filename, IOInterface *fileIO, IOInterface *printIO) :
     mazeIO(this, fileIO, printIO),
-	startPos(CONFIG_DEFAULT_MAZE_START),
-	goalPos(CONFIG_DEFAULT_MAZE_GOAL)
+	startPos(CONFIG_DEFAULT_MAZE_START)
 {
     int i = 0;
     int j = 0;
@@ -58,6 +57,11 @@ Maze::Maze(char *filename, IOInterface *fileIO, IOInterface *printIO) :
 
     /* Load maze */
     readMazeFromFile(filename);
+    /* Init default goals if no file  */
+    if (filename == NULL) {
+    	goalPos = CONFIG_DEFAULT_MAZE_GOAL;
+    }
+
 }
 
 /*******************************************************************************
