@@ -15,6 +15,8 @@
 #include "Position.hpp"
 #include "PositionController.hpp"
 #include "IOInterface.hpp"
+
+#include <vector>
 #include <stdio.h>
 #include <stddef.h>
 
@@ -31,6 +33,7 @@ private:
     int maxRowSize;
     int maxColSize;
     PositionController mousePosition;
+    std::vector<Position> destinations;
     /* Printing buffer (the last + 1 is for newline character */
     char buffer[(CONFIG_MAX_ROW_SIZE * 2 + 1) * (CONFIG_MAX_COL_SIZE * 3 + 1 + 1)];
     // IOInterface objects for IO
@@ -43,10 +46,13 @@ private:
 public:
     // Constructor
     MazeIO(Maze *mazePtr, IOInterface *fileIO, IOInterface *printIO);
-    // mouse
+    // Mouse Position
     Position getMousePosition(void);
     void setMousePosition(Position pos);
     void setMousePosition(PositionController posCon);
+    // Mouse Destinations
+    void setDestinations(std::vector<Position> des);
+    bool positionIsDestination(Position pos);
     // Actual IO
     void printMaze(void);
     void loadMaze(char* fileName);

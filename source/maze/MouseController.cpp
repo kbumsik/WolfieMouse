@@ -1,5 +1,6 @@
 #include <common_maze.h>
 #include <MouseController.hpp>
+#include <algorithm>
 
 /*******************************************************************************
  * Constructor
@@ -56,6 +57,12 @@ void MouseController::getDistanceAllCell()
 
     /* Firstly set the distance of the current position to 0 */
     setDis(getCurrentPos(), CELL_DISTANCE_START);
+
+    /* check if the mouse is in a destination */
+	if (isInDestinationCell()) {
+		destinations.erase(std::remove(destinations.begin(),
+				destinations.end(), getCurrentPos()), destinations.end());
+	}
 
     while (1) {
         /* Creating a loop which scans the whole maze */
@@ -222,6 +229,7 @@ void MouseController::printMaze()
 {
     Maze::updateCell();
     mazeIO.setMousePosition(*this);
+    mazeIO.setDestinations(destinations);
     Maze::printMaze();
 }
 
