@@ -34,7 +34,7 @@ public:
     inline void setPos(Position posToSet);
     /* just printer of debugging */
     void print(PositionController obj);
-    /* Comparation operator overloading */
+    /* Comparator operator overloading */
     bool operator==(PositionController& rVal)
     {
         return (getCurrentPos() == rVal.getCurrentPos());
