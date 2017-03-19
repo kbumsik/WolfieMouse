@@ -71,7 +71,7 @@ public:
     void getShortestPath();
     void moveNextCell();
     /* boolean functions for goal, start and destination */
-    bool destinationCellSearched();
+    bool anyDestinationCellSearched();
     bool positionIsDestination(Position pos);
     bool isInDestinationCell();
     bool isInGoal();

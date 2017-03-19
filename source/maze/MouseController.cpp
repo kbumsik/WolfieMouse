@@ -73,7 +73,7 @@ void MouseController::getDistanceAllCell()
                 }
             }
         }
-        if (destinationCellSearched()) {
+        if (anyDestinationCellSearched()) {
             break; //If the destination cell has a value after a sweep, the algorithm ends
         }
         /* Increment the distance because we are scanning again. */
@@ -181,11 +181,12 @@ void MouseController::moveNextCell()
     updateCell();
 }
 
-bool MouseController::destinationCellSearched()
+bool MouseController::anyDestinationCellSearched()
 {
 	for (int i = 0; i < destinations.size(); i++) {
-		if (getDis(destinations[i].row, destinations[i].col) != CELL_DISTANCE_UNREACHED)
+		if (getDis(destinations[i].row, destinations[i].col) != CELL_DISTANCE_UNREACHED) {
 			return true; /* return true if any of the destinations has been searched */
+		}
 	}
 	return false;
 }
@@ -194,8 +195,9 @@ bool MouseController::positionIsDestination(Position pos)
 {
 	for (int i = 0; i < destinations.size(); i++) {
 		if ((pos.row == destinations[i].row) &&
-			(pos.col == destinations[i].col) )
+			(pos.col == destinations[i].col) ) {
 			return true; /* return true if position found in destination vector*/
+		}
 	}
 	return false;
 }
