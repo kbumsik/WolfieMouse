@@ -51,8 +51,15 @@ TaskHandle_t task_range_handler;
 // Mutex Handlers
 SemaphoreHandle_t mutex_range;
 
-// range finder variable
-int range[4] = {255, 255, 255, 255};
+/*
+ * These global varables are located in peripherals.c
+ */
+// range sensor value
+extern volatile uint8_t range_left, range_right, range_front,
+            range_front_left, range_front_right;
+// Encoder value
+extern volatile uint32_t left_cnt, right_cnt, left_cnt_old, right_cnt_old;
+extern volatile float left_speed, right_speed, diff_speed;
 
 /*******************************************************************************
  * Main function
@@ -68,15 +75,9 @@ int main(void)
     /* Initial LED Display message */
     hcms_290x_matrix("STRT");
 
-    /* Encoder test reading */
-    int left = encoder_left_count();
-    int right = encoder_right_count();
-    KB_DEBUG_MSG("left encoder: %d\n", left);
-    KB_DEBUG_MSG("right encoder: %d\n", right);
-
     /* Motor test running */
-    // motor_speed_percent(CH_BOTH, 10);
-    // motor_start(CH_BOTH);
+    //motor_speed_percent(CH_BOTH, 10);
+    //motor_start(CH_BOTH);
 
     /* Set Button Pressed Events */
     kb_gpio_init_t GPIO_InitStruct;
@@ -108,7 +109,7 @@ int main(void)
     result = xTaskCreate(
             task_blinky,            /* Pointer to the function that implements the task */
             "Blinky",               /* Text name for the task. This is to facilitate debugging only. It is not used in the scheduler */
-            configMINIMAL_STACK_SIZE, /* Stack depth in words */
+            configMINIMAL_STACK_SIZE+500, /* Stack depth in words */
             NULL,                   /* Pointer to a task parameters */
             1,                      /* The task priority */
             &task_blinky_handler);  /* Pointer of its task handler, if you don't want to use, you can leave it NULL */
@@ -158,7 +159,7 @@ static void task_main(void *pvParameters)
     xLastWakeTime = xTaskGetTickCount();
 
     while (1) {
-        /* Call this Task every 50ms */
+        /* Call this Task every 1 second */
         vTaskDelayUntil(&xLastWakeTime, (1000 / portTICK_RATE_MS));
     }
     /* It never goes here, but the task should be deleted when it reached here */
@@ -172,10 +173,11 @@ static void task_range(void *pvParameters)
 
     while (1) {
         xSemaphoreTake(mutex_range, portMAX_DELAY); /* Take Mutext */
-        //range[0] = range_finder_get(left_side);
-        //range[1] = range_finder_get(right_side);
-        //range[2] = range_finder_get(left_front);
-        //range[3] = range_finder_get(right_front);
+        //range_left = range_finder_get(left_side);
+        //range_right = range_finder_get(right_side);
+        //range_front_left = range_finder_get(left_front);
+        //range_front_right = range_finder_get(right_front);
+        //range_front = (range_front_left + range_front_right) / 2
         xSemaphoreGive(mutex_range);
         /* Call this Task every 50ms */
         vTaskDelayUntil(&xLastWakeTime, (50 / portTICK_RATE_MS));
@@ -196,6 +198,11 @@ static void task_blinky(void *pvParameters)
         hcms_290x_int(seconds);
         ++seconds;        // Count seconds on the trace device.
         trace_printf("Second %u\n", seconds);
+
+        KB_DEBUG_MSG("left encoder: %d\n", left_cnt);
+        KB_DEBUG_MSG("right encoder: %d\n", right_cnt);
+        KB_DEBUG_MSG("left speed: %f\n", left_speed);
+        KB_DEBUG_MSG("right speed: %f\n", right_speed);
 
         /* Call this Task every 1000ms */
         vTaskDelayUntil(&xLastWakeTime, (1000 / portTICK_RATE_MS));
