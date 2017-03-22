@@ -1,0 +1,26 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#(c) SnapEDA 2015 (snapeda.com)
+#This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA) with Design Exception 1.0
+#
+# B3B-PH-SM4-TB
+#
+DEF B3B-PH-SM4-TB P 0 40 Y Y 1 L N
+F0 "P" -100 200 50 H V L CNN
+F1 "B3B-PH-SM4-TB" -100 -250 50 H V L CNN
+F2 "JST_B3B-PH-SM4-TB" 0 0 50 H I L CNN
+DRAW
+P 2 0 0 30 0 100 100 100 N
+P 2 0 0 30 0 0 100 0 N
+P 2 0 0 30 0 -100 100 -100 N
+P 2 0 0 10 -100 200 -100 -200 N
+P 2 0 0 10 -100 -200 200 -200 N
+P 2 0 0 10 200 -200 200 200 N
+P 2 0 0 10 200 200 -100 200 N
+X 1 1 -200 100 200 R 40 40 0 0 P 
+X 2 2 -200 0 200 R 40 40 0 0 P 
+X 3 3 -200 -100 200 R 40 40 0 0 P 
+ENDDRAW
+ENDDEF
+#
+# End Library

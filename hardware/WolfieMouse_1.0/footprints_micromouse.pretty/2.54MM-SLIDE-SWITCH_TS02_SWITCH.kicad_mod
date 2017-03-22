@@ -1,0 +1,18 @@
+(module 2.54MM-SLIDE-SWITCH_TS02_SWITCH (layer F.Cu) (tedit 56FCA26A)
+  (fp_text reference M3 (at 0 0) (layer F.SilkS)
+    (effects (font (thickness 0.15)))
+  )
+  (fp_text value 2.54MM-SLIDE-SWITCH_TS02_SWITCH (at 3.8 6.9) (layer F.SilkS) hide
+    (effects (font (thickness 0.15)))
+  )
+  (fp_line (start -2 4.5) (end 2 4.5) (layer F.SilkS) (width 0.127))
+  (fp_line (start 2 4.5) (end 2 -4.5) (layer F.SilkS) (width 0.127))
+  (fp_line (start 2 -4.5) (end -2 -4.5) (layer F.SilkS) (width 0.127))
+  (fp_line (start -2 -4.5) (end -2 4.5) (layer F.SilkS) (width 0.127))
+  (fp_text user "slide switch 2.5mm" (at -7.715 -6.62) (layer F.SilkS) hide
+    (effects (font (size 1.2065 1.2065) (thickness 0.1778)) (justify left bottom))
+  )
+  (pad PIN1 thru_hole circle (at 0 -2.54) (size 1.308 1.308) (drill 0.8) (layers *.Cu *.Mask))
+  (pad PIN2 thru_hole circle (at 0 0) (size 1.308 1.308) (drill 0.8) (layers *.Cu *.Mask))
+  (pad PIN3 thru_hole circle (at 0 2.54) (size 1.308 1.308) (drill 0.8) (layers *.Cu *.Mask))
+)
