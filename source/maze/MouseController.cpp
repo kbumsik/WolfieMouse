@@ -1,6 +1,7 @@
 #include <common_maze.h>
 #include <MouseController.hpp>
 #include <algorithm>
+#include <time.h>
 
 /*******************************************************************************
  * Constructor
@@ -187,6 +188,50 @@ void MouseController::moveNextCell()
 	}
 }
 
+void MouseController::setUnsearchDes(int n)
+{
+	srand(101);
+	int count = 0;
+	//count non searched cells
+	for (int i = 0; i < CONFIG_MAX_ROW_SIZE; i++) {
+		for (int j = 0; j < CONFIG_MAX_COL_SIZE; j++) {
+			if (getCell(Position{i,j}).status == unsearched) {
+				count++;
+			}
+		}
+	}
+	//find destinations
+	while (destinations.size() <= n && count > 0) {
+		//choose random row
+		int temp = (int) (rand()%16);
+	    int i = temp;
+	    //look for non searched cells in row
+		for (int j = 0; j < CONFIG_MAX_COL_SIZE; j++) {
+			if (getCell(Position{i, j}).status == unsearched) {
+				if (positionIsDestination(Position{i,j})) {
+					continue;
+				}
+				destinations.push_back(Position{i,j});
+				count--;
+				break;
+			}
+	    }
+	}
+}
+
+void MouseController::setStartAsDes()
+{
+	if (positionIsDestination(CONFIG_DEFAULT_MAZE_START)) {
+		return;
+	}
+	destinations.push_back(CONFIG_DEFAULT_MAZE_START);
+}
+
+void MouseController::setGoalAsDes()
+{
+    destinations = CONFIG_DEFAULT_MAZE_GOAL;
+}
+
 bool MouseController::anyDestinationCellSearched()
 {
 	for (int i = 0; i < destinations.size(); i++) {
@@ -200,8 +245,7 @@ bool MouseController::anyDestinationCellSearched()
 bool MouseController::positionIsDestination(Position pos)
 {
 	for (int i = 0; i < destinations.size(); i++) {
-		if ((pos.row == destinations[i].row) &&
-			(pos.col == destinations[i].col) ) {
+		if ((pos == destinations[i]) ) {
 			return true; /* return true if position found in destination vector*/
 		}
 	}
@@ -212,6 +256,11 @@ bool MouseController::isInDestinationCell()
 {
 	/* return true if current position found in destination vector*/
 	return positionIsDestination(getCurrentPos());
+}
+
+bool MouseController::allDestinationsReached()
+{
+	return destinations.empty();
 }
 
 bool MouseController::isInGoal()
