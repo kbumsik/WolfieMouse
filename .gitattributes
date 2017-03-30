@@ -108,3 +108,6 @@ AUTHORS text
 # (c object and library files)
 *.lib binary
 *.a binary
+
+# KiCad Libraries
+*.mod binary

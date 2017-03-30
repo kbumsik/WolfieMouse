@@ -1,0 +1,851 @@
+Cmp-Mod V01 Created by PcbNew   date = 3/29/2017 4:36:33 AM
+
+BeginCmp
+TimeStamp = 58D9A363
+Path = 
+Reference = REF**;
+ValeurCmp = RANGE_SENSOR_HOUSING;
+IdModule  = RANGE_SENSOR_HOUSING;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D9A370
+Path = 
+Reference = REF**;
+ValeurCmp = RANGE_SENSOR_HOUSING;
+IdModule  = footprints_micromouse:RANGE_SENSOR_HOUSING;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6868
+Path = /56EB60D6/56ED90B0
+Reference = R14;
+ValeurCmp = 62.5m;
+IdModule  = footprints_micromouse:R_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6862
+Path = /56EB60D6/56ED8689
+Reference = R13;
+ValeurCmp = 62.5m;
+IdModule  = footprints_micromouse:R_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6795
+Path = /570141AB
+Reference = C_VCAP2;
+ValeurCmp = 2.2uF;
+IdModule  = footprints_micromouse:C_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC678F
+Path = /5700DD9A
+Reference = C_VCAP1;
+ValeurCmp = 4.7uF;
+IdModule  = footprints_micromouse:C_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6759
+Path = /56EC020E/56ED3391
+Reference = C_uSD1;
+ValeurCmp = 10uF;
+IdModule  = footprints_micromouse:C_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6723
+Path = /56EC020E/56EC16B0
+Reference = C_DIS2;
+ValeurCmp = 10uF;
+IdModule  = footprints_micromouse:C_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6705
+Path = /56FAA0FA
+Reference = C_3.3V1;
+ValeurCmp = 10uF;
+IdModule  = footprints_micromouse:C_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = 57023D81
+Path = /5702AEAE
+Reference = R1;
+ValeurCmp = 1k;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 57023D87
+Path = /5702AD20
+Reference = R2;
+ValeurCmp = 1k;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 57023D8D
+Path = /56F51D0B
+Reference = R3;
+ValeurCmp = 1k;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68D4
+Path = /57032C7D
+Reference = R_VOL2;
+ValeurCmp = 10k;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68CE
+Path = /57031C5B
+Reference = R_VOL1;
+ValeurCmp = 20k;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68C8
+Path = /56EC020E/56EC2210
+Reference = R_uSD1;
+ValeurCmp = 1k;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6898
+Path = /56FACFAB
+Reference = R_PWR1;
+ValeurCmp = 1k;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6892
+Path = /56FB5719
+Reference = R_PB2;
+ValeurCmp = 1k;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC688C
+Path = /56FC2E59
+Reference = R_PB1;
+ValeurCmp = 1k;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6886
+Path = /56EB60D6/56ED76B9
+Reference = R_MOTOR2;
+ValeurCmp = 10k;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6880
+Path = /56EB60D6/56ED74EF
+Reference = R_MOTOR1;
+ValeurCmp = 10k;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC687A
+Path = /56EC020E/56EC6DA0
+Reference = R_IMU2;
+ValeurCmp = 10k;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6874
+Path = /56EC020E/56EC6E04
+Reference = R_IMU1;
+ValeurCmp = 10k;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC686E
+Path = /570090AC
+Reference = R_BOOT1;
+ValeurCmp = 10k;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6832
+Path = /56F51DDC
+Reference = R4;
+ValeurCmp = 1k;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67F9
+Path = /5702CAA7
+Reference = L_BEAD1;
+ValeurCmp = 10uH;
+IdModule  = footprints_micromouse:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 57023D7B
+Path = /56F517D6
+Reference = LED_WHITE1;
+ValeurCmp = Led_Small;
+IdModule  = footprints_micromouse:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 57023D75
+Path = /5702AD1A
+Reference = LED_GREEN1;
+ValeurCmp = Led_Small;
+IdModule  = footprints_micromouse:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 57023D6F
+Path = /56F5171B
+Reference = LED_BLUE1;
+ValeurCmp = Led_Small;
+IdModule  = footprints_micromouse:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC679B
+Path = /56EC020E/56EC2147
+Reference = D1;
+ValeurCmp = Led_Small;
+IdModule  = footprints_micromouse:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67A1
+Path = /56FADB78
+Reference = D_PWR1;
+ValeurCmp = Led_Small;
+IdModule  = footprints_micromouse:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67E7
+Path = /5702AEA8
+Reference = LED_RED1;
+ValeurCmp = Led_Small;
+IdModule  = footprints_micromouse:LED_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC69D8
+Path = /56EC020E/56EC0A9B
+Reference = U10;
+ValeurCmp = MPU-9250;
+IdModule  = MPU-9250:QFN-24%2f3MM;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6930
+Path = /56E8ACCC
+Reference = U1;
+ValeurCmp = STM32F446RE_LQFP64;
+IdModule  = footprints_micromouse:STM32F446_LQFP64;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC681A
+Path = /56F97E9E
+Reference = M3;
+ValeurCmp = 2.54MM-SLIDE-SWITCH_TS02_SWITCH;
+IdModule  = footprints_micromouse:2.54MM-SLIDE-SWITCH_TS02_SWITCH;
+EndCmp
+
+BeginCmp
+TimeStamp = 5702754A
+Path = /57030BA4
+Reference = P1;
+ValeurCmp = B3B-PH-SM4-TB;
+IdModule  = footprints_micromouse:JST_B3B-PH_HEADER;
+EndCmp
+
+BeginCmp
+TimeStamp = 57027551
+Path = /570300D1
+Reference = P2;
+ValeurCmp = B3B-PH-SM4-TB;
+IdModule  = footprints_micromouse:JST_B3B-PH_HEADER;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68EC
+Path = /56FB91BA
+Reference = SW3;
+ValeurCmp = SWITCH_DPST;
+IdModule  = footprints_micromouse:SW_SPST_PTS645;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68E4
+Path = /56FB88CA
+Reference = SW2;
+ValeurCmp = SWITCH_DPST;
+IdModule  = footprints_micromouse:SW_SPST_PTS645;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC68DC
+Path = /56FC2E61
+Reference = SW1;
+ValeurCmp = SWITCH_DPST;
+IdModule  = footprints_micromouse:SW_SPST_PTS645;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC673B
+Path = /57036A2D
+Reference = C_M1;
+ValeurCmp = 220uF;
+IdModule  = footprints_micromouse:TantalC_SizeD_EIA-7343_Reflow;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC66FF
+Path = /56FA8846
+Reference = CNR1;
+ValeurCmp = 0.1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC670B
+Path = /56FAA471
+Reference = C_3.3V2;
+ValeurCmp = 0.1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6717
+Path = /56FA4776
+Reference = C_5V2;
+ValeurCmp = 0.1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC671D
+Path = /56EC020E/56EC1356
+Reference = C_DIS1;
+ValeurCmp = 0.1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6729
+Path = /56EC020E/56EC3C79
+Reference = C_IMU1;
+ValeurCmp = 0.1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6735
+Path = /56EC020E/56EC4156
+Reference = C_IMU3;
+ValeurCmp = 0.1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6741
+Path = /56EB60D6/56ED6CB6
+Reference = C_MOTOR1;
+ValeurCmp = 1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6747
+Path = /56EB60D6/56ED7065
+Reference = C_MOTOR2;
+ValeurCmp = 1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6753
+Path = /56FBB40A
+Reference = C_RESET1;
+ValeurCmp = 0.1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC675F
+Path = /5702798E
+Reference = C_V1;
+ValeurCmp = 0.1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6765
+Path = /57027029
+Reference = C_V2;
+ValeurCmp = 0.1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC676B
+Path = /57015E11
+Reference = C_V3;
+ValeurCmp = 0.1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6771
+Path = /57034880
+Reference = C_V4;
+ValeurCmp = 0.1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6777
+Path = /5700F570
+Reference = C_V5;
+ValeurCmp = 0.1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC677D
+Path = /5701457B
+Reference = C_V6;
+ValeurCmp = 0.1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6789
+Path = /56FA06D4
+Reference = C_VBAT2;
+ValeurCmp = 0.1uF;
+IdModule  = footprints_micromouse:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6968
+Path = /56EB60D6/56EB6417
+Reference = U3;
+ValeurCmp = MAX14871;
+IdModule  = footprints_micromouse:TSSOP-16_EP;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC694C
+Path = /56EB60D6/56EB63E4
+Reference = U2;
+ValeurCmp = MAX14871;
+IdModule  = footprints_micromouse:TSSOP-16_EP;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC69BC
+Path = /56EC020E/56EC0A44
+Reference = U9;
+ValeurCmp = HCMS-2901;
+IdModule  = footprints_micromouse:HCMS-2903;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC672F
+Path = /56EC020E/56EC41B1
+Reference = C_IMU2;
+ValeurCmp = 10nF;
+IdModule  = footprints_micromouse:C_0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6783
+Path = /56FA029D
+Reference = C_VBAT1;
+ValeurCmp = 100uF;
+IdModule  = footprints_micromouse:C_1210;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC6711
+Path = /56FA489D
+Reference = C_5V1;
+ValeurCmp = 100uF;
+IdModule  = footprints_micromouse:C_1210;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC69ED
+Path = /56F9D522
+Reference = U12;
+ValeurCmp = TPS73633;
+IdModule  = footprints_micromouse:TPS73633_SOT-23;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC69E4
+Path = /56F9D350
+Reference = U11;
+ValeurCmp = TPS76850;
+IdModule  = footprints_micromouse:TPS76850_SOIC-8;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC67B1
+Path = /56EC020E/56EC0AE2
+Reference = J1;
+ValeurCmp = uSD_SLOT_47219-2001;
+IdModule  = footprints_micromouse:uSD_MOLEX_47219-2001;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A647
+Path = /56EB6D2D/58D8921B
+Reference = C_F1;
+ValeurCmp = 4.7u;
+IdModule  = Capacitors_SMD:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A64D
+Path = /56EB6D2D/58D892D7
+Reference = C_F2;
+ValeurCmp = 0.1u;
+IdModule  = Capacitors_SMD:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A653
+Path = /56EB6D2D/58D8A991
+Reference = C_F3;
+ValeurCmp = 4.7u;
+IdModule  = Capacitors_SMD:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A659
+Path = /56EB6D2D/58D8A997
+Reference = C_F4;
+ValeurCmp = 0.1u;
+IdModule  = Capacitors_SMD:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A65F
+Path = /56EB6D2D/58D8AA61
+Reference = C_F5;
+ValeurCmp = 4.7u;
+IdModule  = Capacitors_SMD:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A665
+Path = /56EB6D2D/58D8AA67
+Reference = C_F6;
+ValeurCmp = 0.1u;
+IdModule  = Capacitors_SMD:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A66B
+Path = /56EB6D2D/58D8AB55
+Reference = C_F7;
+ValeurCmp = 4.7u;
+IdModule  = Capacitors_SMD:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A671
+Path = /56EB6D2D/58D8AB5B
+Reference = C_F8;
+ValeurCmp = 0.1u;
+IdModule  = Capacitors_SMD:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A677
+Path = /56EB6D2D/58D83346
+Reference = D_F1;
+ValeurCmp = SFH 4545;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A67D
+Path = /56EB6D2D/58D8A984
+Reference = D_F2;
+ValeurCmp = SFH 4545;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A683
+Path = /56EB6D2D/58D8AA54
+Reference = D_F3;
+ValeurCmp = SFH 4545;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A689
+Path = /56EB6D2D/58D8AB48
+Reference = D_F4;
+ValeurCmp = SFH 4545;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A690
+Path = /56EB6D2D/58D82281
+Reference = Q1;
+ValeurCmp = DMN3150LW;
+IdModule  = TO_SOT_Packages_SMD:SOT-323_SC-70;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A697
+Path = /56EB6D2D/58D8A971
+Reference = Q2;
+ValeurCmp = DMN3150LW;
+IdModule  = TO_SOT_Packages_SMD:SOT-323_SC-70;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A69E
+Path = /56EB6D2D/58D8AA41
+Reference = Q3;
+ValeurCmp = DMN3150LW;
+IdModule  = TO_SOT_Packages_SMD:SOT-323_SC-70;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6A5
+Path = /56EB6D2D/58D8AB35
+Reference = Q4;
+ValeurCmp = DMN3150LW;
+IdModule  = TO_SOT_Packages_SMD:SOT-323_SC-70;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6AB
+Path = /56EB6D2D/58D822D8
+Reference = Q5;
+ValeurCmp = TEFT4300;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6B1
+Path = /56EB6D2D/58D86267
+Reference = Q6;
+ValeurCmp = TEFT4300;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6B7
+Path = /56EB6D2D/58D86304
+Reference = Q7;
+ValeurCmp = TEFT4300;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6BD
+Path = /56EB6D2D/58D863E0
+Reference = Q8;
+ValeurCmp = TEFT4300;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6C3
+Path = /56EB6D2D/58D82B31
+Reference = R_F1;
+ValeurCmp = 47k;
+IdModule  = Resistors_SMD:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6C9
+Path = /56EB6D2D/58D830C2
+Reference = R_F2;
+ValeurCmp = 10;
+IdModule  = Resistors_SMD:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6CF
+Path = /56EB6D2D/58D8A977
+Reference = R_F3;
+ValeurCmp = 47k;
+IdModule  = Resistors_SMD:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6D5
+Path = /56EB6D2D/58D8A97E
+Reference = R_F4;
+ValeurCmp = 10;
+IdModule  = Resistors_SMD:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6DB
+Path = /56EB6D2D/58D8AA47
+Reference = R_F5;
+ValeurCmp = 47k;
+IdModule  = Resistors_SMD:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6E1
+Path = /56EB6D2D/58D8AA4E
+Reference = R_F6;
+ValeurCmp = 10;
+IdModule  = Resistors_SMD:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6E7
+Path = /56EB6D2D/58D8AB3B
+Reference = R_F7;
+ValeurCmp = 47k;
+IdModule  = Resistors_SMD:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6ED
+Path = /56EB6D2D/58D8AB42
+Reference = R_F8;
+ValeurCmp = 10;
+IdModule  = Resistors_SMD:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6F3
+Path = /56EB6D2D/58D85028
+Reference = R_F9;
+ValeurCmp = 2.4k;
+IdModule  = Resistors_SMD:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6F9
+Path = /56EB6D2D/58D8626D
+Reference = R_F10;
+ValeurCmp = 2.4k;
+IdModule  = Resistors_SMD:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A6FF
+Path = /56EB6D2D/58D8630A
+Reference = R_F11;
+ValeurCmp = 2.4k;
+IdModule  = Resistors_SMD:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D8A705
+Path = /56EB6D2D/58D863E6
+Reference = R_F12;
+ValeurCmp = 2.4k;
+IdModule  = Resistors_SMD:R_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC66F0
+Path = /57042F20
+Reference = CN1;
+ValeurCmp = 5_PIN_HEADER;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x06_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC66F9
+Path = /5703E5D5
+Reference = CN2;
+ValeurCmp = 5_PIN_HEADER;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x06_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D9A287
+Path = 
+Reference = REF**;
+ValeurCmp = RANGE_SENSOR_HOUSING;
+IdModule  = footprints_micromouse:RANGE_SENSOR_HOUSING;
+EndCmp
+
+BeginCmp
+TimeStamp = 58D9A355
+Path = 
+Reference = REF**;
+ValeurCmp = RANGE_SENSOR_HOUSING;
+IdModule  = footprints_micromouse:RANGE_SENSOR_HOUSING;
+EndCmp
+
+BeginCmp
+TimeStamp = 58DA52BA
+Path = /58D92E79
+Reference = C_PB1;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58DA52C0
+Path = /58D96AE9
+Reference = C_PB2;
+ValeurCmp = 0.1uF;
+IdModule  = Capacitors_SMD:C_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = 58DA52C6
+Path = /56EB60D6/58DADD61
+Reference = M2;
+ValeurCmp = LEFT_MOTOR;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x02_Pitch2.00mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 58DA52CC
+Path = /56EB60D6/58DADDFC
+Reference = M4;
+ValeurCmp = RIGHT_MOTOR;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x02_Pitch2.00mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 56FC680D
+Path = /56EB60D6/56EB6456
+Reference = M1;
+ValeurCmp = MOTOR_MOUNTS_AND_ENCODERS;
+IdModule  = footprints_micromouse:FUTURA-1.0-MOTOR-MOUNT-TEMPLATE;
+EndCmp
+
+EndListe
