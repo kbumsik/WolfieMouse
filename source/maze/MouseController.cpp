@@ -1,7 +1,6 @@
 #include <common_maze.h>
 #include <MouseController.hpp>
 #include <algorithm>
-#include <time.h>
 
 /*******************************************************************************
  * Constructor
