@@ -200,7 +200,7 @@ void MouseController::setUnsearchDes(int n)
 		}
 	}
 	//find destinations
-	while (destinations.size() <= n && count > 0) {
+	while (destinations.size() < n && count > 0) {
 		//choose random row
 		int temp = (int) (rand()%16);
 	    int i = temp;
