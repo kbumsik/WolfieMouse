@@ -10,7 +10,7 @@
 
 // Push button settings
 #define B1_PORT 		PORTA
-#define B1_PIN 			PIN_13
+#define B1_PIN 			PIN_15
 
 #define B2_PORT 		PORTA
 #define B2_PIN 			PIN_12

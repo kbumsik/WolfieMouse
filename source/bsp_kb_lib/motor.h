@@ -21,10 +21,10 @@ extern "C" {
 #endif
 
 kb_status_t motor_init(void);
-void motor_go_forward(void);
-void motor_go_backward(void);
-void motor_turn_right(void);
-void motor_turn_left(void);
+void motor_dir_forward(void);
+void motor_dir_backward(void);
+void motor_dir_rotate_left(void);
+void motor_dir_rotate_right(void);
 
 int32_t motor_speed_percent(motor_ch_t channel, int32_t speed);
 kb_status_t motor_start(motor_ch_t eChannel);
