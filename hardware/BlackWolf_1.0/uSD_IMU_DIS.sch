@@ -392,4 +392,8 @@ F 3 "" H 4100 5550 50  0000 C CNN
 $EndComp
 Text Notes 7500 3900 0    60   ~ 0
 uSD card slot has been removed.\n
+NoConn ~ 2800 5800
+NoConn ~ 2800 5900
+NoConn ~ 2900 3300
+NoConn ~ 2900 3400
 $EndSCHEMATC

@@ -509,14 +509,6 @@ Text GLabel 3250 6600 3    40   Input ~ 0
 DIS_RS
 Text GLabel 2950 6600 3    40   Input ~ 0
 DIS_SCK
-Text GLabel 9600 2950 0    40   Input ~ 0
-~uSD_SS
-Text GLabel 9600 3050 0    40   Input ~ 0
-uSD_SCK
-Text GLabel 9600 3250 0    40   Input ~ 0
-uSD_MISO
-Text GLabel 9600 3150 0    40   Input ~ 0
-uSD_MOSI
 Text GLabel 9600 3550 0    40   Input ~ 0
 ~DIS_CE
 Text GLabel 9600 3450 0    40   Input ~ 0
@@ -1698,4 +1690,33 @@ Wire Wire Line
 	9650 5250 9650 5050
 Wire Wire Line
 	9650 5450 9650 5800
+Text GLabel 9600 4100 0    40   Input ~ 0
+IMU_SDA
+Text GLabel 9600 4000 0    40   Input ~ 0
+IMU_SCL
+Text GLabel 9600 4200 0    40   Input ~ 0
+IMU_INT
+NoConn ~ 4100 1650
+NoConn ~ 3600 2000
+NoConn ~ 3600 1450
+NoConn ~ 5300 1400
+NoConn ~ 5300 1450
+NoConn ~ 9100 1350
+NoConn ~ 9100 1450
+NoConn ~ 9100 1750
+NoConn ~ 10100 1750
+Wire Wire Line
+	3450 3550 3450 3400
+NoConn ~ 3950 3400
+NoConn ~ 3850 3400
+NoConn ~ 3750 3400
+NoConn ~ 3650 3400
+NoConn ~ 3550 3400
+NoConn ~ 3450 3400
+NoConn ~ 3150 3400
+NoConn ~ 4900 4550
+NoConn ~ 9600 2950
+NoConn ~ 9600 3050
+NoConn ~ 9600 3150
+NoConn ~ 9600 3250
 $EndSCHEMATC
