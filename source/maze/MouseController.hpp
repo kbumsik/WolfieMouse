@@ -70,10 +70,14 @@ public:
     void getDistanceAllCell();
     void getShortestPath();
     void moveNextCell();
+    void setUnsearchDes(int n);
+    void setStartAsDes();
+    void setGoalAsDes();
     /* boolean functions for goal, start and destination */
     bool anyDestinationCellSearched();
     bool positionIsDestination(Position pos);
     bool isInDestinationCell();
+    bool allDestinationsReached();
     bool isInGoal();
     bool isInStart();
     /* print information of stack used in the algorithm */
