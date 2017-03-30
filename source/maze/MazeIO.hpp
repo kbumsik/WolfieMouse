@@ -51,7 +51,7 @@ public:
     void setMousePosition(Position pos);
     void setMousePosition(PositionController posCon);
     // Mouse Destinations
-    void setDestinations(std::vector<Position> des);
+    void setDestinations(const std::vector<Position> &des);
     bool positionIsDestination(Position pos);
     // Actual IO
     void printMaze(void);

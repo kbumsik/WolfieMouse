@@ -42,7 +42,7 @@ void MazeIO::setMousePosition(PositionController posCon)
 	mousePosition = posCon;
 }
 
-void MazeIO::setDestinations(std::vector<Position> des)
+void MazeIO::setDestinations(const std::vector<Position> &des)
 {
 	destinations = des;
 }
@@ -50,8 +50,7 @@ void MazeIO::setDestinations(std::vector<Position> des)
 bool MazeIO::positionIsDestination(Position pos)
 {
 	for (int i = 0; i < destinations.size(); i++) {
-		if ((pos.row == destinations[i].row) &&
-			(pos.col == destinations[i].col) ) {
+		if (pos == destinations[i]) {
 			return true; /* return true if position found in destination vector*/
 		}
 	}

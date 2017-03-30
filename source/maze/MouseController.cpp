@@ -58,12 +58,6 @@ void MouseController::getDistanceAllCell()
     /* Firstly set the distance of the current position to 0 */
     setDis(getCurrentPos(), CELL_DISTANCE_START);
 
-    /* check if the mouse is in a destination */
-	if (isInDestinationCell()) {
-		destinations.erase(std::remove(destinations.begin(),
-				destinations.end(), getCurrentPos()), destinations.end());
-	}
-
     while (1) {
         /* Creating a loop which scans the whole maze */
         for (row = 0; row < CONFIG_MAX_ROW_SIZE; row++) {
@@ -186,6 +180,11 @@ void MouseController::moveNextCell()
     /* 4. scan the front wall */
     /* 5. update */
     updateCell();
+    /* check if the mouse is in a destination */
+	if (isInDestinationCell()) {
+		destinations.erase(std::remove(destinations.begin(),
+				destinations.end(), getCurrentPos()), destinations.end());
+	}
 }
 
 bool MouseController::anyDestinationCellSearched()
