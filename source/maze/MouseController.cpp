@@ -1,5 +1,6 @@
 #include <common_maze.h>
 #include <MouseController.hpp>
+#include <algorithm>
 
 /*******************************************************************************
  * Constructor
@@ -179,6 +180,11 @@ void MouseController::moveNextCell()
     /* 4. scan the front wall */
     /* 5. update */
     updateCell();
+    /* check if the mouse is in a destination */
+	if (isInDestinationCell()) {
+		destinations.erase(std::remove(destinations.begin(),
+				destinations.end(), getCurrentPos()), destinations.end());
+	}
 }
 
 bool MouseController::anyDestinationCellSearched()
@@ -222,6 +228,7 @@ void MouseController::printMaze()
 {
     Maze::updateCell();
     mazeIO.setMousePosition(*this);
+    mazeIO.setDestinations(destinations);
     Maze::printMaze();
 }
 
