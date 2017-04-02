@@ -75,9 +75,21 @@ int main(void)
     /* Initial LED Display message */
     hcms_290x_matrix("STRT");
 
+    /* Encoder test reading */
+    int left = encoder_left_count();
+    int right = encoder_right_count();
+    KB_DEBUG_MSG("left encoder: %d\n", left);
+    KB_DEBUG_MSG("right encoder: %d\n", right);
+
+    /* Wait for 3 sec */
+    for (int i = 0; i < 6; i++) {
+        kb_gpio_toggle(LED4_PORT, LED4_PIN);
+        kb_delay_ms(500);
+    }
+
     /* Motor test running */
-    //motor_speed_percent(CH_BOTH, 10);
-    //motor_start(CH_BOTH);
+    motor_speed_percent(CH_BOTH, 10);
+    motor_start(CH_BOTH);
 
     /* Set Button Pressed Events */
     kb_gpio_init_t GPIO_InitStruct;
@@ -99,7 +111,7 @@ int main(void)
     trace_puts("Hello ARM World!");
     kb_terminal_puts("Hello World!\n");
 
-    // motor_stop(CH_BOTH);
+    motor_stop(CH_BOTH);
 
     /* Mutex creation */
     mutex_range = xSemaphoreCreateMutex();

@@ -55,8 +55,8 @@ kb_status_t motor_init(void)
 	 *     right_dir: PA10
 	 *     right_fault: PA9
 	 */
+    kb_timer_ch_pin(TIMER1, CH_1, PORTA, PIN_8, NOPULL);    //left  PWM
 	kb_timer_ch_pin(TIMER1, CH_4, PORTA, PIN_11, NOPULL);	//right PWM
-	kb_timer_ch_pin(TIMER1, CH_1, PORTA, PIN_8, NOPULL);	//left	PWM
 
 
 	kb_gpio_init_t gpio_setting = {
