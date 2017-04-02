@@ -71,12 +71,12 @@ void peripheral_init(void)
     hcms_290x_init();
 
     /* Init i2c MUX */
-    tca9545a_init();
-    tca9545a_select_ch(TCA9545A_CH_0);
+    //tca9545a_init();
+    //tca9545a_select_ch(TCA9545A_CH_0);
 
     /* Init Digital range sensors */
-    vl6180x_init();
-    vl6180x_range_mm();
+    //vl6180x_init();
+    //vl6180x_range_mm();
 
     /* Init encoder */
     encoder_init();
