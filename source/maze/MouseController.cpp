@@ -1,5 +1,6 @@
 #include <common_maze.h>
 #include <MouseController.hpp>
+#include <algorithm>
 
 /*******************************************************************************
  * Constructor
@@ -13,7 +14,8 @@ MouseController::MouseController(char *filename, IOInterface *fileIO,
             IOInterface *printIO, FinderInterface *finder, MoverInterface *mover) :
         Maze(filename, fileIO, printIO),
 		finder(finder),
-		mover(mover)
+		mover(mover),
+		destinations(goalPos)
 {
     pathStack = Queue<PositionController>();
     availablePositionStack = Queue<PositionController>();
@@ -72,7 +74,7 @@ void MouseController::getDistanceAllCell()
                 }
             }
         }
-        if (getDis(goalPos.row, goalPos.col) != CELL_DISTANCE_UNREACHED) {
+        if (anyDestinationCellSearched()) {
             break; //If the destination cell has a value after a sweep, the algorithm ends
         }
         /* Increment the distance because we are scanning again. */
@@ -109,8 +111,8 @@ void MouseController::getShortestPath()
         //copy the next position
         position = pathStack.peekFromBack();
         currentDistance = getDis(position);
-        //if current position is goal, break
-        if (position.getCurrentPos() == Position {goalPos.row, goalPos.col}) {
+        //if current position is destination, break
+        if (positionIsDestination(position.getCurrentPos())) {
             isFound = true;
             //pathStack.pushToBack(availablePositionStack.popFromBack());
             break;
@@ -159,7 +161,7 @@ void MouseController::getShortestPath()
 	}
 	/* Delete the top element - it is the current position! */
 	// FIXME: Do not delete it?
-	// FIXME: When not poping, the Front is always (0,0)
+	// FIXME: When not popping, the Front is always (0,0)
 	pathStack.popFromFront();
 }
 
@@ -167,7 +169,7 @@ void MouseController::moveNextCell()
 {
     /* 1. turn first */
     Direction tmp_d = getDirectionToGo();
-    /* before setting direction we need to set how much trun */
+    /* before setting direction we need to set how much turn */
     setDirectionToGo();
     /* 2. scan side wall */
     scanWalls();		// TODO: Try using this outside
@@ -178,6 +180,38 @@ void MouseController::moveNextCell()
     /* 4. scan the front wall */
     /* 5. update */
     updateCell();
+    /* check if the mouse is in a destination */
+	if (isInDestinationCell()) {
+		destinations.erase(std::remove(destinations.begin(),
+				destinations.end(), getCurrentPos()), destinations.end());
+	}
+}
+
+bool MouseController::anyDestinationCellSearched()
+{
+	for (int i = 0; i < destinations.size(); i++) {
+		if (getDis(destinations[i].row, destinations[i].col) != CELL_DISTANCE_UNREACHED) {
+			return true; /* return true if any of the destinations has been searched */
+		}
+	}
+	return false;
+}
+
+bool MouseController::positionIsDestination(Position pos)
+{
+	for (int i = 0; i < destinations.size(); i++) {
+		if ((pos.row == destinations[i].row) &&
+			(pos.col == destinations[i].col) ) {
+			return true; /* return true if position found in destination vector*/
+		}
+	}
+	return false;
+}
+
+bool MouseController::isInDestinationCell()
+{
+	/* return true if current position found in destination vector*/
+	return positionIsDestination(getCurrentPos());
 }
 
 bool MouseController::isInGoal()
@@ -194,6 +228,7 @@ void MouseController::printMaze()
 {
     Maze::updateCell();
     mazeIO.setMousePosition(*this);
+    mazeIO.setDestinations(destinations);
     Maze::printMaze();
 }
 
@@ -238,7 +273,7 @@ int MouseController::goForward()
 		return ret;
 	}
 	/* Use MovingInterface */
-	// TODO: What if the mouse actually failed to movce??
+	// TODO: What if the mouse actually failed to move??
 	return COMMON_MAZE_SUCCESS;
 }
 /*******************************************************************************
@@ -248,7 +283,6 @@ Cell MouseController::getCell(Position pos)
 {
     return Maze::getCell(pos.row, pos.col);
 }
-
 
 void MouseController::initDistance()
 {

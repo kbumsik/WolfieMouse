@@ -14,7 +14,7 @@ SimulMouse virtualMouse("maze_ieee_region_1_2015.txt", &fileIO, &printIO);
 int main()
 {
 	char tmp;
-	MouseController mouse (NULL, &fileIO, &printIO,
+	MouseController mouse ("out.txt", &fileIO, &printIO,
 			(FinderInterface*)&virtualMouse, (MoverInterface*)&virtualMouse);
 	while (true) {
 		/* First just print maze */

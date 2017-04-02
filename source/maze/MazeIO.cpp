@@ -42,6 +42,21 @@ void MazeIO::setMousePosition(PositionController posCon)
 	mousePosition = posCon;
 }
 
+void MazeIO::setDestinations(const std::vector<Position> &des)
+{
+	destinations = des;
+}
+
+bool MazeIO::positionIsDestination(Position pos)
+{
+	for (int i = 0; i < destinations.size(); i++) {
+		if (pos == destinations[i]) {
+			return true; /* return true if position found in destination vector*/
+		}
+	}
+	return false;
+}
+
 void MazeIO::printMaze(void)
 {
     if (NULL == maze) {
@@ -90,8 +105,7 @@ void MazeIO::loadMaze(char* fileName)
                 wallToPut = wallError;
                 continue;
             case 'G':
-                maze->goalPos.row = i / 2;
-                maze->goalPos.col = j / 2;
+            	maze->goalPos.push_back(Position{i/2, j/2});
                 wallToPut = wallError;
                 continue;
             case ' ':
@@ -231,6 +245,9 @@ void MazeIO::printCell(int row, int col, bool isShowMouse, char* buf)
 				*buf = 'M';
 				break;
     	}
+    } else if (positionIsDestination(Position{row, col}) && isShowMouse) {
+    	*buf++ = ' ';
+    	*buf = 'D';
     } else if (maze->getCell(row, col).attribute == start) {
         *buf++ = ' ';
         *buf = 'S';
