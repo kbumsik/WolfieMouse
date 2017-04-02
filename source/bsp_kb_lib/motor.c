@@ -75,7 +75,7 @@ kb_status_t motor_init(void)
 	gpio_setting.Mode = GPIO_MODE_INPUT;
 	kb_gpio_init(PORTC, PIN_8, &gpio_setting);
 
-	motor_go_forward();
+	motor_dir_forward();
 
 	// PWM settings
 	kb_pwm_init_t pwm_setting = {	// PWM is at 1kHz
@@ -118,25 +118,25 @@ int32_t motor_speed_percent(motor_ch_t channel, int32_t speed)
 	return speed;
 }
 
-void motor_go_forward(void)
+void motor_dir_forward(void)
 {
 	right_set_forward_();
 	left_set_forward_();
 }
 
-void motor_go_backward(void)
+void motor_dir_backward(void)
 {
 	right_set_backward_();
 	left_set_backward_();
 }
 
-void motor_turn_right(void)
+void motor_dir_rotate_right(void)
 {
 	right_set_backward_();
 	left_set_forward_();
 }
 
-void motor_turn_left(void)
+void motor_dir_rotate_left(void)
 {
 	right_set_forward_();
 	left_set_backward_();

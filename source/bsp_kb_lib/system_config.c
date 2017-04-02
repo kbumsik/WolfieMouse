@@ -119,58 +119,24 @@ void SystemClock_Config(void)
     HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
 }
 
+#ifdef USE_FULL_ASSERT
 
-#include "kb_gpio.h"
-#include "kb_terminal.h"
-#include "kb_TCA9545A_i2c_mux.h"
-#include "kb_VL6180X_range_finder.h"
-#include "kb_HCMS-290X_display.h"
-#include "encoder.h"
-#include "motor.h"
-
-void peripheral_init(void)
+/**
+   * @brief Reports the name of the source file and the source line number
+   * where the assert_param error has occurred.
+   * @param file: pointer to the source file name
+   * @param line: assert_param error line source number
+   * @retval None
+   */
+void assert_failed(uint8_t* file, uint32_t line)
 {
-    kb_gpio_init_t GPIO_InitStruct;
-
-    /* Configure UART */
-    kb_terminal_init();
-
-    /* Configure Pushbuttons */
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    kb_gpio_init(B1_PORT, B1_PIN, &GPIO_InitStruct);
-    kb_gpio_init(B2_PORT, B2_PIN, &GPIO_InitStruct);
-
-    /* Configure LED pins */
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    kb_gpio_init(LED1_PORT, LED1_PIN, &GPIO_InitStruct);
-    kb_gpio_init(LED2_PORT, LED2_PIN, &GPIO_InitStruct);
-    kb_gpio_init(LED3_PORT, LED3_PIN, &GPIO_InitStruct);
-    kb_gpio_init(LED4_PORT, LED4_PIN, &GPIO_InitStruct);
-
-    /* Configure LED Pins Output Level */
-    kb_gpio_set(LED1_PORT, LED1_PIN, GPIO_PIN_RESET);
-    kb_gpio_set(LED2_PORT, LED2_PIN, GPIO_PIN_RESET);
-    kb_gpio_set(LED3_PORT, LED3_PIN, GPIO_PIN_RESET);
-    kb_gpio_set(LED4_PORT, LED4_PIN, GPIO_PIN_RESET);
-
-    /* Init peripherals for the LED display */
-    hcms_290x_init();
-
-    /* Init i2c MUX */
-    tca9545a_init();
-    tca9545a_select_ch(TCA9545A_CH_0);
-
-    /* Init Digital range sensors */
-    vl6180x_init();
-    vl6180x_range_mm();
-
-    /* Init encoder */
-    encoder_init();
-
-    /* Init motor */
-    motor_init();
+  /* User can add his own implementation to report the file name and line number,
+    ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    if (CoreDebug->DHCSR & 1)   // Check C_DEBUGEN == 1 -> Debugger connected
+    {
+        __asm__("BKPT");
+    }
+    while (1);
 }
+
+#endif
