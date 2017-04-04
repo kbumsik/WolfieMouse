@@ -29,7 +29,6 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:pcb1
 LIBS:micromouse-cache
 EELAYER 25 0
 EELAYER END
@@ -641,4 +640,8 @@ RECV_FR
 Wire Wire Line
 	8600 3850 8450 3850
 Connection ~ 8450 3850
+Text Notes 1400 2450 0    60   ~ 12
+SOLDERING WARNING.\nInfrad LEDs: unlike usual LEDs, longer pins are CATHODE!! (Pin 1)
+Text Notes 6000 2750 0    60   ~ 12
+Soldering Note.\nPhototransistor: Longer pins are emitters (pin 2).
 $EndSCHEMATC

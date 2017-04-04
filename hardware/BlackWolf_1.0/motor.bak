@@ -29,7 +29,6 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:pcb1
 LIBS:micromouse-cache
 EELAYER 25 0
 EELAYER END

@@ -29,7 +29,6 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:pcb1
 LIBS:micromouse-cache
 EELAYER 25 0
 EELAYER END
@@ -335,7 +334,7 @@ L R_Small R_F4
 U 1 1 58D8A97E
 P 2900 3850
 F 0 "R_F4" V 2840 3760 50  0000 L CNN
-F 1 "10" V 2960 3760 50  0000 L CNN
+F 1 "20" V 2960 3760 50  0000 L CNN
 F 2 "Resistors_SMD:R_0603" H 2900 3850 50  0001 C CNN
 F 3 "" H 2900 3850 50  0000 C CNN
 	1    2900 3850
@@ -428,7 +427,7 @@ L R_Small R_F6
 U 1 1 58D8AA4E
 P 3650 4350
 F 0 "R_F6" V 3590 4260 50  0000 L CNN
-F 1 "10" V 3710 4260 50  0000 L CNN
+F 1 "20" V 3710 4260 50  0000 L CNN
 F 2 "Resistors_SMD:R_0603" H 3650 4350 50  0001 C CNN
 F 3 "" H 3650 4350 50  0000 C CNN
 	1    3650 4350
@@ -641,4 +640,8 @@ RECV_FR
 Wire Wire Line
 	8600 3850 8450 3850
 Connection ~ 8450 3850
+Text Notes 1400 2450 0    60   ~ 12
+SOLDERING WARNING.\nInfrad LEDs: unlike usual LEDs, longer pins are CATHODE!! (Pin 1)
+Text Notes 6000 2750 0    60   ~ 12
+Soldering Note.\nPhototransistor: Longer pins are emitters (pin 2).
 $EndSCHEMATC
