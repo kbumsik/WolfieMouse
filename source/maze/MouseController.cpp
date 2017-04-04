@@ -228,7 +228,13 @@ void MouseController::setStartAsDes()
 
 void MouseController::setGoalAsDes()
 {
-    destinations = CONFIG_DEFAULT_MAZE_GOAL;
+    for (int i = 0; i < CONFIG_MAX_ROW_SIZE; i++) {
+        for (int j = 0; j < CONFIG_MAX_COL_SIZE; j++) {
+            if (getCell(Position{i,j}).attribute == goal) {
+                destinations.push_back(Position{i,j});
+            }
+        }
+    }
 }
 
 bool MouseController::anyDestinationCellSearched()
