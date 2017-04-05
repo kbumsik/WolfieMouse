@@ -8,34 +8,36 @@
 #include "kb_timer.h"
 #include "kb_gpio.h"
 
-#define motorRIGHT_PORT 		GPIOA
-#define motorRIGHT_PIN			GPIO_PIN_10
+#define motorLEFT_PORT          GPIOC
+#define motorLEFT_PIN           GPIO_PIN_9
+#define motorRIGHT_PORT         GPIOA
+#define motorRIGHT_PIN          GPIO_PIN_10
+
+static inline void left_set_toggle_(void)
+{
+    kb_gpio_toggle(motorLEFT_PORT, motorLEFT_PIN);
+}
 static inline void right_set_toggle_(void)
 {
-	kb_gpio_toggle(motorRIGHT_PORT, motorRIGHT_PIN);
+    kb_gpio_toggle(motorRIGHT_PORT, motorRIGHT_PIN);
+}
+
+static inline void left_set_forward_(void)
+{
+    kb_gpio_set(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_SET);
 }
 static inline void right_set_forward_(void)
 {
-	kb_gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_RESET);
+    kb_gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET);
+}
+
+static inline void left_set_backward_()
+{
+    kb_gpio_set(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_RESET);
 }
 static inline void right_set_backward_(void)
 {
-	kb_gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET);
-}
-
-#define motorLEFT_PORT 			GPIOC
-#define motorLEFT_PIN			GPIO_PIN_9
-static inline void left_set_toggle_(void)
-{
-	kb_gpio_toggle(motorLEFT_PORT, motorLEFT_PIN);
-}
-static inline void left_set_forward_(void)
-{
-	kb_gpio_set(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_SET);
-}
-static inline void left_set_backward_()
-{
-	kb_gpio_set(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_RESET);
+	kb_gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_RESET);
 }
 
 

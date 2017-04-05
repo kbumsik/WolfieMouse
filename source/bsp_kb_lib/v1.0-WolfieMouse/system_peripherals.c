@@ -85,6 +85,7 @@ void peripheral_init(void)
 
     /* Init motor */
     motor_init();
+    motor_stop(CH_BOTH);
 
     /* Now peripherals has been initialized */
     is_peripherals_initialized = 1;

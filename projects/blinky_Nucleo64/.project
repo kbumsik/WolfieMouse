@@ -33,17 +33,7 @@
 		<link>
 			<name>bsp</name>
 			<type>2</type>
-			<locationURI>$%7BPARENT-2-PROJECT_LOC%7D/source/kb_lib/src/bsp</locationURI>
-		</link>
-		<link>
-			<name>bsp-nucleo64</name>
-			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/source/kb_lib/src/bsp/stm32f446xx-nucleo64</locationURI>
-		</link>
-		<link>
-			<name>bsp_kb_lib</name>
-			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/source/bsp_kb_lib</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/source/bsp_kb_lib/Nucleo64-STM32F446RE</locationURI>
 		</link>
 		<link>
 			<name>manufacturer_drivers</name>

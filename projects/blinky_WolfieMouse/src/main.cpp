@@ -204,6 +204,9 @@ static void task_blinky(void *pvParameters)
     uint32_t seconds = 0;
 
     while (1) {
+        kb_gpio_toggle(LED1_PORT, LED1_PIN);
+        kb_gpio_toggle(LED2_PORT, LED2_PIN);
+        kb_gpio_toggle(LED3_PORT, LED3_PIN);
         kb_gpio_toggle(LED4_PORT, LED4_PIN);
         kb_terminal_puts("Blink!\n");
 
