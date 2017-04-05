@@ -47,7 +47,7 @@
 #define TCA9545A_RESET_PIN	GPIO_PIN_9
 
 // ADC for range sensors
-#define RECV_ADC            ADC1
+#define RECV_ADC            KB_ADC1
 #define RECV_FR_PORT        GPIOC
 #define RECV_FR_PIN         GPIO_PIN_0
 #define RECV_R_PORT         GPIOC

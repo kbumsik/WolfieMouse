@@ -4,6 +4,7 @@
 #include "system_config.h"
 #include "kb_gpio.h"
 #include "kb_terminal.h"
+#include "kb_adc.h"
 
 // FreeRTOS
 #include "FreeRTOS.h"
@@ -21,6 +22,9 @@ static void task_blinky(void *pvParameters);
 /* Task Handlers */
 TaskHandle_t task_blinky_handler;
 
+/* peripheral objects */
+kb_adc_t range_front_right;
+
 int main(void)
 {
     // initialize clock and system configuration
@@ -28,6 +32,14 @@ int main(void)
 
     // Initialize all configured peripherals
     peripheral_init();
+
+    // ADC
+    kb_adc_init_t adc_init = {
+            .device = RECV_ADC,
+            .channel = KB_ADC_CH10
+    };
+    kb_adc_init(&range_front_right, &adc_init);
+    kb_adc_pin(RECV_FR_PORT, RECV_FR_PIN);
 
     // Set interrupt button
     kb_gpio_init_t GPIO_InitStruct;
@@ -79,6 +91,8 @@ void on_pressed(void)
 {
     trace_puts("Button Pressed\n");
     kb_gpio_toggle(PORTA, PIN_0);
+    uint32_t result = kb_adc_measure(&range_front_right);
+    trace_printf("result: %d\n", result);
     return;
 }
 
