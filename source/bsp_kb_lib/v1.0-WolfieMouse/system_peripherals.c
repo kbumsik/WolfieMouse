@@ -15,6 +15,7 @@
 #include "kb_HCMS-290X_display.h"
 #include "encoder.h"
 #include "motor.h"
+#include "pid.h"
 
 /*******************************************************************************
  * Global variables
@@ -27,9 +28,12 @@ volatile uint8_t range_left = 255, range_right = 255, range_front = 255,
             range_front_left = 255, range_front_right = 255;
 
 // Encoder value
-volatile uint32_t left_cnt, right_cnt, left_cnt_old, right_cnt_old;
-volatile float left_speed, right_speed, diff_speed;
+volatile int32_t left_cnt, right_cnt, left_cnt_old, right_cnt_old;
+volatile int32_t left_speed, right_speed, diff_speed;
 
+// PID handler
+pid_handler_t pid_translational;
+pid_handler_t pid_rotational;
 /*******************************************************************************
  * Static variables
  ******************************************************************************/
@@ -85,7 +89,30 @@ void peripheral_init(void)
 
     /* Init motor */
     motor_init();
-    motor_stop(CH_BOTH);
+    motor_speed_percent(CH_BOTH, 0);
+    motor_start(CH_BOTH);
+
+    /* Set PID controller */
+    pid_value_t pid_translational_value = {
+            .kp = 0.9,
+            .ki = 0,
+            .kd = 0.1
+    };
+
+    pid_value_t pid_rotational_value = {
+                .kp = 0.9,
+                .ki = 0,
+                .kd = 0.1
+    };
+
+    pid_set_pid(&pid_translational, &pid_translational_value);
+    pid_reset(&pid_translational);
+
+    pid_set_pid(&pid_rotational, &pid_rotational_value);
+    pid_reset(&pid_rotational);
+
+    pid_input_setpoint(&pid_translational, 0);
+    pid_input_setpoint(&pid_rotational, 0);
 
     /* Now peripherals has been initialized */
     is_peripherals_initialized = 1;
@@ -107,7 +134,21 @@ void SysTick_hook(void)
     right_cnt_old = right_cnt;
     left_cnt = encoder_left_count();
     right_cnt = encoder_right_count();
-    left_speed = (float)(left_cnt - left_cnt_old);// * CONFIG_LEN_PER_CNT;
-    right_speed = (float)(right_cnt - right_cnt_old);// * CONFIG_LEN_PER_CNT;
+    left_speed = (left_cnt - left_cnt_old);// * CONFIG_LEN_PER_CNT;
+    right_speed = (right_cnt - right_cnt_old);// * CONFIG_LEN_PER_CNT;
     diff_speed = left_speed - right_speed;
+
+    /* Start PID calculation */
+    // calculate errorT
+    int32_t feedbackT = (left_speed + right_speed) / 2;
+    int32_t outputT = pid_compute(&pid_translational, feedbackT);
+
+    // get errorR
+    int32_t feedbackR = left_speed - right_speed;
+    int32_t outputR = pid_compute(&pid_rotational, feedbackR);
+
+    // Apply to the motor
+    motor_speed_percent(CH_LEFT, outputT + outputR);
+    motor_speed_percent(CH_RIGHT, outputT - outputR);
+    motor_start(CH_BOTH);
 }

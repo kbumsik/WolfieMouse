@@ -110,4 +110,7 @@ void SysTick_hook(void)
     left_speed = (float)(left_cnt - left_cnt_old);// * CONFIG_LEN_PER_CNT;
     right_speed = (float)(right_cnt - right_cnt_old);// * CONFIG_LEN_PER_CNT;
     diff_speed = left_speed - right_speed;
+    
+    /* Set up motor speed from PID */
+    /* Use sensors accoring to flags */
 }

@@ -84,4 +84,27 @@
 #define MOTOR_RIGHT_PWM_PORT PORTA
 #define MOTOR_RIGHT_PWM_PIN  PIN_11
 
+// ADC for range sensors
+#define RECV_ADC            KB_ADC1
+#define RECV_FR_PORT        GPIOC
+#define RECV_FR_PIN         GPIO_PIN_0
+#define RECV_R_PORT         GPIOC
+#define RECV_R_PIN          GPIO_PIN_1
+#define RECV_L_PORT         GPIOC
+#define RECV_L_PIN          GPIO_PIN_2
+#define RECV_FL_PORT        GPIOC
+#define RECV_FL_PIN         GPIO_PIN_3
+
+// Range sensor emitters
+// right front : PC13
+// sides : PA0
+// left front : PA1
+#define EMITTER_FR_PORT     GPIOC
+#define EMITTER_FR_PIN      GPIO_PIN_13
+#define EMITTER_SIDES_PORT  GPIOA
+#define EMITTER_SIDES_PIN   GPIO_PIN_0
+#define EMITTER_FL_PORT     GPIOA
+#define EMITTER_FL_PIN      GPIO_PIN_1
+
+
 #endif /* BSP_WOLFIEMOUSE_KB_MODULE_CONFIG_H_ */

@@ -24,19 +24,20 @@ void encoder_init(void)
 	kb_timer_ch_pin(TIMER3, CH_1, PORTC, PIN_6, PULLUP);
 
 	// init timer
-	// right channel
+	// left channel
 	kb_encoder_init_t enc_setting = {
 			.direction = CCW,
-			.prescaler = 0xfU
+			.prescaler = 0x0U
+	};
+	kb_encoder_init(TIMER3, &enc_setting);
+	
+	// right channel
+	enc_setting = (kb_encoder_init_t){
+			.direction = CW,
+			.prescaler = 0x0U
 	};
 	kb_encoder_init(TIMER4, &enc_setting);
 
-	// left channel
-	enc_setting = (kb_encoder_init_t){
-			.direction = CW,
-			.prescaler = 0xfU
-	};
-	kb_encoder_init(TIMER3, &enc_setting);
 
 	// start encoders
 	kb_encoder_start(TIMER4);

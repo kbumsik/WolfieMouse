@@ -94,19 +94,41 @@ kb_status_t motor_init(void)
 
 int32_t motor_speed_percent(motor_ch_t channel, int32_t speed)
 {
+    int go_backword = 0;
+    if (speed < 0) {
+        go_backword = 1;
+        speed *= -1;
+    }
 	switch (channel) {
 	case CH_LEFT:
 		/* Set the pulse value for channel 1 */
+	    if (go_backword) {
+	        left_set_backward_();
+	    } else {
+	        left_set_forward_();
+	    }
 		kb_pwm_percent(TIMER1, CH_1, speed);
 		break;
 
 	case CH_RIGHT:
 		/* Set the pulse value for channel 4 */
+        if (go_backword) {
+            right_set_backward_();
+        } else {
+            right_set_forward_();
+        }
 		kb_pwm_percent(TIMER1, CH_4, speed);
 		break;
 
 	case CH_BOTH:
 		/* Set the pulse value for all channel */
+        if (go_backword) {
+            left_set_backward_();
+            right_set_backward_();
+        } else {
+            left_set_forward_();
+            right_set_forward_();
+        }
 		kb_pwm_percent(TIMER1, CH_1, speed);
 		kb_pwm_percent(TIMER1, CH_4, speed);
 		break;

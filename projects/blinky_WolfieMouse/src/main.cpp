@@ -7,6 +7,7 @@
 #include "kb_timer.h"
 #include "kb_TCA9545A_i2c_mux.h"
 #include "kb_VL6180X_range_finder.h"
+#include "kb_adc.h"
 
 // FreeRTOS
 #include "FreeRTOS.h"
@@ -21,6 +22,9 @@
 #include "system_config.h"
 #include "encoder.h"
 #include "motor.h"
+
+// Algorithm
+#include "pid.h"
 
 // Define message base. This is used for KB_DEBUG_MSG()
 #ifdef KB_MSG_BASE
@@ -41,6 +45,12 @@ static void task_blinky(void *pvParameters);
 static void task_range(void *pvParameters);
 
 /*******************************************************************************
+ * local variables
+ ******************************************************************************/
+/* peripheral objects */
+kb_adc_t adc_front_right;
+
+/*******************************************************************************
  * Global variables
  ******************************************************************************/
 // Task Handlers
@@ -58,9 +68,12 @@ SemaphoreHandle_t mutex_range;
 extern volatile uint8_t range_left, range_right, range_front,
             range_front_left, range_front_right;
 // Encoder value
-extern volatile uint32_t left_cnt, right_cnt, left_cnt_old, right_cnt_old;
-extern volatile float left_speed, right_speed, diff_speed;
+extern volatile int32_t left_cnt, right_cnt, left_cnt_old, right_cnt_old;
+extern volatile int32_t left_speed, right_speed, diff_speed;
 
+// PID handler
+extern pid_handler_t pid_translational;
+extern pid_handler_t pid_rotational;
 /*******************************************************************************
  * Main function
  ******************************************************************************/
@@ -71,6 +84,24 @@ int main(void)
 
     /* Initialize all configured peripherals */
     peripheral_init();
+
+    kb_gpio_init_t GPIO_InitStruct;
+#ifdef KB_BLACKWOLF
+    // ADC
+    // This is A5 Pin in Nucleo-64
+    kb_adc_init_t adc_init;
+    adc_init.device = RECV_ADC;
+    adc_init.channel = KB_ADC_CH11;
+
+    kb_adc_init(&adc_front_right, &adc_init);
+    kb_adc_pin(RECV_R_PORT, RECV_R_PIN);
+
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    kb_gpio_init(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, &GPIO_InitStruct);
+    kb_gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_RESET);
+#endif
 
     /* Initial LED Display message */
     hcms_290x_matrix("STRT");
@@ -84,15 +115,13 @@ int main(void)
     /* Wait for 3 sec */
     for (int i = 0; i < 6; i++) {
         kb_gpio_toggle(LED4_PORT, LED4_PIN);
-        kb_delay_ms(500);
+        kb_delay_ms(1);
     }
 
     /* Motor test running */
-    motor_speed_percent(CH_BOTH, 10);
-    motor_start(CH_BOTH);
+    pid_input_setpoint(&pid_translational, 18);
 
     /* Set Button Pressed Events */
-    kb_gpio_init_t GPIO_InitStruct;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = NOPULL;
 
@@ -111,7 +140,10 @@ int main(void)
     trace_puts("Hello ARM World!");
     kb_terminal_puts("Hello World!\n");
 
-    motor_stop(CH_BOTH);
+
+    /* Motor test running done */
+    pid_input_setpoint(&pid_translational, 0);
+
 
     /* Mutex creation */
     mutex_range = xSemaphoreCreateMutex();
@@ -214,10 +246,20 @@ static void task_blinky(void *pvParameters)
         ++seconds;        // Count seconds on the trace device.
         trace_printf("Second %u\n", seconds);
 
+        // Print speed
         KB_DEBUG_MSG("left encoder: %d\n", left_cnt);
         KB_DEBUG_MSG("right encoder: %d\n", right_cnt);
         KB_DEBUG_MSG("left speed: %f\n", left_speed);
         KB_DEBUG_MSG("right speed: %f\n", right_speed);
+
+#ifdef KB_BLACKWOLF
+        // Range sensor test
+        kb_gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_SET);
+        kb_delay_us(60);
+        uint32_t result = kb_adc_measure(&adc_front_right);
+        kb_gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_RESET);
+        trace_printf("result: %d\n", result);
+#endif
 
         /* Call this Task every 1000ms */
         vTaskDelayUntil(&xLastWakeTime, (1000 / portTICK_RATE_MS));
