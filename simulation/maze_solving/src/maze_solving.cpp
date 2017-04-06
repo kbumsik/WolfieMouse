@@ -25,22 +25,24 @@ int main()
     WolfieState mouseState = goGoal;
     MouseController mouse("out.txt", &fileIO, &printIO,
             (FinderInterface*) &virtualMouse, (MoverInterface*) &virtualMouse);
+
+    /* First just print maze */
+    mouse.printMaze();
+    printf("please input a command\n");
+    printf("q: exit, n:next\n");
+    fflush(stdout);
     while (true) {
-        /* First just print maze */
-        mouse.printMaze();
-        printf("please input a command\n");
-        printf("q: exit, n:next\n");
-        fflush(stdout);
-        while (true) {
-            tmp = getchar();
-            if (tmp == 'n') {
-                break;
-            } else if (tmp == 'q') {
-                goto end;
-            } else {
-                continue;
-            }
+        tmp = getchar();
+        if (tmp == 'n') {
+            break;
+        } else if (tmp == 'q') {
+            goto end;
+        } else {
+            continue;
         }
+    }
+
+    while (true) {
         //Finite State Machine
         if (mouse.allDestinationsReached()) {
             switch (mouseState) {
@@ -75,24 +77,13 @@ bool moveOneCell(MouseController &mouse)
 {
     char tmp;
     /* Then scan walls then calculate the distance */
-    mouse.scanWalls();
-    mouse.getDistanceAllCell();
-    mouse.printMaze();
-    printf("please input a command\n");
-    printf("q: exit, n:next\n");
-    fflush(stdout);
-    while (true) {
-        tmp = getchar();
-        if (tmp == 'n') {
-            break;
-        } else if (tmp == 'q') {
-            return false;
-        } else {
-            continue;
-        }
+    if (mouse.scanWalls()) {
+        mouse.getDistanceAllCell();
+        /* then get shortest path */
+        mouse.getShortestPath();
+    } else {
+        mouse.getDistanceAllCell();
     }
-    /* then get shortest path */
-    mouse.getShortestPath();
     mouse.printMaze();
     printf("please input a command\n");
     printf("q: exit, n:next, p: print stack\n");
