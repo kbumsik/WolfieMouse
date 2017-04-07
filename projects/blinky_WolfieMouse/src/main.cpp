@@ -47,8 +47,6 @@ static void task_range(void *pvParameters);
 /*******************************************************************************
  * local variables
  ******************************************************************************/
-/* peripheral objects */
-kb_adc_t adc_front_right;
 
 /*******************************************************************************
  * Global variables
@@ -74,6 +72,15 @@ extern volatile int32_t speed_L, speed_R, speed_D;
 extern pid_handler_t pid_T;
 extern pid_handler_t pid_R;
 
+// ADC peripheral object
+extern kb_adc_t adc_L;
+extern kb_adc_t adc_R;
+extern kb_adc_t adc_F;
+
+extern int is_pid_T_running;
+extern int is_pid_R_running;
+static void stop_all(void);
+
 /*******************************************************************************
  * Main function
  ******************************************************************************/
@@ -86,22 +93,6 @@ int main(void)
     peripheral_init();
 
     kb_gpio_init_t GPIO_InitStruct;
-#ifdef KB_BLACKWOLF
-    // ADC
-    // This is A5 Pin in Nucleo-64
-    kb_adc_init_t adc_init;
-    adc_init.device = RECV_ADC;
-    adc_init.channel = KB_ADC_CH10;
-
-    kb_adc_init(&adc_front_right, &adc_init);
-    kb_adc_pin(RECV_FR_PORT, RECV_FR_PIN);
-
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    kb_gpio_init(EMITTER_FR_PORT, EMITTER_FR_PIN, &GPIO_InitStruct);
-    kb_gpio_set(EMITTER_FR_PORT, EMITTER_FR_PIN, GPIO_PIN_RESET);
-#endif
 
     /* Initial LED Display message */
     hcms_290x_matrix("STRT");
@@ -119,11 +110,12 @@ int main(void)
     }
 
     /* Motor test running */
+    is_pid_R_running = 1;
     pid_input_setpoint(&pid_T, 18);
 
     /* Set Button Pressed Events */
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = NOPULL;
+    GPIO_InitStruct.Pull = PULLUP;
 
     kb_gpio_isr_enable(B1_PORT, B1_PIN, &GPIO_InitStruct, FALLING_EDGE);
     kb_gpio_isr_register(B1_PORT, B1_PIN, on_b1_pressed);
@@ -133,7 +125,7 @@ int main(void)
 
     /* Test blinking */
     kb_gpio_toggle(LED4_PORT, LED4_PIN);
-    kb_delay_ms(1500);
+    kb_delay_ms(4000);
     kb_gpio_toggle(LED4_PORT, LED4_PIN);
 
     /* Test message */
@@ -142,7 +134,7 @@ int main(void)
 
 
     /* Motor test running done */
-    //pid_input_setpoint(&pid_T, 0);
+    stop_all();
 
 
     /* Mutex creation */
@@ -256,14 +248,17 @@ static void task_blinky(void *pvParameters)
         KB_DEBUG_MSG("left speed: %d\n", speed_L);
         KB_DEBUG_MSG("right speed: %d\n", speed_R);
 
-#ifdef KB_BLACKWOLF
-        // Range sensor test
-        kb_gpio_set(EMITTER_FR_PORT, EMITTER_FR_PIN, GPIO_PIN_SET);
+        // Print range
+        kb_gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_RESET);
+        KB_DEBUG_MSG("left range: %d\n", range_L);
+        KB_DEBUG_MSG("right range: %d\n", range_R);
+
+        // range front too
+        kb_gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_SET);
         kb_delay_us(60);
-        uint32_t result = kb_adc_measure(&adc_front_right);
-        kb_gpio_set(EMITTER_FR_PORT, EMITTER_FR_PIN, GPIO_PIN_RESET);
-        trace_printf("result: %d\n", result);
-#endif
+        range_F = kb_adc_measure(&adc_F);
+        kb_gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_RESET);
+        KB_DEBUG_MSG("Front range: %d\n", range_F);
 
         /* Call this Task every 1000ms */
         vTaskDelayUntil(&xLastWakeTime, (1000 / portTICK_RATE_MS));
@@ -284,4 +279,15 @@ static void on_b2_pressed(void)
 {
     trace_puts("B2 Pressed\n");
     return;
+}
+
+
+static void stop_all(void)
+{
+    is_pid_T_running = 0;
+    is_pid_R_running = 0;
+    motor_speed_percent(CH_BOTH, 0);
+    motor_start(CH_BOTH);
+    pid_input_setpoint(&pid_T, 0);
+    pid_input_setpoint(&pid_R, 0);
 }

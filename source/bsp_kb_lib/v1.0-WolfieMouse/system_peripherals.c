@@ -16,6 +16,7 @@
 #include "encoder.h"
 #include "motor.h"
 #include "pid.h"
+#include "kb_adc.h"
 
 /*******************************************************************************
  * Global variables
@@ -34,10 +35,20 @@ volatile int32_t speed_L, speed_R, speed_D;
 // PID handler
 pid_handler_t pid_T;    // Translational
 pid_handler_t pid_R; // Rotational
+
+// ADC objects
+#ifdef KB_BLACKWOLF
+    kb_adc_t adc_L;
+    kb_adc_t adc_R;
+    kb_adc_t adc_F; // (Actually FL)
+#endif
+
 /*******************************************************************************
  * Static variables
  ******************************************************************************/
 static int is_peripherals_initialized = 0;
+int is_pid_T_running = 0;
+int is_pid_R_running = 0;
 
 /*******************************************************************************
  * Function Definition
@@ -56,7 +67,7 @@ void peripheral_init(void)
 
     /* Configure Pushbuttons */
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = NOPULL;
+    GPIO_InitStruct.Pull = PULLUP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     kb_gpio_init(B1_PORT, B1_PIN, &GPIO_InitStruct);
     kb_gpio_init(B2_PORT, B2_PIN, &GPIO_InitStruct);
@@ -97,8 +108,36 @@ void peripheral_init(void)
     //vl6180x_init();
     //vl6180x_range_mm();
 #elif defined(KB_BLACKWOLF)
-    // ADC
-    // Emitter
+    /* ADC */
+    // Left
+    kb_adc_init_t adc_init;
+    adc_init.device = KB_ADC1;
+    adc_init.channel = KB_ADC_CH12;
+
+    kb_adc_init(&adc_L, &adc_init);
+    kb_adc_pin(RECV_L_PORT, RECV_L_PIN);
+    // Right
+    adc_init.device = KB_ADC2;
+    adc_init.channel = KB_ADC_CH11;
+
+    kb_adc_init(&adc_R, &adc_init);
+    kb_adc_pin(RECV_R_PORT, RECV_R_PIN);
+    // Front (actually FL)
+    adc_init.device = KB_ADC3;
+    adc_init.channel = KB_ADC_CH13;
+
+    kb_adc_init(&adc_F, &adc_init);
+    kb_adc_pin(RECV_FL_PORT, RECV_FL_PIN);
+
+    /* Emitter */
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    kb_gpio_init(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, &GPIO_InitStruct);
+    kb_gpio_init(EMITTER_FL_PORT, EMITTER_FL_PIN, &GPIO_InitStruct);
+
+    kb_gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_RESET);
+    kb_gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_RESET);
 #else
     #error "Define one of WolfieMouse hardware"
 #endif
@@ -116,9 +155,9 @@ void peripheral_init(void)
     };
 
     pid_value_t pid_R_value = {
-                .kp = 0.9,
+                .kp = 0.2,
                 .ki = 0,
-                .kd = 0.1
+                .kd = 0.05
     };
 
     pid_set_pid(&pid_T, &pid_T_value);
@@ -132,6 +171,7 @@ void peripheral_init(void)
 
     /* Now peripherals has been initialized */
     is_peripherals_initialized = 1;
+    is_pid_T_running = 1;
 }
 
 /**
@@ -156,13 +196,27 @@ void SysTick_hook(void)
     speed_D = speed_L - speed_R;
 
     /* Start PID calculation */
+    if (!is_pid_T_running) {
+        return;
+    }
     // calculate errorT
     int32_t feedback_T = (speed_L + speed_R) / 2;
     int32_t outputT = pid_compute(&pid_T, feedback_T);
 
+    // Get ADC values
+    kb_gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_SET);
+    kb_delay_us(60);
+    range_L = kb_adc_measure(&adc_L);
+    range_R = kb_adc_measure(&adc_R);
+
     // get errorR
-    int32_t feedbackR = speed_L - speed_R;
-    int32_t outputR = pid_compute(&pid_R, feedbackR);
+    int32_t feedback_R = (range_R - range_L) / 10;
+    //int32_t feedback_R = speed_L - speed_R;
+    int32_t outputR = pid_compute(&pid_R, feedback_R);
+
+    if (!is_pid_R_running) {
+        outputR = 0;
+    }
 
     // Apply to the motor
     motor_speed_percent(CH_LEFT, outputT + outputR);
