@@ -1,3 +1,5 @@
+#include "system_control.h"
+
 // KB library
 #include "kb_tick.h"
 #include "kb_trace.h"
@@ -54,7 +56,10 @@ static void task_range(void *pvParameters);
 // Task Handlers
 TaskHandle_t task_main_handler;
 TaskHandle_t task_blinky_handler;
+
+#ifdef KB_WOLFIEMOUSE
 TaskHandle_t task_range_handler;
+#endif
 
 // Mutex Handlers
 SemaphoreHandle_t mutex_range;
@@ -77,10 +82,6 @@ extern kb_adc_t adc_L;
 extern kb_adc_t adc_R;
 extern kb_adc_t adc_F;
 
-extern int is_pid_T_running;
-extern int is_pid_R_running;
-static void stop_all(void);
-
 /*******************************************************************************
  * Main function
  ******************************************************************************/
@@ -92,28 +93,21 @@ int main(void)
     /* Initialize all configured peripherals */
     peripheral_init();
 
-    kb_gpio_init_t GPIO_InitStruct;
-
     /* Initial LED Display message */
     hcms_290x_matrix("STRT");
 
-    /* Encoder test reading */
-    int left = encoder_left_count();
-    int right = encoder_right_count();
-    KB_DEBUG_MSG("left encoder: %d\n", left);
-    KB_DEBUG_MSG("right encoder: %d\n", right);
-
     /* Wait for 3 sec */
     for (int i = 0; i < 6; i++) {
-        kb_gpio_toggle(LED4_PORT, LED4_PIN);
+        kb_gpio_toggle(LED1_PORT, LED1_PIN);
         kb_delay_ms(500);
     }
 
     /* Motor test running */
-    is_pid_R_running = 1;
+    system_start_driving();
     pid_input_setpoint(&pid_T, 18);
 
     /* Set Button Pressed Events */
+    kb_gpio_init_t GPIO_InitStruct;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = PULLUP;
 
@@ -124,18 +118,16 @@ int main(void)
     kb_gpio_isr_register(B2_PORT, B2_PIN, on_b2_pressed);
 
     /* Test blinking */
-    kb_gpio_toggle(LED4_PORT, LED4_PIN);
+    kb_gpio_toggle(LED1_PORT, LED1_PIN);
     kb_delay_ms(4000);
-    kb_gpio_toggle(LED4_PORT, LED4_PIN);
+    kb_gpio_toggle(LED1_PORT, LED1_PIN);
 
     /* Test message */
     trace_puts("Hello ARM World!");
     kb_terminal_puts("Hello World!\n");
 
-
     /* Motor test running done */
-    stop_all();
-
+    system_stop_driving();
 
     /* Mutex creation */
     mutex_range = xSemaphoreCreateMutex();
@@ -153,6 +145,7 @@ int main(void)
         KB_DEBUG_ERROR("Creating task failed!!");
     }
 
+#ifdef KB_WOLFIEMOUSE
     result = xTaskCreate(
             task_range,
             "Finder",
@@ -163,6 +156,7 @@ int main(void)
     if (result != pdPASS) {
         KB_DEBUG_ERROR("Creating task failed!!");
     }
+#endif
 
     result = xTaskCreate(
             task_main,
@@ -202,6 +196,7 @@ static void task_main(void *pvParameters)
     vTaskDelete(NULL);
 }
 
+#ifdef KB_WOLFIEMOUSE
 static void task_range(void *pvParameters)
 {
     portTickType xLastWakeTime;
@@ -219,6 +214,7 @@ static void task_range(void *pvParameters)
         vTaskDelayUntil(&xLastWakeTime, (50 / portTICK_RATE_MS));
     }
 }
+#endif
 
 static void task_blinky(void *pvParameters)
 {
@@ -281,13 +277,3 @@ static void on_b2_pressed(void)
     return;
 }
 
-
-static void stop_all(void)
-{
-    is_pid_T_running = 0;
-    is_pid_R_running = 0;
-    motor_speed_percent(CH_BOTH, 0);
-    motor_start(CH_BOTH);
-    pid_input_setpoint(&pid_T, 0);
-    pid_input_setpoint(&pid_R, 0);
-}

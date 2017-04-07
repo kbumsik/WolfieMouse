@@ -24,6 +24,19 @@ void Error_Handler(void)
     }
 }
 
+/**
+ * This function is a quite special function invoked
+ * before main() is called.
+ */
+#include "motor.h"
+#include "system_control.h"
+void _startup (void)
+{
+    // This prevents spinning motor during debugging session.
+    motor_init();
+    system_start_driving();
+}
+
 void system_init(void)
 {
     // Initialise the HAL Library; it must be the first function

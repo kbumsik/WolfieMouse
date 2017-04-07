@@ -36,7 +36,7 @@ void encoder_init(void)
 	// right channel
 	enc_setting = (kb_encoder_init_t){
 			.direction = CW,
-			.prescaler = 0x0U
+			.prescaler = 0x1U
 	};
 	kb_encoder_init(ENCODER_R_TIMER, &enc_setting);
 

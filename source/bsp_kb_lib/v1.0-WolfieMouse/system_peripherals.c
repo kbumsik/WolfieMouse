@@ -7,6 +7,7 @@
 
 #include "system_config.h"
 #include "kb_common_source.h"
+#include "system_control.h"
 
 #include "kb_gpio.h"
 #include "kb_terminal.h"
@@ -46,9 +47,11 @@ pid_handler_t pid_R; // Rotational
 /*******************************************************************************
  * Static variables
  ******************************************************************************/
-static int is_peripherals_initialized = 0;
-int is_pid_T_running = 0;
-int is_pid_R_running = 0;
+static volatile int is_peripherals_initialized = 0;
+static volatile int is_pid_running = 0;
+static volatile int is_pid_T_running = 0;
+static volatile int is_pid_R_running = 0;
+static volatile int is_range_running = 0;
 
 /*******************************************************************************
  * Function Definition
@@ -171,7 +174,6 @@ void peripheral_init(void)
 
     /* Now peripherals has been initialized */
     is_peripherals_initialized = 1;
-    is_pid_T_running = 1;
 }
 
 /**
@@ -191,12 +193,12 @@ void SysTick_hook(void)
     steps_L = encoder_left_count();
     steps_R = encoder_right_count();
     // FIXME: We double this because left side encoder 2 times slower
-    speed_L = (steps_L - steps_L_old) * 2;// * CONFIG_LEN_PER_CNT;
+    speed_L = (steps_L - steps_L_old);// * CONFIG_LEN_PER_CNT;
     speed_R = (steps_R - steps_R_old);// * CONFIG_LEN_PER_CNT;
     speed_D = speed_L - speed_R;
 
     /* Start PID calculation */
-    if (!is_pid_T_running) {
+    if (!is_pid_running) {
         return;
     }
     // calculate errorT
@@ -204,22 +206,25 @@ void SysTick_hook(void)
     int32_t outputT = pid_compute(&pid_T, feedback_T);
 
     // Get ADC values
-    kb_gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_SET);
-    kb_delay_us(60);
-    range_L = kb_adc_measure(&adc_L);
-    range_R = kb_adc_measure(&adc_R);
+    if(is_range_running) {
+        kb_gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_SET);
+        kb_delay_us(60);
+        range_L = kb_adc_measure(&adc_L);
+        range_R = kb_adc_measure(&adc_R);
+    }
 
     // get errorR
     int32_t feedback_R;
-    if(range_L > MEASURE_RANGE_L_DETECT && range_R > MEASURE_RANGE_R_DETECT ) {
+    if(is_range_running && (range_L > MEASURE_RANGE_L_DETECT)
+                        && (range_R > MEASURE_RANGE_R_DETECT) ) {
         // If both range are within wall detecting distance,
         // Use range sensor to get rotational error
         feedback_R = (range_R - range_L) / 10;
-    } else if (range_L > MEASURE_RANGE_L_DETECT) {
+    } else if (is_range_running && range_L > MEASURE_RANGE_L_DETECT) {
         // If only left side is within range
         // use the middle value of the right range
         feedback_R = (MEASURE_RANGE_R_MIDDLE - range_L) / 10;
-    } else if (range_R > MEASURE_RANGE_R_DETECT) {
+    } else if (is_range_running && range_R > MEASURE_RANGE_R_DETECT) {
         // If only right side is within range
         // use the middle value of the left range
         feedback_R = (range_R - MEASURE_RANGE_L_MIDDLE) / 10;
@@ -230,6 +235,9 @@ void SysTick_hook(void)
 
     int32_t outputR = pid_compute(&pid_R, feedback_R);
 
+    if (!is_pid_T_running) {
+        outputT = 0;
+    }
     if (!is_pid_R_running) {
         outputR = 0;
     }
@@ -238,4 +246,38 @@ void SysTick_hook(void)
     motor_speed_percent(CH_LEFT, outputT + outputR);
     motor_speed_percent(CH_RIGHT, outputT - outputR);
     motor_start(CH_BOTH);
+}
+
+
+/*******************************************************************************
+ * system functions from @system_control.h
+ ******************************************************************************/
+// Motor driving
+void system_start_driving(void)
+{
+    is_pid_running = 1;
+    is_pid_T_running = 1;
+    is_pid_R_running = 1;
+    motor_speed_percent(CH_BOTH, 0);
+    motor_start(CH_BOTH);
+}
+
+void system_stop_driving(void)
+{
+    is_pid_running = 0;
+    is_pid_T_running = 0;
+    is_pid_R_running = 0;
+    motor_speed_percent(CH_BOTH, 0);
+    motor_start(CH_BOTH);
+}
+
+// Range finder control
+void system_enable_range_finder(void)
+{
+    is_range_running = 1;
+}
+
+void system_disale_range_finder(void)
+{
+    is_range_running = 0;
 }

@@ -18,6 +18,7 @@
  * # Basic facts
  *  1m/s = 1mm/ms (Yeah!)
  *  pulse/rev (from datasheet) = 3520 steps / rev
+ *  1816  
  *  Wheel diameter
  *  Size of one cell in the maze = 18cm = 180mm
  */
