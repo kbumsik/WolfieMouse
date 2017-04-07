@@ -28,7 +28,11 @@ static inline void left_set_forward_(void)
 }
 static inline void right_set_forward_(void)
 {
+#if defined(KB_WOLFIEMOUSE)
     kb_gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET);
+#else
+    kb_gpio_set(motorRIGHT_PORT, motorLEFT_PIN, GPIO_PIN_RESET);
+#endif
 }
 
 static inline void left_set_backward_()
@@ -37,7 +41,11 @@ static inline void left_set_backward_()
 }
 static inline void right_set_backward_(void)
 {
+#if defined(KB_WOLFIEMOUSE)
 	kb_gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_RESET);
+#else
+    kb_gpio_set(motorRIGHT_PORT, motorLEFT_PIN, GPIO_PIN_SET);
+#endif
 }
 
 
@@ -188,18 +196,18 @@ kb_status_t motor_start(motor_ch_t channel)
 		}
 		break;
 	case CH_BOTH:
-		/* Start channel 1 */
-		result = kb_pwm_start(TIMER1, CH_1);
-		if(result != KB_OK)
-		{
-			return result;
-		}
-		/* Start channel 4 */
-		result = kb_pwm_start(TIMER1, CH_4);
-		if(result != KB_OK)
-		{
-			return result;
-		}
+        /* Start channel 1 */
+        result = kb_pwm_start(TIMER1, CH_1);
+        if(result != KB_OK)
+        {
+            return result;
+        }
+        /* Start channel 4 */
+        result = kb_pwm_start(TIMER1, CH_4);
+        if(result != KB_OK)
+        {
+            return result;
+        }
 		break;
 
 	default:

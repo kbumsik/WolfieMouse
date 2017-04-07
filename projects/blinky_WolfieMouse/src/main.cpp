@@ -65,15 +65,15 @@ SemaphoreHandle_t mutex_range;
  * These global varables are located in peripherals.c
  */
 // range sensor value
-extern volatile uint8_t range_left, range_right, range_front,
-            range_front_left, range_front_right;
+extern volatile uint16_t range_L, range_R, range_F, range_FL, range_FR;
 // Encoder value
-extern volatile int32_t left_cnt, right_cnt, left_cnt_old, right_cnt_old;
-extern volatile int32_t left_speed, right_speed, diff_speed;
+extern volatile int32_t steps_L, steps_R, steps_L_old, steps_R_old;
+extern volatile int32_t speed_L, speed_R, speed_D;
 
 // PID handler
-extern pid_handler_t pid_translational;
-extern pid_handler_t pid_rotational;
+extern pid_handler_t pid_T;
+extern pid_handler_t pid_R;
+
 /*******************************************************************************
  * Main function
  ******************************************************************************/
@@ -91,16 +91,16 @@ int main(void)
     // This is A5 Pin in Nucleo-64
     kb_adc_init_t adc_init;
     adc_init.device = RECV_ADC;
-    adc_init.channel = KB_ADC_CH11;
+    adc_init.channel = KB_ADC_CH10;
 
     kb_adc_init(&adc_front_right, &adc_init);
-    kb_adc_pin(RECV_R_PORT, RECV_R_PIN);
+    kb_adc_pin(RECV_FR_PORT, RECV_FR_PIN);
 
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    kb_gpio_init(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, &GPIO_InitStruct);
-    kb_gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_RESET);
+    kb_gpio_init(EMITTER_FR_PORT, EMITTER_FR_PIN, &GPIO_InitStruct);
+    kb_gpio_set(EMITTER_FR_PORT, EMITTER_FR_PIN, GPIO_PIN_RESET);
 #endif
 
     /* Initial LED Display message */
@@ -115,25 +115,25 @@ int main(void)
     /* Wait for 3 sec */
     for (int i = 0; i < 6; i++) {
         kb_gpio_toggle(LED4_PORT, LED4_PIN);
-        kb_delay_ms(1);
+        kb_delay_ms(500);
     }
 
     /* Motor test running */
-    pid_input_setpoint(&pid_translational, 18);
+    pid_input_setpoint(&pid_T, 18);
 
     /* Set Button Pressed Events */
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = NOPULL;
 
-    kb_gpio_isr_enable(B1_PORT, B1_PIN, &GPIO_InitStruct, RISING_EDGE);
+    kb_gpio_isr_enable(B1_PORT, B1_PIN, &GPIO_InitStruct, FALLING_EDGE);
     kb_gpio_isr_register(B1_PORT, B1_PIN, on_b1_pressed);
 
-    kb_gpio_isr_enable(B2_PORT, B2_PIN, &GPIO_InitStruct, RISING_EDGE);
+    kb_gpio_isr_enable(B2_PORT, B2_PIN, &GPIO_InitStruct, FALLING_EDGE);
     kb_gpio_isr_register(B2_PORT, B2_PIN, on_b2_pressed);
 
     /* Test blinking */
     kb_gpio_toggle(LED4_PORT, LED4_PIN);
-    kb_delay_ms(500);
+    kb_delay_ms(1500);
     kb_gpio_toggle(LED4_PORT, LED4_PIN);
 
     /* Test message */
@@ -142,7 +142,7 @@ int main(void)
 
 
     /* Motor test running done */
-    pid_input_setpoint(&pid_translational, 0);
+    //pid_input_setpoint(&pid_T, 0);
 
 
     /* Mutex creation */
@@ -240,6 +240,10 @@ static void task_blinky(void *pvParameters)
         kb_gpio_toggle(LED2_PORT, LED2_PIN);
         kb_gpio_toggle(LED3_PORT, LED3_PIN);
         kb_gpio_toggle(LED4_PORT, LED4_PIN);
+#ifdef KB_BLACKWOLF
+        kb_gpio_toggle(LED5_PORT, LED5_PIN);
+        kb_gpio_toggle(LED6_PORT, LED6_PIN);
+#endif
         kb_terminal_puts("Blink!\n");
 
         hcms_290x_int(seconds);
@@ -247,17 +251,17 @@ static void task_blinky(void *pvParameters)
         trace_printf("Second %u\n", seconds);
 
         // Print speed
-        KB_DEBUG_MSG("left encoder: %d\n", left_cnt);
-        KB_DEBUG_MSG("right encoder: %d\n", right_cnt);
-        KB_DEBUG_MSG("left speed: %f\n", left_speed);
-        KB_DEBUG_MSG("right speed: %f\n", right_speed);
+        KB_DEBUG_MSG("left encoder: %d\n", steps_L);
+        KB_DEBUG_MSG("right encoder: %d\n", steps_R);
+        KB_DEBUG_MSG("left speed: %d\n", speed_L);
+        KB_DEBUG_MSG("right speed: %d\n", speed_R);
 
 #ifdef KB_BLACKWOLF
         // Range sensor test
-        kb_gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_SET);
+        kb_gpio_set(EMITTER_FR_PORT, EMITTER_FR_PIN, GPIO_PIN_SET);
         kb_delay_us(60);
         uint32_t result = kb_adc_measure(&adc_front_right);
-        kb_gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_RESET);
+        kb_gpio_set(EMITTER_FR_PORT, EMITTER_FR_PIN, GPIO_PIN_RESET);
         trace_printf("result: %d\n", result);
 #endif
 

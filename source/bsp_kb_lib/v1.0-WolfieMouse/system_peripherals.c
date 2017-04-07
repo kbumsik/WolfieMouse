@@ -24,16 +24,16 @@
  * Range finder value
  * Range_front is the average of range_front_left and range_front_right.
  */
-volatile uint8_t range_left = 255, range_right = 255, range_front = 255,
-            range_front_left = 255, range_front_right = 255;
+volatile uint16_t range_L = 4095, range_R = 4095, range_F = 4095,
+            range_FL = 4095, range_FR = 4095;
 
 // Encoder value
-volatile int32_t left_cnt, right_cnt, left_cnt_old, right_cnt_old;
-volatile int32_t left_speed, right_speed, diff_speed;
+volatile int32_t steps_L, steps_R, steps_L_old, steps_R_old;
+volatile int32_t speed_L, speed_R, speed_D;
 
 // PID handler
-pid_handler_t pid_translational;
-pid_handler_t pid_rotational;
+pid_handler_t pid_T;    // Translational
+pid_handler_t pid_R; // Rotational
 /*******************************************************************************
  * Static variables
  ******************************************************************************/
@@ -45,6 +45,11 @@ static int is_peripherals_initialized = 0;
 void peripheral_init(void)
 {
     kb_gpio_init_t GPIO_InitStruct;
+
+    /* Init motor */
+    motor_init();
+    motor_speed_percent(CH_BOTH, 0);
+    motor_start(CH_BOTH);
 
     /* Configure UART */
     kb_terminal_init();
@@ -64,16 +69,26 @@ void peripheral_init(void)
     kb_gpio_init(LED2_PORT, LED2_PIN, &GPIO_InitStruct);
     kb_gpio_init(LED3_PORT, LED3_PIN, &GPIO_InitStruct);
     kb_gpio_init(LED4_PORT, LED4_PIN, &GPIO_InitStruct);
+#if defined(KB_BLACKWOLF)
+    kb_gpio_init(LED5_PORT, LED5_PIN, &GPIO_InitStruct);
+    kb_gpio_init(LED6_PORT, LED6_PIN, &GPIO_InitStruct);
+#endif
 
     /* Configure LED Pins Output Level */
     kb_gpio_set(LED1_PORT, LED1_PIN, GPIO_PIN_RESET);
     kb_gpio_set(LED2_PORT, LED2_PIN, GPIO_PIN_RESET);
     kb_gpio_set(LED3_PORT, LED3_PIN, GPIO_PIN_RESET);
     kb_gpio_set(LED4_PORT, LED4_PIN, GPIO_PIN_RESET);
+#if defined(KB_BLACKWOLF)
+    kb_gpio_set(LED5_PORT, LED5_PIN, GPIO_PIN_RESET);
+    kb_gpio_set(LED6_PORT, LED6_PIN, GPIO_PIN_RESET);
+#endif
 
     /* Init peripherals for the LED display */
     hcms_290x_init();
 
+    /* Range Sensor */
+#if defined(KB_WOLFIEMOUSE)
     /* Init i2c MUX */
     //tca9545a_init();
     //tca9545a_select_ch(TCA9545A_CH_0);
@@ -81,38 +96,39 @@ void peripheral_init(void)
     /* Init Digital range sensors */
     //vl6180x_init();
     //vl6180x_range_mm();
+#elif defined(KB_BLACKWOLF)
+    // ADC
+    // Emitter
+#else
+    #error "Define one of WolfieMouse hardware"
+#endif
 
     /* Init encoder */
     encoder_init();
-    left_cnt = encoder_left_count();
-    right_cnt = encoder_right_count();
-
-    /* Init motor */
-    motor_init();
-    motor_speed_percent(CH_BOTH, 0);
-    motor_start(CH_BOTH);
+    steps_L = encoder_left_count();
+    steps_R = encoder_right_count();
 
     /* Set PID controller */
-    pid_value_t pid_translational_value = {
+    pid_value_t pid_T_value = {
             .kp = 0.9,
             .ki = 0,
             .kd = 0.1
     };
 
-    pid_value_t pid_rotational_value = {
+    pid_value_t pid_R_value = {
                 .kp = 0.9,
                 .ki = 0,
                 .kd = 0.1
     };
 
-    pid_set_pid(&pid_translational, &pid_translational_value);
-    pid_reset(&pid_translational);
+    pid_set_pid(&pid_T, &pid_T_value);
+    pid_reset(&pid_T);
 
-    pid_set_pid(&pid_rotational, &pid_rotational_value);
-    pid_reset(&pid_rotational);
+    pid_set_pid(&pid_R, &pid_R_value);
+    pid_reset(&pid_R);
 
-    pid_input_setpoint(&pid_translational, 0);
-    pid_input_setpoint(&pid_rotational, 0);
+    pid_input_setpoint(&pid_T, 0);
+    pid_input_setpoint(&pid_R, 0);
 
     /* Now peripherals has been initialized */
     is_peripherals_initialized = 1;
@@ -130,22 +146,23 @@ void SysTick_hook(void)
         return;
     }
     // Get encoder values and calculate speed
-    left_cnt_old = left_cnt;
-    right_cnt_old = right_cnt;
-    left_cnt = encoder_left_count();
-    right_cnt = encoder_right_count();
-    left_speed = (left_cnt - left_cnt_old);// * CONFIG_LEN_PER_CNT;
-    right_speed = (right_cnt - right_cnt_old);// * CONFIG_LEN_PER_CNT;
-    diff_speed = left_speed - right_speed;
+    steps_L_old = steps_L;
+    steps_R_old = steps_R;
+    steps_L = encoder_left_count();
+    steps_R = encoder_right_count();
+    // FIXME: We double this because left side encoder 2 times slower
+    speed_L = (steps_L - steps_L_old) * 2;// * CONFIG_LEN_PER_CNT;
+    speed_R = (steps_R - steps_R_old);// * CONFIG_LEN_PER_CNT;
+    speed_D = speed_L - speed_R;
 
     /* Start PID calculation */
     // calculate errorT
-    int32_t feedbackT = (left_speed + right_speed) / 2;
-    int32_t outputT = pid_compute(&pid_translational, feedbackT);
+    int32_t feedback_T = (speed_L + speed_R) / 2;
+    int32_t outputT = pid_compute(&pid_T, feedback_T);
 
     // get errorR
-    int32_t feedbackR = left_speed - right_speed;
-    int32_t outputR = pid_compute(&pid_rotational, feedbackR);
+    int32_t feedbackR = speed_L - speed_R;
+    int32_t outputR = pid_compute(&pid_R, feedbackR);
 
     // Apply to the motor
     motor_speed_percent(CH_LEFT, outputT + outputR);

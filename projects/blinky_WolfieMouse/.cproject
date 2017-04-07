@@ -72,6 +72,7 @@
 									<listOptionValue builtIn="false" value="TRACE"/>
 									<listOptionValue builtIn="false" value="OS_USE_TRACE_SEMIHOSTING_DEBUG"/>
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
+									<listOptionValue builtIn="false" value="KB_BLACKWOLF"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.1151555196" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
@@ -94,6 +95,7 @@
 									<listOptionValue builtIn="false" value="TRACE"/>
 									<listOptionValue builtIn="false" value="OS_USE_TRACE_SEMIHOSTING_DEBUG"/>
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
+									<listOptionValue builtIn="false" value="KB_BLACKWOLF"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.493431983" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.gnu11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.1357874392" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
@@ -121,6 +123,7 @@
 									<listOptionValue builtIn="false" value="TRACE"/>
 									<listOptionValue builtIn="false" value="OS_USE_TRACE_SEMIHOSTING_DEBUG"/>
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
+									<listOptionValue builtIn="false" value="KB_BLACKWOLF"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.2008179741" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.140731043" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -252,6 +255,7 @@
 									<listOptionValue builtIn="false" value="STM32F446xx"/>
 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
 									<listOptionValue builtIn="false" value="HSE_VALUE=8000000"/>
+									<listOptionValue builtIn="false" value="KB_BLACKWOLF"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.284410715" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
@@ -280,6 +284,7 @@
 									<listOptionValue builtIn="false" value="STM32F446xx"/>
 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
 									<listOptionValue builtIn="false" value="HSE_VALUE=8000000"/>
+									<listOptionValue builtIn="false" value="KB_BLACKWOLF"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.1318164582" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -312,6 +317,7 @@
 									<listOptionValue builtIn="false" value="STM32F446xx"/>
 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
 									<listOptionValue builtIn="false" value="HSE_VALUE=8000000"/>
+									<listOptionValue builtIn="false" value="KB_BLACKWOLF"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1517247232" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
 							</tool>
