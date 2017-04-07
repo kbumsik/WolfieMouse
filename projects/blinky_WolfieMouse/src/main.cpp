@@ -52,6 +52,8 @@ static void task_range(void *pvParameters);
 /*******************************************************************************
  * local variables
  ******************************************************************************/
+static int is_b1_pressed = 0;
+static int is_b2_pressed = 0;
 
 /*******************************************************************************
  * Global variables
@@ -93,6 +95,10 @@ static void go_test1(void);
 static void go_test2(void);
 static void go_test3(void);
 static void go_test4(void);
+static void sel_test1(void);
+static void sel_test2(void);
+static void sel_test3(void);
+static void sel_test4(void);
 static void do_nothing(void);
 
 // event enum
@@ -119,24 +125,32 @@ enum state current_state = test1;
 void main_fsm(enum event event_input){
     static const struct transition test1_transitions[] = {
     //  Event        Task        Next_state
+        {b1_pressed, sel_test1,  test1},
+        {b2_pressed, sel_test1,  test1},
         {wheel_up,   go_test2,   test2},
         {wheel_down, go_test4,   test4},
         {eol,        do_nothing, test1}
     };
     static const struct transition test2_transitions[] = {
     //  Event        Task        Next_state
+        {b1_pressed, sel_test2,  test2},
+        {b2_pressed, sel_test2,  test2},
         {wheel_up,   go_test3,   test3},
         {wheel_down, go_test1,   test1},
         {eol,        do_nothing, test2}
     };
     static const struct transition test3_transitions[] = {
     //  Event        Task        Next_state
+        {b1_pressed, sel_test3,  test3},
+        {b2_pressed, sel_test3,  test3},
         {wheel_up,   go_test4,   test4},
         {wheel_down, go_test2,   test2},
         {eol,        do_nothing, test3}
     };
     static const struct transition test4_transitions[] = {
     //  Event        Task        Next_state
+        {b1_pressed, sel_test4,  test4},
+        {b2_pressed, sel_test4,  test4},
         {wheel_up,   go_test1,   test1},
         {wheel_down, go_test3,   test3},
         {eol,        do_nothing, test4}
@@ -172,7 +186,7 @@ int main(void)
     peripheral_init();
 
     /* Initial LED Display message */
-    hcms_290x_matrix("STRT");
+    hcms_290x_matrix("BOOT");
 
     /* Wait for 3 sec */
     for (int i = 0; i < 6; i++) {
@@ -270,15 +284,28 @@ static void task_main(void *pvParameters)
     xLastWakeTime = xTaskGetTickCount();
 
     uint32_t current_steps;
-    uint32_t last_steps = encoder_left_count();
+    uint32_t last_steps = encoder_right_count();
     while (1) {
-        current_steps = encoder_left_count();
+        // polling button states
+        if (is_b1_pressed) {
+            main_fsm(b1_pressed);
+            is_b1_pressed = 0;
+            continue;
+        } else if (is_b2_pressed) {
+            main_fsm(b2_pressed);
+            is_b2_pressed = 0;
+            continue;
+        }
+        // polling left wheel state
+        current_steps = encoder_right_count();
         if (current_steps > (last_steps + 300)) {
             last_steps = current_steps;
-            main_fsm(wheel_down);
+            main_fsm(wheel_up);
+            continue;
         } else if (current_steps < (last_steps - 300)){
             last_steps = current_steps;
-            main_fsm(wheel_up);
+            main_fsm(wheel_down);
+            continue;
         }
         /* keep running */
         //vTaskDelayUntil(&xLastWakeTime, (1000 / portTICK_RATE_MS));
@@ -377,6 +404,26 @@ static void go_test4(void)
     hcms_290x_matrix("TST4");
 }
 
+static void sel_test1(void)
+{
+    hcms_290x_matrix("Sel1");
+}
+
+static void sel_test2(void)
+{
+    hcms_290x_matrix("Sel2");
+}
+
+static void sel_test3(void)
+{
+    hcms_290x_matrix("Sel3");
+}
+
+static void sel_test4(void)
+{
+    hcms_290x_matrix("Sel4");
+}
+
 static void do_nothing(void)
 {
     return; // Do Nothing, literally.
@@ -386,12 +433,14 @@ static void do_nothing(void)
  ******************************************************************************/
 static void on_b1_pressed(void)
 {
+    is_b1_pressed = 1;
     trace_puts("B1 Pressed\n");
     return;
 }
 
 static void on_b2_pressed(void)
 {
+    is_b2_pressed = 1;
     trace_puts("B2 Pressed\n");
     return;
 }
