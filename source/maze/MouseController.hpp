@@ -66,14 +66,19 @@ public:
     MouseController(char *filename, IOInterface *fileIO, IOInterface *printIO,
                     FinderInterface *finder, MoverInterface *mover);
     /* Algorithm solver */
-    void scanWalls(void);     // Detect and update walls while not moving.
+    bool scanWalls(void);     // Detect and update walls while not moving.
     void getDistanceAllCell();
     void getShortestPath();
     void moveNextCell();
+    /* setters for destinations */
+    void setUnsearchDes(int n);
+    void setStartAsDes();
+    void setGoalAsDes();
     /* boolean functions for goal, start and destination */
     bool anyDestinationCellSearched();
     bool positionIsDestination(Position pos);
     bool isInDestinationCell();
+    bool allDestinationsReached();
     bool isInGoal();
     bool isInStart();
     /* print information of stack used in the algorithm */
