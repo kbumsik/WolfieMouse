@@ -37,6 +37,7 @@
 /*******************************************************************************
  * Function declarations
  ******************************************************************************/
+
 // Event declarations
 static void on_b1_pressed(void);
 static void on_b2_pressed(void);
@@ -44,7 +45,9 @@ static void on_b2_pressed(void);
 // Task declarations
 static void task_main(void *pvParameters);
 static void task_blinky(void *pvParameters);
+#ifdef KB_WOLFIEMOUSE
 static void task_range(void *pvParameters);
+#endif
 
 /*******************************************************************************
  * local variables
@@ -81,6 +84,81 @@ extern pid_handler_t pid_R;
 extern kb_adc_t adc_L;
 extern kb_adc_t adc_R;
 extern kb_adc_t adc_F;
+
+/*******************************************************************************
+ * State machine definitions
+ ******************************************************************************/
+// FSM action functions
+static void go_test1(void);
+static void go_test2(void);
+static void go_test3(void);
+static void go_test4(void);
+static void do_nothing(void);
+
+// event enum
+enum event {
+    b1_pressed, b2_pressed, wheel_up, wheel_down, eol
+};
+
+// state enum
+enum state {
+    test1, test2, test3, test4
+};
+
+// transition and table
+struct transition {
+    enum event event_val;
+    void (*task) (void);
+    enum state next_state;
+};
+
+// stopwatch current state
+enum state current_state = test1;
+
+// fsm function
+void main_fsm(enum event event_input){
+    static const struct transition test1_transitions[] = {
+    //  Event        Task        Next_state
+        {wheel_up,   go_test2,   test2},
+        {wheel_down, go_test4,   test4},
+        {eol,        do_nothing, test1}
+    };
+    static const struct transition test2_transitions[] = {
+    //  Event        Task        Next_state
+        {wheel_up,   go_test3,   test3},
+        {wheel_down, go_test1,   test1},
+        {eol,        do_nothing, test2}
+    };
+    static const struct transition test3_transitions[] = {
+    //  Event        Task        Next_state
+        {wheel_up,   go_test4,   test4},
+        {wheel_down, go_test2,   test2},
+        {eol,        do_nothing, test3}
+    };
+    static const struct transition test4_transitions[] = {
+    //  Event        Task        Next_state
+        {wheel_up,   go_test1,   test1},
+        {wheel_down, go_test3,   test3},
+        {eol,        do_nothing, test4}
+    };
+    // FSM table. Since it is const, it will be stored in FLASH
+    static const struct transition *fsm_table[4] = {
+        test1_transitions,
+        test2_transitions,
+        test3_transitions,
+        test4_transitions,
+    };
+
+    // search for signal
+    int i;
+    for (i = 0; (fsm_table[current_state][i].event_val != event_input)
+        && (fsm_table[current_state][i].event_val != eol); i++){
+    };
+    // call task function and than change state
+    fsm_table[current_state][i].task();
+    current_state = fsm_table[current_state][i].next_state;
+    return;
+}
 
 /*******************************************************************************
  * Main function
@@ -132,6 +210,9 @@ int main(void)
     /* Mutex creation */
     mutex_range = xSemaphoreCreateMutex();
 
+    /* first fsm action */
+    go_test1();
+
     /* Task creation and definition */
     BaseType_t result;
     result = xTaskCreate(
@@ -139,7 +220,7 @@ int main(void)
             "Blinky",               /* Text name for the task. This is to facilitate debugging only. It is not used in the scheduler */
             configMINIMAL_STACK_SIZE+500, /* Stack depth in words */
             NULL,                   /* Pointer to a task parameters */
-            1,                      /* The task priority */
+            configMAX_PRIORITIES,                      /* The task priority */
             &task_blinky_handler);  /* Pointer of its task handler, if you don't want to use, you can leave it NULL */
     if (result != pdPASS) {
         KB_DEBUG_ERROR("Creating task failed!!");
@@ -188,9 +269,19 @@ static void task_main(void *pvParameters)
     /* This variable is updated every vTaskDelayUntil is called */
     xLastWakeTime = xTaskGetTickCount();
 
+    uint32_t current_steps;
+    uint32_t last_steps = encoder_left_count();
     while (1) {
-        /* Call this Task every 1 second */
-        vTaskDelayUntil(&xLastWakeTime, (1000 / portTICK_RATE_MS));
+        current_steps = encoder_left_count();
+        if (current_steps > (last_steps + 300)) {
+            last_steps = current_steps;
+            main_fsm(wheel_down);
+        } else if (current_steps < (last_steps - 300)){
+            last_steps = current_steps;
+            main_fsm(wheel_up);
+        }
+        /* keep running */
+        //vTaskDelayUntil(&xLastWakeTime, (1000 / portTICK_RATE_MS));
     }
     /* It never goes here, but the task should be deleted when it reached here */
     vTaskDelete(NULL);
@@ -234,7 +325,7 @@ static void task_blinky(void *pvParameters)
 #endif
         kb_terminal_puts("Blink!\n");
 
-        hcms_290x_int(seconds);
+        //hcms_290x_int(seconds);
         ++seconds;        // Count seconds on the trace device.
         trace_printf("Second %u\n", seconds);
 
@@ -262,6 +353,34 @@ static void task_blinky(void *pvParameters)
     vTaskDelete(NULL);
 }
 
+
+/*******************************************************************************
+ * FSM action function
+ ******************************************************************************/
+static void go_test1(void)
+{
+    hcms_290x_matrix("TST1");
+}
+
+static void go_test2(void)
+{
+    hcms_290x_matrix("TST2");
+}
+
+static void go_test3(void)
+{
+    hcms_290x_matrix("TST3");
+}
+
+static void go_test4(void)
+{
+    hcms_290x_matrix("TST4");
+}
+
+static void do_nothing(void)
+{
+    return; // Do Nothing, literally.
+}
 /*******************************************************************************
  * Event handlers
  ******************************************************************************/
@@ -276,4 +395,3 @@ static void on_b2_pressed(void)
     trace_puts("B2 Pressed\n");
     return;
 }
-
