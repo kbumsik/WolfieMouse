@@ -28,23 +28,35 @@ MouseController::MouseController(char *filename, IOInterface *fileIO,
 /*******************************************************************************
  * Public Methods
  ******************************************************************************/
-void MouseController::scanWalls(void)
+bool MouseController::scanWalls(void)
 {
+    bool newInfo = false;
     Position curPos = getCurrentPos();
     Direction curDir = getCurrentDir();
     Position nextPos = getNextPos();
     // Firstly detect a wall right in front of the mouse
     Wall result = finder->examineWall(curPos, curDir, *this);
+    if (getWall(curPos, curDir) != result) {
+        newInfo = true;
+    }
     setWall(curPos, curDir, result);
-    // Then search walls of facing cells 
+    // Then examine the walls of the cell the mouse is facing
     for (int i = (int) row_plus; i <= (int) col_minus; i++) {
     	Direction dir = (Direction) i;
         result = finder->examineWall(nextPos, dir, *this);
+        if (getWall(nextPos, dir) != result) {
+               newInfo = true;
+           }
         setWall(nextPos, dir, result);
     }
     // Lastly, update state of cells.
     updateCell(curPos);
     updateCell(nextPos);
+    // If path stack is empty then we need new info
+    if (pathStack.isEmpty()) {
+        return true;
+    }
+    return newInfo;
 }
 
 void MouseController::getDistanceAllCell()
@@ -185,7 +197,65 @@ void MouseController::moveNextCell()
 		destinations.erase(std::remove(destinations.begin(),
 				destinations.end(), getCurrentPos()), destinations.end());
 	}
+	// finally pop the position the mouse moved into
+	if (!pathStack.isEmpty()) {
+	    pathStack.popFromFront();
+	}
 }
+
+
+void MouseController::setUnsearchDes(int n)
+{
+	srand(101);
+	int count = 0;
+	//count non searched cells
+	for (int i = 0; i < CONFIG_MAX_ROW_SIZE; i++) {
+		for (int j = 0; j < CONFIG_MAX_COL_SIZE; j++) {
+			if (getCell(Position{i,j}).status == unsearched) {
+				count++;
+			}
+		}
+	}
+	//find destinations
+	while (destinations.size() < n && count > 0) {
+		//choose random row
+		int temp = (int) (rand()%16);
+	    int i = temp;
+	    //look for non searched cells in row
+		for (int j = 0; j < CONFIG_MAX_COL_SIZE; j++) {
+			if (getCell(Position{i, j}).status == unsearched) {
+				if (positionIsDestination(Position{i,j})) {
+					continue;
+				}
+				destinations.push_back(Position{i,j});
+				count--;
+				break;
+			}
+	    }
+	}
+}
+
+
+void MouseController::setStartAsDes()
+{
+	if (positionIsDestination(CONFIG_DEFAULT_MAZE_START)) {
+		return;
+	}
+	destinations.push_back(CONFIG_DEFAULT_MAZE_START);
+}
+
+
+void MouseController::setGoalAsDes()
+{
+    for (int i = 0; i < CONFIG_MAX_ROW_SIZE; i++) {
+        for (int j = 0; j < CONFIG_MAX_COL_SIZE; j++) {
+            if (getCell(Position{i,j}).attribute == goal) {
+                destinations.push_back(Position{i,j});
+            }
+        }
+    }
+}
+
 
 bool MouseController::anyDestinationCellSearched()
 {
@@ -197,16 +267,17 @@ bool MouseController::anyDestinationCellSearched()
 	return false;
 }
 
+
 bool MouseController::positionIsDestination(Position pos)
 {
 	for (int i = 0; i < destinations.size(); i++) {
-		if ((pos.row == destinations[i].row) &&
-			(pos.col == destinations[i].col) ) {
+		if ((pos == destinations[i]) ) {
 			return true; /* return true if position found in destination vector*/
 		}
 	}
 	return false;
 }
+
 
 bool MouseController::isInDestinationCell()
 {
@@ -214,15 +285,24 @@ bool MouseController::isInDestinationCell()
 	return positionIsDestination(getCurrentPos());
 }
 
+
+bool MouseController::allDestinationsReached()
+{
+	return destinations.empty();
+}
+
+
 bool MouseController::isInGoal()
 {
     return (getCell(getCurrentPos()).attribute == goal) ? true : false;
 }
 
+
 bool MouseController::isInStart()
 {
     return (getCell(getCurrentPos()).attribute == start) ? true : false;
 }
+
 
 void MouseController::printMaze()
 {
@@ -231,6 +311,7 @@ void MouseController::printMaze()
     mazeIO.setDestinations(destinations);
     Maze::printMaze();
 }
+
 
 void MouseController::printPathStack()
 {
@@ -241,12 +322,14 @@ void MouseController::printPathStack()
     printf("\n");
 }
 
+
 void MouseController::printAvailablePositionStack()
 {
     printf("availableStack: ");
     availablePositionStack.print(&PositionController::print);
     printf("\n");
 }
+
 
 void MouseController::turnRight()
 {
@@ -256,6 +339,7 @@ void MouseController::turnRight()
 	PositionController::turnRight();
 }
 
+
 void MouseController::turnLeft()
 {
 	/* Use MovingInterface */
@@ -263,6 +347,7 @@ void MouseController::turnLeft()
 	/* Call parent method */
 	PositionController::turnLeft();
 }
+
 
 int MouseController::goForward()
 {
@@ -283,6 +368,7 @@ Cell MouseController::getCell(Position pos)
 {
     return Maze::getCell(pos.row, pos.col);
 }
+
 
 void MouseController::initDistance()
 {
@@ -339,6 +425,7 @@ Direction MouseController::getDirectionToGo()
     PositionController nextPosition = pathStack.peekFromFront();
     return getNextDir(nextPosition);
 }
+
 
 void MouseController::setDirectionToGo ()
 {
