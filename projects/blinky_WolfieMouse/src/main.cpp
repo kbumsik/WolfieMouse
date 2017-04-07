@@ -1,4 +1,5 @@
 #include "system_control.h"
+#include "main_tasks.hpp"
 
 // KB library
 #include "kb_tick.h"
@@ -91,14 +92,20 @@ extern kb_adc_t adc_F;
  * State machine definitions
  ******************************************************************************/
 // FSM action functions
-static void go_test1(void);
-static void go_test2(void);
-static void go_test3(void);
-static void go_test4(void);
-static void sel_test1(void);
-static void sel_test2(void);
-static void sel_test3(void);
-static void sel_test4(void);
+static void disp_main(void);
+static void disp_mem(void);
+static void disp_test1(void);
+static void disp_test2(void);
+static void disp_test3(void);
+static void disp_test4(void);
+static void search_to_goal(void);
+static void rush_to_goal(void);
+static void print_mem(void);
+static void reset_mem(void);
+static void run_test1(void);
+static void run_test2(void);
+static void run_test3(void);
+static void run_test4(void);
 static void do_nothing(void);
 
 // event enum
@@ -108,7 +115,7 @@ enum event {
 
 // state enum
 enum state {
-    test1, test2, test3, test4
+    main_state, mem, test1, test2, test3, test4
 };
 
 // transition and table
@@ -119,44 +126,62 @@ struct transition {
 };
 
 // stopwatch current state
-enum state current_state = test1;
+enum state current_state = main_state;
 
 // fsm function
 void main_fsm(enum event event_input){
+    static const struct transition main_transitions[] = {
+    //  Event        Task             Next_state
+        {b1_pressed, search_to_goal,  main_state},
+        {b2_pressed, rush_to_goal,    main_state},
+        {wheel_up,   disp_mem,        mem},
+        {wheel_down, disp_test4,      test4},
+        {eol,        do_nothing,      main_state}
+    };
+    static const struct transition mem_transitions[] = {
+    //  Event        Task        Next_state
+        {b1_pressed, print_mem,  mem},
+        {b2_pressed, reset_mem,  mem},
+        {wheel_up,   disp_test1, test1},
+        {wheel_down, disp_main,  main_state},
+        {eol,        do_nothing, mem}
+    };
     static const struct transition test1_transitions[] = {
     //  Event        Task        Next_state
-        {b1_pressed, sel_test1,  test1},
-        {b2_pressed, sel_test1,  test1},
-        {wheel_up,   go_test2,   test2},
-        {wheel_down, go_test4,   test4},
+        {b1_pressed, run_test1,  test1},
+        {b2_pressed, run_test1,  test1},
+        {wheel_up,   disp_test2, test2},
+        {wheel_down, disp_mem, mem},
         {eol,        do_nothing, test1}
     };
     static const struct transition test2_transitions[] = {
     //  Event        Task        Next_state
-        {b1_pressed, sel_test2,  test2},
-        {b2_pressed, sel_test2,  test2},
-        {wheel_up,   go_test3,   test3},
-        {wheel_down, go_test1,   test1},
+        {b1_pressed, run_test2,  test2},
+        {b2_pressed, run_test2,  test2},
+        {wheel_up,   disp_test3,   test3},
+        {wheel_down, disp_test1,   test1},
         {eol,        do_nothing, test2}
     };
     static const struct transition test3_transitions[] = {
     //  Event        Task        Next_state
-        {b1_pressed, sel_test3,  test3},
-        {b2_pressed, sel_test3,  test3},
-        {wheel_up,   go_test4,   test4},
-        {wheel_down, go_test2,   test2},
+        {b1_pressed, run_test3,  test3},
+        {b2_pressed, run_test3,  test3},
+        {wheel_up,   disp_test4,   test4},
+        {wheel_down, disp_test2,   test2},
         {eol,        do_nothing, test3}
     };
     static const struct transition test4_transitions[] = {
     //  Event        Task        Next_state
-        {b1_pressed, sel_test4,  test4},
-        {b2_pressed, sel_test4,  test4},
-        {wheel_up,   go_test1,   test1},
-        {wheel_down, go_test3,   test3},
+        {b1_pressed, run_test4,  test4},
+        {b2_pressed, run_test4,  test4},
+        {wheel_up,   disp_main,   main_state},
+        {wheel_down, disp_test3,   test3},
         {eol,        do_nothing, test4}
     };
     // FSM table. Since it is const, it will be stored in FLASH
-    static const struct transition *fsm_table[4] = {
+    static const struct transition *fsm_table[6] = {
+        main_transitions,
+        mem_transitions,
         test1_transitions,
         test2_transitions,
         test3_transitions,
@@ -184,6 +209,7 @@ int main(void)
 
     /* Initialize all configured peripherals */
     peripheral_init();
+    system_stop_driving();
 
     /* Initial LED Display message */
     hcms_290x_matrix("BOOT");
@@ -193,10 +219,6 @@ int main(void)
         kb_gpio_toggle(LED1_PORT, LED1_PIN);
         kb_delay_ms(500);
     }
-
-    /* Motor test running */
-    system_start_driving();
-    pid_input_setpoint(&pid_T, 18);
 
     /* Set Button Pressed Events */
     kb_gpio_init_t GPIO_InitStruct;
@@ -209,23 +231,15 @@ int main(void)
     kb_gpio_isr_enable(B2_PORT, B2_PIN, &GPIO_InitStruct, FALLING_EDGE);
     kb_gpio_isr_register(B2_PORT, B2_PIN, on_b2_pressed);
 
-    /* Test blinking */
-    kb_gpio_toggle(LED1_PORT, LED1_PIN);
-    kb_delay_ms(4000);
-    kb_gpio_toggle(LED1_PORT, LED1_PIN);
-
     /* Test message */
     trace_puts("Hello ARM World!");
     kb_terminal_puts("Hello World!\n");
-
-    /* Motor test running done */
-    system_stop_driving();
 
     /* Mutex creation */
     mutex_range = xSemaphoreCreateMutex();
 
     /* first fsm action */
-    go_test1();
+    disp_main();
 
     /* Task creation and definition */
     BaseType_t result;
@@ -384,44 +398,114 @@ static void task_blinky(void *pvParameters)
 /*******************************************************************************
  * FSM action function
  ******************************************************************************/
-static void go_test1(void)
+static void disp_main(void)
+{
+    hcms_290x_matrix("Main");
+}
+
+static void disp_mem(void)
+{
+    hcms_290x_matrix("Mem");
+}
+
+static void disp_test1(void)
 {
     hcms_290x_matrix("TST1");
 }
 
-static void go_test2(void)
+static void disp_test2(void)
 {
     hcms_290x_matrix("TST2");
 }
 
-static void go_test3(void)
+static void disp_test3(void)
 {
     hcms_290x_matrix("TST3");
 }
 
-static void go_test4(void)
+static void disp_test4(void)
 {
     hcms_290x_matrix("TST4");
 }
 
-static void sel_test1(void)
+static void search_to_goal(void)
 {
-    hcms_290x_matrix("Sel1");
+    /* Not implemented */
+    hcms_290x_matrix("None");
+    kb_delay_ms(2000);
+    hcms_290x_matrix("    ");
 }
 
-static void sel_test2(void)
+static void rush_to_goal(void)
 {
-    hcms_290x_matrix("Sel2");
+    /* Not implemented */
+    hcms_290x_matrix("None");
+    kb_delay_ms(2000);
+    hcms_290x_matrix("    ");
 }
 
-static void sel_test3(void)
+static void print_mem(void)
 {
-    hcms_290x_matrix("Sel3");
+    /* Not implemented */
+    hcms_290x_matrix("None");
+    kb_delay_ms(2000);
+    hcms_290x_matrix("    ");
 }
 
-static void sel_test4(void)
+static void reset_mem(void)
 {
-    hcms_290x_matrix("Sel4");
+    /* Not implemented */
+    hcms_290x_matrix("None");
+    kb_delay_ms(2000);
+    hcms_290x_matrix("    ");
+}
+
+static void run_test1(void)
+{
+    /* Give time to get ready */
+    hcms_290x_matrix("RDY.");
+    for (int i = 0; i < 6; i++) {
+        kb_gpio_toggle(LED2_PORT, LED2_PIN);
+        kb_delay_ms(500);
+    }
+    hcms_290x_matrix("Go");
+    kb_delay_ms(500);
+    hcms_290x_matrix("    ");
+
+    /* Motor test running */
+    system_enable_range_finder();
+    system_start_driving();
+    pid_input_setpoint(&pid_T, 18);
+
+    kb_delay_ms(4000);
+    /* Motor test running done */
+    system_stop_driving();
+    system_disale_range_finder();
+    pid_reset(&pid_T);
+}
+
+static void run_test2(void)
+{
+    /* Not implemented */
+    hcms_290x_matrix("None");
+    kb_delay_ms(2000);
+    hcms_290x_matrix("    ");
+}
+
+static void run_test3(void)
+{
+    /* Not implemented */
+    hcms_290x_matrix("None");
+    kb_delay_ms(2000);
+    hcms_290x_matrix("    ");
+}
+
+static void run_test4(void)
+{
+    /* Not implemented */
+    hcms_290x_matrix("None");
+    kb_delay_ms(2000);
+    hcms_290x_matrix("    ");
 }
 
 static void do_nothing(void)
