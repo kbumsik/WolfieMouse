@@ -41,9 +41,10 @@
 /**
  * Range finder measurements
  */
-#define CONFIG_DetectRange	180	/* FIXME: change this */
-#define CONFIG_LeftCenter	100
-#define CONFIG_RightCenter	100
+#define MEASURE_RANGE_L_DETECT	1500	/* FIXME: change this */
+#define MEASURE_RANGE_R_DETECT  1500
+#define MEASURE_RANGE_L_MIDDLE  1800    /* FIXME: change this */
+#define MEASURE_RANGE_R_MIDDLE  1800
 #define CONFIG_FrontWallRange 52
 #define CONFIG_RangeOffset	0	/* the offset between left and right sensor when mouse in the middle of cell */
 

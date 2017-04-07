@@ -210,8 +210,24 @@ void SysTick_hook(void)
     range_R = kb_adc_measure(&adc_R);
 
     // get errorR
-    int32_t feedback_R = (range_R - range_L) / 10;
-    //int32_t feedback_R = speed_L - speed_R;
+    int32_t feedback_R;
+    if(range_L > MEASURE_RANGE_L_DETECT && range_R > MEASURE_RANGE_R_DETECT ) {
+        // If both range are within wall detecting distance,
+        // Use range sensor to get rotational error
+        feedback_R = (range_R - range_L) / 10;
+    } else if (range_L > MEASURE_RANGE_L_DETECT) {
+        // If only left side is within range
+        // use the middle value of the right range
+        feedback_R = (MEASURE_RANGE_R_MIDDLE - range_L) / 10;
+    } else if (range_R > MEASURE_RANGE_R_DETECT) {
+        // If only right side is within range
+        // use the middle value of the left range
+        feedback_R = (range_R - MEASURE_RANGE_L_MIDDLE) / 10;
+    } else {
+        // in open space, use rotary encoder
+        feedback_R = speed_L - speed_R;
+    }
+
     int32_t outputR = pid_compute(&pid_R, feedback_R);
 
     if (!is_pid_R_running) {
