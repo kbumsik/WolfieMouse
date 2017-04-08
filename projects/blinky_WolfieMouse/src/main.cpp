@@ -622,10 +622,29 @@ static void run_test2_CCW(void)
 
 static void run_test3_walls(void)
 {
-    /* Not implemented */
-    hcms_290x_matrix("None");
+    hcms_290x_matrix("Range");
     kb_delay_ms(2000);
-    hcms_290x_matrix("    ");
+
+    system_enable_range_finder();
+    static volatile uint16_t * const sensors[] = {
+            &range_F, &range_L, &range_R
+    };
+    static uint16_t detect_range[] = {
+            MEASURE_RANGE_F_DETECT,
+            MEASURE_RANGE_L_DETECT,
+            MEASURE_RANGE_R_DETECT
+    };
+    static char display[5] = {' ', ' ', ' ', ' ', '\0'};
+    is_b2_pressed = 0;
+    while (!is_b2_pressed) {
+        char *ptr = display;
+        for (int i = 0; i < 3 ; i++) {
+            *ptr++ = (*sensors[i] > detect_range[i])?'0':'X';
+        }
+        hcms_290x_matrix(display);
+    }
+    is_b2_pressed = 0;
+    system_disable_range_finder();
 }
 
 static void run_test4(void)
@@ -634,6 +653,7 @@ static void run_test4(void)
     hcms_290x_matrix("None");
     kb_delay_ms(2000);
     hcms_290x_matrix("    ");
+
 }
 
 static void do_nothing(void)
