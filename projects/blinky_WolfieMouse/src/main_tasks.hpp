@@ -8,6 +8,6 @@
 #ifndef MAIN_TASKS_HPP_
 #define MAIN_TASKS_HPP_
 
-
+void main_run(void);
 
 #endif /* MAIN_TASKS_HPP_ */

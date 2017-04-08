@@ -31,7 +31,7 @@ static inline void right_set_forward_(void)
 #if defined(KB_WOLFIEMOUSE)
     kb_gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET);
 #else
-    kb_gpio_set(motorRIGHT_PORT, motorLEFT_PIN, GPIO_PIN_RESET);
+    kb_gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_RESET);
 #endif
 }
 
@@ -44,7 +44,7 @@ static inline void right_set_backward_(void)
 #if defined(KB_WOLFIEMOUSE)
 	kb_gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_RESET);
 #else
-    kb_gpio_set(motorRIGHT_PORT, motorLEFT_PIN, GPIO_PIN_SET);
+    kb_gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET);
 #endif
 }
 

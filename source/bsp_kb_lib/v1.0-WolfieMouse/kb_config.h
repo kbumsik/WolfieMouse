@@ -28,8 +28,8 @@
 #define KB_USE_FREERTOS
 #define KB_TRACE
 #define KB_DEBUG
-    //#define KB_DEBUG_TO_TERMINAL
-    #define KB_DEBUG_TO_SEMIHOSTING
+    #define KB_DEBUG_TO_TERMINAL
+    //#define KB_DEBUG_TO_SEMIHOSTING
 #define KB_PRINTF_TO_TERMINAL	// TODO: Add associate print functions
 
 

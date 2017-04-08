@@ -80,7 +80,7 @@ void MazeIO::loadMaze(char* fileName)
     Wall wallToPut;
     for (int i = 0; i < (CONFIG_MAX_ROW_SIZE * 2 + 1); i++) {
         for (int j = 0; j < (CONFIG_MAX_COL_SIZE * 2 + 1); j++) {
-            if ((buf = fileIO->getchar()) == EOF) {
+            if ((buf = fileIO->get_char()) == EOF) {
                 printf("error?\n"); /* TODO: check error condition of fgets */
             }
             switch (buf) {
@@ -88,16 +88,16 @@ void MazeIO::loadMaze(char* fileName)
             case '|':
                 wallToPut = wall;
                 if (j != CONFIG_MAX_COL_SIZE * 2) {
-                	fileIO->getchar();
+                	fileIO->get_char();
                 }
                 break;
             case '.':
                 wallToPut = empty;
-				fileIO->getchar();
+				fileIO->get_char();
                 break;
             case '*':
                 wallToPut = unknown;
-				fileIO->getchar();
+				fileIO->get_char();
                 break;
             case 'S': /* Starting point */
                 maze->startPos.row = i / 2;
@@ -275,7 +275,7 @@ void MazeIO::printCell(int row, int col, bool isShowMouse, char* buf)
 static void clearLine(IOInterface* io)
 {
     char buf;
-    while ((buf = io->getchar()) != '\n') {
+    while ((buf = io->get_char()) != '\n') {
         if (buf == EOF)
             break;
     }

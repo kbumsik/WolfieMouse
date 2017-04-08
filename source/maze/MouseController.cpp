@@ -44,9 +44,12 @@ bool MouseController::scanWalls(void)
     for (int i = (int) row_plus; i <= (int) col_minus; i++) {
     	Direction dir = (Direction) i;
         result = finder->examineWall(nextPos, dir, *this);
+        if (result == wallError) {
+            continue;
+        }
         if (getWall(nextPos, dir) != result) {
                newInfo = true;
-           }
+        }
         setWall(nextPos, dir, result);
     }
     // Lastly, update state of cells.
@@ -182,6 +185,7 @@ void MouseController::moveNextCell()
     /* 1. turn first */
     Direction tmp_d = getDirectionToGo();
     /* before setting direction we need to set how much turn */
+    // TODO: what about with MoverInterface?
     setDirectionToGo();
     /* 2. scan side wall */
     scanWalls();		// TODO: Try using this outside
@@ -190,6 +194,7 @@ void MouseController::moveNextCell()
     /* move command */
     setPos(tmp_p);
     /* 4. scan the front wall */
+    // Doesn't need actually
     /* 5. update */
     updateCell();
     /* check if the mouse is in a destination */

@@ -1,5 +1,6 @@
 #include "system_control.h"
 #include "main_tasks.hpp"
+#include "config_measurements.h"
 
 // KB library
 #include "kb_tick.h"
@@ -102,9 +103,14 @@ static void search_to_goal(void);
 static void rush_to_goal(void);
 static void print_mem(void);
 static void reset_mem(void);
-static void run_test1(void);
-static void run_test2(void);
-static void run_test3(void);
+// Going straight test
+static void run_test1_time(void);
+static void run_test1_distance(void);
+// Rotation test
+static void run_test2_CW(void);
+static void run_test2_CCW(void);
+// Range Sensor test
+static void run_test3_walls(void);
 static void run_test4(void);
 static void do_nothing(void);
 
@@ -148,32 +154,32 @@ void main_fsm(enum event event_input){
     };
     static const struct transition test1_transitions[] = {
     //  Event        Task        Next_state
-        {b1_pressed, run_test1,  test1},
-        {b2_pressed, run_test1,  test1},
+        {b1_pressed, run_test1_time,  test1},
+        {b2_pressed, run_test1_time,  test1},
         {wheel_up,   disp_test2, test2},
         {wheel_down, disp_mem, mem},
         {eol,        do_nothing, test1}
     };
     static const struct transition test2_transitions[] = {
     //  Event        Task        Next_state
-        {b1_pressed, run_test2,  test2},
-        {b2_pressed, run_test2,  test2},
+        {b1_pressed, run_test2_CCW,  test2},
+        {b2_pressed, run_test2_CW,  test2},
         {wheel_up,   disp_test3,   test3},
         {wheel_down, disp_test1,   test1},
         {eol,        do_nothing, test2}
     };
     static const struct transition test3_transitions[] = {
     //  Event        Task        Next_state
-        {b1_pressed, run_test3,  test3},
-        {b2_pressed, run_test3,  test3},
+        {b1_pressed, run_test3_walls,  test3},
+        {b2_pressed, run_test2_CCW,  test3},
         {wheel_up,   disp_test4,   test4},
         {wheel_down, disp_test2,   test2},
         {eol,        do_nothing, test3}
     };
     static const struct transition test4_transitions[] = {
     //  Event        Task        Next_state
-        {b1_pressed, run_test4,  test4},
-        {b2_pressed, run_test4,  test4},
+        {b1_pressed, run_test1_distance,  test4},
+        {b2_pressed, run_test1_distance,  test4},
         {wheel_up,   disp_main,   main_state},
         {wheel_down, disp_test3,   test3},
         {eol,        do_nothing, test4}
@@ -210,6 +216,8 @@ int main(void)
     /* Initialize all configured peripherals */
     peripheral_init();
     system_stop_driving();
+
+    system_enable_range_finder();
 
     /* Initial LED Display message */
     hcms_290x_matrix("BOOT");
@@ -389,7 +397,7 @@ static void task_blinky(void *pvParameters)
         KB_DEBUG_MSG("Front range: %d\n", range_F);
 
         /* Call this Task every 1000ms */
-        vTaskDelayUntil(&xLastWakeTime, (1000 / portTICK_RATE_MS));
+        vTaskDelayUntil(&xLastWakeTime, (3000 / portTICK_RATE_MS));
     }
     vTaskDelete(NULL);
 }
@@ -430,10 +438,31 @@ static void disp_test4(void)
 
 static void search_to_goal(void)
 {
-    /* Not implemented */
-    hcms_290x_matrix("None");
-    kb_delay_ms(2000);
+    /* Give time to get ready */
+    hcms_290x_matrix("RDY.");
+    for (int i = 0; i < 6; i++) {
+        kb_gpio_toggle(LED2_PORT, LED2_PIN);
+        kb_delay_ms(500);
+    }
+    // wait for button pressed
+    while (!is_b1_pressed) {
+    }
+    is_b1_pressed = 0;
+
+    hcms_290x_matrix("Go");
+    kb_delay_ms(1000);
     hcms_290x_matrix("    ");
+
+    /* Motor test running */
+    system_enable_range_finder();
+
+    /* Go to main algorithm */
+    //main_run();
+
+    /* Motor test running done */
+    system_stop_driving();
+    system_disable_range_finder();
+    pid_reset(&pid_T);
 }
 
 static void rush_to_goal(void)
@@ -460,7 +489,7 @@ static void reset_mem(void)
     hcms_290x_matrix("    ");
 }
 
-static void run_test1(void)
+static void run_test1_time(void)
 {
     /* Give time to get ready */
     hcms_290x_matrix("RDY.");
@@ -468,6 +497,7 @@ static void run_test1(void)
         kb_gpio_toggle(LED2_PORT, LED2_PIN);
         kb_delay_ms(500);
     }
+    // TODO: stop blinky here
     hcms_290x_matrix("Go");
     kb_delay_ms(500);
     hcms_290x_matrix("    ");
@@ -480,19 +510,123 @@ static void run_test1(void)
     kb_delay_ms(4000);
     /* Motor test running done */
     system_stop_driving();
-    system_disale_range_finder();
+    system_disable_range_finder();
     pid_reset(&pid_T);
+    pid_reset(&pid_R);
 }
 
-static void run_test2(void)
+static void run_test1_distance(void)
 {
-    /* Not implemented */
-    hcms_290x_matrix("None");
-    kb_delay_ms(2000);
+    /* Give time to get ready */
+    hcms_290x_matrix("RDY.");
+    for (int i = 0; i < 6; i++) {
+        kb_gpio_toggle(LED2_PORT, LED2_PIN);
+        kb_delay_ms(500);
+    }
+    // TODO: stop blinky here
+    hcms_290x_matrix("Go");
+    kb_delay_ms(500);
     hcms_290x_matrix("    ");
+
+    // Reset encoder
+    system_reset_encoder();
+
+    /* Motor test running */
+    system_enable_range_finder();
+
+    pid_reset(&pid_T);
+    pid_reset(&pid_R);
+    pid_input_setpoint(&pid_T, 18);
+    pid_input_setpoint(&pid_R, 0);
+
+    system_start_driving();
+
+
+    // wait for distance of one cell
+    for(; encoder_right_count() <
+                (MEASURE_STEPS_PER_CELL + MEASURE_ENCODER_DEFAULT);) {
+    }
+
+    /* Motor test running done */
+    system_stop_driving();
+    system_disable_range_finder();
+    pid_reset(&pid_T);
+    pid_reset(&pid_R);
 }
 
-static void run_test3(void)
+static void run_test2_CW(void)
+{
+
+    /* Give time to get ready */
+    hcms_290x_matrix("RDY.");
+    for (int i = 0; i < 6; i++) {
+        kb_gpio_toggle(LED2_PORT, LED2_PIN);
+        kb_delay_ms(500);
+    }
+    // TODO: stop blinky here
+    hcms_290x_matrix("Go");
+    kb_delay_ms(500);
+    hcms_290x_matrix("    ");
+
+    // Reset encoder
+    system_reset_encoder();
+
+    /* Motor test running */
+    system_disable_range_finder();
+    pid_reset(&pid_T);
+    pid_reset(&pid_R);
+    pid_input_setpoint(&pid_T, 0);
+    pid_input_setpoint(&pid_R, 60);
+    system_start_driving();
+
+    // wait for distance of one cell
+    for(; encoder_right_count() >
+                (MEASURE_ENCODER_DEFAULT - MEASURE_STEPS_90DEG_CW);) {
+    }
+
+    /* Motor test running done */
+    system_stop_driving();
+    pid_reset(&pid_T);
+    pid_reset(&pid_R);
+}
+
+static void run_test2_CCW(void)
+{
+
+    /* Give time to get ready */
+    hcms_290x_matrix("RDY.");
+    for (int i = 0; i < 6; i++) {
+        kb_gpio_toggle(LED2_PORT, LED2_PIN);
+        kb_delay_ms(500);
+    }
+    // TODO: stop blinky here
+    hcms_290x_matrix("Go");
+    kb_delay_ms(500);
+    hcms_290x_matrix("    ");
+
+    // Reset encoder
+    system_reset_encoder();
+
+    /* Motor test running */
+    system_disable_range_finder();
+    pid_reset(&pid_T);
+    pid_reset(&pid_R);
+    pid_input_setpoint(&pid_T, 0);
+    pid_input_setpoint(&pid_R, -60);
+    system_start_driving();
+
+    // wait for distance of one cell
+    for(; encoder_right_count() <
+                (MEASURE_ENCODER_DEFAULT + MEASURE_STEPS_90DEG_CCW);) {
+    }
+
+    /* Motor test running done */
+    system_stop_driving();
+    pid_reset(&pid_T);
+    pid_reset(&pid_R);
+}
+
+static void run_test3_walls(void)
 {
     /* Not implemented */
     hcms_290x_matrix("None");

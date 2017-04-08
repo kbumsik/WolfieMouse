@@ -18,7 +18,10 @@ void system_stop_driving(void);
 
 // Range finder control
 void system_enable_range_finder(void);
-void system_disale_range_finder(void);
+void system_disable_range_finder(void);
+
+// Encoder control
+void system_reset_encoder(void);
 
 #ifdef __cplusplus
 }

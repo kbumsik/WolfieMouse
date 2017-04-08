@@ -9,6 +9,7 @@
 #include "kb_common_source.h"
 #include "kb_timer.h"
 #include "kb_module_config.h"
+#include "config_measurements.h"
 
 void encoder_init(void)
 {
@@ -36,7 +37,7 @@ void encoder_init(void)
 	// right channel
 	enc_setting = (kb_encoder_init_t){
 			.direction = CW,
-			.prescaler = 0x1U
+			.prescaler = 0x0U
 	};
 	kb_encoder_init(ENCODER_R_TIMER, &enc_setting);
 
@@ -61,10 +62,10 @@ int32_t encoder_right_count(void)
 
 void encoder_left_reset(void)
 {
-	kb_encoder_set(ENCODER_L_TIMER, 10000);
+	kb_encoder_set(ENCODER_L_TIMER, MEASURE_ENCODER_DEFAULT);
 }
 
 void encoder_right_reset(void)
 {
-	kb_encoder_set(ENCODER_R_TIMER, 10000);
+	kb_encoder_set(ENCODER_R_TIMER, MEASURE_ENCODER_DEFAULT);
 }

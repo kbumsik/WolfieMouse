@@ -19,7 +19,7 @@ public:
 	StdIO(bool allowFile);
     // Overridden methods
     void open(char *filename, char *mode) override;
-    int getchar() override;
+    int get_char() override;
     size_t write(const void *ptr, size_t size, size_t nmemb) override;
 };
 

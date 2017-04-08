@@ -31,7 +31,7 @@ void StdIO::open(char *filename, char *mode)
     }
 }
 
-int StdIO::getchar()
+int StdIO::get_char()
 {
 	if (allowFile) {
 	    return fgetc(_file);

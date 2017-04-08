@@ -198,9 +198,6 @@ void SysTick_hook(void)
     speed_D = speed_L - speed_R;
 
     /* Start PID calculation */
-    if (!is_pid_running) {
-        return;
-    }
     // calculate errorT
     int32_t feedback_T = (speed_L + speed_R) / 2;
     int32_t outputT = pid_compute(&pid_T, feedback_T);
@@ -219,7 +216,7 @@ void SysTick_hook(void)
                         && (range_R > MEASURE_RANGE_R_DETECT) ) {
         // If both range are within wall detecting distance,
         // Use range sensor to get rotational error
-        feedback_R = (range_R - range_L) / 10;
+        feedback_R = (range_R - range_L - MEASURE_RANGE_R_OFFSET) / 10;
     } else if (is_range_running && range_L > MEASURE_RANGE_L_DETECT) {
         // If only left side is within range
         // use the middle value of the right range
@@ -240,6 +237,9 @@ void SysTick_hook(void)
     }
     if (!is_pid_R_running) {
         outputR = 0;
+    }
+    if (!is_pid_running) {
+        return;
     }
 
     // Apply to the motor
@@ -277,7 +277,13 @@ void system_enable_range_finder(void)
     is_range_running = 1;
 }
 
-void system_disale_range_finder(void)
+void system_disable_range_finder(void)
 {
     is_range_running = 0;
+}
+
+void system_reset_encoder(void)
+{
+    encoder_left_reset();
+    encoder_right_reset();
 }

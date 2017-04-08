@@ -33,20 +33,22 @@
 /**
  * Encoder measurements
  */
-#define CONFIG_CNT_PER_REV      3520
-#define CONFIG_CNT_PER_CELL     360.1448
-#define CONFIG_CNT_PER_90_DEG 	223.053
-#define CONFIG_LEN_PER_CNT      0.49979
+#define MEASURE_ENCODER_DEFAULT     10000
+#define MEASURE_STEPS_PER_REV       3520
+#define MEASURE_STEPS_PER_CELL      4800 //4750
+#define MEASURE_STEPS_90DEG_CW      1600
+#define MEASURE_STEPS_90DEG_CCW     1625
+
 
 /**
  * Range finder measurements
  */
-#define MEASURE_RANGE_L_DETECT	1500	/* FIXME: change this */
-#define MEASURE_RANGE_R_DETECT  1500
-#define MEASURE_RANGE_L_MIDDLE  1800    /* FIXME: change this */
-#define MEASURE_RANGE_R_MIDDLE  1800
-#define CONFIG_FrontWallRange 52
-#define CONFIG_RangeOffset	0	/* the offset between left and right sensor when mouse in the middle of cell */
+#define MEASURE_RANGE_L_DETECT	180
+#define MEASURE_RANGE_R_DETECT  230
+#define MEASURE_RANGE_L_MIDDLE  353
+#define MEASURE_RANGE_R_MIDDLE  485
+#define MEASURE_RANGE_F_DETECT  450
+#define MEASURE_RANGE_R_OFFSET	130	/* the offset between left and right sensor when mouse in the middle of cell */
 
 
 /**
