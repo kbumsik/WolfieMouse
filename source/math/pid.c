@@ -13,10 +13,10 @@ void pid_reset(pid_handler_t *h)
     h->error = 0;
     h->error_old = 0;
     h->error_diff = 0;
-    h->sum = 0;
+    h->error_sum = 0;
 }
 
-void pid_set_pid(pid_handler_t *h, pid_t *pid)
+void pid_set_pid(pid_handler_t *h, pid_value_t *pid)
 {
     h->pid.kp = pid->kp;
     h->pid.ki = pid->ki;
@@ -34,7 +34,7 @@ int32_t pid_compute(pid_handler_t *h, int32_t feedback)
     h->error_diff = h->error - h->error_old;
     h->error_sum += h->error;
     return (h->pid.kp * h->error) +
-            (h->pid.ki * h->sum) +
+            (h->pid.ki * h->error_sum) +
             (h->pid.kd * h->error_diff);
 }
 

@@ -15,7 +15,7 @@
 extern "C" {
 #endif
 
-kb_status_t pid_speed_init(pid_t *pid_translation, pid_t *rotation);
+kb_status_t pid_speed_init(pid_value_t *pid_translation, pid_value_t *rotation);
 kb_status_t pid_speed_reset_error(void);
 int32_t pid_speed_set_translation(int32_t translation);
 int32_t pid_speed_set_rotation(int32_t rotation);

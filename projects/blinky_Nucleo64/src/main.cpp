@@ -4,6 +4,7 @@
 #include "system_config.h"
 #include "kb_gpio.h"
 #include "kb_terminal.h"
+#include "kb_adc.h"
 
 // FreeRTOS
 #include "FreeRTOS.h"
@@ -21,6 +22,9 @@ static void task_blinky(void *pvParameters);
 /* Task Handlers */
 TaskHandle_t task_blinky_handler;
 
+/* peripheral objects */
+kb_adc_t range_front_right;
+
 int main(void)
 {
     // initialize clock and system configuration
@@ -28,6 +32,15 @@ int main(void)
 
     // Initialize all configured peripherals
     peripheral_init();
+
+    // ADC
+    // This is A5 Pin in Nucleo-64
+    kb_adc_init_t adc_init = {
+            .device = RECV_ADC,
+            .channel = KB_ADC_CH10
+    };
+    kb_adc_init(&range_front_right, &adc_init);
+    kb_adc_pin(RECV_FR_PORT, RECV_FR_PIN);
 
     // Set interrupt button
     kb_gpio_init_t GPIO_InitStruct;
@@ -37,9 +50,10 @@ int main(void)
     kb_gpio_isr_register(B1_PORT, B1_PIN, on_pressed);
 
     // Set toggling pin controlled by the button
+    // This is A0 pin in Nucleo-64
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     kb_gpio_init(PORTA, PIN_0, &GPIO_InitStruct);
     kb_gpio_set(PORTA, PIN_0, GPIO_PIN_RESET);
 
@@ -78,7 +92,6 @@ int main(void)
 void on_pressed(void)
 {
     trace_puts("Button Pressed\n");
-    kb_gpio_toggle(PORTA, PIN_0);
     return;
 }
 
@@ -97,6 +110,14 @@ void task_blinky(void *pvParameters)
         ++seconds;
         // Count seconds on the trace device.
         trace_printf("Second %u\n", seconds);
+
+        // Range sensor test
+        kb_gpio_set(PORTA, PIN_0, GPIO_PIN_SET);
+        kb_delay_us(60);
+        uint32_t result = kb_adc_measure(&range_front_right);
+        kb_gpio_set(PORTA, PIN_0, GPIO_PIN_RESET);
+        trace_printf("result: %d\n", result);
+
         /* Call this Task explicitly every 50ms ,NOT Delay for 50ms */
         vTaskDelayUntil(&xLastWakeTime, (500 / portTICK_RATE_MS));
     }

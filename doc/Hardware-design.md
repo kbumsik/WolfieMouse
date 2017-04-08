@@ -23,7 +23,7 @@ To observe the ideas above, the micromouse features:
 * 4 Character LED display
 * MPU9250 digital Inertial Measurement Unit (IMU)
 * 5:1 Micro Metal Gearmotor HP by Polou *2
-  * AS5304B magnetic encoder & AS5000-MR20-44 magnetic ring combo for rotary encoder of each motors
+  * AS5304A magnetic encoder & AS5000-MR20-44 magnetic ring combo for rotary encoder of each motors
 
 ### Gallery of WolfieMouse 1.0
 

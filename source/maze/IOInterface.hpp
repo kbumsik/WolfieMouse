@@ -19,7 +19,7 @@ public:
     // replacement for fopen()
     virtual void open(char *filename, char *mode) = 0;
     // replacement for fgetc()
-    virtual int getchar() = 0;
+    virtual int get_char() = 0;
     // replacement for fwrite()
     virtual size_t write(const void *ptr, size_t size, size_t nmemb) = 0;
 };

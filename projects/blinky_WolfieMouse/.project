@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>blinky_Nucleo64</name>
+	<name>blinky_wolfiemouse</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -33,12 +33,22 @@
 		<link>
 			<name>bsp</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/source/bsp_kb_lib/Nucleo64-STM32F446RE</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/source/bsp_kb_lib/v1.0-WolfieMouse</locationURI>
 		</link>
 		<link>
 			<name>manufacturer_drivers</name>
 			<type>2</type>
 			<locationURI>$%7BPARENT-2-PROJECT_LOC%7D/source/kb_lib/src/manufacturer_drivers</locationURI>
+		</link>
+		<link>
+			<name>math</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/source/math</locationURI>
+		</link>
+		<link>
+			<name>maze</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/source/maze</locationURI>
 		</link>
 		<link>
 			<name>module</name>

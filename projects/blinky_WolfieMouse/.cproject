@@ -46,7 +46,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.2080498852" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.285346143" name="FPU Type" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit" value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fpv4spd16" valueType="enumerated"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.834050049" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/blinky_Nucleo64}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1572686356" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
+							<builder buildPath="${workspace_loc:/blinky_wolfiemouse}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1572686356" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
@@ -55,57 +55,67 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.1343841772" name="Cross ARM GNU Assembler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor.1241146633" name="Use preprocessor" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor" value="true" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths.1285215532" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/manufacturer_drivers/CMSIS/Device/ST/STM32F4xx/Include"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/system"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/peripheral"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/module"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/manufacturer_drivers/CMSIS/Include"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/FreeRTOS/Source/include"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/FreeRTOS/Source/portable/GCC/ARM_CM4F"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc/Legacy"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/bsp_kb_lib/Nucleo64-STM32F446RE"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/manufacturer_drivers/CMSIS/Device/ST/STM32F4xx/Include"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/system"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/peripheral"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/module"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/manufacturer_drivers/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/FreeRTOS/Source/include"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/FreeRTOS/Source/portable/GCC/ARM_CM4F"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc/Legacy"/>
+									<listOptionValue builtIn="false" value="../../../source/bsp_kb_lib/v1.0-WolfieMouse"/>
+									<listOptionValue builtIn="false" value="../../../source/math"/>
+									<listOptionValue builtIn="false" value="../../../source/maze"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.2140597346" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DEBUG"/>
 									<listOptionValue builtIn="false" value="TRACE"/>
 									<listOptionValue builtIn="false" value="OS_USE_TRACE_SEMIHOSTING_DEBUG"/>
+									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
+									<listOptionValue builtIn="false" value="KB_BLACKWOLF"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.1151555196" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.195108093" name="Cross ARM GNU C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths.218600760" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/manufacturer_drivers/CMSIS/Device/ST/STM32F4xx/Include"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/system"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/peripheral"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/module"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/manufacturer_drivers/CMSIS/Include"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/FreeRTOS/Source/include"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/FreeRTOS/Source/portable/GCC/ARM_CM4F"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc/Legacy"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/bsp_kb_lib/Nucleo64-STM32F446RE"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/manufacturer_drivers/CMSIS/Device/ST/STM32F4xx/Include"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/system"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/peripheral"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/module"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/manufacturer_drivers/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/FreeRTOS/Source/include"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/FreeRTOS/Source/portable/GCC/ARM_CM4F"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc/Legacy"/>
+									<listOptionValue builtIn="false" value="../../../source/bsp_kb_lib/v1.0-WolfieMouse"/>
+									<listOptionValue builtIn="false" value="../../../source/math"/>
+									<listOptionValue builtIn="false" value="../../../source/maze"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.1162635112" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DEBUG"/>
 									<listOptionValue builtIn="false" value="TRACE"/>
 									<listOptionValue builtIn="false" value="OS_USE_TRACE_SEMIHOSTING_DEBUG"/>
+									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
+									<listOptionValue builtIn="false" value="KB_BLACKWOLF"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.493431983" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.gnu11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.1357874392" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.31659825" name="Cross ARM GNU C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths.812041025" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/manufacturer_drivers/CMSIS/Device/ST/STM32F4xx/Include"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/system"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/peripheral"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/module"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/manufacturer_drivers/CMSIS/Include"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/FreeRTOS/Source/include"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/FreeRTOS/Source/portable/GCC/ARM_CM4F"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc/Legacy"/>
-									<listOptionValue builtIn="false" value="/home/vagrant/WolfieMouse/source/bsp_kb_lib/Nucleo64-STM32F446RE"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/manufacturer_drivers/CMSIS/Device/ST/STM32F4xx/Include"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/system"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/peripheral"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/module"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/manufacturer_drivers/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/FreeRTOS/Source/include"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/FreeRTOS/Source/portable/GCC/ARM_CM4F"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc/Legacy"/>
+									<listOptionValue builtIn="false" value="../../../source/bsp_kb_lib/v1.0-WolfieMouse"/>
+									<listOptionValue builtIn="false" value="../../../source/math"/>
+									<listOptionValue builtIn="false" value="../../../source/maze"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions.279754553" name="Do not use exceptions (-fno-exceptions)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions" useByScannerDiscovery="true" value="true" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti.708371132" name="Do not use RTTI (-fno-rtti)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti" useByScannerDiscovery="true" value="true" valueType="boolean"/>
@@ -115,6 +125,8 @@
 									<listOptionValue builtIn="false" value="DEBUG"/>
 									<listOptionValue builtIn="false" value="TRACE"/>
 									<listOptionValue builtIn="false" value="OS_USE_TRACE_SEMIHOSTING_DEBUG"/>
+									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
+									<listOptionValue builtIn="false" value="KB_BLACKWOLF"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.2008179741" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.140731043" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -157,7 +169,7 @@
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.wide.445091847" name="Wide lines (--wide|-w)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.wide" value="true" valueType="boolean"/>
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.printsize.1303940250" name="Cross ARM GNU Print Size" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.printsize">
-								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.format.319496252" name="Size format" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.format" value="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.format.sysv" valueType="enumerated"/>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.format.319496252" name="Size format" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.format"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
@@ -165,9 +177,11 @@
 						<entry excluding="Source/portable/MemMang/heap_1.c|Source/portable/MemMang/heap_2.c|Source/portable/MemMang/heap_3.c|Source/portable/MemMang/heap_5.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="FreeRTOS"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="bsp"/>
 						<entry excluding="STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_timebase_rtc_alarm_template.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_timebase_tim_template.c|CMSIS/DSP_Lib/Examples/|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_timebase_rtc_wakeup_template.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="manufacturer_drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="math"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="maze"/>
 						<entry excluding="winc1500/|kb_terminal_test.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="module"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="peripheral"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="main_task.cpp|main_tasks.hpp|RealMouse.cpp|RealMouse.hpp" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 						<entry excluding="system_config_tmplate.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="system"/>
 					</sourceEntries>
 				</configuration>
@@ -218,7 +232,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.1883524863" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.1098464995" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.1156987786" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/blinky_Nucleo64}/Release" id="ilg.gnuarmeclipse.managedbuild.cross.builder.486469064" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder"/>
+							<builder buildPath="${workspace_loc:/blinky_wolfiemouse}/Release" id="ilg.gnuarmeclipse.managedbuild.cross.builder.486469064" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder"/>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.466240989" name="Cross ARM GNU Assembler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor.1368702791" name="Use preprocessor" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor" value="true" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths.1322051737" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" valueType="includePath">
@@ -237,12 +251,16 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../source/kb_lib/src/FreeRTOS/Source/portable/GCC/ARM_CM4F&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc/Legacy&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../source/kb_lib/src/bsp/WolfieMouse&quot;"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/math"/>
+									<listOptionValue builtIn="false" value="../../../source/math"/>
+									<listOptionValue builtIn="false" value="../../../source/maze"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.640533387" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="OS_USE_TRACE_SEMIHOSTING_DEBUG"/>
 									<listOptionValue builtIn="false" value="STM32F446xx"/>
 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
 									<listOptionValue builtIn="false" value="HSE_VALUE=8000000"/>
+									<listOptionValue builtIn="false" value="KB_BLACKWOLF"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.284410715" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
@@ -263,12 +281,16 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../source/kb_lib/src/FreeRTOS/Source/portable/GCC/ARM_CM4F&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc/Legacy&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../source/kb_lib/src/bsp/WolfieMouse&quot;"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/math"/>
+									<listOptionValue builtIn="false" value="../../../source/math"/>
+									<listOptionValue builtIn="false" value="../../../source/maze"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.1422827311" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="OS_USE_TRACE_SEMIHOSTING_DEBUG"/>
 									<listOptionValue builtIn="false" value="STM32F446xx"/>
 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
 									<listOptionValue builtIn="false" value="HSE_VALUE=8000000"/>
+									<listOptionValue builtIn="false" value="KB_BLACKWOLF"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.1318164582" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -289,6 +311,9 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../source/kb_lib/src/FreeRTOS/Source/portable/GCC/ARM_CM4F&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../source/kb_lib/src/manufacturer_drivers/STM32F4xx_HAL_Driver/Inc/Legacy&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../source/kb_lib/src/bsp/WolfieMouse&quot;"/>
+									<listOptionValue builtIn="false" value="../../../source/kb_lib/src/math"/>
+									<listOptionValue builtIn="false" value="../../../source/math"/>
+									<listOptionValue builtIn="false" value="../../../source/maze"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions.1893377920" name="Do not use exceptions (-fno-exceptions)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions" useByScannerDiscovery="true" value="true" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti.504996786" name="Do not use RTTI (-fno-rtti)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti" useByScannerDiscovery="true" value="true" valueType="boolean"/>
@@ -299,6 +324,7 @@
 									<listOptionValue builtIn="false" value="STM32F446xx"/>
 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
 									<listOptionValue builtIn="false" value="HSE_VALUE=8000000"/>
+									<listOptionValue builtIn="false" value="KB_BLACKWOLF"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1517247232" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
 							</tool>
@@ -355,7 +381,7 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="blinky_Nucleo64.ilg.gnuarmeclipse.managedbuild.cross.target.elf.384895889" name="Executable" projectType="ilg.gnuarmeclipse.managedbuild.cross.target.elf"/>
+		<project id="blinky_wolfiemouse.ilg.gnuarmeclipse.managedbuild.cross.target.elf.384895889" name="Executable" projectType="ilg.gnuarmeclipse.managedbuild.cross.target.elf"/>
 	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
@@ -375,10 +401,10 @@
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Debug">
-			<resource resourceType="PROJECT" workspacePath="/blinky_Nucleo64"/>
+			<resource resourceType="PROJECT" workspacePath="/blinky_wolfiemouse"/>
 		</configuration>
 		<configuration configurationName="Release">
-			<resource resourceType="PROJECT" workspacePath="/blinky_Nucleo64"/>
+			<resource resourceType="PROJECT" workspacePath="/blinky_wolfiemouse"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
