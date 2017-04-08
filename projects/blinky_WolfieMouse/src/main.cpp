@@ -139,7 +139,7 @@ void main_fsm(enum event event_input){
     static const struct transition main_transitions[] = {
     //  Event        Task             Next_state
         {b1_pressed, search_to_goal,  main_state},
-        {b2_pressed, rush_to_goal,    main_state},
+        {b2_pressed, search_to_goal,    main_state},
         {wheel_up,   disp_mem,        mem},
         {wheel_down, disp_test4,      test4},
         {eol,        do_nothing,      main_state}
@@ -171,7 +171,7 @@ void main_fsm(enum event event_input){
     static const struct transition test3_transitions[] = {
     //  Event        Task        Next_state
         {b1_pressed, run_test3_walls,  test3},
-        {b2_pressed, run_test2_CCW,  test3},
+        {b2_pressed, run_test3_walls,  test3},
         {wheel_up,   disp_test4,   test4},
         {wheel_down, disp_test2,   test2},
         {eol,        do_nothing, test3}
@@ -209,6 +209,7 @@ void main_fsm(enum event event_input){
  * Main function
  ******************************************************************************/
 int main(void)
+
 {
 	/* initialize clock and system configuration */
     system_init();
@@ -216,8 +217,7 @@ int main(void)
     /* Initialize all configured peripherals */
     peripheral_init();
     system_stop_driving();
-
-    system_enable_range_finder();
+    system_disable_range_finder();
 
     /* Initial LED Display message */
     hcms_290x_matrix("BOOT");
@@ -251,16 +251,16 @@ int main(void)
 
     /* Task creation and definition */
     BaseType_t result;
-    result = xTaskCreate(
-            task_blinky,            /* Pointer to the function that implements the task */
-            "Blinky",               /* Text name for the task. This is to facilitate debugging only. It is not used in the scheduler */
-            configMINIMAL_STACK_SIZE+500, /* Stack depth in words */
-            NULL,                   /* Pointer to a task parameters */
-            configMAX_PRIORITIES,                      /* The task priority */
-            &task_blinky_handler);  /* Pointer of its task handler, if you don't want to use, you can leave it NULL */
-    if (result != pdPASS) {
-        KB_DEBUG_ERROR("Creating task failed!!");
-    }
+//    result = xTaskCreate(
+//            task_blinky,            /* Pointer to the function that implements the task */
+//            "Blinky",               /* Text name for the task. This is to facilitate debugging only. It is not used in the scheduler */
+//            configMINIMAL_STACK_SIZE+500, /* Stack depth in words */
+//            NULL,                   /* Pointer to a task parameters */
+//            configMAX_PRIORITIES,                      /* The task priority */
+//            &task_blinky_handler);  /* Pointer of its task handler, if you don't want to use, you can leave it NULL */
+//    if (result != pdPASS) {
+//        KB_DEBUG_ERROR("Creating task failed!!");
+//    }
 
 #ifdef KB_WOLFIEMOUSE
     result = xTaskCreate(
@@ -278,7 +278,7 @@ int main(void)
     result = xTaskCreate(
             task_main,
             "Main",
-            configMINIMAL_STACK_SIZE+2500,
+            configMINIMAL_STACK_SIZE+15500,
             NULL,
             configMAX_PRIORITIES-1,
             &task_main_handler);
@@ -389,12 +389,6 @@ static void task_blinky(void *pvParameters)
         KB_DEBUG_MSG("left range: %d\n", range_L);
         KB_DEBUG_MSG("right range: %d\n", range_R);
 
-        // range front too
-        kb_gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_SET);
-        kb_delay_us(60);
-        range_F = kb_adc_measure(&adc_F);
-        kb_gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_RESET);
-        KB_DEBUG_MSG("Front range: %d\n", range_F);
 
         /* Call this Task every 1000ms */
         vTaskDelayUntil(&xLastWakeTime, (3000 / portTICK_RATE_MS));
@@ -445,7 +439,7 @@ static void search_to_goal(void)
         kb_delay_ms(500);
     }
     // wait for button pressed
-    while (!is_b1_pressed) {
+    while (!is_b2_pressed) {
     }
     is_b1_pressed = 0;
 
@@ -457,7 +451,7 @@ static void search_to_goal(void)
     system_enable_range_finder();
 
     /* Go to main algorithm */
-    //main_run();
+    main_run();
 
     /* Motor test running done */
     system_stop_driving();
@@ -507,7 +501,7 @@ static void run_test1_time(void)
     system_start_driving();
     pid_input_setpoint(&pid_T, 18);
 
-    kb_delay_ms(4000);
+    kb_delay_ms(444000);
     /* Motor test running done */
     system_stop_driving();
     system_disable_range_finder();
@@ -536,7 +530,7 @@ static void run_test1_distance(void)
 
     pid_reset(&pid_T);
     pid_reset(&pid_R);
-    pid_input_setpoint(&pid_T, 18);
+    pid_input_setpoint(&pid_T, 25);
     pid_input_setpoint(&pid_R, 0);
 
     system_start_driving();

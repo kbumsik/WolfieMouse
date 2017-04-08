@@ -120,14 +120,14 @@ Position PositionController::getNextPos(Direction dirTo)
         tmp.col--;
         return tmp;
     default:
-        printf("invalid direction!");
+        //printf("invalid direction!");
         return tmp;
     }
 }
 
 void PositionController::print(PositionController obj)
 {
-    printf("(%d,%d) ", obj.pos.row, obj.pos.col);
+    //printf("(%d,%d) ", obj.pos.row, obj.pos.col);
 }
 
 /*******************************************************************************

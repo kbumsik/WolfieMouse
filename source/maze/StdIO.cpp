@@ -10,6 +10,7 @@
  * Constructor
  ******************************************************************************/
 StdIO::StdIO(bool allowFile) :
+    _file(NULL),
 	IOInterface(),
 	allowFile(allowFile)
 {

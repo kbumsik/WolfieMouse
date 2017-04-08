@@ -7,15 +7,13 @@
 #ifndef IOINTERFACE_HPP_
 #define IOINTERFACE_HPP_
 
-#include <stdio.h>
 #include <stddef.h>
+#include <stdint.h>
 
 class IOInterface
 {
-protected:
-    FILE *_file;
 public:
-    IOInterface(void) : _file(NULL) {}
+    IOInterface(void) {}
     // replacement for fopen()
     virtual void open(char *filename, char *mode) = 0;
     // replacement for fgetc()

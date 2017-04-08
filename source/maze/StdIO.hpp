@@ -8,11 +8,12 @@
 #define STDIO_HPP_
 
 #include "IOInterface.hpp"
-#include <stdio.h>
 #include <stddef.h>
 
 class StdIO: public IOInterface
 {
+private:
+    FILE *_file;
 	bool allowFile = false;
 public:
 	// Constructor

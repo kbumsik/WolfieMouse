@@ -208,6 +208,11 @@ void SysTick_hook(void)
         kb_delay_us(60);
         range_L = kb_adc_measure(&adc_L);
         range_R = kb_adc_measure(&adc_R);
+        // range front too
+        kb_gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_SET);
+        kb_delay_us(60);
+        range_F = kb_adc_measure(&adc_F);
+        kb_gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_RESET);
     }
 
     // get errorR

@@ -7,8 +7,7 @@
 #include "Maze.hpp"
 #include "PositionController.hpp"
 #include "Queue.hpp"
-#include "FinderInterface.hpp"
-#include "MoverInterface.hpp"
+#include "RealMouse.hpp"
 
 /*******************************************************************************
  * Class Declaration
@@ -27,16 +26,16 @@ private:
     Queue<PositionController> pathStack; /**< This is an assistant stack. When @getShortestPath invoked the path to the goal is constructed. */
     Queue<PositionController> availablePositionStack; /**< I don't even know what is this. */
     /* Interfaces */
-    FinderInterface *finder;
-    MoverInterface *mover;
+    RealMouse *finder;
+    RealMouse *mover;
     /* Distance getter and setters */ 
-    inline int getDis(int row, int col);
-    inline int getDis(Position pos);
-    inline int getDis(PositionController pos);
-    inline int getNextDis(PositionController pos, Direction dirTo);
-    inline int getNextDis(PositionController pos);
-    inline int setDis(int row, int col, int dis);
-    inline void setDis(Position pos, int dis);
+    int getDis(int row, int col);
+    int getDis(Position pos);
+    int getDis(PositionController pos);
+    int getNextDis(PositionController pos, Direction dirTo);
+    int getNextDis(PositionController pos);
+    int setDis(int row, int col, int dis);
+    void setDis(Position pos, int dis);
     /* Cell getter and setter */
     Cell getCell(Position pos);
     /* Used in algorithm implementation */
@@ -64,7 +63,7 @@ public:
     /* Constructors */
     MouseController();
     MouseController(char *filename, IOInterface *fileIO, IOInterface *printIO,
-                    FinderInterface *finder, MoverInterface *mover);
+                    RealMouse *finder, RealMouse *mover);
     /* Algorithm solver */
     bool scanWalls(void);     // Detect and update walls while not moving.
     void getDistanceAllCell();
@@ -87,44 +86,5 @@ public:
     void printAvailablePositionStack();
 };
 
-/*******************************************************************************
- * Inline function definition
- ******************************************************************************/
-inline int MouseController::getDis(int row, int col)
-{
-    return Maze::getDistance(row, col);
-}
-
-inline int MouseController::getDis(Position pos)
-{
-    return Maze::getDistance(pos.row, pos.col);
-}
-
-inline int MouseController::getDis(PositionController pos)
-{
-    Position position = pos.getCurrentPos();
-    return Maze::getDistance(position.row, position.col);
-}
-
-inline int MouseController::getNextDis(PositionController pos, Direction dirTo)
-{
-    PositionController tmp = PositionController(pos.getCurrentPos(), dirTo);
-    return getDis(tmp.getNextPos());
-}
-
-inline int MouseController::getNextDis(PositionController pos)
-{
-    return getDis(pos.getNextPos());
-}
-
-inline int MouseController::setDis(int row, int col, int dis)
-{
-    return Maze::setDistance(row, col, dis);
-}
-
-inline void MouseController::setDis(Position pos, int dis)
-{
-    setDis(pos.row, pos.col, dis);
-}
 
 #endif

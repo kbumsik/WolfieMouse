@@ -12,7 +12,6 @@
 #include "MoverInterface.hpp"
 #include "Maze.hpp"
 #include "IOInterface.hpp"
-#include <stdio.h>
 
 class SimulMouse: public FinderInterface, public MoverInterface
 {

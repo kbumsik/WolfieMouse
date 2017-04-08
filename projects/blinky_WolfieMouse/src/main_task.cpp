@@ -1,15 +1,13 @@
 
-#include <Maze.hpp>
 #include <MouseController.hpp>
-#include <stdlib.h>
 #include "IOInterface.hpp"
-#include "StdIO.hpp"
-#include "SimulMouse.hpp"
+#include "fakeIO.hpp"
+#include "RealMouse.hpp"
 
-StdIO fileIO(false);
-StdIO printIO(false);
+FakeIO fake;
+
 // Create virtual mouse hardware for simulation
-SimulMouse virtualMouse(NULL, &fileIO, &printIO);
+RealMouse relmouse;
 enum WolfieState
 {
     goGoal  = 0,
@@ -23,11 +21,11 @@ void main_run(void)
 {
     char tmp;
     WolfieState mouseState = goGoal;
-    MouseController mouse(NULL, &fileIO, &printIO,
-            (FinderInterface*) &virtualMouse, (MoverInterface*) &virtualMouse);
+    MouseController mouse(NULL, &fake, &fake,
+            &relmouse, &relmouse);
 
     /* First just print maze */
-    mouse.printMaze();
+    //mouse.printMaze();
 
     while (true) {
         //Finite State Machine
@@ -46,7 +44,7 @@ void main_run(void)
                 mouse.setGoalAsDes();
                 break;
             default:
-                printf("Invalid state");
+                //printf("Invalid state");
                 break;
             }
         } else {

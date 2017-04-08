@@ -6,7 +6,6 @@
 #include "Cell.hpp"
 #include "common_maze.h"
 #include "config_maze.h"
-#include <stdio.h>
 #include "Direction.hpp"
 #include "Position.hpp"
 #include "Wall.hpp"
@@ -115,7 +114,7 @@ inline int Maze::getDistance(Position pos)
 inline int Maze::getDistancePrint(int row, int col)
 {
     if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
-        printf("invalid cell!\n");
+        //printf("invalid cell!\n");
         return COMMON_MAZE_ERROR;
     }
     return cell[row][col].distance;
@@ -129,7 +128,7 @@ inline int Maze::getDistancePrint(Position pos)
 inline int Maze::setDistance(int row, int col, int dis)
 {
     if (MAZE_IS_POS_OUT_BOUNDS(row, col)) {
-        printf("invalid cell!\n");
+        //printf("invalid cell!\n");
         return COMMON_MAZE_ERROR;
     }
     cell[row][col].distance = dis;
