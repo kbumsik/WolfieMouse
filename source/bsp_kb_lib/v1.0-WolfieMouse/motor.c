@@ -13,6 +13,8 @@
 #define motorRIGHT_PORT         GPIOA
 #define motorRIGHT_PIN          GPIO_PIN_10
 
+static kb_timer_t _timer;
+
 static inline void left_set_toggle_(void)
 {
     kb_gpio_toggle(motorLEFT_PORT, motorLEFT_PIN);
@@ -65,8 +67,8 @@ kb_status_t motor_init(void)
 	 *     right_dir: PA10
 	 *     right_fault: PA9
 	 */
-    kb_timer_ch_pin(TIMER1, CH_1, PORTA, PIN_8, NOPULL);    //left  PWM
-	kb_timer_ch_pin(TIMER1, CH_4, PORTA, PIN_11, NOPULL);	//right PWM
+    kb_timer_ch_pin(KB_TIMER_TIM1, CH_1, PORTA, PIN_8, NOPULL);    //left  PWM
+	kb_timer_ch_pin(KB_TIMER_TIM1, CH_4, PORTA, PIN_11, NOPULL);	//right PWM
 
 
 	kb_gpio_init_t gpio_setting = {
@@ -89,10 +91,11 @@ kb_status_t motor_init(void)
 
 	// PWM settings
 	kb_pwm_init_t pwm_setting = {	// PWM is at 1kHz
+	        .device = KB_TIMER_TIM1,
 			.clock_frequency = 10000000,
 			.period = 10000
 	};
-	kb_pwm_init(TIMER1, &pwm_setting);
+	kb_pwm_init(&_timer, &pwm_setting);
 
 	/* Firstly set speed 0 */
 	motor_speed_percent(CH_BOTH, 0);
@@ -115,7 +118,7 @@ int32_t motor_speed_percent(motor_ch_t channel, int32_t speed)
 	    } else {
 	        left_set_forward_();
 	    }
-		kb_pwm_percent(TIMER1, CH_1, speed);
+		kb_pwm_percent(&_timer, CH_1, speed);
 		break;
 
 	case CH_RIGHT:
@@ -125,7 +128,7 @@ int32_t motor_speed_percent(motor_ch_t channel, int32_t speed)
         } else {
             right_set_forward_();
         }
-		kb_pwm_percent(TIMER1, CH_4, speed);
+		kb_pwm_percent(&_timer, CH_4, speed);
 		break;
 
 	case CH_BOTH:
@@ -137,8 +140,8 @@ int32_t motor_speed_percent(motor_ch_t channel, int32_t speed)
             left_set_forward_();
             right_set_forward_();
         }
-		kb_pwm_percent(TIMER1, CH_1, speed);
-		kb_pwm_percent(TIMER1, CH_4, speed);
+		kb_pwm_percent(&_timer, CH_1, speed);
+		kb_pwm_percent(&_timer, CH_4, speed);
 		break;
 
 	default:
@@ -177,39 +180,33 @@ void motor_dir_rotate_left(void)
 kb_status_t motor_start(motor_ch_t channel)
 {
 	kb_status_t result;
-	switch (channel)
-	{
+	switch (channel) {
 	case CH_LEFT:
 		/* Start channel 1 */
-		result = kb_pwm_start(TIMER1, CH_1);
-		if(result != KB_OK)
-		{
+		result = kb_pwm_start(&_timer, CH_1);
+		if (result != KB_OK) {
 			return result;
 		}
 		break;
 	case CH_RIGHT:
 		/* Start channel 4 */
-		result = kb_pwm_start(TIMER1, CH_4);
-		if(result != KB_OK)
-		{
+		result = kb_pwm_start(&_timer, CH_4);
+		if (result != KB_OK) {
 			return result;
 		}
 		break;
 	case CH_BOTH:
         /* Start channel 1 */
-        result = kb_pwm_start(TIMER1, CH_1);
-        if(result != KB_OK)
-        {
+        result = kb_pwm_start(&_timer, CH_1);
+        if (result != KB_OK) {
             return result;
         }
         /* Start channel 4 */
-        result = kb_pwm_start(TIMER1, CH_4);
-        if(result != KB_OK)
-        {
+        result = kb_pwm_start(&_timer, CH_4);
+        if (result != KB_OK) {
             return result;
         }
-		break;
-
+        break;
 	default:
 		return KB_ERROR;
 	}
@@ -220,42 +217,37 @@ kb_status_t motor_start(motor_ch_t channel)
 kb_status_t motor_stop(motor_ch_t channel)
 {
 	kb_status_t result;
-	switch (channel)
-	{
-	case CH_LEFT:
-		/* Start channel 1 */
-		result = kb_pwm_stop(TIMER1, CH_1);
-		if(result != KB_OK)
-		{
-			return result;
-		}
-		break;
-	case CH_RIGHT:
-		/* Start channel 4 */
-		result = kb_pwm_stop(TIMER1, CH_4);
-		if(result != KB_OK)
-		{
-			return result;
-		}
-		break;
-	case CH_BOTH:
-		/* Start channel 1 */
-		result = kb_pwm_stop(TIMER1, CH_1);
-		if(result != KB_OK)
-		{
-			return result;
-		}
-		/* Start channel 4 */
-		result = kb_pwm_stop(TIMER1, CH_4);
-		if(result != KB_OK)
-		{
-			return result;
-		}
-		break;
+    switch (channel) {
+    case CH_LEFT:
+        /* Start channel 1 */
+        result = kb_pwm_stop(&_timer, CH_1);
+        if (result != KB_OK) {
+            return result;
+        }
+        break;
+    case CH_RIGHT:
+        /* Start channel 4 */
+        result = kb_pwm_stop(&_timer, CH_4);
+        if (result != KB_OK) {
+            return result;
+        }
+        break;
+    case CH_BOTH:
+        /* Start channel 1 */
+        result = kb_pwm_stop(&_timer, CH_1);
+        if (result != KB_OK) {
+            return result;
+        }
+        /* Start channel 4 */
+        result = kb_pwm_stop(&_timer, CH_4);
+        if (result != KB_OK) {
+            return result;
+        }
+        break;
 
-	default:
-		return KB_ERROR;
-	}
+    default:
+        return KB_ERROR;
+    }
 	/* Return OK */
 	return KB_OK;
 }

@@ -22,9 +22,9 @@ public:
     /* Overriding MoverInterface methods */
     void moveTo(int row, int col, Direction destDir, PositionController &mousePos) override;
     void moveTo(Position pos, Direction destDir, PositionController &mousePos)
-        {
-            return moveTo(pos.row, pos.col, destDir, mousePos);
-        }
+    {
+        return moveTo(pos.row, pos.col, destDir, mousePos);
+    }
     void rotateTo(Direction destDir, PositionController &mousePos) override;
 };
 

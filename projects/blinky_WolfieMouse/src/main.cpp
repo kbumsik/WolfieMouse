@@ -26,6 +26,7 @@
 #include "system_config.h"
 #include "encoder.h"
 #include "motor.h"
+#include "motion_controller.h"
 
 // Algorithm
 #include "pid.h"
@@ -142,7 +143,7 @@ void main_fsm(enum event event_input){
         {b2_pressed, search_to_goal,    main_state},
         {wheel_up,   disp_mem,        mem},
         {wheel_down, disp_test4,      test4},
-        {eol,        do_nothing,      main_state}
+        {eol,        disp_mem,      main_state}
     };
     static const struct transition mem_transitions[] = {
     //  Event        Task        Next_state
@@ -150,7 +151,7 @@ void main_fsm(enum event event_input){
         {b2_pressed, reset_mem,  mem},
         {wheel_up,   disp_test1, test1},
         {wheel_down, disp_main,  main_state},
-        {eol,        do_nothing, mem}
+        {eol,        disp_mem, mem}
     };
     static const struct transition test1_transitions[] = {
     //  Event        Task        Next_state
@@ -158,7 +159,7 @@ void main_fsm(enum event event_input){
         {b2_pressed, run_test1_time,  test1},
         {wheel_up,   disp_test2, test2},
         {wheel_down, disp_mem, mem},
-        {eol,        do_nothing, test1}
+        {eol,        disp_test1, test1}
     };
     static const struct transition test2_transitions[] = {
     //  Event        Task        Next_state
@@ -166,7 +167,7 @@ void main_fsm(enum event event_input){
         {b2_pressed, run_test2_CW,  test2},
         {wheel_up,   disp_test3,   test3},
         {wheel_down, disp_test1,   test1},
-        {eol,        do_nothing, test2}
+        {eol,        disp_test2, test2}
     };
     static const struct transition test3_transitions[] = {
     //  Event        Task        Next_state
@@ -174,7 +175,7 @@ void main_fsm(enum event event_input){
         {b2_pressed, run_test3_walls,  test3},
         {wheel_up,   disp_test4,   test4},
         {wheel_down, disp_test2,   test2},
-        {eol,        do_nothing, test3}
+        {eol,        disp_test3, test3}
     };
     static const struct transition test4_transitions[] = {
     //  Event        Task        Next_state
@@ -182,7 +183,7 @@ void main_fsm(enum event event_input){
         {b2_pressed, run_test1_distance,  test4},
         {wheel_up,   disp_main,   main_state},
         {wheel_down, disp_test3,   test3},
-        {eol,        do_nothing, test4}
+        {eol,        disp_test4, test4}
     };
     // FSM table. Since it is const, it will be stored in FLASH
     static const struct transition *fsm_table[6] = {
@@ -457,6 +458,7 @@ static void search_to_goal(void)
     system_stop_driving();
     system_disable_range_finder();
     pid_reset(&pid_T);
+    main_fsm(eol);
 }
 
 static void rush_to_goal(void)
@@ -464,7 +466,7 @@ static void rush_to_goal(void)
     /* Not implemented */
     hcms_290x_matrix("None");
     kb_delay_ms(2000);
-    hcms_290x_matrix("    ");
+    main_fsm(eol);
 }
 
 static void print_mem(void)
@@ -472,7 +474,7 @@ static void print_mem(void)
     /* Not implemented */
     hcms_290x_matrix("None");
     kb_delay_ms(2000);
-    hcms_290x_matrix("    ");
+    main_fsm(eol);
 }
 
 static void reset_mem(void)
@@ -480,7 +482,7 @@ static void reset_mem(void)
     /* Not implemented */
     hcms_290x_matrix("None");
     kb_delay_ms(2000);
-    hcms_290x_matrix("    ");
+    main_fsm(eol);
 }
 
 static void run_test1_time(void)
@@ -507,6 +509,8 @@ static void run_test1_time(void)
     system_disable_range_finder();
     pid_reset(&pid_T);
     pid_reset(&pid_R);
+
+    main_fsm(eol);
 }
 
 static void run_test1_distance(void)
@@ -522,30 +526,24 @@ static void run_test1_distance(void)
     kb_delay_ms(500);
     hcms_290x_matrix("    ");
 
-    // Reset encoder
-    system_reset_encoder();
-
     /* Motor test running */
-    system_enable_range_finder();
-
-    pid_reset(&pid_T);
-    pid_reset(&pid_R);
-    pid_input_setpoint(&pid_T, 25);
-    pid_input_setpoint(&pid_R, 0);
-
-    system_start_driving();
-
+    //motion_cmd_t cmd;
+    //cmd.type = straight;
+    //cmd.unit = 1;
+    //cmd.callback = NULL;
+    //motion_queue(&cmd);
 
     // wait for distance of one cell
-    for(; encoder_right_count() <
-                (MEASURE_STEPS_PER_CELL + MEASURE_ENCODER_DEFAULT);) {
-    }
+    //for(; encoder_right_count() <
+    //            (MEASURE_STEPS_PER_CELL + MEASURE_ENCODER_DEFAULT);) {
+    //}
 
-    /* Motor test running done */
-    system_stop_driving();
-    system_disable_range_finder();
-    pid_reset(&pid_T);
-    pid_reset(&pid_R);
+    // Wait for the motion controller done.
+    //while (1) {
+//!
+    //}
+
+    main_fsm(eol);
 }
 
 static void run_test2_CW(void)
@@ -582,6 +580,7 @@ static void run_test2_CW(void)
     system_stop_driving();
     pid_reset(&pid_T);
     pid_reset(&pid_R);
+    main_fsm(eol);
 }
 
 static void run_test2_CCW(void)
@@ -618,6 +617,7 @@ static void run_test2_CCW(void)
     system_stop_driving();
     pid_reset(&pid_T);
     pid_reset(&pid_R);
+    main_fsm(eol);
 }
 
 static void run_test3_walls(void)
@@ -643,8 +643,11 @@ static void run_test3_walls(void)
         }
         hcms_290x_matrix(display);
     }
+
+    // end
     is_b2_pressed = 0;
     system_disable_range_finder();
+    main_fsm(eol);
 }
 
 static void run_test4(void)
@@ -652,8 +655,7 @@ static void run_test4(void)
     /* Not implemented */
     hcms_290x_matrix("None");
     kb_delay_ms(2000);
-    hcms_290x_matrix("    ");
-
+    main_fsm(eol);
 }
 
 static void do_nothing(void)

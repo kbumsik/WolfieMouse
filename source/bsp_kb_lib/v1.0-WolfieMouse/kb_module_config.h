@@ -122,7 +122,7 @@
     #define ENCODER_R_PIN_PULLUP PULLUP
 #elif defined(KB_BLACKWOLF)
     // Left encoder
-    #define ENCODER_L_TIMER     TIMER8
+    #define ENCODER_L_TIMER     KB_ENCODER_TIM8
 
     #define ENCODER_L_CHA_PORT  PORTC
     #define ENCODER_L_CHA_PIN   PIN_6
@@ -133,7 +133,7 @@
     #define ENCODER_L_PIN_PULLUP PULLUP
 
     // Right encoder
-    #define ENCODER_R_TIMER     TIMER3
+    #define ENCODER_R_TIMER     KB_ENCODER_TIM3
 
     #define ENCODER_R_CHA_PORT  PORTB
     #define ENCODER_R_CHA_PIN   PIN_4
