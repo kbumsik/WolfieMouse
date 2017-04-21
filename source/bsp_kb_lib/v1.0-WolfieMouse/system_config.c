@@ -145,8 +145,8 @@ void assert_failed(uint8_t* file, uint32_t line)
 {
   /* User can add his own implementation to report the file name and line number,
     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-    if (CoreDebug->DHCSR & 1)   // Check C_DEBUGEN == 1 -> Debugger connected
-    {
+    KB_DEBUG_ERROR("Wrong parameters value: file %s on line %d\r\n", file, line);
+    if (CoreDebug->DHCSR & 1) {   // Check C_DEBUGEN == 1 -> Debugger connected
         __asm__("BKPT");
     }
     while (1);

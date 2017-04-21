@@ -17,10 +17,8 @@
 #include "FreeRTOS.h"
 #include "portable.h" // TODO: Delete
 #include "task.h"
-#include "timers.h"
 #include "queue.h"
 #include "semphr.h"
-#include "event_groups.h"
 
 // User config
 #include "system_config.h"
@@ -44,6 +42,7 @@
 // Event declarations
 static void on_b1_pressed(void);
 static void on_b2_pressed(void);
+static void on_task_done(void);
 
 // Task declarations
 static void task_main(void *pvParameters);
@@ -57,6 +56,7 @@ static void task_range(void *pvParameters);
  ******************************************************************************/
 static int is_b1_pressed = 0;
 static int is_b2_pressed = 0;
+SemaphoreHandle_t semphr_task;
 
 /*******************************************************************************
  * Global variables
@@ -82,13 +82,8 @@ extern volatile int32_t steps_L, steps_R, steps_L_old, steps_R_old;
 extern volatile int32_t speed_L, speed_R, speed_D;
 
 // PID handler
-extern pid_handler_t pid_T;
-extern pid_handler_t pid_R;
-
-// ADC peripheral object
-extern kb_adc_t adc_L;
-extern kb_adc_t adc_R;
-extern kb_adc_t adc_F;
+extern pid_handler_t g_pid_T;
+extern pid_handler_t g_pid_R;
 
 /*******************************************************************************
  * State machine definitions
@@ -210,7 +205,6 @@ void main_fsm(enum event event_input){
  * Main function
  ******************************************************************************/
 int main(void)
-
 {
 	/* initialize clock and system configuration */
     system_init();
@@ -247,6 +241,9 @@ int main(void)
     /* Mutex creation */
     mutex_range = xSemaphoreCreateMutex();
 
+    /* Semaphore creation */
+    semphr_task = xSemaphoreCreateBinary();
+
     /* first fsm action */
     disp_main();
 
@@ -279,9 +276,9 @@ int main(void)
     result = xTaskCreate(
             task_main,
             "Main",
-            configMINIMAL_STACK_SIZE+15500,
+            configMINIMAL_STACK_SIZE+10500,
             NULL,
-            configMAX_PRIORITIES-1,
+            configMAX_PRIORITIES-2,
             &task_main_handler);
     if (result != pdPASS) {
         KB_DEBUG_ERROR("Creating task failed!!");
@@ -291,6 +288,7 @@ int main(void)
      * Because xTaskCreate will stop systick until the scheduler called */
     // TODO: check if it is true
     /* Start scheduler */
+    motion_controller_init();
     vTaskStartScheduler();
     while (1) {
     }
@@ -457,7 +455,7 @@ static void search_to_goal(void)
     /* Motor test running done */
     system_stop_driving();
     system_disable_range_finder();
-    pid_reset(&pid_T);
+    pid_reset(&g_pid_T);
     main_fsm(eol);
 }
 
@@ -501,14 +499,14 @@ static void run_test1_time(void)
     /* Motor test running */
     system_enable_range_finder();
     system_start_driving();
-    pid_input_setpoint(&pid_T, 18);
+    pid_input_setpoint(&g_pid_T, 18);
 
     kb_delay_ms(444000);
     /* Motor test running done */
     system_stop_driving();
     system_disable_range_finder();
-    pid_reset(&pid_T);
-    pid_reset(&pid_R);
+    pid_reset(&g_pid_T);
+    pid_reset(&g_pid_R);
 
     main_fsm(eol);
 }
@@ -527,28 +525,27 @@ static void run_test1_distance(void)
     hcms_290x_matrix("    ");
 
     /* Motor test running */
-    //motion_cmd_t cmd;
-    //cmd.type = straight;
-    //cmd.unit = 1;
-    //cmd.callback = NULL;
-    //motion_queue(&cmd);
+    motion_cmd_t cmd;
+    for (int i = 0; i < 6; i++) {
+        cmd.type = motion_cmd_t::straight;
+        cmd.unit = 1;
+        cmd.on_start = NULL;
+        cmd.on_completed = NULL;
+        if (i == 5) {
+            // Put an event at the end of moving
+            cmd.on_completed = on_task_done;
+        }
+        motion_queue(&cmd);
+    }
 
-    // wait for distance of one cell
-    //for(; encoder_right_count() <
-    //            (MEASURE_STEPS_PER_CELL + MEASURE_ENCODER_DEFAULT);) {
-    //}
-
-    // Wait for the motion controller done.
-    //while (1) {
-//!
-    //}
+    // Sleep (wait) until task is done
+    xSemaphoreTake(semphr_task, portMAX_DELAY);
 
     main_fsm(eol);
 }
 
 static void run_test2_CW(void)
 {
-
     /* Give time to get ready */
     hcms_290x_matrix("RDY.");
     for (int i = 0; i < 6; i++) {
@@ -565,10 +562,10 @@ static void run_test2_CW(void)
 
     /* Motor test running */
     system_disable_range_finder();
-    pid_reset(&pid_T);
-    pid_reset(&pid_R);
-    pid_input_setpoint(&pid_T, 0);
-    pid_input_setpoint(&pid_R, 60);
+    pid_reset(&g_pid_T);
+    pid_reset(&g_pid_R);
+    pid_input_setpoint(&g_pid_T, 0);
+    pid_input_setpoint(&g_pid_R, 60);
     system_start_driving();
 
     // wait for distance of one cell
@@ -578,8 +575,8 @@ static void run_test2_CW(void)
 
     /* Motor test running done */
     system_stop_driving();
-    pid_reset(&pid_T);
-    pid_reset(&pid_R);
+    pid_reset(&g_pid_T);
+    pid_reset(&g_pid_R);
     main_fsm(eol);
 }
 
@@ -602,10 +599,10 @@ static void run_test2_CCW(void)
 
     /* Motor test running */
     system_disable_range_finder();
-    pid_reset(&pid_T);
-    pid_reset(&pid_R);
-    pid_input_setpoint(&pid_T, 0);
-    pid_input_setpoint(&pid_R, -60);
+    pid_reset(&g_pid_T);
+    pid_reset(&g_pid_R);
+    pid_input_setpoint(&g_pid_T, 0);
+    pid_input_setpoint(&g_pid_R, -60);
     system_start_driving();
 
     // wait for distance of one cell
@@ -615,8 +612,8 @@ static void run_test2_CCW(void)
 
     /* Motor test running done */
     system_stop_driving();
-    pid_reset(&pid_T);
-    pid_reset(&pid_R);
+    pid_reset(&g_pid_T);
+    pid_reset(&g_pid_R);
     main_fsm(eol);
 }
 
@@ -677,4 +674,9 @@ static void on_b2_pressed(void)
     is_b2_pressed = 1;
     trace_puts("B2 Pressed\n");
     return;
+}
+
+static void on_task_done(void)
+{
+    xSemaphoreGive(semphr_task);
 }

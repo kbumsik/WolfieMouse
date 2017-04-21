@@ -24,8 +24,8 @@ extern volatile int32_t steps_L, steps_R, steps_L_old, steps_R_old;
 extern volatile int32_t speed_L, speed_R, speed_D;
 
 // PID handler
-extern pid_handler_t pid_T;
-extern pid_handler_t pid_R;
+extern pid_handler_t g_pid_T;
+extern pid_handler_t g_pid_R;
 /*******************************************************************************
  * Private functions
  ******************************************************************************/
@@ -96,10 +96,10 @@ void moveForward(uint32_t steps)
     /* Motor test running */
     system_enable_range_finder();
 
-    pid_reset(&pid_T);
-    pid_reset(&pid_R);
-    pid_input_setpoint(&pid_T, 25);
-    pid_input_setpoint(&pid_R, 0);
+    pid_reset(&g_pid_T);
+    pid_reset(&g_pid_R);
+    pid_input_setpoint(&g_pid_T, 25);
+    pid_input_setpoint(&g_pid_R, 0);
 
     system_start_driving();
 
@@ -112,8 +112,8 @@ void moveForward(uint32_t steps)
     /* Motor test running done */
     system_stop_driving();
     system_disable_range_finder();
-    pid_reset(&pid_T);
-    pid_reset(&pid_R);
+    pid_reset(&g_pid_T);
+    pid_reset(&g_pid_R);
 }
 
 void rotateInPlace(uint32_t steps, int cw)
@@ -123,12 +123,12 @@ void rotateInPlace(uint32_t steps, int cw)
 
     /* Motor test running */
     system_disable_range_finder();
-    pid_reset(&pid_T);
-    pid_reset(&pid_R);
+    pid_reset(&g_pid_T);
+    pid_reset(&g_pid_R);
     switch (cw) {
     case 0:
-        pid_input_setpoint(&pid_T, 0);
-        pid_input_setpoint(&pid_R, -60);
+        pid_input_setpoint(&g_pid_T, 0);
+        pid_input_setpoint(&g_pid_R, -60);
         system_start_driving();
 
         // wait for distance of one cell
@@ -138,8 +138,8 @@ void rotateInPlace(uint32_t steps, int cw)
 
         break;
     default:    // Clockwise
-        pid_input_setpoint(&pid_T, 0);
-        pid_input_setpoint(&pid_R, 60);
+        pid_input_setpoint(&g_pid_T, 0);
+        pid_input_setpoint(&g_pid_R, 60);
         system_start_driving();
 
         // wait for distance of one cell
@@ -150,6 +150,6 @@ void rotateInPlace(uint32_t steps, int cw)
     }
     /* Motor test running done */
     system_stop_driving();
-    pid_reset(&pid_T);
-    pid_reset(&pid_R);
+    pid_reset(&g_pid_T);
+    pid_reset(&g_pid_R);
 }

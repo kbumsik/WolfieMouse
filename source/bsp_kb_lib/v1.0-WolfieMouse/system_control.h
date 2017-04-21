@@ -20,6 +20,13 @@ void system_stop_driving(void);
 void system_enable_range_finder(void);
 void system_disable_range_finder(void);
 
+// Motion controller flags
+void system_motion_forward_L(void);
+void system_motion_backward_L(void);
+
+void system_motion_forward_R(void);
+void system_motion_backward_R(void);
+
 // Encoder control
 void system_reset_encoder(void);
 

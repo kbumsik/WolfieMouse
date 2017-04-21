@@ -15,10 +15,12 @@ extern "C" {
 #endif
 
 void encoder_init(void);
-int32_t encoder_right_count(void);
+
 int32_t encoder_left_count(void);
-void encoder_right_reset(void);
+int32_t encoder_right_count(void);
+
 void encoder_left_reset(void);
+void encoder_right_reset(void);
 
 #ifdef __cplusplus
 }

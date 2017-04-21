@@ -19,6 +19,16 @@
 #include "pid.h"
 #include "kb_adc.h"
 
+#include "FreeRTOS.h"
+#include "semphr.h"
+
+/*******************************************************************************
+ * Global variables import
+ ******************************************************************************/
+extern uint32_t g_motion_target_L;
+extern uint32_t g_motion_target_R;
+extern SemaphoreHandle_t g_motion_semphr;
+
 /*******************************************************************************
  * Global variables
  ******************************************************************************/
@@ -34,8 +44,8 @@ volatile int32_t steps_L, steps_R, steps_L_old, steps_R_old;
 volatile int32_t speed_L, speed_R, speed_D;
 
 // PID handler
-pid_handler_t pid_T;    // Translational
-pid_handler_t pid_R; // Rotational
+pid_handler_t g_pid_T;    // Translational
+pid_handler_t g_pid_R; // Rotational
 
 // ADC objects
 #ifdef KB_BLACKWOLF
@@ -47,11 +57,16 @@ pid_handler_t pid_R; // Rotational
 /*******************************************************************************
  * Static variables
  ******************************************************************************/
-static volatile int is_peripherals_initialized = 0;
-static volatile int is_pid_running = 0;
-static volatile int is_pid_T_running = 0;
-static volatile int is_pid_R_running = 0;
-static volatile int is_range_running = 0;
+static volatile int _peripherals_initialized = 0;
+static volatile int _pid_running = 0;
+static volatile int _pid_T_running = 0;
+static volatile int _pid_R_running = 0;
+static volatile int _range_running = 0;
+enum motion_status {
+    disabled, forward, backward
+};
+static enum motion_status _motion_status_L = disabled;
+static enum motion_status _motion_status_R = disabled;
 
 /*******************************************************************************
  * Function Definition
@@ -163,17 +178,17 @@ void peripheral_init(void)
                 .kd = 0.05
     };
 
-    pid_set_pid(&pid_T, &pid_T_value);
-    pid_reset(&pid_T);
+    pid_set_pid(&g_pid_T, &pid_T_value);
+    pid_reset(&g_pid_T);
 
-    pid_set_pid(&pid_R, &pid_R_value);
-    pid_reset(&pid_R);
+    pid_set_pid(&g_pid_R, &pid_R_value);
+    pid_reset(&g_pid_R);
 
-    pid_input_setpoint(&pid_T, 0);
-    pid_input_setpoint(&pid_R, 0);
+    pid_input_setpoint(&g_pid_T, 0);
+    pid_input_setpoint(&g_pid_R, 0);
 
     /* Now peripherals has been initialized */
-    is_peripherals_initialized = 1;
+    _peripherals_initialized = 1;
 }
 
 /**
@@ -184,7 +199,9 @@ void peripheral_init(void)
 
 void SysTick_hook(void)
 {
-    if (!is_peripherals_initialized) {
+    static BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    if (!_peripherals_initialized) {
         return;
     }
     // Get encoder values and calculate speed
@@ -197,13 +214,42 @@ void SysTick_hook(void)
     speed_R = (steps_R - steps_R_old);// * CONFIG_LEN_PER_CNT;
     speed_D = speed_L - speed_R;
 
+    /* Motion controller notification */
+    for (int i = 0; i < 2; i++) {
+        // Change variables being checked
+        static enum motion_status *status;
+        static int32_t steps;
+        static uint32_t target;
+        if (i == 0) {
+            status = &_motion_status_L;
+            steps = steps_L;
+            target = g_motion_target_L;
+        } else {
+            status = &_motion_status_R;
+            steps = steps_R;
+            target = g_motion_target_R;
+        }
+        // check variables
+        if (disabled != *status) {
+            if ((forward == *status) &&
+                    (steps >= target)) {
+                *status = disabled;
+                xSemaphoreGiveFromISR(g_motion_semphr, &xHigherPriorityTaskWoken);
+            } else if ((backward == *status) &&
+                    (steps <= target)) {
+                *status = disabled;
+                xSemaphoreGiveFromISR(g_motion_semphr, &xHigherPriorityTaskWoken);
+            }
+        }
+    }
+
     /* Start PID calculation */
     // calculate errorT
     int32_t feedback_T = (speed_L + speed_R) / 2;
-    int32_t outputT = pid_compute(&pid_T, feedback_T);
+    int32_t outputT = pid_compute(&g_pid_T, feedback_T);
 
     // Get ADC values
-    if(is_range_running) {
+    if(_range_running) {
         kb_gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_SET);
         kb_delay_us(60);
         range_L = kb_adc_measure(&adc_L);
@@ -217,16 +263,16 @@ void SysTick_hook(void)
 
     // get errorR
     int32_t feedback_R;
-    if(is_range_running && (range_L > MEASURE_RANGE_L_DETECT)
+    if(_range_running && (range_L > MEASURE_RANGE_L_DETECT)
                         && (range_R > MEASURE_RANGE_R_DETECT) ) {
         // If both range are within wall detecting distance,
         // Use range sensor to get rotational error
         feedback_R = (range_R - range_L - MEASURE_RANGE_R_OFFSET) / 10;
-    } else if (is_range_running && range_L > MEASURE_RANGE_L_DETECT) {
+    } else if (_range_running && range_L > MEASURE_RANGE_L_DETECT) {
         // If only left side is within range
         // use the middle value of the right range
         feedback_R = (MEASURE_RANGE_R_MIDDLE - range_L) / 10;
-    } else if (is_range_running && range_R > MEASURE_RANGE_R_DETECT) {
+    } else if (_range_running && range_R > MEASURE_RANGE_R_DETECT) {
         // If only right side is within range
         // use the middle value of the left range
         feedback_R = (range_R - MEASURE_RANGE_L_MIDDLE) / 10;
@@ -235,15 +281,15 @@ void SysTick_hook(void)
         feedback_R = speed_L - speed_R;
     }
 
-    int32_t outputR = pid_compute(&pid_R, feedback_R);
+    int32_t outputR = pid_compute(&g_pid_R, feedback_R);
 
-    if (!is_pid_T_running) {
+    if (!_pid_T_running) {
         outputT = 0;
     }
-    if (!is_pid_R_running) {
+    if (!_pid_R_running) {
         outputR = 0;
     }
-    if (!is_pid_running) {
+    if (!_pid_running) {
         return;
     }
 
@@ -251,6 +297,9 @@ void SysTick_hook(void)
     motor_speed_percent(CH_LEFT, outputT + outputR);
     motor_speed_percent(CH_RIGHT, outputT - outputR);
     motor_start(CH_BOTH);
+
+    /* If there is change in motion semaphore trigger context switching */
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
 
@@ -260,18 +309,16 @@ void SysTick_hook(void)
 // Motor driving
 void system_start_driving(void)
 {
-    is_pid_running = 1;
-    is_pid_T_running = 1;
-    is_pid_R_running = 1;
-    motor_speed_percent(CH_BOTH, 0);
-    motor_start(CH_BOTH);
+    _pid_running = 1;
+    _pid_T_running = 1;
+    _pid_R_running = 1;
 }
 
 void system_stop_driving(void)
 {
-    is_pid_running = 0;
-    is_pid_T_running = 0;
-    is_pid_R_running = 0;
+    _pid_running = 0;
+    _pid_T_running = 0;
+    _pid_R_running = 0;
     motor_speed_percent(CH_BOTH, 0);
     motor_start(CH_BOTH);
 }
@@ -279,16 +326,42 @@ void system_stop_driving(void)
 // Range finder control
 void system_enable_range_finder(void)
 {
-    is_range_running = 1;
+    _range_running = 1;
 }
 
 void system_disable_range_finder(void)
 {
-    is_range_running = 0;
+    _range_running = 0;
 }
 
 void system_reset_encoder(void)
 {
+    /* before reset hardware, reset old steps */
+    // first compansate values before resetting
+    steps_L = encoder_left_count();
+    steps_R = encoder_right_count();
+    steps_L_old = MEASURE_ENCODER_DEFAULT - (steps_L - steps_L_old);
+    steps_R_old = MEASURE_ENCODER_DEFAULT - (steps_R - steps_R_old);
     encoder_left_reset();
     encoder_right_reset();
+}
+
+void system_motion_forward_L(void)
+{
+    _motion_status_L = forward;
+}
+
+void system_motion_backward_L(void)
+{
+    _motion_status_L = backward;
+}
+
+void system_motion_forward_R(void)
+{
+    _motion_status_R = forward;
+}
+
+void system_motion_backward_R(void)
+{
+    _motion_status_R = backward;
 }

@@ -11,8 +11,8 @@
 #include "config_measurements.h"
 #include "kb_encoder.h"
 
-static kb_encoder_t _left;
-static kb_encoder_t _right;
+kb_encoder_t g_encoder_left;
+kb_encoder_t g_encoder_right;
 
 void encoder_init(void)
 {
@@ -35,7 +35,7 @@ void encoder_init(void)
 			.direction = CCW,
 			.prescaler = 0x0U
 	};
-	kb_encoder_init(&_left, &enc_setting);
+	kb_encoder_init(&g_encoder_left, &enc_setting);
 	
 	// right channel
 	enc_setting = (kb_encoder_init_t){
@@ -43,11 +43,11 @@ void encoder_init(void)
 			.direction = CW,
 			.prescaler = 0x0U
 	};
-	kb_encoder_init(&_right, &enc_setting);
+	kb_encoder_init(&g_encoder_right, &enc_setting);
 
 	// start encoders
-	kb_encoder_start(&_left);
-	kb_encoder_start(&_right);
+	kb_encoder_start(&g_encoder_left);
+	kb_encoder_start(&g_encoder_right);
 
 	encoder_left_reset();
 	encoder_right_reset();
@@ -55,20 +55,20 @@ void encoder_init(void)
 
 int32_t encoder_left_count(void)
 {
-	return kb_encoder_count(&_left);
+	return kb_encoder_count(&g_encoder_left);
 }
 
 int32_t encoder_right_count(void)
 {
-	return kb_encoder_count(&_right);
+	return kb_encoder_count(&g_encoder_right);
 }
 
 void encoder_left_reset(void)
 {
-	kb_encoder_set(&_left, MEASURE_ENCODER_DEFAULT);
+	kb_encoder_set(&g_encoder_left, MEASURE_ENCODER_DEFAULT);
 }
 
 void encoder_right_reset(void)
 {
-	kb_encoder_set(&_right, MEASURE_ENCODER_DEFAULT);
+	kb_encoder_set(&g_encoder_right, MEASURE_ENCODER_DEFAULT);
 }
