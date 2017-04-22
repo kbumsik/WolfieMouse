@@ -81,30 +81,62 @@ void motion_queue(motion_cmd_t *commend)
 
 static void process_cmd(motion_cmd_t *cmd)
 {
-    // reset the pid controllers
-    //pid_reset(&g_pid_T);
-    //pid_reset(&g_pid_R);
+    static int32_t target_pid_T;
+    static int32_t target_pid_R;
+    static int32_t target_steps_L;
+    static int32_t target_steps_R;
+    // reset encoder first
+    system_reset_encoder();
 
+    // Set target steps and pid
     switch (cmd->type) {
     case straight:
+        // Enable the range finder
         system_enable_range_finder();
-        system_reset_encoder();
         // set PID
-        pid_input_setpoint(&g_pid_T, 18);
-        pid_input_setpoint(&g_pid_R, 0);
-        // Set input capture
-        g_motion_target_L = MEASURE_ENCODER_DEFAULT + (MEASURE_STEPS_PER_CELL) * cmd->unit;
-        system_motion_forward_L();
-        g_motion_target_R = MEASURE_ENCODER_DEFAULT + (MEASURE_STEPS_PER_CELL) * cmd->unit;
-        system_motion_forward_R();
+        target_pid_T = 18;
+        target_pid_R = 0;
+        // Set target steps
+        target_steps_L = MEASURE_STEPS_PER_CELL * cmd->unit;
+        target_steps_R = MEASURE_STEPS_PER_CELL * cmd->unit;
         break;
     case turn:
+        // Disable the range finder
+        system_disable_range_finder();
+        // set PID
+        target_pid_T = 0;
+        if (cmd->unit >= 0) {
+            target_pid_R = -60;
+            target_steps_L = -MEASURE_STEPS_90DEG_CCW * cmd->unit;
+            target_steps_R = MEASURE_STEPS_90DEG_CCW * cmd->unit;
+        } else {
+            target_pid_R = 60;
+            target_steps_L = -MEASURE_STEPS_90DEG_CW * cmd->unit;
+            target_steps_R = MEASURE_STEPS_90DEG_CW * cmd->unit;
+        }
         break;
     case curve:
         // Not implemented yet.
         break;
     default:
         break;
+    }
+    // apply new values
+    pid_input_setpoint(&g_pid_T, target_pid_T);
+    pid_input_setpoint(&g_pid_R, target_pid_R);
+    // left
+    g_motion_target_L = MEASURE_ENCODER_DEFAULT + target_steps_L;
+    if (target_steps_L >= 0) {
+        system_motion_forward_L();
+    } else {
+        system_motion_backward_L();
+    }
+    // right
+    g_motion_target_R = MEASURE_ENCODER_DEFAULT + target_steps_R;
+    if (target_steps_R >= 0) {
+        system_motion_forward_R();
+    } else {
+        system_motion_backward_R();
     }
     // Register on_completed callback function
     completed_callback = cmd->on_completed;

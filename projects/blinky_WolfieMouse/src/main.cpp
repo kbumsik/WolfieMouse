@@ -557,26 +557,23 @@ static void run_test2_CW(void)
     kb_delay_ms(500);
     hcms_290x_matrix("    ");
 
-    // Reset encoder
-    system_reset_encoder();
-
     /* Motor test running */
-    system_disable_range_finder();
-    pid_reset(&g_pid_T);
-    pid_reset(&g_pid_R);
-    pid_input_setpoint(&g_pid_T, 0);
-    pid_input_setpoint(&g_pid_R, 60);
-    system_start_driving();
-
-    // wait for distance of one cell
-    for(; encoder_right_count() >
-                (MEASURE_ENCODER_DEFAULT - MEASURE_STEPS_90DEG_CW);) {
+    motion_cmd_t cmd;
+    for (int i = 0; i < 2; i++) {
+        cmd.type = motion_cmd_t::turn;
+        cmd.unit = -1;
+        cmd.on_start = NULL;
+        cmd.on_completed = NULL;
+        if (i == 1) {
+            // Put an event at the end of moving
+            cmd.on_completed = on_task_done;
+        }
+        motion_queue(&cmd);
     }
 
-    /* Motor test running done */
-    system_stop_driving();
-    pid_reset(&g_pid_T);
-    pid_reset(&g_pid_R);
+    // Sleep (wait) until task is done
+    xSemaphoreTake(semphr_task, portMAX_DELAY);
+
     main_fsm(eol);
 }
 
@@ -594,26 +591,23 @@ static void run_test2_CCW(void)
     kb_delay_ms(500);
     hcms_290x_matrix("    ");
 
-    // Reset encoder
-    system_reset_encoder();
-
     /* Motor test running */
-    system_disable_range_finder();
-    pid_reset(&g_pid_T);
-    pid_reset(&g_pid_R);
-    pid_input_setpoint(&g_pid_T, 0);
-    pid_input_setpoint(&g_pid_R, -60);
-    system_start_driving();
-
-    // wait for distance of one cell
-    for(; encoder_right_count() <
-                (MEASURE_ENCODER_DEFAULT + MEASURE_STEPS_90DEG_CCW);) {
+    motion_cmd_t cmd;
+    for (int i = 0; i < 2; i++) {
+        cmd.type = motion_cmd_t::turn;
+        cmd.unit = 1;
+        cmd.on_start = NULL;
+        cmd.on_completed = NULL;
+        if (i == 1) {
+            // Put an event at the end of moving
+            cmd.on_completed = on_task_done;
+        }
+        motion_queue(&cmd);
     }
 
-    /* Motor test running done */
-    system_stop_driving();
-    pid_reset(&g_pid_T);
-    pid_reset(&g_pid_R);
+    // Sleep (wait) until task is done
+    xSemaphoreTake(semphr_task, portMAX_DELAY);
+
     main_fsm(eol);
 }
 
