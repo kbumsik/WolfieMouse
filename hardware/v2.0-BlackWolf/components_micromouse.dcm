@@ -27,6 +27,11 @@ D 9 DoF IMU sensor http://www.invensense.com/products/motion-tracking/9-axis/mpu
 K MPU, IMU
 $ENDCMP
 #
+$CMP Q_NMOS_DGS
+D Transistor N-MOSFET (general)
+K nmos n-mos n-mosfet transistor
+$ENDCMP
+#
 $CMP R_Small
 D Resistor
 $ENDCMP
