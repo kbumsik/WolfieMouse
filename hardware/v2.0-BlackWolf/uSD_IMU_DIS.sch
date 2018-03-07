@@ -1,4 +1,5 @@
 EESchema Schematic File Version 2
+LIBS:micromouse-rescue
 LIBS:components_micromouse
 LIBS:power
 LIBS:transistors
