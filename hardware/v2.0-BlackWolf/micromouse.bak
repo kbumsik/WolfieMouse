@@ -1,5 +1,4 @@
 EESchema Schematic File Version 2
-LIBS:micromouse-rescue
 LIBS:components_micromouse
 LIBS:power
 LIBS:transistors
@@ -1100,7 +1099,7 @@ U 1 1 58DC373C
 P 9300 1600
 F 0 "CN1" H 9250 2000 40  0000 C CNN
 F 1 "6_PIN_HEADER" H 9300 1200 40  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x07_Pitch2.54mm" H 9300 1700 40  0001 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x06_Pitch2.54mm" H 9300 1700 40  0001 C CNN
 F 3 "" H 9300 1700 40  0000 C CNN
 	1    9300 1600
 	1    0    0    -1  
@@ -1708,10 +1707,10 @@ Wire Wire Line
 Wire Wire Line
 	8800 1550 9100 1550
 $Comp
-L +5V #PWR?
+L +5V #PWR032
 U 1 1 5AA023B2
 P 8950 1300
-F 0 "#PWR?" H 8950 1150 50  0001 C CNN
+F 0 "#PWR032" H 8950 1150 50  0001 C CNN
 F 1 "+5V" H 8950 1440 50  0000 C CNN
 F 2 "" H 8950 1300 50  0000 C CNN
 F 3 "" H 8950 1300 50  0000 C CNN
