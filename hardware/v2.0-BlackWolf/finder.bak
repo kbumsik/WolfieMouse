@@ -610,24 +610,17 @@ Wire Wire Line
 Text HLabel 1550 3700 0    60   Input ~ 0
 EMITTER_FL
 Connection ~ 1800 3700
-Text HLabel 1550 4450 0    60   Input ~ 0
-EMITTER_SIDES
+Text HLabel 1550 4200 0    60   Input ~ 0
+EMITTER_L
 Connection ~ 2550 4200
 Connection ~ 3300 4700
 Connection ~ 4050 5200
 Text HLabel 1550 5200 0    60   Input ~ 0
 EMITTER_FR
 Wire Wire Line
-	1550 4450 1650 4450
+	1550 4200 2600 4200
 Wire Wire Line
-	1650 4200 1650 4700
-Connection ~ 1650 4200
-Connection ~ 1650 4700
-Connection ~ 1650 4450
-Wire Wire Line
-	1650 4200 2600 4200
-Wire Wire Line
-	1650 4700 3350 4700
+	1550 4700 3350 4700
 Text HLabel 6500 3850 2    60   Output ~ 0
 RECV_FL
 Wire Wire Line
@@ -652,4 +645,6 @@ Text Notes 1400 2450 0    60   ~ 12
 SOLDERING WARNING.\nInfrad LEDs: unlike usual LEDs, longer pins are CATHODE!! (Pin 1)
 Text Notes 6000 2750 0    60   ~ 12
 Soldering Note.\nPhototransistor: Longer pins are emitters (pin 2).
+Text HLabel 1550 4700 0    60   Input ~ 0
+EMITTER_R
 $EndSCHEMATC
