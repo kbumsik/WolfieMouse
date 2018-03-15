@@ -3,3 +3,6 @@ Inc
 Middlewares
 Src
 TrueSTUDIO
+Makefile
+*.s
+*.ld
