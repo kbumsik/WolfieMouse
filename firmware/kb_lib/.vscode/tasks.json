@@ -1,0 +1,51 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "0.1.0",
+    "windows": {
+        "command": "cmd",
+        "args": ["/C"]
+    },
+    "linux": {
+        "command": "sh",
+        "args": ["-c"]
+    },
+    "isShellCommand": true,
+    "showOutput": "always",
+    "suppressTaskName": true,
+    "options": {
+        "cwd": "${workspaceRoot}/examples"
+    },
+    "tasks": [
+        {
+            "taskName": "build",
+            "args": [
+                "make all"
+            ],
+            "isBuildCommand": true,
+            "echoCommand": true
+        },
+        {
+            "taskName": "clean",
+            "args": [
+                "make clean"
+            ],
+            "echoCommand": true
+        }
+    ],
+     "problemMatcher": {
+         "owner": "c",
+         "fileLocation": [
+             "relative",
+             "${workspaceRoot}"
+         ],
+        "pattern": {
+            "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+        }
+    }
+}

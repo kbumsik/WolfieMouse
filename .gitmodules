@@ -1,3 +1,0 @@
-[submodule "firmware/kb_lib"]
-	path = firmware/kb_lib
-	url = https://github.com/kbumsik/KB-Embedded-Library

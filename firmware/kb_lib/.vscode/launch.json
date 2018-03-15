@@ -1,0 +1,42 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/examples/simple_example.exe",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceRoot}/examples",
+            "environment": [],
+            "externalConsole": true,
+            "linux": {
+                "MIMode": "gdb"
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
+            "windows": {
+                "MIMode": "gdb",
+                "miDebuggerPath": "C:\\Develop\\MinGW\\bin\\gdb.exe"
+            }
+        },
+        {
+            "name": "C Attach",
+            "type": "cppdbg",
+            "request": "attach",
+            "program": "${workspaceRoot}/examples/simple_example.o",
+            "processId": "${command.pickProcess}",
+            "linux": {
+                "MIMode": "gdb"
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
+            "windows": {
+                "MIMode": "gdb"
+            }
+        }
+    ]
+}

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdtprojectproperties>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.IncludePaths">
+<language name="Assembly Source File">
+<includepath>../../00_Manufacturer_Diver/CMSIS/Include</includepath>
+<includepath>../../00_Manufacturer_Diver/CMSIS/Device/ST/STM32F4xx/Include</includepath>
+<includepath>../../00_Manufacturer_Diver/STM32F4xx_HAL_Driver/Inc</includepath>
+<includepath>../../00_Manufacturer_Diver/STM32F4xx_HAL_Driver/Inc/Legacy</includepath>
+<includepath>../inc</includepath>
+<includepath>../../00_KB_Embedded/system</includepath>
+<includepath>../../00_KB_Embedded/bsp/stm32f446xx-nucleo64</includepath>
+<includepath>../../00_KB_Embedded/module</includepath>
+
+</language>
+<language name="C Source File">
+<includepath>../../00_Manufacturer_Diver/CMSIS/Include</includepath>
+<includepath>../../00_Manufacturer_Diver/CMSIS/Device/ST/STM32F4xx/Include</includepath>
+<includepath>../../00_Manufacturer_Diver/STM32F4xx_HAL_Driver/Inc</includepath>
+<includepath>../../00_Manufacturer_Diver/STM32F4xx_HAL_Driver/Inc/Legacy</includepath>
+<includepath>../inc</includepath>
+<includepath>../../00_KB_Embedded/system</includepath>
+<includepath>../../00_KB_Embedded/bsp/stm32f446xx-nucleo64</includepath>
+<includepath>../../00_KB_Embedded/module</includepath>
+
+</language>
+<language name="C++ Source File">
+<includepath>../../00_Manufacturer_Diver/CMSIS/Include</includepath>
+<includepath>../../00_Manufacturer_Diver/CMSIS/Device/ST/STM32F4xx/Include</includepath>
+<includepath>../../00_Manufacturer_Diver/STM32F4xx_HAL_Driver/Inc</includepath>
+<includepath>../../00_Manufacturer_Diver/STM32F4xx_HAL_Driver/Inc/Legacy</includepath>
+<includepath>../inc</includepath>
+<includepath>../../00_KB_Embedded/system</includepath>
+<includepath>../../00_KB_Embedded/bsp/stm32f446xx-nucleo64</includepath>
+<includepath>../../00_KB_Embedded/module</includepath>
+
+</language>
+<language name="Object File">
+
+</language>
+</section>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.Macros">
+<language name="Assembly Source File">
+<macro>
+<name>USE_HAL_DRIVER</name><value/>
+</macro>
+<macro>
+<name>TRACE</name><value/>
+</macro>
+<macro>
+<name>OS_USE_SEMIHOSTING</name><value/>
+</macro>
+<macro>
+<name>OS_USE_TRACE_SEMIHOSTING_DEBUG</name><value/>
+</macro>
+<macro>
+<name>STM32F446xx</name><value/>
+</macro>
+
+</language>
+<language name="C Source File">
+<macro>
+<name>USE_HAL_DRIVER</name><value/>
+</macro>
+<macro>
+<name>TRACE</name><value/>
+</macro>
+<macro>
+<name>OS_USE_TRACE_SEMIHOSTING_DEBUG</name><value/>
+</macro>
+<macro>
+<name>OS_USE_SEMIHOSTING</name><value/>
+</macro>
+<macro>
+<name>STM32F446xx</name><value/>
+</macro>
+
+</language>
+<language name="C++ Source File">
+<macro>
+<name>USE_HAL_DRIVER</name><value/>
+</macro>
+<macro>
+<name>TRACE</name><value/>
+</macro>
+<macro>
+<name>OS_USE_TRACE_SEMIHOSTING_DEBUG</name><value/>
+</macro>
+<macro>
+<name>OS_USE_SEMIHOSTING</name><value/>
+</macro>
+<macro>
+<name>STM32F446xx</name><value/>
+</macro>
+
+</language>
+<language name="Object File">
+
+</language>
+</section>
+</cdtprojectproperties>
