@@ -1,3 +1,5 @@
+build
+.dep
 Drivers
 Inc
 Middlewares
@@ -6,3 +8,5 @@ TrueSTUDIO
 Makefile
 *.s
 *.ld
+.mxproject
+mx.scratch
