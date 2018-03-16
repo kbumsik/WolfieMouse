@@ -4,7 +4,6 @@
 #include "system_config.h"
 #include "gpio.h"
 #include "terminal.h"
-#include "adc.h"
 
 // FreeRTOS
 #include "FreeRTOS.h"
@@ -22,8 +21,6 @@ static void task_blinky(void *pvParameters);
 /* Task Handlers */
 TaskHandle_t task_blinky_handler;
 
-/* peripheral objects */
-adc_t range_front_right;
 
 int main(void)
 {
@@ -33,15 +30,6 @@ int main(void)
     // Initialize all configured peripherals
     peripheral_init();
 
-    // ADC
-    // This is A5 Pin in Nucleo-64
-    adc_init_t adc = {
-            .device = RECV_ADC,
-            .channel = KB_ADC_CH10
-    };
-    adc_init(&range_front_right, &adc);
-    adc_pin(RECV_FR_PORT, RECV_FR_PIN);
-
     // Set interrupt button
     gpio_init_t GPIO_InitStruct;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -49,21 +37,23 @@ int main(void)
     gpio_isr_enable(B1_PORT, B1_PIN, &GPIO_InitStruct, RISING_EDGE);
     gpio_isr_register(B1_PORT, B1_PIN, on_pressed);
 
-    // Set toggling pin controlled by the button
-    // This pin controls the infared LED.
-    // This is A0 pin in Nucleo-64
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    gpio_init(PORTA, PIN_0, &GPIO_InitStruct);
-    gpio_set(PORTA, PIN_0, GPIO_PIN_RESET);
 
     // Toggle LED once
     gpio_toggle(LED1_PORT, LED1_PIN);
+    gpio_toggle(LED2_PORT, LED2_PIN);
+    gpio_toggle(LED3_PORT, LED3_PIN);
+    gpio_toggle(LED4_PORT, LED4_PIN);
+    gpio_toggle(LED5_PORT, LED5_PIN);
+    gpio_toggle(LED6_PORT, LED6_PIN);
 
     // wait for .5 second
     delay_ms(500);
     gpio_toggle(LED1_PORT, LED1_PIN);
+    gpio_toggle(LED2_PORT, LED2_PIN);
+    gpio_toggle(LED3_PORT, LED3_PIN);
+    gpio_toggle(LED4_PORT, LED4_PIN);
+    gpio_toggle(LED5_PORT, LED5_PIN);
+    gpio_toggle(LED6_PORT, LED6_PIN);
 
     trace_puts("Hello ARM World!");
     terminal_puts("Hello World!\n");
@@ -108,16 +98,14 @@ void task_blinky(void *pvParameters)
 
     while (1) {
         gpio_toggle(LED1_PORT, LED1_PIN);
+        gpio_toggle(LED2_PORT, LED2_PIN);
+        gpio_toggle(LED3_PORT, LED3_PIN);
+        gpio_toggle(LED4_PORT, LED4_PIN);
+        gpio_toggle(LED5_PORT, LED5_PIN);
+        gpio_toggle(LED6_PORT, LED6_PIN);
         ++seconds;
         // Count seconds on the trace device.
         trace_printf("Second %u\n", seconds);
-
-        // Range sensor test
-        gpio_set(PORTA, PIN_0, GPIO_PIN_SET);
-        delay_us(60);
-        uint32_t result = adc_measure(&range_front_right);
-        gpio_set(PORTA, PIN_0, GPIO_PIN_RESET);
-        trace_printf("result: %d\n", result);
 
         /* Call this Task explicitly every 50ms ,NOT Delay for 50ms */
         vTaskDelayUntil(&xLastWakeTime, (500 / portTICK_RATE_MS));

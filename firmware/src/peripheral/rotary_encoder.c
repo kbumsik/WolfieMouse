@@ -6,7 +6,7 @@
  */
 
 #include "common_source.h"
-#include "encoder.h"
+#include "rotary_encoder.h"
 #include "alternate_pins.h"
 
 // C standard library
@@ -19,16 +19,16 @@
 #endif
 
 /* Fuctions that converts KB's' device name to manufacturer name */
-static TIM_TypeDef *_get_device(encoder_device_t dev);
+static TIM_TypeDef *_get_device(rotary_encoder_device_t dev);
 /* Get a HAL library handler from the object */
-static inline TIM_HandleTypeDef * _get_handler (encoder_t *obj);
+static inline TIM_HandleTypeDef * _get_handler (rotary_encoder_t *obj);
 /* Peripheral clock function */
-static void _enable_device_clk (encoder_device_t dev);
+static void _enable_device_clk (rotary_encoder_device_t dev);
 
 /******************************************************************************
  * Public API Functions
  ******************************************************************************/
-int encoder_init(encoder_t *obj, encoder_init_t *setting)
+int rotary_encoder_init(rotary_encoder_t *obj, rotary_encoder_init_t *setting)
 {
     /* allocate device handler for HAL driver */
     obj->ext_handler = (extlib_handle_t)malloc(sizeof(TIM_HandleTypeDef));
@@ -52,48 +52,48 @@ int encoder_init(encoder_t *obj, encoder_init_t *setting)
     _enable_device_clk(setting->device); // Enable device Clock first
 
     // TIM device setting
-    TIM_Encoder_InitTypeDef encoder_config;
+    TIM_Encoder_InitTypeDef rotary_encoder_config;
     handler->Init.Period = 0xffffffff; //0xFFFF
     handler->Init.Prescaler = setting->prescaler;
     handler->Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
     handler->Init.RepetitionCounter = 0;
 
-    encoder_config.EncoderMode = TIM_ENCODERMODE_TI12;
+    rotary_encoder_config.EncoderMode = TIM_ENCODERMODE_TI12;
 
     switch(setting->direction)
     {
     case CW:
         handler->Init.CounterMode = TIM_COUNTERMODE_UP;
 
-        encoder_config.IC1Polarity = TIM_ICPOLARITY_RISING; //TIM_ICPOLARITY_RISING;
-        encoder_config.IC1Selection = TIM_ICSELECTION_DIRECTTI;
-        encoder_config.IC1Prescaler = TIM_ICPSC_DIV1;
-        encoder_config.IC1Filter = 0xf;
+        rotary_encoder_config.IC1Polarity = TIM_ICPOLARITY_RISING; //TIM_ICPOLARITY_RISING;
+        rotary_encoder_config.IC1Selection = TIM_ICSELECTION_DIRECTTI;
+        rotary_encoder_config.IC1Prescaler = TIM_ICPSC_DIV1;
+        rotary_encoder_config.IC1Filter = 0xf;
 
-        encoder_config.IC2Polarity = TIM_ICPOLARITY_RISING; //TIM_ICPOLARITY_RISING;
-        encoder_config.IC2Selection = TIM_ICSELECTION_DIRECTTI;
-        encoder_config.IC2Prescaler = TIM_ICPSC_DIV1;
-        encoder_config.IC2Filter = 0xf;
+        rotary_encoder_config.IC2Polarity = TIM_ICPOLARITY_RISING; //TIM_ICPOLARITY_RISING;
+        rotary_encoder_config.IC2Selection = TIM_ICSELECTION_DIRECTTI;
+        rotary_encoder_config.IC2Prescaler = TIM_ICPSC_DIV1;
+        rotary_encoder_config.IC2Filter = 0xf;
         break;
     case CCW:
         handler->Init.CounterMode = TIM_COUNTERMODE_UP;
 
-        encoder_config.IC1Polarity = TIM_ICPOLARITY_FALLING; //TIM_ICPOLARITY_RISING;
-        encoder_config.IC1Selection = TIM_ICSELECTION_DIRECTTI;
-        encoder_config.IC1Prescaler = TIM_ICPSC_DIV1;
-        encoder_config.IC1Filter = 0xf;
+        rotary_encoder_config.IC1Polarity = TIM_ICPOLARITY_FALLING; //TIM_ICPOLARITY_RISING;
+        rotary_encoder_config.IC1Selection = TIM_ICSELECTION_DIRECTTI;
+        rotary_encoder_config.IC1Prescaler = TIM_ICPSC_DIV1;
+        rotary_encoder_config.IC1Filter = 0xf;
 
-        encoder_config.IC2Polarity = TIM_ICPOLARITY_RISING; //TIM_ICPOLARITY_RISING;
-        encoder_config.IC2Selection = TIM_ICSELECTION_DIRECTTI;
-        encoder_config.IC2Prescaler = TIM_ICPSC_DIV1;
-        encoder_config.IC2Filter = 0xf;
+        rotary_encoder_config.IC2Polarity = TIM_ICPOLARITY_RISING; //TIM_ICPOLARITY_RISING;
+        rotary_encoder_config.IC2Selection = TIM_ICSELECTION_DIRECTTI;
+        rotary_encoder_config.IC2Prescaler = TIM_ICPSC_DIV1;
+        rotary_encoder_config.IC2Filter = 0xf;
         break;
     default:
         KB_DEBUG_ERROR("Incorrect encoder direction");
         return KB_ERROR;
     }
 
-    int8_t status = HAL_TIM_Encoder_Init(handler, &encoder_config);
+    int8_t status = HAL_TIM_Encoder_Init(handler, &rotary_encoder_config);
     KB_CONVERT_STATUS(status);
     if (KB_OK != status) {
         KB_DEBUG_WARNING("Error init encoder!\r\n");
@@ -102,7 +102,7 @@ int encoder_init(encoder_t *obj, encoder_init_t *setting)
 }
 
 
-int encoder_start(encoder_t *obj)
+int rotary_encoder_start(rotary_encoder_t *obj)
 {
     // get handler and enable timer
     TIM_HandleTypeDef* handler = _get_handler(obj);
@@ -119,7 +119,7 @@ int encoder_start(encoder_t *obj)
 }
 
 
-int encoder_stop(encoder_t *obj)
+int rotary_encoder_stop(rotary_encoder_t *obj)
 {
     // get handler and enable timer
     TIM_HandleTypeDef* handler = _get_handler(obj);
@@ -136,7 +136,7 @@ int encoder_stop(encoder_t *obj)
 }
 
 
-int32_t encoder_set(encoder_t *obj, int32_t input)
+int32_t rotary_encoder_set(rotary_encoder_t *obj, int32_t input)
 {
     // get handler and enable timer
     TIM_HandleTypeDef* handler = _get_handler(obj);
@@ -148,7 +148,7 @@ int32_t encoder_set(encoder_t *obj, int32_t input)
 }
 
 
-int32_t encoder_count(encoder_t *obj)
+int32_t rotary_encoder_count(rotary_encoder_t *obj)
 {
     // get handler and enable timer
     TIM_HandleTypeDef* handler = _get_handler(obj);
@@ -161,7 +161,7 @@ int32_t encoder_count(encoder_t *obj)
 /******************************************************************************
  * Private Functions
  ******************************************************************************/
-static TIM_TypeDef *_get_device(encoder_device_t dev)
+static TIM_TypeDef *_get_device(rotary_encoder_device_t dev)
 {
     static TIM_TypeDef *const _device_table[] = {
         TIM1, TIM2, TIM3, TIM4, TIM5, TIM6, TIM7, TIM8, TIM9, TIM10, TIM11, 
@@ -171,13 +171,13 @@ static TIM_TypeDef *_get_device(encoder_device_t dev)
 }
 
 
-static inline TIM_HandleTypeDef * _get_handler (encoder_t *obj)
+static inline TIM_HandleTypeDef * _get_handler (rotary_encoder_t *obj)
 {
     return (TIM_HandleTypeDef*) obj->ext_handler;
 }
 
 
-static void _enable_device_clk (encoder_device_t dev)
+static void _enable_device_clk (rotary_encoder_device_t dev)
 {
     switch (dev) {
     case KB_ENCODER_TIM1:     

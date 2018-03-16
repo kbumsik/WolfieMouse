@@ -11,13 +11,17 @@
 
 #include "gpio.h"
 #include "terminal.h"
-#include "TCA9545A_i2c_mux.h"
-#include "VL6180X_range_finder.h"
-#include "HCMS-290X_display.h"
+#include "hcms_290x_display.h"
 #include "encoder.h"
 #include "motor.h"
 #include "pid.h"
 #include "adc.h"
+
+// ADC objects
+#ifndef KB_BLACKWOLF
+    #include "TCA9545A_i2c_mux.h"
+    #include "VL6180X_range_finder.h"
+#endif
 
 #include "FreeRTOS.h"
 #include "semphr.h"
@@ -128,23 +132,23 @@ void peripheral_init(void)
 #elif defined(KB_BLACKWOLF)
     /* ADC */
     // Left
-    adc_init_t adc_init;
-    adc_init.device = KB_ADC1;
-    adc_init.channel = KB_ADC_CH12;
+    adc_init_t adc_init_obj;
+    adc_init_obj.device = KB_ADC1;
+    adc_init_obj.channel = KB_ADC_CH12;
 
-    adc_init(&adc_L, &adc_init);
+    adc_init(&adc_L, &adc_init_obj);
     adc_pin(RECV_L_PORT, RECV_L_PIN);
     // Right
-    adc_init.device = KB_ADC2;
-    adc_init.channel = KB_ADC_CH11;
+    adc_init_obj.device = KB_ADC2;
+    adc_init_obj.channel = KB_ADC_CH11;
 
-    adc_init(&adc_R, &adc_init);
+    adc_init(&adc_R, &adc_init_obj);
     adc_pin(RECV_R_PORT, RECV_R_PIN);
     // Front (actually FL)
-    adc_init.device = KB_ADC3;
-    adc_init.channel = KB_ADC_CH13;
+    adc_init_obj.device = KB_ADC3;
+    adc_init_obj.channel = KB_ADC_CH13;
 
-    adc_init(&adc_F, &adc_init);
+    adc_init(&adc_F, &adc_init_obj);
     adc_pin(RECV_FL_PORT, RECV_FL_PIN);
 
     /* Emitter */

@@ -90,7 +90,7 @@ terminal.c \
 # .c files used in /firmware/src/peripheral
 PERIPHERAL_FILES = \
 adc.c \
-rotary_encoder.c \
+encoder.c \
 gpio.c \
 i2c.c \
 spi.c \

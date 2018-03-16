@@ -9,10 +9,10 @@
 #include "common_source.h"
 #include "module_config.h"
 #include "config_measurements.h"
-#include "encoder.h"
+#include "rotary_encoder.h"
 
-encoder_t g_encoder_left;
-encoder_t g_encoder_right;
+rotary_encoder_t g_encoder_left;
+rotary_encoder_t g_encoder_right;
 
 void encoder_init(void)
 {
@@ -30,24 +30,24 @@ void encoder_init(void)
 
 	// init timer
 	// left channel
-	encoder_init_t enc_setting = {
+	rotary_encoder_init_t enc_setting = {
 			.device = ENCODER_L_TIMER,
 			.direction = CCW,
 			.prescaler = 0x0U
 	};
-	encoder_init(&g_encoder_left, &enc_setting);
+	rotary_encoder_init(&g_encoder_left, &enc_setting);
 	
 	// right channel
-	enc_setting = (encoder_init_t){
+	enc_setting = (rotary_encoder_init_t){
 			.device = ENCODER_R_TIMER,
 			.direction = CW,
 			.prescaler = 0x0U
 	};
-	encoder_init(&g_encoder_right, &enc_setting);
+	rotary_encoder_init(&g_encoder_right, &enc_setting);
 
 	// start encoders
-	encoder_start(&g_encoder_left);
-	encoder_start(&g_encoder_right);
+	rotary_encoder_start(&g_encoder_left);
+	rotary_encoder_start(&g_encoder_right);
 
 	encoder_left_reset();
 	encoder_right_reset();
@@ -55,20 +55,20 @@ void encoder_init(void)
 
 int32_t encoder_left_count(void)
 {
-	return encoder_count(&g_encoder_left);
+	return rotary_encoder_count(&g_encoder_left);
 }
 
 int32_t encoder_right_count(void)
 {
-	return encoder_count(&g_encoder_right);
+	return rotary_encoder_count(&g_encoder_right);
 }
 
 void encoder_left_reset(void)
 {
-	encoder_set(&g_encoder_left, MEASURE_ENCODER_DEFAULT);
+	rotary_encoder_set(&g_encoder_left, MEASURE_ENCODER_DEFAULT);
 }
 
 void encoder_right_reset(void)
 {
-	encoder_set(&g_encoder_right, MEASURE_ENCODER_DEFAULT);
+	rotary_encoder_set(&g_encoder_right, MEASURE_ENCODER_DEFAULT);
 }

@@ -1,5 +1,5 @@
 #include <common_source.h>
-#include "HCMS-290X_display.h"
+#include "hcms_290x_display.h"
 #include "spi.h"
 #include "tick.h"
 #include <stdio.h>
@@ -110,11 +110,11 @@ void hcms_290x_init(void)
      * Fclk = 5MHz at Vlogic = 5V, 4MHz at Vlogic = 3V.
      * Our project uses 5V for Vlogic.
      */
-    spi_init_t spi_init = {
+    spi_init_t spi_init_obj = {
             .polarity = TRAILING_RISING_EDGE,
             .frequency = 4000000
     };
-    spi_init(HCMS_290X_SPI, &spi_init);
+    spi_init(HCMS_290X_SPI, &spi_init_obj);
     // it was originally SPI_BAUDRATEPRESCALER_16
 
     // set pins

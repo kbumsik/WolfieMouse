@@ -2,7 +2,7 @@
 # Project build settings
 #######################################
 # Project name
-TARGET = blinky_nucleo64
+TARGET = blinky_wolfiemouse
 
 # debug build?
 DEBUG = 1
@@ -15,7 +15,7 @@ VERBOSE = 0
 # Hardware
 #######################################
 # board: Should be one of /firmware/src/baord
-BOARD = nucleo_f446re
+BOARD = wolfiemouse
 
 # One of GCC flags
 CPU_FLAG = -mcpu=cortex-m4
@@ -31,7 +31,9 @@ C_DEFS =  \
 -DUSE_HAL_DRIVER \
 -DSTM32F446xx \
 -DOS_USE_TRACE_SEMIHOSTING_DEBUG \
--DHSE_VALUE=8000000
+-DHSE_VALUE=8000000 \
+-DKB_BLACKWOLF \
+# -DEBUG \
 
 # AS defines
 #AS_DEFS = 
@@ -69,7 +71,7 @@ stm32f4xx_hal_dma.c \
 
 # .c files used in /firmware/src/maze
 MATH_FILES = \
-# pid.c
+pid.c
 
 # .c files used in /firmware/src/maze
 MAZE_FILES = \
@@ -84,7 +86,7 @@ MAZE_FILES = \
 # .c files used in /firmware/src/module
 MODULE_FILES = \
 terminal.c \
-# hcms-290x_display.c \
+hcms_290x_display.c \
 # terminal_test.c \
 
 # .c files used in /firmware/src/peripheral

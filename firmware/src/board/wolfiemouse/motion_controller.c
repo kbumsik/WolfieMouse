@@ -7,8 +7,7 @@
 
 #include "motion_controller.h"
 #include "system_control.h"
-#include "kb_common_source.h"
-#include "kb_encoder.h"
+#include "common_source.h"
 #include "encoder.h"
 #include "config_measurements.h"
 #include "pid.h"
