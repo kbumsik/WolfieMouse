@@ -27,7 +27,7 @@ HELP_TEXT += \n\
   debug - Start debugger and connect to the GDB server
 
 # Verbosity: Set V=1 to display command echo
-V ?= 0
+V ?= 1
 
 ifeq ($(V), 0)
 	CMD_ECHO = @
@@ -38,7 +38,7 @@ endif
 # Debugger configuration
 CDTDEBUG = cdtdebug
 
-$(BUILD_DIR)/$(BIN).cdt:
+$(BUILD_DIR)/$(TARGET).cdt:
 	@echo "  ECHO    $(notdir $@)"
 	$(CMD_ECHO) echo "org.eclipse.cdt.dsf.gdb/defaultGdbCommand=$(GDB)" > $@
 
