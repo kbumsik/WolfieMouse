@@ -1,10 +1,10 @@
-#include "kb_trace.h"
-#include "kb_tick.h"
+#include "trace.h"
+#include "tick.h"
 // KB library
 #include "system_config.h"
-#include "kb_gpio.h"
-#include "kb_terminal.h"
-#include "kb_adc.h"
+#include "gpio.h"
+#include "terminal.h"
+#include "adc.h"
 
 // FreeRTOS
 #include "FreeRTOS.h"
@@ -23,7 +23,7 @@ static void task_blinky(void *pvParameters);
 TaskHandle_t task_blinky_handler;
 
 /* peripheral objects */
-kb_adc_t range_front_right;
+adc_t range_front_right;
 
 int main(void)
 {
@@ -35,37 +35,37 @@ int main(void)
 
     // ADC
     // This is A5 Pin in Nucleo-64
-    kb_adc_init_t adc_init = {
+    adc_init_t adc = {
             .device = RECV_ADC,
             .channel = KB_ADC_CH10
     };
-    kb_adc_init(&range_front_right, &adc_init);
-    kb_adc_pin(RECV_FR_PORT, RECV_FR_PIN);
+    adc_init(&range_front_right, &adc);
+    adc_pin(RECV_FR_PORT, RECV_FR_PIN);
 
     // Set interrupt button
-    kb_gpio_init_t GPIO_InitStruct;
+    gpio_init_t GPIO_InitStruct;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = NOPULL;
-    kb_gpio_isr_enable(B1_PORT, B1_PIN, &GPIO_InitStruct, RISING_EDGE);
-    kb_gpio_isr_register(B1_PORT, B1_PIN, on_pressed);
+    gpio_isr_enable(B1_PORT, B1_PIN, &GPIO_InitStruct, RISING_EDGE);
+    gpio_isr_register(B1_PORT, B1_PIN, on_pressed);
 
     // Set toggling pin controlled by the button
     // This is A0 pin in Nucleo-64
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    kb_gpio_init(PORTA, PIN_0, &GPIO_InitStruct);
-    kb_gpio_set(PORTA, PIN_0, GPIO_PIN_RESET);
+    gpio_init(PORTA, PIN_0, &GPIO_InitStruct);
+    gpio_set(PORTA, PIN_0, GPIO_PIN_RESET);
 
     // Toggle LED once
-    kb_gpio_toggle(LED1_PORT, LED1_PIN);
+    gpio_toggle(LED1_PORT, LED1_PIN);
 
     // wait for .5 second
-    kb_delay_ms(500);
-    kb_gpio_toggle(LED1_PORT, LED1_PIN);
+    delay_ms(500);
+    gpio_toggle(LED1_PORT, LED1_PIN);
 
     trace_puts("Hello ARM World!");
-    kb_terminal_puts("Hello World!\n");
+    terminal_puts("Hello World!\n");
 
     BaseType_t result;
     /* definition and creation of defaultTask */
@@ -106,16 +106,16 @@ void task_blinky(void *pvParameters)
     uint32_t seconds = 0;
 
     while (1) {
-        kb_gpio_toggle(LED1_PORT, LED1_PIN);
+        gpio_toggle(LED1_PORT, LED1_PIN);
         ++seconds;
         // Count seconds on the trace device.
         trace_printf("Second %u\n", seconds);
 
         // Range sensor test
-        kb_gpio_set(PORTA, PIN_0, GPIO_PIN_SET);
-        kb_delay_us(60);
-        uint32_t result = kb_adc_measure(&range_front_right);
-        kb_gpio_set(PORTA, PIN_0, GPIO_PIN_RESET);
+        gpio_set(PORTA, PIN_0, GPIO_PIN_SET);
+        delay_us(60);
+        uint32_t result = adc_measure(&range_front_right);
+        gpio_set(PORTA, PIN_0, GPIO_PIN_RESET);
         trace_printf("result: %d\n", result);
 
         /* Call this Task explicitly every 50ms ,NOT Delay for 50ms */

@@ -8,7 +8,7 @@
 #ifndef MOTOR_H_
 #define MOTOR_H_
 
-#include "kb_common_source.h"
+#include "common_source.h"
 
 typedef enum {
 	CH_RIGHT = 0x0,
@@ -20,15 +20,15 @@ typedef enum {
 extern "C" {
 #endif
 
-kb_status_t motor_init(void);
+status_t motor_init(void);
 void motor_dir_forward(void);
 void motor_dir_backward(void);
 void motor_dir_rotate_left(void);
 void motor_dir_rotate_right(void);
 
 int32_t motor_speed_percent(motor_ch_t channel, int32_t speed);
-kb_status_t motor_start(motor_ch_t eChannel);
-kb_status_t motor_stop(motor_ch_t eChannel);
+status_t motor_start(motor_ch_t eChannel);
+status_t motor_stop(motor_ch_t eChannel);
 
 #ifdef __cplusplus
 }

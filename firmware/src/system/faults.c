@@ -4,8 +4,8 @@
  *  Created on: Oct 20, 2016
  *      Author: Bumsik Kim
  */
-#include <kb_trace.h>
-#include "kb_config.h"
+#include <trace.h>
+#include "config.h"
 #include "faults.h"
 #include "stm32f4xx.h"
 #include "semihosting.h"

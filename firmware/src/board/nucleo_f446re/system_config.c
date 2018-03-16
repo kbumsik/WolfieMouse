@@ -5,8 +5,8 @@
  *      Author: Bumsik Kim
  */
 
-#include "kb_common_header.h"
-#include "kb_tick.h"
+#include "common_header.h"
+#include "tick.h"
 #include "system_config.h"
 #include "faults.h"
 
@@ -56,13 +56,13 @@ void system_init(void)
 	  // in the SystemCoreClock global RAM location.
 	  SystemCoreClockUpdate();
 	  // update f_cpu_MHz too
-	  kb_tick_update_f_cpu_mhz();
+	  tick_update_f_cpu_mhz();
 
 	  // Enable fault calls
 	  enable_faults();
 
 	  // init timer
-	  kb_tick_init();
+	  tick_init();
 }
 
 
@@ -136,27 +136,27 @@ void SystemClock_Config(void)
      PA2   ------> USART2_TX
      PA3   ------> USART2_RX
 */
-#include "kb_gpio.h"
-#include "kb_terminal.h"
+#include "gpio.h"
+#include "terminal.h"
 void peripheral_init(void)
 {
-	  kb_gpio_init_t GPIO_InitStruct;
+	  gpio_init_t GPIO_InitStruct;
 
 	  /*Configure GPIO pin : B1_Pin */
 	  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
 	  GPIO_InitStruct.Pull = NOPULL;
-	  kb_gpio_init(B1_PORT, B1_PIN, &GPIO_InitStruct);
+	  gpio_init(B1_PORT, B1_PIN, &GPIO_InitStruct);
 
 	  /*Configure UART */
-	  kb_terminal_init();
+	  terminal_init();
 
 	  /*Configure GPIO pin : LED1_Pin */
 	  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	  GPIO_InitStruct.Pull = GPIO_NOPULL;
 	  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	  kb_gpio_init(LED1_PORT, LED1_PIN, &GPIO_InitStruct);
+	  gpio_init(LED1_PORT, LED1_PIN, &GPIO_InitStruct);
 
 	  /*Configure GPIO pin Output Level */
-	  kb_gpio_set(LED1_PORT, LED1_PIN, GPIO_PIN_RESET);
+	  gpio_set(LED1_PORT, LED1_PIN, GPIO_PIN_RESET);
 
 }

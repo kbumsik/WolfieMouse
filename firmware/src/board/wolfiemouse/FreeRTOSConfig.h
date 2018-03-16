@@ -82,9 +82,9 @@
  *
  * See http://www.freertos.org/a00110.html.
  *----------------------------------------------------------*/
-#include "kb_common_source.h"
+#include "common_source.h"
 #ifndef KB_USE_FREERTOS
-    #error "Please define KB_USE_FREERTOS in kb_config.h to use FreeRTOS with kb_lib!!"
+    #error "Please define KB_USE_FREERTOS in config.h to use FreeRTOS with lib!!"
 #endif
 
 /* Ensure stdint is only used by the compiler, and not the assembler. */

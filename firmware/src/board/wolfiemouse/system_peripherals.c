@@ -6,18 +6,18 @@
  */
 
 #include "system_config.h"
-#include "kb_common_source.h"
+#include "common_source.h"
 #include "system_control.h"
 
-#include "kb_gpio.h"
-#include "kb_terminal.h"
-#include "kb_TCA9545A_i2c_mux.h"
-#include "kb_VL6180X_range_finder.h"
-#include "kb_HCMS-290X_display.h"
+#include "gpio.h"
+#include "terminal.h"
+#include "TCA9545A_i2c_mux.h"
+#include "VL6180X_range_finder.h"
+#include "HCMS-290X_display.h"
 #include "encoder.h"
 #include "motor.h"
 #include "pid.h"
-#include "kb_adc.h"
+#include "adc.h"
 
 #include "FreeRTOS.h"
 #include "semphr.h"
@@ -49,9 +49,9 @@ pid_handler_t g_pid_R; // Rotational
 
 // ADC objects
 #ifdef KB_BLACKWOLF
-    kb_adc_t adc_L;
-    kb_adc_t adc_R;
-    kb_adc_t adc_F; // (Actually FL)
+    adc_t adc_L;
+    adc_t adc_R;
+    adc_t adc_F; // (Actually FL)
 #endif
 
 /*******************************************************************************
@@ -73,7 +73,7 @@ static enum motion_status _motion_status_R = disabled;
  ******************************************************************************/
 void peripheral_init(void)
 {
-    kb_gpio_init_t GPIO_InitStruct;
+    gpio_init_t GPIO_InitStruct;
 
     /* Init motor */
     motor_init();
@@ -81,36 +81,36 @@ void peripheral_init(void)
     motor_start(CH_BOTH);
 
     /* Configure UART */
-    kb_terminal_init();
+    terminal_init();
 
     /* Configure Pushbuttons */
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = PULLUP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    kb_gpio_init(B1_PORT, B1_PIN, &GPIO_InitStruct);
-    kb_gpio_init(B2_PORT, B2_PIN, &GPIO_InitStruct);
+    gpio_init(B1_PORT, B1_PIN, &GPIO_InitStruct);
+    gpio_init(B2_PORT, B2_PIN, &GPIO_InitStruct);
 
     /* Configure LED pins */
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    kb_gpio_init(LED1_PORT, LED1_PIN, &GPIO_InitStruct);
-    kb_gpio_init(LED2_PORT, LED2_PIN, &GPIO_InitStruct);
-    kb_gpio_init(LED3_PORT, LED3_PIN, &GPIO_InitStruct);
-    kb_gpio_init(LED4_PORT, LED4_PIN, &GPIO_InitStruct);
+    gpio_init(LED1_PORT, LED1_PIN, &GPIO_InitStruct);
+    gpio_init(LED2_PORT, LED2_PIN, &GPIO_InitStruct);
+    gpio_init(LED3_PORT, LED3_PIN, &GPIO_InitStruct);
+    gpio_init(LED4_PORT, LED4_PIN, &GPIO_InitStruct);
 #if defined(KB_BLACKWOLF)
-    kb_gpio_init(LED5_PORT, LED5_PIN, &GPIO_InitStruct);
-    kb_gpio_init(LED6_PORT, LED6_PIN, &GPIO_InitStruct);
+    gpio_init(LED5_PORT, LED5_PIN, &GPIO_InitStruct);
+    gpio_init(LED6_PORT, LED6_PIN, &GPIO_InitStruct);
 #endif
 
     /* Configure LED Pins Output Level */
-    kb_gpio_set(LED1_PORT, LED1_PIN, GPIO_PIN_RESET);
-    kb_gpio_set(LED2_PORT, LED2_PIN, GPIO_PIN_RESET);
-    kb_gpio_set(LED3_PORT, LED3_PIN, GPIO_PIN_RESET);
-    kb_gpio_set(LED4_PORT, LED4_PIN, GPIO_PIN_RESET);
+    gpio_set(LED1_PORT, LED1_PIN, GPIO_PIN_RESET);
+    gpio_set(LED2_PORT, LED2_PIN, GPIO_PIN_RESET);
+    gpio_set(LED3_PORT, LED3_PIN, GPIO_PIN_RESET);
+    gpio_set(LED4_PORT, LED4_PIN, GPIO_PIN_RESET);
 #if defined(KB_BLACKWOLF)
-    kb_gpio_set(LED5_PORT, LED5_PIN, GPIO_PIN_RESET);
-    kb_gpio_set(LED6_PORT, LED6_PIN, GPIO_PIN_RESET);
+    gpio_set(LED5_PORT, LED5_PIN, GPIO_PIN_RESET);
+    gpio_set(LED6_PORT, LED6_PIN, GPIO_PIN_RESET);
 #endif
 
     /* Init peripherals for the LED display */
@@ -128,34 +128,34 @@ void peripheral_init(void)
 #elif defined(KB_BLACKWOLF)
     /* ADC */
     // Left
-    kb_adc_init_t adc_init;
+    adc_init_t adc_init;
     adc_init.device = KB_ADC1;
     adc_init.channel = KB_ADC_CH12;
 
-    kb_adc_init(&adc_L, &adc_init);
-    kb_adc_pin(RECV_L_PORT, RECV_L_PIN);
+    adc_init(&adc_L, &adc_init);
+    adc_pin(RECV_L_PORT, RECV_L_PIN);
     // Right
     adc_init.device = KB_ADC2;
     adc_init.channel = KB_ADC_CH11;
 
-    kb_adc_init(&adc_R, &adc_init);
-    kb_adc_pin(RECV_R_PORT, RECV_R_PIN);
+    adc_init(&adc_R, &adc_init);
+    adc_pin(RECV_R_PORT, RECV_R_PIN);
     // Front (actually FL)
     adc_init.device = KB_ADC3;
     adc_init.channel = KB_ADC_CH13;
 
-    kb_adc_init(&adc_F, &adc_init);
-    kb_adc_pin(RECV_FL_PORT, RECV_FL_PIN);
+    adc_init(&adc_F, &adc_init);
+    adc_pin(RECV_FL_PORT, RECV_FL_PIN);
 
     /* Emitter */
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    kb_gpio_init(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, &GPIO_InitStruct);
-    kb_gpio_init(EMITTER_FL_PORT, EMITTER_FL_PIN, &GPIO_InitStruct);
+    gpio_init(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, &GPIO_InitStruct);
+    gpio_init(EMITTER_FL_PORT, EMITTER_FL_PIN, &GPIO_InitStruct);
 
-    kb_gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_RESET);
-    kb_gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_RESET);
+    gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_RESET);
+    gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_RESET);
 #else
     #error "Define one of WolfieMouse hardware"
 #endif
@@ -192,7 +192,7 @@ void peripheral_init(void)
 }
 
 /**
- * This overrides original SysTick_hook() located in kb_hooks.c
+ * This overrides original SysTick_hook() located in hooks.c
  * This function is automatically called every 1ms, triggered by SysTick.
  */
 #include "config_measurements.h"
@@ -250,15 +250,15 @@ void SysTick_hook(void)
 
     // Get ADC values
     if(_range_running) {
-        kb_gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_SET);
-        kb_delay_us(60);
-        range_L = kb_adc_measure(&adc_L);
-        range_R = kb_adc_measure(&adc_R);
+        gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_SET);
+        delay_us(60);
+        range_L = adc_measure(&adc_L);
+        range_R = adc_measure(&adc_R);
         // range front too
-        kb_gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_SET);
-        kb_delay_us(60);
-        range_F = kb_adc_measure(&adc_F);
-        kb_gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_RESET);
+        gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_SET);
+        delay_us(60);
+        range_F = adc_measure(&adc_F);
+        gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_RESET);
     }
 
     // get errorR

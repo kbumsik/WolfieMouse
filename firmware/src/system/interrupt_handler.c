@@ -5,9 +5,9 @@
  *      Author: Bumsik Kim
  */
 
-#include "kb_common_source.h"
+#include "common_source.h"
 #include "interrupt_handler.h"
-#include "kb_tick.h"
+#include "tick.h"
 #include "faults.h"
 
 #ifndef KB_USE_FREERTOS // Learn how to combine this with FreeRTOS
@@ -48,12 +48,12 @@ void SVC_Handler (void)
     extern void xPortSysTickHandler(void);
 #endif
 
-extern void SysTick_hook(void); // Can be found in kb_hooks.c
+extern void SysTick_hook(void); // Can be found in hooks.c
 
 void SysTick_Handler (void)
 {
     SysTick_hook();
-	kb_tick_inc_ms();
+	tick_inc_ms();
 
 #ifdef KB_USE_FREERTOS
 	// FreeRTOS Tick handler

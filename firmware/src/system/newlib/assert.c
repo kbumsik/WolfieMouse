@@ -4,7 +4,7 @@
 //
 
 #include <assert.h>
-#include <kb_trace.h>
+#include <trace.h>
 #include <stdlib.h>
 #include <stdint.h>
 

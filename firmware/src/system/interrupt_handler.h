@@ -8,7 +8,7 @@
 #ifndef INTERRUPT_HANDLER_H_
 #define INTERRUPT_HANDLER_H_
 
-#include "kb_common_source.h"
+#include "common_source.h"
 
 #ifdef __cplusplus
  extern "C" {

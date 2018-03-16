@@ -5,9 +5,9 @@
  *      Author: Bumsik Kim
  */
 
-#include "kb_common_header.h"
-#include "kb_module_config.h"
-#include "kb_tick.h"
+#include "common_header.h"
+#include "module_config.h"
+#include "tick.h"
 #include "system_config.h"
 #include "faults.h"
 
@@ -70,13 +70,13 @@ void system_init(void)
     // in the SystemCoreClock global RAM location.
     SystemCoreClockUpdate();
     // update f_cpu_MHz too
-    kb_tick_update_f_cpu_mhz();
+    tick_update_f_cpu_mhz();
 
     // Enable fault calls
     enable_faults();
 
     // init timer
-    kb_tick_init();
+    tick_init();
 }
 
 

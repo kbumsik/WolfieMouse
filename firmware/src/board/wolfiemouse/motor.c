@@ -5,48 +5,48 @@
  *      Author: Bumsik Kim
  */
 #include "motor.h"
-#include "kb_timer.h"
-#include "kb_gpio.h"
+#include "tim.h"
+#include "gpio.h"
 
 #define motorLEFT_PORT          GPIOC
 #define motorLEFT_PIN           GPIO_PIN_9
 #define motorRIGHT_PORT         GPIOA
 #define motorRIGHT_PIN          GPIO_PIN_10
 
-static kb_timer_t _timer;
+static tim_t _timer;
 
 static inline void left_set_toggle_(void)
 {
-    kb_gpio_toggle(motorLEFT_PORT, motorLEFT_PIN);
+    gpio_toggle(motorLEFT_PORT, motorLEFT_PIN);
 }
 static inline void right_set_toggle_(void)
 {
-    kb_gpio_toggle(motorRIGHT_PORT, motorRIGHT_PIN);
+    gpio_toggle(motorRIGHT_PORT, motorRIGHT_PIN);
 }
 
 static inline void left_set_forward_(void)
 {
-    kb_gpio_set(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_SET);
+    gpio_set(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_SET);
 }
 static inline void right_set_forward_(void)
 {
 #if defined(KB_WOLFIEMOUSE)
-    kb_gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET);
+    gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET);
 #else
-    kb_gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_RESET);
+    gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_RESET);
 #endif
 }
 
 static inline void left_set_backward_()
 {
-    kb_gpio_set(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_RESET);
+    gpio_set(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_RESET);
 }
 static inline void right_set_backward_(void)
 {
 #if defined(KB_WOLFIEMOUSE)
-	kb_gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_RESET);
+	gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_RESET);
 #else
-    kb_gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET);
+    gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET);
 #endif
 }
 
@@ -54,7 +54,7 @@ static inline void right_set_backward_(void)
 /**
  * Function Implementations
  */
-kb_status_t motor_init(void)
+status_t motor_init(void)
 {
 	/* init GPIO */
 	/****
@@ -67,35 +67,35 @@ kb_status_t motor_init(void)
 	 *     right_dir: PA10
 	 *     right_fault: PA9
 	 */
-    kb_timer_ch_pin(KB_TIMER_TIM1, CH_1, PORTA, PIN_8, NOPULL);    //left  PWM
-	kb_timer_ch_pin(KB_TIMER_TIM1, CH_4, PORTA, PIN_11, NOPULL);	//right PWM
+    tim_ch_pin(KB_TIMER_TIM1, CH_1, PORTA, PIN_8, NOPULL);    //left  PWM
+	tim_ch_pin(KB_TIMER_TIM1, CH_4, PORTA, PIN_11, NOPULL);	//right PWM
 
 
-	kb_gpio_init_t gpio_setting = {
+	gpio_init_t gpio_setting = {
 			.Pull = NOPULL,
 			.Mode = GPIO_MODE_OUTPUT_PP,
 			.Speed = GPIO_SPEED_HIGH
 	};
-	kb_gpio_init(PORTA, PIN_10, &gpio_setting);
+	gpio_init(PORTA, PIN_10, &gpio_setting);
 
 	gpio_setting.Mode = GPIO_MODE_INPUT;
-	kb_gpio_init(PORTA, PIN_9, &gpio_setting);
+	gpio_init(PORTA, PIN_9, &gpio_setting);
 
 	gpio_setting.Mode = GPIO_MODE_OUTPUT_PP;
-	kb_gpio_init(PORTC, PIN_9, &gpio_setting);
+	gpio_init(PORTC, PIN_9, &gpio_setting);
 
 	gpio_setting.Mode = GPIO_MODE_INPUT;
-	kb_gpio_init(PORTC, PIN_8, &gpio_setting);
+	gpio_init(PORTC, PIN_8, &gpio_setting);
 
 	motor_dir_forward();
 
 	// PWM settings
-	kb_pwm_init_t pwm_setting = {	// PWM is at 1kHz
+	pwm_init_t pwm_setting = {	// PWM is at 1kHz
 	        .device = KB_TIMER_TIM1,
 			.clock_frequency = 10000000,
 			.period = 10000
 	};
-	kb_pwm_init(&_timer, &pwm_setting);
+	pwm_init(&_timer, &pwm_setting);
 
 	/* Firstly set speed 0 */
 	motor_speed_percent(CH_BOTH, 0);
@@ -118,7 +118,7 @@ int32_t motor_speed_percent(motor_ch_t channel, int32_t speed)
 	    } else {
 	        left_set_forward_();
 	    }
-		kb_pwm_percent(&_timer, CH_1, speed);
+		pwm_percent(&_timer, CH_1, speed);
 		break;
 
 	case CH_RIGHT:
@@ -128,7 +128,7 @@ int32_t motor_speed_percent(motor_ch_t channel, int32_t speed)
         } else {
             right_set_forward_();
         }
-		kb_pwm_percent(&_timer, CH_4, speed);
+		pwm_percent(&_timer, CH_4, speed);
 		break;
 
 	case CH_BOTH:
@@ -140,8 +140,8 @@ int32_t motor_speed_percent(motor_ch_t channel, int32_t speed)
             left_set_forward_();
             right_set_forward_();
         }
-		kb_pwm_percent(&_timer, CH_1, speed);
-		kb_pwm_percent(&_timer, CH_4, speed);
+		pwm_percent(&_timer, CH_1, speed);
+		pwm_percent(&_timer, CH_4, speed);
 		break;
 
 	default:
@@ -177,32 +177,32 @@ void motor_dir_rotate_left(void)
 	left_set_backward_();
 }
 
-kb_status_t motor_start(motor_ch_t channel)
+status_t motor_start(motor_ch_t channel)
 {
-	kb_status_t result;
+	status_t result;
 	switch (channel) {
 	case CH_LEFT:
 		/* Start channel 1 */
-		result = kb_pwm_start(&_timer, CH_1);
+		result = pwm_start(&_timer, CH_1);
 		if (result != KB_OK) {
 			return result;
 		}
 		break;
 	case CH_RIGHT:
 		/* Start channel 4 */
-		result = kb_pwm_start(&_timer, CH_4);
+		result = pwm_start(&_timer, CH_4);
 		if (result != KB_OK) {
 			return result;
 		}
 		break;
 	case CH_BOTH:
         /* Start channel 1 */
-        result = kb_pwm_start(&_timer, CH_1);
+        result = pwm_start(&_timer, CH_1);
         if (result != KB_OK) {
             return result;
         }
         /* Start channel 4 */
-        result = kb_pwm_start(&_timer, CH_4);
+        result = pwm_start(&_timer, CH_4);
         if (result != KB_OK) {
             return result;
         }
@@ -214,32 +214,32 @@ kb_status_t motor_start(motor_ch_t channel)
 	return KB_OK;
 }
 
-kb_status_t motor_stop(motor_ch_t channel)
+status_t motor_stop(motor_ch_t channel)
 {
-	kb_status_t result;
+	status_t result;
     switch (channel) {
     case CH_LEFT:
         /* Start channel 1 */
-        result = kb_pwm_stop(&_timer, CH_1);
+        result = pwm_stop(&_timer, CH_1);
         if (result != KB_OK) {
             return result;
         }
         break;
     case CH_RIGHT:
         /* Start channel 4 */
-        result = kb_pwm_stop(&_timer, CH_4);
+        result = pwm_stop(&_timer, CH_4);
         if (result != KB_OK) {
             return result;
         }
         break;
     case CH_BOTH:
         /* Start channel 1 */
-        result = kb_pwm_stop(&_timer, CH_1);
+        result = pwm_stop(&_timer, CH_1);
         if (result != KB_OK) {
             return result;
         }
         /* Start channel 4 */
-        result = kb_pwm_stop(&_timer, CH_4);
+        result = pwm_stop(&_timer, CH_4);
         if (result != KB_OK) {
             return result;
         }

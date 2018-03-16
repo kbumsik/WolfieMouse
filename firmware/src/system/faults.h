@@ -8,7 +8,7 @@
 #ifndef FAULTS_H_
 #define FAULTS_H_
 
-#include "kb_common_source.h"
+#include "common_source.h"
 #include <stdint.h>
 
 #if defined(KB_DEBUG)
