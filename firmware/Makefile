@@ -32,10 +32,13 @@ OPT = -Og
 SOURCES_DIR =  \
 lib/STM32F4xx_HAL_Driver \
 lib/FreeRTOS \
-lib/CMSIS
-
-# firmware library path
-PERIFLIB_PATH = 
+lib/CMSIS \
+math \
+maze \
+module \
+peripheral \
+system \
+board
 
 # Build path
 BUILD_DIR = build
@@ -45,51 +48,44 @@ BUILD_DIR = build
 ######################################
 # C sources
 C_SOURCES =  \
+lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c \
-lib/FreeRTOS/Source/tasks.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c \
-lib/FreeRTOS/Source/portable/MemMang/heap_4.c \
-lib/FreeRTOS/Source/event_groups.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c \
-lib/FreeRTOS/Source/queue.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c \
-lib/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c \
-lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c \
-lib/FreeRTOS/Source/list.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c \
-lib/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c \
-lib/FreeRTOS/Source/croutine.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c \
 lib/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c \
+lib/FreeRTOS/Source/portable/MemMang/heap_4.c \
+lib/FreeRTOS/Source/event_groups.c \
+lib/FreeRTOS/Source/queue.c \
+lib/FreeRTOS/Source/list.c \
+lib/FreeRTOS/Source/tasks.c \
+lib/FreeRTOS/Source/croutine.c \
 lib/FreeRTOS/Source/timers.c \
-Src/system_stm32f4xx.c \
-Src/main.c \
-Src/freertos.c \
-Src/stm32f4xx_it.c \
-Src/stm32f4xx_hal_msp.c 
+lib/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c \
+lib/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c \
+src/system_stm32f4xx.c \
+src/main.c \
+src/freertos.c \
+src/stm32f4xx_it.c \
+src/stm32f4xx_hal_msp.c 
 
 # ASM sources
 ASM_SOURCES =  \
 startup_stm32f446xx.s
-
-
-######################################
-# firmware library
-######################################
-PERIFLIB_SOURCES = 
-
 
 #######################################
 # binaries
@@ -127,14 +123,13 @@ C_DEFS =  \
 -DUSE_HAL_DRIVER \
 -DSTM32F446xx
 
-
 # AS includes
 AS_INCLUDES =  \
--I/Inc
+-I/inc
 
 # C includes
 C_INCLUDES =  \
--IInc \
+-Iinc \
 -Ilib/STM32F4xx_HAL_Driver/Inc \
 -Ilib/STM32F4xx_HAL_Driver/Inc/Legacy \
 -Ilib/FreeRTOS/Source/portable/GCC/ARM_CM4F \
@@ -179,17 +174,20 @@ all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET
 # list of objects
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
 vpath %.c $(sort $(dir $(C_SOURCES)))
+
+# build C files
+$(BUILD_DIR)/%.o: %.c | $(BUILD_DIR) 
+	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
+
 # list of ASM program objects
 OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
 vpath %.s $(sort $(dir $(ASM_SOURCES)))
 
-$(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR) 
-	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
-
-$(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
+# build ASM files
+$(BUILD_DIR)/%.o: %.s | $(BUILD_DIR)
 	$(AS) -c $(CFLAGS) $< -o $@
 
-$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
+$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS)
 	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 	$(SZ) $@
 
@@ -214,3 +212,5 @@ clean:
 -include $(shell mkdir .dep 2>/dev/null) $(wildcard .dep/*)
 
 # *** EOF ***
+
+include openocd.mk  # For flash, debug and gdb targets
