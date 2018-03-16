@@ -1,0 +1,98 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "/usr/include",
+                "/usr/local/include",
+                "${workspaceRoot}"
+            ],
+            "defines": [],
+            "intelliSenseMode": "clang-x64",
+            "browse": {
+                "path": [
+                    "/usr/include",
+                    "/usr/local/include",
+                    "${workspaceRoot}"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            },
+            "macFrameworkPath": [
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
+            ]
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "/usr/lib/gcc/arm-none-eabi/7.3.0/include",
+                "/usr/lib/gcc/arm-none-eabi/7.3.0/include-fixed",
+                "/usr/lib/gcc/arm-none-eabi/7.3.0/../../../../arm-none-eabi/include",
+                "${workspaceFolder}/lib/CMSIS/Include",
+                "${workspaceFolder}/lib/CMSIS/Device/ST/STM32F4xx/Include",
+                "${workspaceFolder}/lib/STM32F4xx_HAL_Driver/Inc",
+                "${workspaceFolder}/lib/STM32F4xx_HAL_Driver/Inc/Legacy",
+                "${workspaceFolder}/lib/FreeRTOS/Source/portable/GCC/ARM_CM4F",
+                "${workspaceFolder}/lib/FreeRTOS/Source/include",
+                "${workspaceFolder}/lib/FreeRTOS/Source/CMSIS_RTOS",
+                "${workspaceFolder}/src/board/nucleo_f446re",
+                "${workspaceFolder}/src/math",
+                "${workspaceFolder}/src/maze",
+                "${workspaceFolder}/src/module",
+                "${workspaceFolder}/src/peripheral",
+                "${workspaceFolder}/src/system"
+            ],
+            "defines": [
+                "__GNUC__",
+                "USE_HAL_DRIVER",
+                "STM32F446xx"
+            ],
+            "intelliSenseMode": "clang-x64",
+            "browse": {
+                "path": [
+                    "/usr/lib/gcc/arm-none-eabi/7.3.0/include",
+                    "/usr/lib/gcc/arm-none-eabi/7.3.0/include-fixed",
+                    "/usr/lib/gcc/arm-none-eabi/7.3.0/../../../../arm-none-eabi/include",
+                    "${workspaceFolder}/lib/CMSIS/Include",
+                    "${workspaceFolder}/lib/CMSIS/Device/ST/STM32F4xx/Include",
+                    "${workspaceFolder}/lib/STM32F4xx_HAL_Driver/Inc",
+                    "${workspaceFolder}/lib/STM32F4xx_HAL_Driver/Inc/Legacy",
+                    "${workspaceFolder}/lib/FreeRTOS/Source/portable/GCC/ARM_CM4F",
+                    "${workspaceFolder}/lib/FreeRTOS/Source/include",
+                    "${workspaceFolder}/lib/FreeRTOS/Source/CMSIS_RTOS",
+                    "${workspaceFolder}/src/board/nucleo_f446re",
+                    "${workspaceFolder}/src/math",
+                    "${workspaceFolder}/src/maze",
+                    "${workspaceFolder}/src/module",
+                    "${workspaceFolder}/src/peripheral",
+                    "${workspaceFolder}/src/system"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include",
+                "${workspaceRoot}"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "intelliSenseMode": "msvc-x64",
+            "browse": {
+                "path": [
+                    "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
+                    "${workspaceRoot}"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        }
+    ],
+    "version": 3
+}

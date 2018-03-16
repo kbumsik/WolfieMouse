@@ -8,6 +8,8 @@ TARGET = blinky_nucleo64
 DEBUG = 1
 # optimization
 OPTIMIZATION_FLAG = -Og
+# Verbose gcc messages?
+VERBOSE = 0
 
 #######################################
 # Hardware
@@ -27,7 +29,9 @@ FLOAT_ABI_FLAG = -mfloat-abi=hard
 # C defines
 C_DEFS =  \
 -DUSE_HAL_DRIVER \
--DSTM32F446xx
+-DSTM32F446xx \
+-DOS_USE_TRACE_SEMIHOSTING_DEBUG \
+-DHSE_VALUE=8000000
 
 # AS defines
 #AS_DEFS = 

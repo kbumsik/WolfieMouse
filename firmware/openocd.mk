@@ -18,7 +18,7 @@
 ##
 
 # OpenOCD target configuration
-OPENOCD ?= openocd -f board/st_nucleo_f0.cfg
+OPENOCD ?= openocd -f board/st_nucleo_f4.cfg
 
 HELP_TEXT += \n\
   flash - Flash using OpenOCD\n\

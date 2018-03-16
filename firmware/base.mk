@@ -179,7 +179,7 @@ CFLAGS += $(MCU_FLAGS) $(C_DEFS) $(C_INCLUDES) $(OPTIMIZATION_FLAG) \
 			-Wall -fdata-sections -ffunction-sections
 
 ifeq ($(DEBUG), 1)
-CFLAGS += -g -gdwarf-2
+  CFLAGS += -g -gdwarf-2
 endif
 
 # Generate dependency information
@@ -203,6 +203,12 @@ all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET
 #######################################
 # build the application
 #######################################
+# Verbose message
+ifeq ($(VERBOSE), 1)
+  CFLAGS += -v
+  LDFLAGS += --verbose
+endif
+
 # Divide C and CPP
 CPP_SOURCES := $(filter-out %.c,$(C_SOURCES))
 C_SOURCES := $(filter-out %.cpp,$(C_SOURCES))
