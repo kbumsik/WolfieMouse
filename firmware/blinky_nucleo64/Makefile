@@ -24,25 +24,85 @@ FLOAT_ABI_FLAG = -mfloat-abi=hard
 # CFLAGS
 #######################################
 # macros for gcc
-# AS defines
-AS_DEFS = 
-
 # C defines
 C_DEFS =  \
 -DUSE_HAL_DRIVER \
 -DSTM32F446xx
 
+# AS defines
+#AS_DEFS = 
+
 # extra gcc flags
-ASFLAGS =
-CFLAGS =
-LDFLAGS =
+#ASFLAGS =
+#CFLAGS =
+#LDFLAGS =
+
+#######################################
+# Source files
+#######################################
+# .c files used in /firmware/lib/STM32F4xx_HAL_Driver/Src
+STM32_HAL_FILES = \
+stm32f4xx_hal.c \
+stm32f4xx_hal_adc_ex.c \
+stm32f4xx_hal_tim.c \
+stm32f4xx_hal_rcc_ex.c \
+stm32f4xx_hal_gpio.c \
+stm32f4xx_hal_spi.c \
+stm32f4xx_hal_flash_ramfunc.c \
+stm32f4xx_hal_dma_ex.c \
+stm32f4xx_hal_pwr.c \
+stm32f4xx_hal_adc.c \
+stm32f4xx_hal_i2c.c \
+stm32f4xx_hal_cortex.c \
+stm32f4xx_hal_uart.c \
+stm32f4xx_hal_flash_ex.c \
+stm32f4xx_hal_rcc.c \
+stm32f4xx_hal_flash.c \
+stm32f4xx_hal_i2c_ex.c \
+stm32f4xx_hal_tim_ex.c \
+stm32f4xx_hal_pwr_ex.c \
+stm32f4xx_hal_dma.c \
+
+# .c files used in /firmware/src/maze
+MATH_FILES = \
+# pid.c
+
+# .c files used in /firmware/src/maze
+MAZE_FILES = \
+# fakeIO.cpp \
+# MazeIO.cpp \
+# PositionController.cpp \
+# StdIO.cpp \
+# Maze.cpp \
+# MouseController.cpp \
+# SimulMouse.cpp \
+
+# .c files used in /firmware/src/module
+MODULE_FILES = \
+terminal.c \
+# hcms-290x_display.c \
+# terminal_test.c \
+
+# .c files used in /firmware/src/peripheral
+PERIPHERAL_FILES = \
+adc.c \
+encoder.c \
+gpio.c \
+i2c.c \
+spi.c \
+tim.c \
+uart.c \
 
 #######################################
 # Extra
 #######################################
-# link script. Uncomment it if you have your own linker script.
-# LDSCRIPT = STM32F446RETx_FLASH.ld
-# STARTUP_ASM = startup_stm32f446xx.s
+# link script.
+#LDSCRIPT = STM32F446RETx_FLASH.ld
+# Startup ASM code.
+#STARTUP_ASM = startup_stm32f446xx.s
+# FreeRTOS heap.
+#FREERTOS_HEAP_FILE ?= heap_4.c
+
 
 # These shoud be included to make it work
 include ../base.mk
