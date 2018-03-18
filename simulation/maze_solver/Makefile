@@ -64,7 +64,7 @@ ifeq ($(DEBUG), 1)
   CFLAGS += -g -gdwarf-2
 endif
 
-CFLAGS += $(C_DEFS) $(C_INCLUDES) $(OPTIMIZATION_FLAG) -Wall
+CFLAGS += $(C_DEFS) $(C_INCLUDES) $(OPTIMIZATION_FLAG) -Wall -std=c++11 -std=c99
 LDFLAGS := -lstdc++
 
 # default action: build all
