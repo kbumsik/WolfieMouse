@@ -7,10 +7,12 @@
 #include "SimulMouse.hpp"
 #include <stdio.h>
 
+#define INPUT_FILE "maze_ieee_region_1_2015.txt"
+#define SAVED_FILE "out.txt"
+#define OUTPUT_FILE "out.txt"
+
 StdIO fileIO(true);
 StdIO printIO(false);
-// Create virtual mouse hardware for simulation
-SimulMouse virtualMouse("maze_ieee_region_1_2015.txt", &fileIO, &printIO);
 enum WolfieState
 {
     goGoal  = 0,
@@ -23,8 +25,26 @@ bool moveOneCell(MouseController &mouse);
 int main()
 {
     char tmp;
+    
+    /* Check if files exists first */
+    char *file_names[3] = {INPUT_FILE, SAVED_FILE, OUTPUT_FILE};
+    printf("%d\n", sizeof(file_names));
+
+    for (unsigned int i = 0; i < (sizeof(file_names)/sizeof(char *)); i++) {
+        FILE *file = NULL;
+        if ((file = fopen(file_names[i], "r")) == NULL) {
+            printf("%s doesn't exist! Aborting.\n", file_names[i]);
+            return 1;
+        }
+        fclose(file);
+    }
+
+    /* Create object */
     WolfieState mouseState = goGoal;
-    MouseController mouse("out.txt", &fileIO, &printIO,
+    // Create virtual mouse hardware for simulation
+    SimulMouse virtualMouse(INPUT_FILE, &fileIO, &printIO);
+    // Create a mouse object
+    MouseController mouse(SAVED_FILE, &fileIO, &printIO,
             (FinderInterface*) &virtualMouse, (MoverInterface*) &virtualMouse);
 
     /* First just print maze */
@@ -70,7 +90,8 @@ int main()
         }
     }
 
-    end: mouse.saveMazeFile("out.txt");
+end:
+    mouse.saveMazeFile(OUTPUT_FILE);
     return 0;
 }
 
