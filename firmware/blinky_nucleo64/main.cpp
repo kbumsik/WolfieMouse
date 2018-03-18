@@ -15,7 +15,7 @@
 #include "semphr.h"
 #include "event_groups.h"
 
-//Hello test
+//Hello test --> delete
 
 void on_pressed(void);
 
