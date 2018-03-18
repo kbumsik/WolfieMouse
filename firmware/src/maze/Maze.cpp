@@ -1,5 +1,6 @@
 #include "common_maze.h"
 #include "Maze.hpp"
+#include <stdio.h>
 
 /*******************************************************************************
  * Constructor
@@ -55,7 +56,7 @@ Maze::Maze(char *filename, IOInterface *fileIO, IOInterface *printIO) :
     updateCell();
 
     /* Load maze */
-    //readMazeFromFile(filename);
+    readMazeFromFile(filename);
     /* Init default goals if no file  */
     if (filename == NULL) {
     	goalPos = CONFIG_DEFAULT_MAZE_GOAL;

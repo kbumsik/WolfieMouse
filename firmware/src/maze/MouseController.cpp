@@ -11,7 +11,7 @@ MouseController::MouseController() :
 }
 
 MouseController::MouseController(char *filename, IOInterface *fileIO,
-            IOInterface *printIO, RealMouse *finder, RealMouse *mover) :
+            IOInterface *printIO, FinderInterface *finder, MoverInterface *mover) :
         Maze(filename, fileIO, printIO),
 		finder(finder),
 		mover(mover),
@@ -35,24 +35,18 @@ bool MouseController::scanWalls(void)
     Direction curDir = getCurrentDir();
     Position nextPos = getNextPos();
     // Firstly detect a wall right in front of the mouse
-    Wall result; // = finder->examineWall(curPos, curDir, *this);
-    //if (getWall(curPos, curDir) != result) {
-    //    newInfo = true;
-    //}
-    //setWall(curPos, curDir, result);
+    Wall result = finder->examineWall(curPos, curDir, *this);
+    if (getWall(curPos, curDir) != result) {
+        newInfo = true;
+    }
+    setWall(curPos, curDir, result);
     // Then examine the walls of the cell the mouse is facing
     for (int i = (int) row_plus; i <= (int) col_minus; i++) {
     	Direction dir = (Direction) i;
-    	if (getWall(nextPos, dir) != unknown) {
-    	    continue;
-    	}
         result = finder->examineWall(nextPos, dir, *this);
-        if (result == wallError) {
-            continue;
-        }
         if (getWall(nextPos, dir) != result) {
                newInfo = true;
-        }
+           }
         setWall(nextPos, dir, result);
     }
     // Lastly, update state of cells.
@@ -186,18 +180,16 @@ void MouseController::getShortestPath()
 void MouseController::moveNextCell()
 {
     /* 1. turn first */
-    // Actually rotate first
-    mover->rotateTo(getDirectionToGo(), *this);
+    Direction tmp_d = getDirectionToGo();
+    /* before setting direction we need to set how much turn */
     setDirectionToGo();
     /* 2. scan side wall */
     scanWalls();		// TODO: Try using this outside
     /* 3. move */
     Position tmp_p = getNextPos();
     /* move command */
-    mover->moveTo(tmp_p, getCurrentDir(), *this);
     setPos(tmp_p);
     /* 4. scan the front wall */
-    // Doesn't need actually
     /* 5. update */
     updateCell();
     /* check if the mouse is in a destination */
@@ -325,17 +317,17 @@ void MouseController::printPathStack()
 {
     void (PositionController::*pvFunc)(
             PositionController) = &PositionController::print;
-    //printf("pathStack: ");
+    printf("pathStack: ");
     pathStack.print(pvFunc);
-    //printf("\n");
+    printf("\n");
 }
 
 
 void MouseController::printAvailablePositionStack()
 {
-    //printf("availableStack: ");
+    printf("availableStack: ");
     availablePositionStack.print(&PositionController::print);
-    //printf("\n");
+    printf("\n");
 }
 
 
@@ -437,46 +429,5 @@ Direction MouseController::getDirectionToGo()
 
 void MouseController::setDirectionToGo ()
 {
-    // Then set
 	setDir(getDirectionToGo());
-}
-
-/*******************************************************************************
- * Inline function definition
- ******************************************************************************/
-int MouseController::getDis(int row, int col)
-{
-    return Maze::getDistance(row, col);
-}
-
-int MouseController::getDis(Position pos)
-{
-    return Maze::getDistance(pos.row, pos.col);
-}
-
-int MouseController::getDis(PositionController pos)
-{
-    Position position = pos.getCurrentPos();
-    return Maze::getDistance(position.row, position.col);
-}
-
-int MouseController::getNextDis(PositionController pos, Direction dirTo)
-{
-    PositionController tmp = PositionController(pos.getCurrentPos(), dirTo);
-    return getDis(tmp.getNextPos());
-}
-
-int MouseController::getNextDis(PositionController pos)
-{
-    return getDis(pos.getNextPos());
-}
-
-int MouseController::setDis(int row, int col, int dis)
-{
-    return Maze::setDistance(row, col, dis);
-}
-
-void MouseController::setDis(Position pos, int dis)
-{
-    setDis(pos.row, pos.col, dis);
 }

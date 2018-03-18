@@ -16,7 +16,6 @@ class MoverInterface
 protected:
 public:
     virtual void moveTo(int row, int col, Direction destDir, PositionController &mousePos) = 0;
-    virtual void rotateTo(Direction destDir, PositionController &mousePos) = 0;
 };
 
 #endif /* MOVERINTERFACE_HPP_ */

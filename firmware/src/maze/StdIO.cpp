@@ -10,7 +10,6 @@
  * Constructor
  ******************************************************************************/
 StdIO::StdIO(bool allowFile) :
-    _file(NULL),
 	IOInterface(),
 	allowFile(allowFile)
 {
@@ -32,7 +31,7 @@ void StdIO::open(char *filename, char *mode)
     }
 }
 
-int StdIO::get_char()
+int StdIO::getchar()
 {
 	if (allowFile) {
 	    return fgetc(_file);
