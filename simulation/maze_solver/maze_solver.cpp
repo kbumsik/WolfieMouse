@@ -5,6 +5,7 @@
 #include "IOInterface.hpp"
 #include "StdIO.hpp"
 #include "SimulMouse.hpp"
+#include <stdio.h>
 
 StdIO fileIO(true);
 StdIO printIO(false);

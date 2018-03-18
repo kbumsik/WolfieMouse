@@ -17,6 +17,7 @@
 #include "IOInterface.hpp"
 
 #include <vector>
+#include <stdio.h>
 #include <stddef.h>
 
 // Forward declaration

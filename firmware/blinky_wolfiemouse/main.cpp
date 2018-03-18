@@ -4,6 +4,7 @@
 #include "system_config.h"
 #include "gpio.h"
 #include "terminal.h"
+#include "hcms_290x_display.h"
 
 // FreeRTOS
 #include "FreeRTOS.h"
@@ -29,6 +30,9 @@ int main(void)
 
     // Initialize all configured peripherals
     peripheral_init();
+
+    /* Initial LED Display message */
+    hcms_290x_matrix("BOOT");
 
     // Set interrupt button
     gpio_init_t GPIO_InitStruct;

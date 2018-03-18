@@ -23,6 +23,10 @@ public:
      * @mousePos is not important for @SimulMouse but it is needed for @RealMouse
      * to decide which sensor to use. */  
     virtual Wall examineWall(int row, int col, Direction wallDir, PositionController &mousePos) = 0;
+    Wall examineWall(Position pos, Direction wallDir, PositionController &mousePos)
+    {
+        return examineWall(pos.row, pos.col, wallDir, mousePos);
+    }
 };
 
 #endif /* FINDERINTERFACE_HPP_ */

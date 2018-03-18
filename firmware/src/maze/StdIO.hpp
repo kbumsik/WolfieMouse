@@ -8,19 +8,18 @@
 #define STDIO_HPP_
 
 #include "IOInterface.hpp"
+#include <stdio.h>
 #include <stddef.h>
 
 class StdIO: public IOInterface
 {
-private:
-    FILE *_file;
 	bool allowFile = false;
 public:
 	// Constructor
 	StdIO(bool allowFile);
     // Overridden methods
     void open(char *filename, char *mode) override;
-    int get_char() override;
+    int getchar() override;
     size_t write(const void *ptr, size_t size, size_t nmemb) override;
 };
 
