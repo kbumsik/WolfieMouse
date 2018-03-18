@@ -1,5 +1,5 @@
 /*
- * SimulMouse.cpp
+ * SimulMouse.cc
  *
  *  Created on: Mar 5, 2017
  *      Author: vagrant

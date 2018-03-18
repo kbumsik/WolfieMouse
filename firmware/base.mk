@@ -50,7 +50,7 @@ BUILD_DIR := build
 
 # C sources
 C_SOURCES = $(wildcard ./*.c)
-C_SOURCES += $(wildcard ./*.cpp)
+C_SOURCES += $(wildcard ./*.cc)
 
 # board sources
 BOARD_SOURCES := $(addsuffix /*.c,$(BOARD_SRC_DIR))
@@ -211,7 +211,7 @@ endif
 
 # Divide C and CPP
 CPP_SOURCES := $(filter-out %.c,$(C_SOURCES))
-C_SOURCES := $(filter-out %.cpp,$(C_SOURCES))
+C_SOURCES := $(filter-out %.cc,$(C_SOURCES))
 
 # list of C objects
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
@@ -219,15 +219,15 @@ vpath %.c $(sort $(dir $(C_SOURCES)))
 
 # build C files
 $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR) 
-	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
+	$(CC) -c $(CFLAGS) -std=gnu99 -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
 
 # list of CPP objects
-OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(CPP_SOURCES:.cpp=.o)))
-vpath %.cpp $(sort $(dir $(CPP_SOURCES)))
+OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(CPP_SOURCES:.cc=.o)))
+vpath %.cc $(sort $(dir $(CPP_SOURCES)))
 
 # build CPP files
-$(BUILD_DIR)/%.o: %.cpp | $(BUILD_DIR) 
-	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.cpp=.lst)) $< -o $@
+$(BUILD_DIR)/%.o: %.cc | $(BUILD_DIR) 
+	$(CC) -c $(CFLAGS) -std=c++11 -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.cc=.lst)) $< -o $@
 
 # list of ASM program objects
 OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
@@ -258,9 +258,4 @@ $(BUILD_DIR):
 #######################################
 .PHONY: clean
 clean:
-	-rm -fR .dep $(BUILD_DIR)
-  
-#######################################
-# dependencies
-#######################################
--include $(shell mkdir .dep 2>/dev/null) $(wildcard .dep/*)
+	-rm -fR $(BUILD_DIR)

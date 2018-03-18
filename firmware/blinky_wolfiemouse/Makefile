@@ -75,13 +75,13 @@ pid.c
 
 # .c files used in /firmware/src/maze
 MAZE_FILES = \
-# fakeIO.cpp \
-# MazeIO.cpp \
-# PositionController.cpp \
-# StdIO.cpp \
-# Maze.cpp \
-# MouseController.cpp \
-# SimulMouse.cpp \
+# fakeIO.cc \
+# MazeIO.cc \
+# PositionController.cc \
+# StdIO.cc \
+# Maze.cc \
+# MouseController.cc \
+# SimulMouse.cc \
 
 # .c files used in /firmware/src/module
 MODULE_FILES = \

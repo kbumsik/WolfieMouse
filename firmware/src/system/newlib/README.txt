@@ -11,6 +11,6 @@ _sbrk.c: a custom _sbrk() to match the actual linker scripts
 
 assert.c: implementation for the asserion macros
 
-_cxx.cpp: local versions of some C++ support, to avoid references to 
+_cxx.cc: local versions of some C++ support, to avoid references to 
 	large functions.
 

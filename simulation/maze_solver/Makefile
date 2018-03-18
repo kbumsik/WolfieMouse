@@ -15,9 +15,11 @@ OPTIMIZATION_FLAG = -Og
 VERBOSE = 0
 # GCC flags
 CFLAGS = -Wall
+CXXFLAGS = -Wall
 
 # Compiler
 CC := gcc
+CXX := gcc
 
 #######################################
 # Defines
@@ -34,13 +36,13 @@ SOLVER_DIR = ../../firmware/src/maze
 
 # .c files used in /firmware/src/maze
 SOLVER_FILES = \
-StdIO.cpp \
-MazeIO.cpp \
-PositionController.cpp \
-Maze.cpp \
-MouseController.cpp \
-SimulMouse.cpp \
-# fakeIO.cpp \
+StdIO.cc \
+MazeIO.cc \
+PositionController.cc \
+Maze.cc \
+MouseController.cc \
+SimulMouse.cc \
+# fakeIO.cc \
 
 
 ######################################
@@ -49,7 +51,7 @@ SimulMouse.cpp \
 
 # C sources
 C_SOURCES = $(wildcard ./*.c)
-C_SOURCES += $(wildcard ./*.cpp)
+C_SOURCES += $(wildcard ./*.cc)
 
 # maze sources
 SOLVER_SOURCES := $(addprefix $(SOLVER_DIR)/, $(SOLVER_FILES))
@@ -64,7 +66,8 @@ ifeq ($(DEBUG), 1)
   CFLAGS += -g -gdwarf-2
 endif
 
-CFLAGS += $(C_DEFS) $(C_INCLUDES) $(OPTIMIZATION_FLAG) -Wall -std=c++11 -std=c99
+CFLAGS += $(C_DEFS) $(C_INCLUDES) $(OPTIMIZATION_FLAG) -std=c99
+CXXFLAGS += $(C_DEFS) $(C_INCLUDES) $(OPTIMIZATION_FLAG) -std=c++11
 LDFLAGS := -lstdc++
 
 # default action: build all
@@ -80,8 +83,8 @@ ifeq ($(VERBOSE), 1)
 endif
 
 # Divide C and CPP
-CPP_SOURCES := $(filter-out %.c,$(C_SOURCES))
-C_SOURCES := $(filter-out %.cpp,$(C_SOURCES))
+CXX_SOURCES := $(filter-out %.c,$(C_SOURCES))
+C_SOURCES := $(filter-out %.cc,$(C_SOURCES))
 
 # list of C objects
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
@@ -92,12 +95,12 @@ $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 	$(CC) -c $(CFLAGS) -o $@
 
 # list of CPP objects
-OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(CPP_SOURCES:.cpp=.o)))
-vpath %.cpp $(sort $(dir $(CPP_SOURCES)))
+OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(CXX_SOURCES:.cc=.o)))
+vpath %.cc $(sort $(dir $(CXX_SOURCES)))
 
 # build CPP files
-$(BUILD_DIR)/%.o: %.cpp | $(BUILD_DIR) 
-	$(CC) -c $(CFLAGS) $< -o $@
+$(BUILD_DIR)/%.o: %.cc | $(BUILD_DIR) 
+	$(CC) -c $(CXXFLAGS) $< -o $@
 
 $(TARGET): $(OBJECTS)
 	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
