@@ -113,4 +113,5 @@ $(BUILD_DIR):
 #######################################
 .PHONY: clean
 clean:
-	-rm -fR $(BUILD_DIR)
+	-rm -fR $(BUILD_DIR) $(TARGET)
+	-cp out_original.txt out.txt
