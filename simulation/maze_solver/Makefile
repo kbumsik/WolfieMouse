@@ -8,11 +8,11 @@ TARGET = maze_solver
 BUILD_DIR := build
 
 # debug build?
-DEBUG = 1
+DEBUG := 1
 # optimization
 OPTIMIZATION_FLAG = -Og
 # Verbose gcc messages?
-VERBOSE = 0
+VERBOSE := 0
 # GCC flags
 CFLAGS = -Wall
 CXXFLAGS = -Wall
@@ -20,6 +20,9 @@ CXXFLAGS = -Wall
 # Compiler
 CC := gcc
 CXX := gcc
+
+# Debugger
+DEBUGGER := cdtdebug
 
 #######################################
 # Defines
@@ -63,12 +66,12 @@ C_INCLUDES =  \
 -I$(SOLVER_DIR) \
 
 ifeq ($(DEBUG), 1)
-  CFLAGS += -g -gdwarf-2
+  CFLAGS += -g -ggdb
 endif
 
-CFLAGS += $(C_DEFS) $(C_INCLUDES) $(OPTIMIZATION_FLAG) -std=c99
-CXXFLAGS += $(C_DEFS) $(C_INCLUDES) $(OPTIMIZATION_FLAG) -std=c++11
-LDFLAGS := -lstdc++
+CFLAGS += $(C_DEFS) $(C_INCLUDES) $(OPTIMIZATION_FLAG) -std=c99 -g -ggdb
+CXXFLAGS += $(C_DEFS) $(C_INCLUDES) $(OPTIMIZATION_FLAG) -std=c++11 -g -ggdb
+LDFLAGS := -lstdc++ -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
 
 # default action: build all
 all: $(TARGET)
@@ -88,15 +91,24 @@ C_SOURCES := $(filter-out %.cc,$(C_SOURCES))
 
 # list of C objects
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
+
+# list of CPP objects
+OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(CXX_SOURCES:.cc=.o)))
+
+ABSPATH := $(shell pwd)
+C_SOURCES := $(addprefix $(ABSPATH)/,$(C_SOURCES))
+CXX_SOURCES := $(addprefix $(ABSPATH)/,$(CXX_SOURCES))
+OBJECTS := $(addprefix $(ABSPATH)/,$(OBJECTS))
+BUILD_DIR := $(addprefix $(ABSPATH)/,$(BUILD_DIR))
+
+
 vpath %.c $(sort $(dir $(C_SOURCES)))
+vpath %.cc $(sort $(dir $(CXX_SOURCES)))
 
 # build C files
 $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR) 
 	$(CC) -c $(CFLAGS) -o $@
 
-# list of CPP objects
-OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(CXX_SOURCES:.cc=.o)))
-vpath %.cc $(sort $(dir $(CXX_SOURCES)))
 
 # build CPP files
 $(BUILD_DIR)/%.o: %.cc | $(BUILD_DIR) 
@@ -118,3 +130,10 @@ $(BUILD_DIR):
 clean:
 	-rm -fR $(BUILD_DIR) $(TARGET)
 	-cp out_original.txt out.txt
+
+#######################################
+# Debugger
+#######################################
+.PHONY: debug
+debug:
+	$(DEBUGGER) -e $(TARGET)

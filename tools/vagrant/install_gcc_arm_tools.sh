@@ -60,7 +60,7 @@ install-openocd () {
 		libtool libusb-dev libusb-1.0-0-dev libhidapi-dev
 
 	echo -e "\nCloning OpenOCD repository..."
-	git clone git://git.code.sf.net/p/openocd/code openocd
+	git clone http://repo.or.cz/openocd.git openocd
 	cd openocd
 	git checkout v0.10.0
 	echo -e "\nCompiling OpenOCD..."

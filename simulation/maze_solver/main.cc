@@ -28,8 +28,6 @@ int main()
     
     /* Check if files exists first */
     char *file_names[3] = {INPUT_FILE, SAVED_FILE, OUTPUT_FILE};
-    printf("%d\n", sizeof(file_names));
-
     for (unsigned int i = 0; i < (sizeof(file_names)/sizeof(char *)); i++) {
         FILE *file = NULL;
         if ((file = fopen(file_names[i], "r")) == NULL) {

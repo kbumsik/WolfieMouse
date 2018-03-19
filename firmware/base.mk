@@ -179,7 +179,7 @@ CFLAGS += $(MCU_FLAGS) $(C_DEFS) $(C_INCLUDES) $(OPTIMIZATION_FLAG) \
 			-Wall -fdata-sections -ffunction-sections
 
 ifeq ($(DEBUG), 1)
-  CFLAGS += -g -gdwarf-2
+  CFLAGS += -g -ggdb
 endif
 
 # Generate dependency information
