@@ -25,9 +25,10 @@ install-eclipse_cdt () {
 
 	echo -e "\nAdding Eclipse cdt to PATH"
 	cat >> /home/$USER/.bashrc <<-EOF
-#Add Eclipse CDT debugger to PATH
-export PATH=\$PATH:/opt/cdt-stand-alone-debugger
-EOF
+	#Add Eclipse CDT debugger to PATH
+	export PATH=\$PATH:/opt/cdt-stand-alone-debugger
+	EOF
+	
 	echo -e "\nDone installing Eclipse CDT debugger."
 }
 
