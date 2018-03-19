@@ -26,28 +26,20 @@ static inline void right_set_toggle_(void)
 
 static inline void left_set_forward_(void)
 {
-    gpio_set(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_SET);
+    gpio_set(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_RESET);
 }
 static inline void right_set_forward_(void)
 {
-#if defined(KB_WOLFIEMOUSE)
     gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET);
-#else
-    gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_RESET);
-#endif
 }
 
 static inline void left_set_backward_()
 {
-    gpio_set(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_RESET);
+    gpio_set(motorLEFT_PORT, motorLEFT_PIN, GPIO_PIN_SET);
 }
 static inline void right_set_backward_(void)
 {
-#if defined(KB_WOLFIEMOUSE)
 	gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_RESET);
-#else
-    gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET);
-#endif
 }
 
 

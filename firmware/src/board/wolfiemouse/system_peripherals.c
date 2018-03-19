@@ -16,12 +16,7 @@
 #include "motor.h"
 #include "pid.h"
 #include "adc.h"
-
-// ADC objects
-#ifndef KB_BLACKWOLF
-    #include "TCA9545A_i2c_mux.h"
-    #include "VL6180X_range_finder.h"
-#endif
+#include "tick.h"
 
 #include "FreeRTOS.h"
 #include "semphr.h"
@@ -52,11 +47,9 @@ pid_handler_t g_pid_T;    // Translational
 pid_handler_t g_pid_R; // Rotational
 
 // ADC objects
-#ifdef KB_BLACKWOLF
-    adc_t adc_L;
-    adc_t adc_R;
-    adc_t adc_F; // (Actually FL)
-#endif
+adc_t adc_L;
+adc_t adc_R;
+adc_t adc_F; // (Actually FL)
 
 /*******************************************************************************
  * Static variables
@@ -102,34 +95,21 @@ void peripheral_init(void)
     gpio_init(LED2_PORT, LED2_PIN, &GPIO_InitStruct);
     gpio_init(LED3_PORT, LED3_PIN, &GPIO_InitStruct);
     gpio_init(LED4_PORT, LED4_PIN, &GPIO_InitStruct);
-#if defined(KB_BLACKWOLF)
     gpio_init(LED5_PORT, LED5_PIN, &GPIO_InitStruct);
     gpio_init(LED6_PORT, LED6_PIN, &GPIO_InitStruct);
-#endif
 
     /* Configure LED Pins Output Level */
     gpio_set(LED1_PORT, LED1_PIN, GPIO_PIN_RESET);
     gpio_set(LED2_PORT, LED2_PIN, GPIO_PIN_RESET);
     gpio_set(LED3_PORT, LED3_PIN, GPIO_PIN_RESET);
     gpio_set(LED4_PORT, LED4_PIN, GPIO_PIN_RESET);
-#if defined(KB_BLACKWOLF)
     gpio_set(LED5_PORT, LED5_PIN, GPIO_PIN_RESET);
     gpio_set(LED6_PORT, LED6_PIN, GPIO_PIN_RESET);
-#endif
 
     /* Init peripherals for the LED display */
     hcms_290x_init();
 
     /* Range Sensor */
-#if defined(KB_WOLFIEMOUSE)
-    /* Init i2c MUX */
-    //tca9545a_init();
-    //tca9545a_select_ch(TCA9545A_CH_0);
-
-    /* Init Digital range sensors */
-    //vl6180x_init();
-    //vl6180x_range_mm();
-#elif defined(KB_BLACKWOLF)
     /* ADC */
     // Left
     adc_init_t adc_init_obj;
@@ -160,9 +140,6 @@ void peripheral_init(void)
 
     gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_RESET);
     gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_RESET);
-#else
-    #error "Define one of WolfieMouse hardware"
-#endif
 
     /* Init encoder */
     encoder_init();

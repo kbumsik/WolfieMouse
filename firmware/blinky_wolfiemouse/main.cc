@@ -15,6 +15,9 @@
 #include "semphr.h"
 #include "event_groups.h"
 
+// Micromouse system
+#include "encoder.h"
+
 void on_pressed(void);
 
 static void task_blinky(void *pvParameters);
@@ -101,6 +104,12 @@ void task_blinky(void *pvParameters)
     uint32_t seconds = 0;
 
     while (1) {
+        // Get encoder counts
+        int32_t counter_left = encoder_left_count();
+        int32_t counter_right = encoder_right_count();
+        terminal_puts("Rotary Counter:\n");
+        terminal_printf("Left: %ld, Right: %d\n", counter_left, counter_right);
+
         gpio_toggle(LED1_PORT, LED1_PIN);
         gpio_toggle(LED2_PORT, LED2_PIN);
         gpio_toggle(LED3_PORT, LED3_PIN);
@@ -112,7 +121,7 @@ void task_blinky(void *pvParameters)
         trace_printf("Second %u\n", seconds);
 
         /* Call this Task explicitly every 50ms ,NOT Delay for 50ms */
-        vTaskDelayUntil(&xLastWakeTime, (500 / portTICK_RATE_MS));
+        vTaskDelayUntil(&xLastWakeTime, (1000 / portTICK_RATE_MS));
     }
 
     /* It never goes here, but the task should be deleted when it reached here */
