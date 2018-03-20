@@ -49,7 +49,7 @@ pid_handler_t g_pid_R; // Rotational
 // ADC objects
 adc_t adc_L;
 adc_t adc_R;
-adc_t adc_F; // (Actually FL)
+adc_t adc_FL; // (Actually FL)
 
 /*******************************************************************************
  * Static variables
@@ -128,17 +128,19 @@ void peripheral_init(void)
     adc_init_obj.device = KB_ADC3;
     adc_init_obj.channel = KB_ADC_CH13;
 
-    adc_init(&adc_F, &adc_init_obj);
+    adc_init(&adc_FL, &adc_init_obj);
     adc_pin(RECV_FL_PORT, RECV_FL_PIN);
 
     /* Emitter */
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    gpio_init(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, &GPIO_InitStruct);
+    gpio_init(EMITTER_L_PORT, EMITTER_L_PIN, &GPIO_InitStruct);
+    gpio_init(EMITTER_R_PORT, EMITTER_R_PIN, &GPIO_InitStruct);
     gpio_init(EMITTER_FL_PORT, EMITTER_FL_PIN, &GPIO_InitStruct);
 
-    gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_RESET);
+    gpio_set(EMITTER_L_PORT, EMITTER_L_PIN, GPIO_PIN_RESET);
+    gpio_set(EMITTER_R_PORT, EMITTER_R_PIN, GPIO_PIN_RESET);
     gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_RESET);
 
     /* Init encoder */
@@ -231,14 +233,18 @@ void SysTick_hook(void)
 
     // Get ADC values
     if(_range_running) {
-        gpio_set(EMITTER_SIDES_PORT, EMITTER_SIDES_PIN, GPIO_PIN_SET);
+        // Left
+        gpio_set(EMITTER_L_PORT, EMITTER_L_PIN, GPIO_PIN_SET);
         delay_us(60);
         range_L = adc_measure(&adc_L);
+        // Right
+        gpio_set(EMITTER_R_PORT, EMITTER_R_PIN, GPIO_PIN_SET);
+        delay_us(60);
         range_R = adc_measure(&adc_R);
         // range front too
         gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_SET);
         delay_us(60);
-        range_F = adc_measure(&adc_F);
+        range_F = adc_measure(&adc_FL);
         gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_RESET);
     }
 

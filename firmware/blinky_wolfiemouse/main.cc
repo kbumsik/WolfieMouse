@@ -5,6 +5,7 @@
 #include "gpio.h"
 #include "terminal.h"
 #include "hcms_290x_display.h"
+#include "adc.h"
 
 // FreeRTOS
 #include "FreeRTOS.h"
@@ -103,12 +104,31 @@ void task_blinky(void *pvParameters)
 
     uint32_t seconds = 0;
 
+    extern adc_t adc_L;
+    extern adc_t adc_R;
+    extern adc_t adc_FL;
+    uint16_t ranges[3];
+    adc_t *range_adcs[3] = {&adc_L, &adc_R, &adc_FL};
+    gpio_port_t range_ports[3] = {EMITTER_L_PORT, EMITTER_R_PORT, EMITTER_FL_PORT};
+    gpio_pin_t range_pins[3] = {EMITTER_L_PIN, EMITTER_R_PIN, EMITTER_FL_PIN};
+
     while (1) {
         // Get encoder counts
         int32_t counter_left = encoder_left_count();
         int32_t counter_right = encoder_right_count();
         terminal_puts("Rotary Counter:\n");
         terminal_printf("Left: %ld, Right: %d\n", counter_left, counter_right);
+
+        // Get ADC values
+        terminal_puts("ADCs:\n");
+        for(int i = 0; i < 3; i++) {
+            gpio_set(range_ports[i], range_pins[i], GPIO_PIN_SET);
+            delay_us(60);
+            ranges[i] = adc_measure(range_adcs[i]);
+            gpio_set(range_ports[i], range_pins[i], GPIO_PIN_RESET);
+            terminal_printf("%u, ", ranges[i]);
+        }
+        terminal_puts("\n");
 
         gpio_toggle(LED1_PORT, LED1_PIN);
         gpio_toggle(LED2_PORT, LED2_PIN);

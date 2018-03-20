@@ -184,8 +184,10 @@
     // left front : PA1
     #define EMITTER_FR_PORT     GPIOC
     #define EMITTER_FR_PIN      GPIO_PIN_13
-    #define EMITTER_SIDES_PORT  GPIOA
-    #define EMITTER_SIDES_PIN   GPIO_PIN_0
+#define EMITTER_L_PORT      GPIOA
+#define EMITTER_L_PIN       GPIO_PIN_0
+#define EMITTER_R_PORT      GPIOC
+#define EMITTER_R_PIN       GPIO_PIN_14
     #define EMITTER_FL_PORT     GPIOA
     #define EMITTER_FL_PIN      GPIO_PIN_1
 #endif
