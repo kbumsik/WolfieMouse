@@ -13,9 +13,9 @@
 #include "terminal.h"
 #include "hcms_290x_display.h"
 #include "encoder.h"
+#include "range.h"
 #include "motor.h"
 #include "pid.h"
-#include "adc.h"
 #include "tick.h"
 
 #include "FreeRTOS.h"
@@ -31,12 +31,6 @@ extern SemaphoreHandle_t g_motion_semphr;
 /*******************************************************************************
  * Global variables
  ******************************************************************************/
-/**
- * Range finder value
- * Range_front is the average of range_front_left and range_front_right.
- */
-volatile uint16_t range_L = 4095, range_R = 4095, range_F = 4095,
-            range_FL = 4095, range_FR = 4095;
 
 // Encoder value
 volatile struct encoder_data step, step_old;
@@ -46,14 +40,12 @@ volatile struct _speed_struct {
     int32_t diff;    // left - right
 } speed;
 
+// Range finder value
+volatile struct range_data range;
+
 // PID handler
 pid_handler_t g_pid_T;    // Translational
 pid_handler_t g_pid_R; // Rotational
-
-// ADC objects
-adc_t adc_L;
-adc_t adc_R;
-adc_t adc_FL; // (Actually FL)
 
 /*******************************************************************************
  * Static variables
@@ -114,39 +106,8 @@ void peripheral_init(void)
     hcms_290x_init();
 
     /* Range Sensor */
-    /* ADC */
-    // Left
-    adc_init_t adc_init_obj;
-    adc_init_obj.device = KB_ADC1;
-    adc_init_obj.channel = KB_ADC_CH12;
-
-    adc_init(&adc_L, &adc_init_obj);
-    adc_pin(RECV_L_PORT, RECV_L_PIN);
-    // Right
-    adc_init_obj.device = KB_ADC2;
-    adc_init_obj.channel = KB_ADC_CH11;
-
-    adc_init(&adc_R, &adc_init_obj);
-    adc_pin(RECV_R_PORT, RECV_R_PIN);
-    // Front (actually FL)
-    adc_init_obj.device = KB_ADC3;
-    adc_init_obj.channel = KB_ADC_CH13;
-
-    adc_init(&adc_FL, &adc_init_obj);
-    adc_pin(RECV_FL_PORT, RECV_FL_PIN);
-
-    /* Emitter */
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    gpio_init(EMITTER_L_PORT, EMITTER_L_PIN, &GPIO_InitStruct);
-    gpio_init(EMITTER_R_PORT, EMITTER_R_PIN, &GPIO_InitStruct);
-    gpio_init(EMITTER_FL_PORT, EMITTER_FL_PIN, &GPIO_InitStruct);
-
-    gpio_set(EMITTER_L_PORT, EMITTER_L_PIN, GPIO_PIN_RESET);
-    gpio_set(EMITTER_R_PORT, EMITTER_R_PIN, GPIO_PIN_RESET);
-    gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_RESET);
-
+    range_init();
+    
     /* Init encoder */
     encoder_init();
     encoder_get(&step, ENCODER_CH_BOTH);
@@ -234,36 +195,24 @@ void SysTick_hook(void)
 
     // Get ADC values
     if(_range_running) {
-        // Left
-        gpio_set(EMITTER_L_PORT, EMITTER_L_PIN, GPIO_PIN_SET);
-        delay_us(60);
-        range_L = adc_measure(&adc_L);
-        // Right
-        gpio_set(EMITTER_R_PORT, EMITTER_R_PIN, GPIO_PIN_SET);
-        delay_us(60);
-        range_R = adc_measure(&adc_R);
-        // range front too
-        gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_SET);
-        delay_us(60);
-        range_F = adc_measure(&adc_FL);
-        gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_RESET);
+        range_get(&range, RANGE_CH_ALL);
     }
 
     // get errorR
     int32_t feedback_R;
-    if(_range_running && (range_L > MEASURE_RANGE_L_DETECT)
-                        && (range_R > MEASURE_RANGE_R_DETECT) ) {
+    if(_range_running && (range.left > MEASURE_RANGE_L_DETECT)
+                        && (range.right > MEASURE_RANGE_R_DETECT) ) {
         // If both range are within wall detecting distance,
         // Use range sensor to get rotational error
-        feedback_R = (range_R - range_L - MEASURE_RANGE_R_OFFSET) / 10;
-    } else if (_range_running && range_L > MEASURE_RANGE_L_DETECT) {
+        feedback_R = (range.right - range.left - MEASURE_RANGE_R_OFFSET) / 10;
+    } else if (_range_running && range.left > MEASURE_RANGE_L_DETECT) {
         // If only left side is within range
         // use the middle value of the right range
-        feedback_R = (MEASURE_RANGE_R_MIDDLE - range_L) / 10;
-    } else if (_range_running && range_R > MEASURE_RANGE_R_DETECT) {
+        feedback_R = (MEASURE_RANGE_R_MIDDLE - range.left) / 10;
+    } else if (_range_running && range.right > MEASURE_RANGE_R_DETECT) {
         // If only right side is within range
         // use the middle value of the left range
-        feedback_R = (range_R - MEASURE_RANGE_L_MIDDLE) / 10;
+        feedback_R = (range.right - MEASURE_RANGE_L_MIDDLE) / 10;
     } else {
         // in open space, use rotary encoder
         feedback_R = speed.left - speed.right;

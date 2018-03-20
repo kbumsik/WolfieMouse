@@ -11,8 +11,8 @@
 #include "config_measurements.h"
 #include "rotary_encoder.h"
 
-rotary_encoder_t _left;
-rotary_encoder_t _right;
+static rotary_encoder_t _left;
+static rotary_encoder_t _right;
 
 void encoder_init(void)
 {
