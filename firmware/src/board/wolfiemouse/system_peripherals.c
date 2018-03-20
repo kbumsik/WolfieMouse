@@ -39,8 +39,12 @@ volatile uint16_t range_L = 4095, range_R = 4095, range_F = 4095,
             range_FL = 4095, range_FR = 4095;
 
 // Encoder value
-volatile int32_t steps_L, steps_R, steps_L_old, steps_R_old;
-volatile int32_t speed_L, speed_R, speed_D;
+volatile struct encoder_data step, step_old;
+volatile struct _speed_struct {
+    int32_t left;
+    int32_t right;
+    int32_t diff;    // left - right
+} speed;
 
 // PID handler
 pid_handler_t g_pid_T;    // Translational
@@ -145,8 +149,7 @@ void peripheral_init(void)
 
     /* Init encoder */
     encoder_init();
-    steps_L = encoder_left_count();
-    steps_R = encoder_right_count();
+    encoder_get(&step, ENCODER_CH_BOTH);
 
     /* Set PID controller */
     pid_value_t pid_T_value = {
@@ -188,14 +191,12 @@ void SysTick_hook(void)
         return;
     }
     // Get encoder values and calculate speed
-    steps_L_old = steps_L;
-    steps_R_old = steps_R;
-    steps_L = encoder_left_count();
-    steps_R = encoder_right_count();
-    // FIXME: We double this because left side encoder 2 times slower
-    speed_L = (steps_L - steps_L_old);// * CONFIG_LEN_PER_CNT;
-    speed_R = (steps_R - steps_R_old);// * CONFIG_LEN_PER_CNT;
-    speed_D = speed_L - speed_R;
+    step_old = step;
+    encoder_get(&step, ENCODER_CH_BOTH);
+
+    speed.left = (step.left - step_old.left);// * CONFIG_LEN_PER_CNT;
+    speed.right = (step.right - step_old.right);// * CONFIG_LEN_PER_CNT;
+    speed.diff = speed.left - speed.right;
 
     /* Motion controller notification */
     for (int i = 0; i < 2; i++) {
@@ -205,11 +206,11 @@ void SysTick_hook(void)
         static uint32_t target;
         if (i == 0) {
             status = &_motion_status_L;
-            steps = steps_L;
+            steps = step.left;
             target = g_motion_target_L;
         } else {
             status = &_motion_status_R;
-            steps = steps_R;
+            steps = step.right;
             target = g_motion_target_R;
         }
         // check variables
@@ -228,7 +229,7 @@ void SysTick_hook(void)
 
     /* Start PID calculation */
     // calculate errorT
-    int32_t feedback_T = (speed_L + speed_R) / 2;
+    int32_t feedback_T = (speed.left + speed.right) / 2;
     int32_t outputT = pid_compute(&g_pid_T, feedback_T);
 
     // Get ADC values
@@ -265,7 +266,7 @@ void SysTick_hook(void)
         feedback_R = (range_R - MEASURE_RANGE_L_MIDDLE) / 10;
     } else {
         // in open space, use rotary encoder
-        feedback_R = speed_L - speed_R;
+        feedback_R = speed.left - speed.right;
     }
 
     int32_t outputR = pid_compute(&g_pid_R, feedback_R);
@@ -325,12 +326,10 @@ void system_reset_encoder(void)
 {
     /* before reset hardware, reset old steps */
     // first compansate values before resetting
-    steps_L = encoder_left_count();
-    steps_R = encoder_right_count();
-    steps_L_old = MEASURE_ENCODER_DEFAULT - (steps_L - steps_L_old);
-    steps_R_old = MEASURE_ENCODER_DEFAULT - (steps_R - steps_R_old);
-    encoder_left_reset();
-    encoder_right_reset();
+    encoder_get(&step, ENCODER_CH_BOTH); 
+    step_old.left = MEASURE_ENCODER_DEFAULT - (step.left - step_old.left);
+    step_old.right = MEASURE_ENCODER_DEFAULT - (step.right - step_old.right);
+    encoder_reset(ENCODER_CH_BOTH);
 }
 
 void system_motion_forward_L(void)

@@ -104,6 +104,9 @@ void task_blinky(void *pvParameters)
 
     uint32_t seconds = 0;
 
+
+    struct encoder_data step;
+
     extern adc_t adc_L;
     extern adc_t adc_R;
     extern adc_t adc_FL;
@@ -114,10 +117,9 @@ void task_blinky(void *pvParameters)
 
     while (1) {
         // Get encoder counts
-        int32_t counter_left = encoder_left_count();
-        int32_t counter_right = encoder_right_count();
+        encoder_get(&step, ENCODER_CH_BOTH);
         terminal_puts("Rotary Counter:\n");
-        terminal_printf("Left: %ld, Right: %d\n", counter_left, counter_right);
+        terminal_printf("Left: %ld, Right: %d\n", step.left, step.right);
 
         // Get ADC values
         terminal_puts("ADCs:\n");
