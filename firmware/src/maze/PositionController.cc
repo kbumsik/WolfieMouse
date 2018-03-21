@@ -127,7 +127,7 @@ Position PositionController::getNextPos(Direction dirTo)
 
 void PositionController::print(PositionController obj)
 {
-    printf("(%d,%d) ", obj.pos.row, obj.pos.col);
+    printf("Position{%d,%d}, ", obj.pos.row, obj.pos.col);
 }
 
 /*******************************************************************************
