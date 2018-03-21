@@ -1,7 +1,7 @@
 #include "Position.hpp"
 #include "Queue.hpp"
 #include <vector>
-#include "stdio.hpp"
+#include <stdio.h>
 #include <deque>
 
 std::vector<Position> pathPos = {
@@ -18,61 +18,69 @@ std::deque<char>path;
 
 int main(void)
 {
-    int init_row= NULL,init_col = NULL;
+    int init_row= -1,init_col = -1;
     int final_col,final_row ;
+    Position init;
+    Position last;
+
+    init.row = -1; init.col = -1;
 
     queue.init();
-    for (int i = 0; i < pathPos.size(); i++) 
-    {
+
+    for (int i = 0; i < pathPos.size(); i++)   {
         queue.pushToBack(pathPos[i]);
     }
 
-    for(int i=0;i < pathPos.size(); i++)
-    {
-        if(init_col == NULL && init_row == NULL)
-        {
-            init_row = queue.peekFromFront().row;
-            init_col = queue.popFromFront().col;
+    for(int i=0;i < pathPos.size(); i++) {
+        if(init.col == -1 && init.row == -1)  {
+            /*
+            init.row = queue.peekFromFront().row;
+            init.col = queue.popFromFront().col;
 
-            final_col = queue.peekFromFront().col;
-            final_row = queue.popFromFront().row;
+            last.col = queue.peekFromFront().col;
+            last.row = queue.popFromFront().row;
+*/
+            init = queue.popFromFront();
+            last = queue.popFromFront();
+
+        }   else  {
+            /*
+            init.row = last.row;
+            init.col = last.col;
+
+            last.col = queue.peekFromFront().col;
+            last.row = queue.popFromFront().row;
+            */
+            init = last;
+            last = queue.popFromFront();
         }
-        else
-        {
-            init_row = final_row;
-            init_col = final_col;
-
-            final_col = queue.peekFromFront().col;
-            final_row = queue.popFromFront().row;
-        }
 
 
-        if(init_row == (final_row-1))
+        if(init.row == (last.row-1))
                 path.push_back('F');
-        else if(init_row == (final_row+1) )
+        else if(init.row == (last.row+1) )
                 path.push_back('B');
         /*though same change in the position,
         due to robots direction (facing up or down) 
         it can be the left turn or right turn*/
 
         /*when robot is facing up*/
-        else if(init_col == (final_col+1) && path.front() == 'F')
+        else if(init.col == (last.col+1) && path.front() == 'F')
                 path.push_back('L');
-        else if(init_col == (final_col-1) && path.front() == 'F')
+        else if(init.col == (last.col-1) && path.front() == 'F')
                 path.push_back('R');
         /*when robot is facing up*/
 
         /*when robot is facing down*/
-        else if(init_col == (final_col+1) && path.front() == 'B')
+        else if(init.col == (last.col+1) && path.front() == 'B')
                 path.push_back('R');
-        else if(init_col == (final_col-1) && path.front() == 'B')
+        else if(init.col == (last.col-1) && path.front() == 'B')
                 path.push_back('L');
         /*when robot is facing down*/
 
     }
 
-    for(int i=0;i < pathPos.size(); i++)
-    {
+    for(int i=0;i < pathPos.size(); i++)    {
         printf("%c -> ",path.front());
         path.pop_front();
     }
