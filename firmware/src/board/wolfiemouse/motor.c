@@ -30,11 +30,7 @@ static inline void left_set_forward_(void)
 }
 static inline void right_set_forward_(void)
 {
-#if defined(KB_WOLFIEMOUSE)
-    gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET);
-#else
     gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_RESET);
-#endif
 }
 
 static inline void left_set_backward_()
@@ -43,11 +39,7 @@ static inline void left_set_backward_()
 }
 static inline void right_set_backward_(void)
 {
-#if defined(KB_WOLFIEMOUSE)
-	gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_RESET);
-#else
-    gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET);
-#endif
+	gpio_set(motorRIGHT_PORT, motorRIGHT_PIN, GPIO_PIN_SET);
 }
 
 
@@ -142,6 +134,56 @@ int32_t motor_speed_percent(motor_ch_t channel, int32_t speed)
         }
 		pwm_percent(&_timer, CH_1, speed);
 		pwm_percent(&_timer, CH_4, speed);
+		break;
+
+	default:
+		/* Return Error in other cases */
+		return 0;
+	}
+
+	/* return OK */
+	return speed;
+}
+
+int32_t motor_speed_permyriad(motor_ch_t channel, int32_t speed)
+{
+    int go_backword = 0;
+    if (speed < 0) {
+        go_backword = 1;
+        speed *= -1;
+    }
+	switch (channel) {
+	case CH_LEFT:
+		/* Set the pulse value for channel 1 */
+	    if (go_backword) {
+	        left_set_backward_();
+	    } else {
+	        left_set_forward_();
+	    }
+		pwm_permyriad(&_timer, CH_1, speed);
+		break;
+
+	case CH_RIGHT:
+		/* Set the pulse value for channel 4 */
+        if (go_backword) {
+            right_set_backward_();
+        } else {
+            right_set_forward_();
+        }
+		pwm_permyriad(&_timer, CH_4, speed);
+		break;
+
+	case CH_BOTH:
+		/* Set the pulse value for all channel */
+        if (go_backword) {
+            left_set_backward_();
+            right_set_backward_();
+        } else {
+            left_set_forward_();
+            right_set_forward_();
+        }
+		pwm_permyriad(&_timer, CH_1, speed);
+		pwm_permyriad(&_timer, CH_4, speed);
 		break;
 
 	default:

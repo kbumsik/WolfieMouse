@@ -5,6 +5,7 @@
 #include "gpio.h"
 #include "terminal.h"
 #include "hcms_290x_display.h"
+#include "adc.h"
 
 // FreeRTOS
 #include "FreeRTOS.h"
@@ -15,6 +16,13 @@
 #include "semphr.h"
 #include "event_groups.h"
 
+// Micromouse system
+#include "system_control.h"
+#include "pid.h"
+#include "encoder.h"
+#include "range.h"
+#include "motor.h"
+
 void on_pressed(void);
 
 static void task_blinky(void *pvParameters);
@@ -22,6 +30,9 @@ static void task_blinky(void *pvParameters);
 /* Task Handlers */
 TaskHandle_t task_blinky_handler;
 
+// PID handler
+extern pid_handler_t g_pid_T;
+extern pid_handler_t g_pid_R;
 
 int main(void)
 {
@@ -96,11 +107,39 @@ void task_blinky(void *pvParameters)
     portTickType xLastWakeTime;
     /* Initialize xLastWakeTime for vTaskDelayUntil */
     /* This variable is updated every vTaskDelayUntil is called */
-    xLastWakeTime = xTaskGetTickCount();
 
     uint32_t seconds = 0;
 
+
+    // Apply to the motor
+    // pid_reset(&g_pid_T);
+    // pid_reset(&g_pid_R);
+
+    // system_disable_range_finder();
+    pid_input_setpoint(&g_pid_T, 60);
+    pid_input_setpoint(&g_pid_R, 0);
+    system_start_driving();
+    delay_ms(2000);
+    /* Motor test running done */
+    system_stop_driving();
+
+    struct encoder_data step;
+    struct range_data range;
+
+    xLastWakeTime = xTaskGetTickCount();
+    
     while (1) {
+        // Get encoder counts
+        encoder_get(&step, ENCODER_CH_BOTH);
+        terminal_puts("Rotary Counter:\n");
+        terminal_printf("Left: %ld, Right: %d\n", step.left, step.right);
+
+        // Get ADC values
+        terminal_puts("ADCs:\n");
+        range_get(&range, RANGE_CH_ALL);
+        terminal_printf("Left: %u, Right: %u, Front: %u", range.left, range.right, range.front);
+        terminal_puts("\n");
+
         gpio_toggle(LED1_PORT, LED1_PIN);
         gpio_toggle(LED2_PORT, LED2_PIN);
         gpio_toggle(LED3_PORT, LED3_PIN);
@@ -112,7 +151,7 @@ void task_blinky(void *pvParameters)
         trace_printf("Second %u\n", seconds);
 
         /* Call this Task explicitly every 50ms ,NOT Delay for 50ms */
-        vTaskDelayUntil(&xLastWakeTime, (500 / portTICK_RATE_MS));
+        vTaskDelayUntil(&xLastWakeTime, (1000 / portTICK_RATE_MS));
     }
 
     /* It never goes here, but the task should be deleted when it reached here */

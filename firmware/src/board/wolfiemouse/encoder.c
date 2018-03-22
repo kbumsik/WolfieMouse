@@ -11,8 +11,8 @@
 #include "config_measurements.h"
 #include "rotary_encoder.h"
 
-rotary_encoder_t g_encoder_left;
-rotary_encoder_t g_encoder_right;
+static rotary_encoder_t _left;
+static rotary_encoder_t _right;
 
 void encoder_init(void)
 {
@@ -35,7 +35,7 @@ void encoder_init(void)
 			.direction = CCW,
 			.prescaler = 0x0U
 	};
-	rotary_encoder_init(&g_encoder_left, &enc_setting);
+	rotary_encoder_init(&_left, &enc_setting);
 	
 	// right channel
 	enc_setting = (rotary_encoder_init_t){
@@ -43,32 +43,48 @@ void encoder_init(void)
 			.direction = CW,
 			.prescaler = 0x0U
 	};
-	rotary_encoder_init(&g_encoder_right, &enc_setting);
+	rotary_encoder_init(&_right, &enc_setting);
 
 	// start encoders
-	rotary_encoder_start(&g_encoder_left);
-	rotary_encoder_start(&g_encoder_right);
+	rotary_encoder_start(&_left);
+	rotary_encoder_start(&_right);
 
-	encoder_left_reset();
-	encoder_right_reset();
+	encoder_reset(ENCODER_CH_BOTH);
 }
 
-int32_t encoder_left_count(void)
+void encoder_get(struct encoder_data *out, enum encoder_ch ch)
 {
-	return rotary_encoder_count(&g_encoder_left);
+	if (NULL == out) {
+		return;
+	}
+	// Get 
+	switch(ch){
+    	case ENCODER_CH_LEFT:
+			out->left = rotary_encoder_count(&_left);
+		break;
+    	case ENCODER_CH_RIGHT:
+			out->right = rotary_encoder_count(&_right);
+		break;
+    	case ENCODER_CH_BOTH:
+			out->left = rotary_encoder_count(&_left);
+			out->right = rotary_encoder_count(&_right);
+		break;
+	}
 }
 
-int32_t encoder_right_count(void)
+void encoder_reset(enum encoder_ch ch)
 {
-	return rotary_encoder_count(&g_encoder_right);
-}
-
-void encoder_left_reset(void)
-{
-	rotary_encoder_set(&g_encoder_left, MEASURE_ENCODER_DEFAULT);
-}
-
-void encoder_right_reset(void)
-{
-	rotary_encoder_set(&g_encoder_right, MEASURE_ENCODER_DEFAULT);
+	// Get 
+	switch(ch){
+    	case ENCODER_CH_LEFT:
+			rotary_encoder_set(&_left, MEASURE_ENCODER_DEFAULT);
+		break;
+    	case ENCODER_CH_RIGHT:
+			rotary_encoder_set(&_right, MEASURE_ENCODER_DEFAULT);
+		break;
+    	case ENCODER_CH_BOTH:
+			rotary_encoder_set(&_left, MEASURE_ENCODER_DEFAULT);
+			rotary_encoder_set(&_right, MEASURE_ENCODER_DEFAULT);
+		break;
+	}
 }
