@@ -52,8 +52,8 @@ extern void SysTick_hook(void); // Can be found in hooks.c
 
 void SysTick_Handler (void)
 {
-    SysTick_hook();
 	tick_inc_ms();
+    SysTick_hook();
 
 #ifdef KB_USE_FREERTOS
 	// FreeRTOS Tick handler

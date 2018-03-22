@@ -17,8 +17,11 @@
 #include "event_groups.h"
 
 // Micromouse system
+#include "system_control.h"
+#include "pid.h"
 #include "encoder.h"
 #include "range.h"
+#include "motor.h"
 
 void on_pressed(void);
 
@@ -27,6 +30,9 @@ static void task_blinky(void *pvParameters);
 /* Task Handlers */
 TaskHandle_t task_blinky_handler;
 
+// PID handler
+extern pid_handler_t g_pid_T;
+extern pid_handler_t g_pid_R;
 
 int main(void)
 {
@@ -101,14 +107,27 @@ void task_blinky(void *pvParameters)
     portTickType xLastWakeTime;
     /* Initialize xLastWakeTime for vTaskDelayUntil */
     /* This variable is updated every vTaskDelayUntil is called */
-    xLastWakeTime = xTaskGetTickCount();
 
     uint32_t seconds = 0;
 
 
+    // Apply to the motor
+    // pid_reset(&g_pid_T);
+    // pid_reset(&g_pid_R);
+
+    // system_disable_range_finder();
+    pid_input_setpoint(&g_pid_T, 60);
+    pid_input_setpoint(&g_pid_R, 0);
+    system_start_driving();
+    delay_ms(2000);
+    /* Motor test running done */
+    system_stop_driving();
+
     struct encoder_data step;
     struct range_data range;
 
+    xLastWakeTime = xTaskGetTickCount();
+    
     while (1) {
         // Get encoder counts
         encoder_get(&step, ENCODER_CH_BOTH);

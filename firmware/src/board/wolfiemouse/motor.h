@@ -27,6 +27,7 @@ void motor_dir_rotate_left(void);
 void motor_dir_rotate_right(void);
 
 int32_t motor_speed_percent(motor_ch_t channel, int32_t speed);
+int32_t motor_speed_permyriad(motor_ch_t channel, int32_t speed);
 status_t motor_start(motor_ch_t eChannel);
 status_t motor_stop(motor_ch_t eChannel);
 
