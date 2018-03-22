@@ -126,9 +126,6 @@ int main(void)
     }
 
     for(int i=0; path.front() ; i++){
-
-
-
             
     }
 
