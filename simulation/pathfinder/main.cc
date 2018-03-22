@@ -5,15 +5,19 @@
 #include <deque>
 
 std::vector<Position> pathPos = {
-   Position{6,2}, Position{6,3}, Position{7,3}, Position{8,3}, Position{9,3}, Position{9,4}, Position{8,4}, Position{7,4}, Position{7,5}, Position{7,6}
+Position{13,1}, Position{13,2}, Position{12,2}, Position{12,1}, Position{13,1}, Position{14,1}, 
+Position{14,2}, Position{14,3}, Position{14,4}, Position{13,4}, Position{12,4}, Position{11,4}, 
+Position{10,4}, Position{9,4}, Position{8,4}, Position{7,4}, Position{7,5}, Position{7,6}
+
 };
 
 Queue<Position> queue;
 
-enum direction{F_U = 'U',F_D = 'D',cc90 = 'L',cw90 = 'R', V = 'V', H = 'H'} ;
+enum direction{F_U = 'U',F_D = 'D',cc90 = 'L',cw90 = 'R', V = 'V', H = 'H', smooth_R = 'r', smooth_L = 'l'} ;
 
 
 std::deque<enum direction>path;
+std::deque<enum direction>s_path;
 
 int main(void)
 {
@@ -56,12 +60,12 @@ int main(void)
             it can be the left turn or right turn*/
 
             /*when robot is facing up*/
-            else if(init.row == (last.row+1) && path.front() == F_U){
+            else if(init.row == (last.row+1) && path.back() == F_U){
                     path.push_back(cc90);
                     path.push_back(F_D);
                     current_status = H;
                     }
-            else if(init.row == (last.row-1) && path.front() == F_U){
+            else if(init.row == (last.row-1) && path.back() == F_U){
                     path.push_back(cw90);
                     path.push_back(F_U);
                     current_status = H;
@@ -69,12 +73,12 @@ int main(void)
             /*when robot is facing up*/
 
             /*when robot is facing down*/
-            else if(init.row == (last.row+1) && path.front() == F_D){
+            else if(init.row == (last.row+1) && path.back() == F_D){
                     path.push_back(cw90);
                     path.push_back(F_D);
                     current_status = H;
                     }
-            else if(init.row == (last.row-1) && path.front() == F_D){
+            else if(init.row == (last.row-1) && path.back() == F_D){
                     path.push_back(cc90);
                     path.push_back(F_U);
                     current_status = H;
@@ -90,26 +94,27 @@ int main(void)
             it can be the left turn or right turn*/
 
             /*when robot is facing up*/
-            else if(init.col == (last.col+1) && path.front() == F_U){
-                    path.push_back(cc90);
+            else if(init.col == (last.col+1) && path.back() == F_U){
+                    path.push_back(cw90);
                     path.push_back(F_D);
                     current_status = V;
                     }
-            else if(init.col == (last.col-1) && path.front() == F_U){
-                    path.push_back(cw90);
+            else if(init.col == (last.col-1) && path.back() == F_U){
+                    path.push_back(cc90);
                     path.push_back(F_U);
                     current_status = V;
+                    printf("%d. %d -> %d,%d   /  %c \n",init.row,init.col, last.row,last.col,path.back());
                     }
             /*when robot is facing up*/
 
             /*when robot is facing down*/
-            else if(init.col == (last.col+1) && path.front() == F_D){
-                    path.push_back(cw90);
+            else if(init.col == (last.col+1) && path.back() == F_D){
+                    path.push_back(cc90);
                     path.push_back(F_D);
                     current_status = V;
                     }
-            else if(init.col == (last.col-1) && path.front() == F_D){
-                    path.push_back(cc90);
+            else if(init.col == (last.col-1) && path.back() == F_D){
+                    path.push_back(cw90);
                     path.push_back(F_U);
                     current_status = V;
                     }
@@ -117,6 +122,14 @@ int main(void)
                            
                    
         }
+        
+    }
+
+    for(int i=0; path.front() ; i++){
+
+
+
+            
     }
 
     for(int i=0; path.front() ; i++)    {
