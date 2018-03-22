@@ -10,7 +10,7 @@ std::vector<Position> pathPos = {
 
 Queue<Position> queue;
 
-enum direction{F_U = 'F_U',F_D = 'F_D',cc90 = 'cc90',cw90 = 'cw90', V = 'V', H = 'H'} ;
+enum direction{F_U = 'U',F_D = 'D',cc90 = 'L',cw90 = 'R', V = 'V', H = 'H'} ;
 
 
 std::deque<enum direction>path;
