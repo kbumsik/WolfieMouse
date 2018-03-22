@@ -133,9 +133,9 @@ void peripheral_init(void)
     };
 
     pid_value_t pid_R_value = {
-                .kp = 30,
-                .ki = 0.4,
-                .kd = 10
+                .kp = 1,
+                .ki = 0,
+                .kd = 2
     };
 
     pid_set_pid(&g_pid_T, &pid_T_value);
@@ -228,7 +228,7 @@ void SysTick_hook(void)
         feedback_R = (range.right - MEASURE_RANGE_L_MIDDLE) / 10;
     } else {
         // in open space, use rotary encoder
-        feedback_R = speed.diff;
+        feedback_R = speed.diff * 10;
     }
 
     int32_t outputR = pid_compute(&g_pid_R, feedback_R);

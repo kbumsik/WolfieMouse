@@ -115,13 +115,14 @@ void task_blinky(void *pvParameters)
     // pid_reset(&g_pid_T);
     // pid_reset(&g_pid_R);
 
-    // system_disable_range_finder();
+    system_enable_range_finder();
     pid_input_setpoint(&g_pid_T, 60);
     pid_input_setpoint(&g_pid_R, 0);
     system_start_driving();
     delay_ms(2000);
     /* Motor test running done */
     system_stop_driving();
+    system_disable_range_finder();
 
     struct encoder_data step;
     struct range_data range;
