@@ -118,16 +118,7 @@ void task_blinky(void *pvParameters)
     xLastWakeTime = xTaskGetTickCount();
     
     while (1) {
-        // Get encoder counts
-        encoder_get(&step, ENCODER_CH_BOTH);
-        terminal_puts("Rotary Counter:\n");
-        terminal_printf("Left: %ld, Right: %d\n", step.left, step.right);
 
-        // Get ADC values
-        terminal_puts("ADCs:\n");
-        range_get(&range, RANGE_CH_ALL);
-        terminal_printf("Left: %u, Right: %u, Front: %u", range.left, range.right, range.front);
-        terminal_puts("\n");
 
         gpio_toggle(LED1_PORT, LED1_PIN);
         gpio_toggle(LED2_PORT, LED2_PIN);

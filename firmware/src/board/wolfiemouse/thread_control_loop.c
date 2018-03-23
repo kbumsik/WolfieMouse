@@ -110,13 +110,14 @@ void thread_control_loop_init(void)
 {
     gpio_init_t GPIO_InitStruct;
 
+    /* Configure UART */
+    terminal_init();
+    
     /* Init motor */
     motor_init();
     motor_speed_percent(CH_BOTH, 0);
     motor_start(CH_BOTH);
 
-    /* Configure UART */
-    terminal_init();
 
     /* Configure Pushbuttons */
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -156,9 +157,9 @@ void thread_control_loop_init(void)
 
     /* Set PID controller */
     pid_value_t pid_T_value = {
-            .kp = 60,
-            .ki = 0, // 0.01
-            .kd = 240
+            .kp = 35,
+            .ki = 5, // 0.01
+            .kd = 10
     };
 
     pid_value_t pid_R_value = {
@@ -451,7 +452,7 @@ void system_start_driving(void)
 {
     state.pid = 1;
     state.pid_tran = 1;
-    state.pid_rot = 0;
+    state.pid_rot = 1;
 }
 
 void system_stop_driving(void)

@@ -82,9 +82,9 @@ status_t motor_init(void)
 	motor_dir_forward();
 
 	// PWM settings
-	pwm_init_t pwm_setting = {	// PWM is at 1kHz
+	pwm_init_t pwm_setting = {	// PWM is at 10kHz
 	        .device = KB_TIMER_TIM1,
-			.clock_frequency = 10000000,
+			.clock_frequency = 180000000,
 			.period = 10000
 	};
 	pwm_init(&_timer, &pwm_setting);
