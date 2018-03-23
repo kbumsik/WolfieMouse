@@ -16,7 +16,7 @@ uint32_t write_flash(uint8_t* data, uint32_t num_of_bytes)
     /* Variables */
     static FLASH_EraseInitTypeDef flash_erase_struct;
     uint32_t sector_error;
-    uint32_t address = ADDR_FLASH_SECTOR_0;
+    uint32_t address = ADDR_FLASH_SECTOR_1;
 
     /* Unlock Flash */
     HAL_FLASH_Unlock();
@@ -24,7 +24,7 @@ uint32_t write_flash(uint8_t* data, uint32_t num_of_bytes)
     /* Erase Flash Struct */
     flash_erase_struct.TypeErase = FLASH_TYPEERASE_SECTORS;
     flash_erase_struct.VoltageRange = FLASH_VOLTAGE_RANGE_3;
-    flash_erase_struct.Sector = FLASH_SECTOR_0;
+    flash_erase_struct.Sector = FLASH_SECTOR_1;
     flash_erase_struct.NbSectors = 1;
 
     /* Erase Flash */
@@ -67,7 +67,7 @@ void read_flash(uint8_t* data, uint32_t num_of_bytes)
         return;
     }
     /* Read Flash */
-    uint32_t address = ADDR_FLASH_SECTOR_0;
+    uint32_t address = ADDR_FLASH_SECTOR_1;
     for (num_of_bytes; num_of_bytes > 0; num_of_bytes--) {
         *(data++) = *( (__IO uint32_t*) address++ );
     }

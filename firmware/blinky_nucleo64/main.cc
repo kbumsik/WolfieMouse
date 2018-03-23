@@ -94,28 +94,30 @@ int main(void)
 void on_pressed(void)
 {
     trace_puts("Button Pressed\n");
+    terminal_printf("Button Pressed: terminal_printf\n");
+
+    /* Write to flash sector 0 */
+    uint8_t message[11] = {'H', 'e', 'l', 'l', 'o', ' ', 'F', 'l', 'a', 's', 'h'};
+    uint8_t mess_rtrn[11];
+    uint32_t flash_status = 0;
+    
+    flash_status = write_flash(message, 11);
+    
+    /* Read what I just wrote */
+    read_flash(mess_rtrn, 11);
+    /* Chech The read data is valid */
+
+    /* Print to Terminal Results */
+    terminal_printf("Status: %d\n", flash_status);
+    terminal_printf("OG Message: %s\n", message);
+    terminal_printf("Returned Message: %s\n", mess_rtrn);
+
     return;
 }
 
 /* vBlinkyTask function */
 void task_blinky(void *pvParameters)
 {
-    /* Write to flash sector 0 */
-    uint8_t message[11] = {'H', 'e', 'l', 'l', 'o', ' ', 'F', 'l', 'a', 's', 'h'};
-    uint8_t mess_rtrn[11];
-    uint32_t flash_status = 0;
-    if (write_flash(message, 11) != HAL_OK) {
-        flash_status++;
-    }
-    /* Read what I just wrote */
-    read_flash(mess_rtrn, 11);
-    /* Chech The read data is valid */
-    for (uint32_t i = 0; i < 11; i++) {
-        if (mess_rtrn[i] != message[i]) {
-            flash_status++;
-        }
-    }
-
     portTickType xLastWakeTime;
     /* Initialize xLastWakeTime for vTaskDelayUntil */
     /* This variable is updated every vTaskDelayUntil is called */

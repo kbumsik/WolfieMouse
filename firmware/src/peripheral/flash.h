@@ -9,14 +9,14 @@
 
 #include "common_header.h"
 
-#define ADDR_FLASH_SECTOR_0     ((uint32_t)0x08000000) /* Base @ of Sector 0, 16 Kbytes */
+#define ADDR_FLASH_SECTOR_1     ((uint32_t)0x08004000) /* Base @ of Sector 0, 16 Kbytes */
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**
- * Writes the given data to Sector 0 of the flash. If users pass 0
+ * Writes the given data to Sector 1 of the flash. If users pass 0
  * for the num_of_bytes then this function simple erases Sector 0
  * 
  * @param data          pointer to an array of bytes
