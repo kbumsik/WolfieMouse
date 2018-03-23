@@ -18,6 +18,7 @@
 
 // Micromouse system
 #include "system_control.h"
+#include "thread_control_loop.h"
 #include "pid.h"
 #include "encoder.h"
 #include "range.h"
@@ -39,12 +40,6 @@ int main(void)
     // initialize clock and system configuration
     system_init();
 
-    // Initialize all configured peripherals
-    peripheral_init();
-
-    /* Initial LED Display message */
-    hcms_290x_matrix("BOOT");
-
     // Set interrupt button
     gpio_init_t GPIO_InitStruct;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -52,26 +47,8 @@ int main(void)
     gpio_isr_enable(B1_PORT, B1_PIN, &GPIO_InitStruct, RISING_EDGE);
     gpio_isr_register(B1_PORT, B1_PIN, on_pressed);
 
-
-    // Toggle LED once
-    gpio_toggle(LED1_PORT, LED1_PIN);
-    gpio_toggle(LED2_PORT, LED2_PIN);
-    gpio_toggle(LED3_PORT, LED3_PIN);
-    gpio_toggle(LED4_PORT, LED4_PIN);
-    gpio_toggle(LED5_PORT, LED5_PIN);
-    gpio_toggle(LED6_PORT, LED6_PIN);
-
-    // wait for .5 second
-    delay_ms(500);
-    gpio_toggle(LED1_PORT, LED1_PIN);
-    gpio_toggle(LED2_PORT, LED2_PIN);
-    gpio_toggle(LED3_PORT, LED3_PIN);
-    gpio_toggle(LED4_PORT, LED4_PIN);
-    gpio_toggle(LED5_PORT, LED5_PIN);
-    gpio_toggle(LED6_PORT, LED6_PIN);
-
-    trace_puts("Hello ARM World!");
-    terminal_puts("Hello World!\n");
+    // Initialize all configured peripherals and then start control loop
+    thread_control_loop_init();
 
     BaseType_t result;
     /* definition and creation of defaultTask */
@@ -80,12 +57,13 @@ int main(void)
             "Blinky",               /* Text name for the task. This is to facilitate debugging only. It is not used in the scheduler */
             configMINIMAL_STACK_SIZE, /* Stack depth in words */
             NULL,                   /* Pointer to a task parameters */
-            1,                      /* The task priority */
+            0,   /* The task priority */
             &task_blinky_handler);  /* Pointer of its task handler, if you don't want to use, you can leave it NULL */
 
     if (result != pdPASS) {
         KB_DEBUG_ERROR("Creating task failed!!");
     }
+
     /* Do not put delay function in this section!
      * Because xTaskCreate will stop systick until the scheduler called */
     // TODO: check if it is true
@@ -110,10 +88,20 @@ void task_blinky(void *pvParameters)
 
     uint32_t seconds = 0;
 
+    // terminal_puts("Hello World!\n");
+
+    hcms_290x_matrix("MAIN");
+
+    gpio_toggle(LED1_PORT, LED1_PIN);
+    gpio_toggle(LED2_PORT, LED2_PIN);
+    gpio_toggle(LED3_PORT, LED3_PIN);
+    gpio_toggle(LED4_PORT, LED4_PIN);
+    gpio_toggle(LED5_PORT, LED5_PIN);
+    gpio_toggle(LED6_PORT, LED6_PIN);
 
     // Apply to the motor
-    // pid_reset(&g_pid_T);
-    // pid_reset(&g_pid_R);
+    pid_reset(&g_pid_T);
+    pid_reset(&g_pid_R);
 
     system_enable_range_finder();
     pid_input_setpoint(&g_pid_T, 60);
@@ -148,11 +136,9 @@ void task_blinky(void *pvParameters)
         gpio_toggle(LED5_PORT, LED5_PIN);
         gpio_toggle(LED6_PORT, LED6_PIN);
         ++seconds;
-        // Count seconds on the trace device.
-        trace_printf("Second %u\n", seconds);
 
-        /* Call this Task explicitly every 50ms ,NOT Delay for 50ms */
-        vTaskDelayUntil(&xLastWakeTime, (1000 / portTICK_RATE_MS));
+        /* Call this Task explicitly every 500ms ,NOT Delay for 50ms */
+        vTaskDelayUntil(&xLastWakeTime, (500 / portTICK_RATE_MS));
     }
 
     /* It never goes here, but the task should be deleted when it reached here */
