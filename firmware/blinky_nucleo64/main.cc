@@ -5,6 +5,7 @@
 #include "gpio.h"
 #include "terminal.h"
 #include "adc.h"
+#include "flash.h"
 
 // FreeRTOS
 #include "FreeRTOS.h"
@@ -14,8 +15,6 @@
 #include "queue.h"
 #include "semphr.h"
 #include "event_groups.h"
-
-//Hello test --> delete
 
 void on_pressed(void);
 
@@ -101,6 +100,22 @@ void on_pressed(void)
 /* vBlinkyTask function */
 void task_blinky(void *pvParameters)
 {
+    /* Write to flash sector 0 */
+    uint8_t message[11] = {'H', 'e', 'l', 'l', 'o', ' ', 'F', 'l', 'a', 's', 'h'};
+    uint8_t mess_rtrn[11];
+    uint32_t status = 0;
+    if (write_flash(11, message) != HAL_OK) {
+        status++;
+    }
+    /* Read what I just wrote */
+    read_flash(11, mess_rtrn);
+    /* Chech The read data is valid */
+    for (uint32_t i = 0; i < 11; i++) {
+        if (mess_rtrn[i] != message[i]) {
+            status++;
+        }
+    }
+    
     portTickType xLastWakeTime;
     /* Initialize xLastWakeTime for vTaskDelayUntil */
     /* This variable is updated every vTaskDelayUntil is called */
@@ -109,7 +124,9 @@ void task_blinky(void *pvParameters)
     uint32_t seconds = 0;
 
     while (1) {
-        gpio_toggle(LED1_PORT, LED1_PIN);
+        if (status == 0) {
+            gpio_toggle(LED1_PORT, LED1_PIN);
+        }
         ++seconds;
         // Count seconds on the trace device.
         trace_printf("Second %u\n", seconds);
@@ -125,6 +142,6 @@ void task_blinky(void *pvParameters)
         vTaskDelayUntil(&xLastWakeTime, (500 / portTICK_RATE_MS));
     }
 
-    /* It never goes here, but the task should be deleted when it reached here */
+    /* It never goes here, but the task should be deleted when it reaches here */
     vTaskDelete(NULL);
 }
