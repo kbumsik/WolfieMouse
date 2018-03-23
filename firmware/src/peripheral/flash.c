@@ -7,8 +7,12 @@
 #include "common_source.h"
 #include "flash.h"
 
-uint32_t write_flash(uint32_t num_of_bytes, uint8_t* data)
+uint32_t write_flash(uint8_t* data, uint32_t num_of_bytes)
 {
+    /* Check Parameters */
+    if (num_of_bytes > 0 && data == NULL) {
+        return KB_ERROR;
+    }
     /* Variables */
     static FLASH_EraseInitTypeDef flash_erase_struct;
     uint32_t sector_error;
@@ -40,7 +44,11 @@ uint32_t write_flash(uint32_t num_of_bytes, uint8_t* data)
     
     /* Write Bytes to Flash */
     for (num_of_bytes; num_of_bytes > 0; num_of_bytes--) {
-        if(HAL_FLASH_Program(FLASH_TYPEPROGRAM_BYTE,  address++, *(data++)) != HAL_OK) {
+        sector_error = HAL_FLASH_Program(FLASH_TYPEPROGRAM_BYTE,  address++, *(data++));
+        if (sector_error != HAL_OK) {
+            /* Lock Flash */
+            HAL_FLASH_Lock();
+            /* Return Error */
             return sector_error;
         }
     }
@@ -52,8 +60,13 @@ uint32_t write_flash(uint32_t num_of_bytes, uint8_t* data)
     return HAL_OK;
 }
 
-void read_flash(uint32_t num_of_bytes, uint8_t* data)
+void read_flash(uint8_t* data, uint32_t num_of_bytes)
 {
+    /* Check Parameters */
+    if ( num_of_bytes > 0 && data == NULL) {
+        return;
+    }
+    /* Read Flash */
     uint32_t address = ADDR_FLASH_SECTOR_0;
     for (num_of_bytes; num_of_bytes > 0; num_of_bytes--) {
         *(data++) = *( (__IO uint32_t*) address++ );
