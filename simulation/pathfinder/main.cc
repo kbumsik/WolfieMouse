@@ -52,7 +52,7 @@ int main(void)
 	char current_status = V; // V : vertical, H : horizontal
 	int cnt = 0;
 	int d_cnt = 1;
-	int x, y, swap;
+	int swap;
 
 	init.row = -1;
 	init.col = -1;
