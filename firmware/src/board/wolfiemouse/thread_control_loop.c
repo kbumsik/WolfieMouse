@@ -27,19 +27,6 @@
 #include "semphr.h"
 
 /*******************************************************************************
- * Global variables import
- ******************************************************************************/
-// PID handler
-pid_handler_t g_pid_T;
-pid_handler_t g_pid_R;
-
-/*******************************************************************************
- * Global variables
- ******************************************************************************/
-uint32_t g_motion_target_L = 0;
-uint32_t g_motion_target_R = 0;
-
-/*******************************************************************************
  * Control loop thread
  ******************************************************************************/
 static void control_loop(void *pvParameters);
@@ -58,8 +45,19 @@ void on_motion_completed (void);
 // static QueueHandle_t queue_motion;
 
 /*******************************************************************************
- * Global variables
+ * Static local variables
  ******************************************************************************/
+// Target steps
+volatile struct _target_step {
+    uint32_t left;
+    uint32_t right;
+} target_step;
+
+// PID handler
+struct _pid_struct {
+    pid_handler_t tran;
+    pid_handler_t rot;
+} pid;
 
 // Encoder value
 volatile struct encoder_data step, step_old;
@@ -71,10 +69,6 @@ volatile struct _speed_struct {
 
 // Range finder value
 volatile struct range_data range;
-
-// // PID handler
-// pid_handler_t g_pid_T;    // Translational
-// pid_handler_t g_pid_R; // Rotational
 
 /*******************************************************************************
  * States 
@@ -163,19 +157,19 @@ void thread_control_loop_init(void)
     };
 
     pid_value_t pid_R_value = {
-                .kp = 1,
+                .kp = 7,
                 .ki = 0,
-                .kd = 2
+                .kd = 20
     };
 
-    pid_set_pid(&g_pid_T, &pid_T_value);
-    pid_reset(&g_pid_T);
+    pid_set_pid(&pid.tran, &pid_T_value);
+    pid_reset(&pid.tran);
 
-    pid_set_pid(&g_pid_R, &pid_R_value);
-    pid_reset(&g_pid_R);
+    pid_set_pid(&pid.rot, &pid_R_value);
+    pid_reset(&pid.rot);
 
-    pid_input_setpoint(&g_pid_T, 0);
-    pid_input_setpoint(&g_pid_R, 0);
+    pid_input_setpoint(&pid.tran, 0);
+    pid_input_setpoint(&pid.rot, 0);
 
     /* Now peripherals has been initialized */
     
@@ -213,8 +207,6 @@ static void control_loop(void *pvParameters)
         // taskYIELD();
         xSemaphoreTake(semphr_from_isr, portMAX_DELAY);
 
-        uint32_t time = tick_us();
-
         // Get encoder values and calculate speed
         step_old = step;
         encoder_get(&step, ENCODER_CH_BOTH);
@@ -232,9 +224,6 @@ static void control_loop(void *pvParameters)
         //     if (i == 0) {
         //         status = &state.wheel_left;
         //         steps = step.left;
-        //         target = g_motion_target_L;
-        //     } else {
-        //         status = &state.wheel_right;
         //         steps = step.right;
         //         target = g_motion_target_R;
         //     }
@@ -255,7 +244,7 @@ static void control_loop(void *pvParameters)
         /* Start PID calculation */
         // calculate errorT
         int32_t feedback_T = (speed.left + speed.right) / 2;
-        int32_t outputT = pid_compute(&g_pid_T, feedback_T);
+        int32_t outputT = pid_compute(&pid.tran, feedback_T);
 
         // Get ADC values
         if(state.range) {
@@ -279,10 +268,10 @@ static void control_loop(void *pvParameters)
             feedback_R = (range.right - MEASURE_RANGE_L_MIDDLE) / 10;
         } else {
             // in open space, use rotary encoder
-            feedback_R = speed.diff * 10;
+            feedback_R = speed.diff;
         }
 
-        int32_t outputR = pid_compute(&g_pid_R, feedback_R);
+        int32_t outputR = pid_compute(&pid.rot, feedback_R);
 
         if (!state.pid_tran) {
             outputT = 0;
@@ -305,9 +294,9 @@ static void control_loop(void *pvParameters)
         terminal_printf("\"RS\":%d,", speed.right);
         terminal_printf("\"LO\":%d,", outputT + outputR);
         terminal_printf("\"RO\":%d,", outputT - outputR);
-        terminal_printf("\"TTS\":%d,", g_pid_T.setpoint);
-        terminal_printf("\"TRS\":%d,", g_pid_R.setpoint);
-        terminal_printf("\"T\":%d", tick_us() - time);
+        terminal_printf("\"TTS\":%d,", pid.tran.setpoint);
+        terminal_printf("\"TRS\":%d", pid.rot.setpoint);
+        // terminal_printf("\"T\":%d", tick_us() - time);
         terminal_puts("},\n");
     }
 
@@ -363,12 +352,9 @@ static void control_loop(void *pvParameters)
 //         break;
 //     }
 //     // apply new values
-//     pid_input_setpoint(&g_pid_T, target_pid_T);
-//     pid_input_setpoint(&g_pid_R, target_pid_R);
-//     // left
-//     g_motion_target_L = MEASURE_ENCODER_DEFAULT + target_steps_L;
-//     if (target_steps_L >= 0) {
-//         system_motion_forward_L();
+//     pid_input_setpoint(&pid.tran, target_pid_T);
+//     pid_input_setpoint(&pid.rot, target_pid_R);
+//     // leftforward_L();
 //     } else {
 //         system_motion_backward_L();
 //     }
@@ -417,8 +403,8 @@ static void control_loop(void *pvParameters)
 //             //turn of motors
 //             system_stop_driving();
 //             system_disable_range_finder();
-//             pid_reset(&g_pid_T);
-//             pid_reset(&g_pid_R);
+//             pid_reset(&pid.tran);
+//             pid_reset(&pid.rot);
 //         }
 //     }
 // }

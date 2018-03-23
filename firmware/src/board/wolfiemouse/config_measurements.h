@@ -33,12 +33,19 @@
 /**
  * Encoder measurements
  */
-#define MEASURE_ENCODER_DEFAULT     10000
-#define MEASURE_STEPS_PER_REV       3520
-#define MEASURE_STEPS_PER_CELL      4800 //4750
-#define MEASURE_STEPS_90DEG_CW      1600
-#define MEASURE_STEPS_90DEG_CCW     1625
+/// For AS5304 & AS5000-MR20-44
+// #define MEASURE_ENCODER_DEFAULT     10000
+// #define MEASURE_STEPS_PER_REV       3520
+// #define MEASURE_STEPS_PER_CELL      4800 //4750
+// #define MEASURE_STEPS_90DEG_CW      1600
+// #define MEASURE_STEPS_90DEG_CCW     1625
 
+/// For AS5306 & AS5000-MR12-72
+#define MEASURE_ENCODER_DEFAULT     20000
+#define MEASURE_STEPS_PER_REV       5760
+#define MEASURE_STEPS_PER_CELL      7855
+#define MEASURE_STEPS_90DEG_CW      2618
+#define MEASURE_STEPS_90DEG_CCW     2659
 
 /**
  * Range finder measurements

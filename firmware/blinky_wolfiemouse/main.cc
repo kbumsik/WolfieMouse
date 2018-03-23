@@ -32,8 +32,10 @@ static void task_blinky(void *pvParameters);
 TaskHandle_t task_blinky_handler;
 
 // PID handler
-extern pid_handler_t g_pid_T;
-extern pid_handler_t g_pid_R;
+extern struct _pid_struct {
+    pid_handler_t tran;
+    pid_handler_t rot;
+} pid;
 
 int main(void)
 {
@@ -100,12 +102,11 @@ void task_blinky(void *pvParameters)
     gpio_toggle(LED6_PORT, LED6_PIN);
 
     // Apply to the motor
-    pid_reset(&g_pid_T);
-    pid_reset(&g_pid_R);
-
+    pid_reset(&pid.tran);
+    pid_reset(&pid.rot);
+    pid_input_setpoint(&pid.tran, 20);
+    pid_input_setpoint(&pid.rot, 0);
     system_enable_range_finder();
-    pid_input_setpoint(&g_pid_T, 60);
-    pid_input_setpoint(&g_pid_R, 0);
     system_start_driving();
     delay_ms(2000);
     /* Motor test running done */

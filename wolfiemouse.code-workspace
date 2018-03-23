@@ -8,6 +8,11 @@
 		}
 	],
 	"settings": {
-		"git.autorefresh": true
+		"git.autorefresh": true,
+		"files.associations": {
+			"Vagrantfile": "ruby",
+			"array": "cpp",
+			"string_view": "cpp"
+		}
 	}
 }
