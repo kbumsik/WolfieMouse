@@ -2,7 +2,7 @@
 # Project build settings
 #######################################
 # Project name
-TARGET = pathfinder
+TARGET := pathfinder
 
 # Build path
 BUILD_DIR := build
