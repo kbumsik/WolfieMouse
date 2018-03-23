@@ -142,7 +142,7 @@ void peripheral_init(void)
 {
 	  gpio_init_t GPIO_InitStruct;
 
-	  /*Configure GPIO pin : B1_Pin */
+		/*Configure GPIO pin : B1_Pin */
 	  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
 	  GPIO_InitStruct.Pull = NOPULL;
 	  gpio_init(B1_PORT, B1_PIN, &GPIO_InitStruct);
@@ -150,7 +150,7 @@ void peripheral_init(void)
 	  /*Configure UART */
 	  terminal_init();
 
-	  /*Configure GPIO pin : LED1_Pin */
+		/*Configure GPIO pin : LED1_Pin */
 	  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	  GPIO_InitStruct.Pull = GPIO_NOPULL;
 	  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -158,5 +158,4 @@ void peripheral_init(void)
 
 	  /*Configure GPIO pin Output Level */
 	  gpio_set(LED1_PORT, LED1_PIN, GPIO_PIN_RESET);
-
 }

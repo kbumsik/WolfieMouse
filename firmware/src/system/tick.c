@@ -49,7 +49,7 @@ uint32_t tick_ms(void)
  * @brief Delay system in Milliseconds
  * @param uwInput   time to delay in milliseconds
  */
-void tim_delay_ms(volatile uint32_t delay_ms)
+void delay_ms(volatile uint32_t delay_ms)
 {
 	uint32_t current = tick_ms();
 	while ((tick_ms() - current) < delay_ms)

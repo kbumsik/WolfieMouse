@@ -33,8 +33,9 @@ int32_t pid_compute(pid_handler_t *h, int32_t feedback)
     h->error = h->setpoint - feedback;
     h->error_diff = h->error - h->error_old;
     h->error_sum += h->error;
-    return (h->pid.kp * h->error) +
-            (h->pid.ki * h->error_sum) +
-            (h->pid.kd * h->error_diff);
+    int32_t output = (h->pid.kp * h->error) +
+                    (h->pid.ki * h->error_sum) +
+                    (h->pid.kd * h->error_diff);
+    h->error_old = h->error;
+    return output;
 }
-

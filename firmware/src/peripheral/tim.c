@@ -8,6 +8,7 @@
 #include "common_source.h"
 #include "tim.h"
 #include "alternate_pins.h"
+#include <stdlib.h>
 
 // base name change. Used with msg(). See @base.h
 #ifdef KB_MSG_BASE

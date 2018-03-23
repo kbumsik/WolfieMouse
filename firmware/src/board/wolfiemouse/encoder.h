@@ -14,13 +14,20 @@
 extern "C" {
 #endif
 
+struct encoder_data {
+    int32_t left;
+    int32_t right;
+};
+
+enum encoder_ch {
+    ENCODER_CH_LEFT,
+    ENCODER_CH_RIGHT,
+    ENCODER_CH_BOTH
+};
+
 void encoder_init(void);
-
-int32_t encoder_left_count(void);
-int32_t encoder_right_count(void);
-
-void encoder_left_reset(void);
-void encoder_right_reset(void);
+void encoder_get(struct encoder_data *out, enum encoder_ch ch);
+void encoder_reset(enum encoder_ch ch);
 
 #ifdef __cplusplus
 }
