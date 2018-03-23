@@ -104,11 +104,11 @@ void task_blinky(void *pvParameters)
     uint8_t message[11] = {'H', 'e', 'l', 'l', 'o', ' ', 'F', 'l', 'a', 's', 'h'};
     uint8_t mess_rtrn[11];
     uint32_t flash_status = 0;
-    if (write_flash(11, message) != HAL_OK) {
+    if (write_flash(message, 11) != HAL_OK) {
         flash_status++;
     }
     /* Read what I just wrote */
-    read_flash(11, mess_rtrn);
+    read_flash(mess_rtrn, 11);
     /* Chech The read data is valid */
     for (uint32_t i = 0; i < 11; i++) {
         if (mess_rtrn[i] != message[i]) {
