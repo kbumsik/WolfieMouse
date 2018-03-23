@@ -19,6 +19,7 @@
 #include "config_measurements.h"
 #include "pid.h"
 #include "tick.h"
+#include "cmd.h"
 
 #include "FreeRTOS.h"
 #include "portable.h" // TODO: Delete
@@ -33,6 +34,7 @@ static void control_loop(void *pvParameters);
 static TaskHandle_t control_loop_handler;
 
 static SemaphoreHandle_t semphr_from_isr = NULL;
+static QueueHandle_t cmd_queue = NULL;
 
 /*******************************************************************************
  * Private variables and functions
@@ -67,6 +69,31 @@ volatile struct _speed_struct {
     int32_t diff;    // left - right
 } speed;
 
+/* Set PID controller */
+pid_value_t pid_tran_forwarding_value = {
+        .kp = 35,
+        .ki = 5, // 0.01
+        .kd = 10
+};
+
+pid_value_t pid_rot_forwarding_value = {
+            .kp = 7,
+            .ki = 0,
+            .kd = 20
+};
+
+pid_value_t pid_tran_rotating_value = {
+        .kp = 35,
+        .ki = 5, // 0.01
+        .kd = 10
+};
+
+pid_value_t pid_rot_rotating_value = {
+            .kp = 7,
+            .ki = 0.1,
+            .kd = 20
+};
+
 // Range finder value
 volatile struct range_data range;
 
@@ -83,8 +110,10 @@ struct _state {
     int pid_tran;
     int pid_rot;
     int range;
-    // enum wheel_state wheel_right;
-    // enum wheel_state wheel_left;
+    int cmd_ready;
+    enum cmd_type current_cmd;
+    enum wheel_state left_wheel;
+    enum wheel_state right_wheel;
 };
 
 static volatile struct _state state = {
@@ -93,8 +122,10 @@ static volatile struct _state state = {
     .pid_tran = 0,
     .pid_rot = 0,
     .range = 0,
-    // .wheel_right = WHEEL_DISABLED,
-    // .wheel_left = WHEEL_DISABLED,
+    .cmd_ready = 0,
+    .current_cmd = CMD_NOTHING,
+    .left_wheel = WHEEL_DISABLED,
+    .right_wheel = WHEEL_DISABLED,
 };
 
 /*******************************************************************************
@@ -149,30 +180,32 @@ void thread_control_loop_init(void)
     encoder_init();
     encoder_get(&step, ENCODER_CH_BOTH);
 
-    /* Set PID controller */
-    pid_value_t pid_T_value = {
-            .kp = 35,
-            .ki = 5, // 0.01
-            .kd = 10
-    };
-
-    pid_value_t pid_R_value = {
-                .kp = 7,
-                .ki = 0,
-                .kd = 20
-    };
-
-    pid_set_pid(&pid.tran, &pid_T_value);
+    pid_set_pid(&pid.tran, &pid_tran_forwarding_value);
     pid_reset(&pid.tran);
 
-    pid_set_pid(&pid.rot, &pid_R_value);
+    pid_set_pid(&pid.rot, &pid_rot_forwarding_value);
     pid_reset(&pid.rot);
+
+    step.left = MEASURE_ENCODER_DEFAULT;
+    step.right = MEASURE_ENCODER_DEFAULT;
+    step_old.left = MEASURE_ENCODER_DEFAULT;
+    step_old.right = MEASURE_ENCODER_DEFAULT;
 
     pid_input_setpoint(&pid.tran, 0);
     pid_input_setpoint(&pid.rot, 0);
 
     /* Now peripherals has been initialized */
     
+    /* Allocate Semaphore */
+    // Max counting is 1, initial is zero
+    semphr_from_isr = xSemaphoreCreateCounting(1, 0);
+    /* Allocate Queue */
+    cmd_queue = xQueueCreate( 10, sizeof(struct cmd_queue_element));
+    if (NULL == cmd_queue) {
+        KB_DEBUG_ERROR("Creating cmd queue failed!!");
+    }
+    state.cmd_ready = 1;
+
     /* Allocate task */
     BaseType_t result;
     result = xTaskCreate(
@@ -185,21 +218,12 @@ void thread_control_loop_init(void)
     if (result != pdPASS) {
         KB_DEBUG_ERROR("Creating motion task failed!!");
     }
-
-    // /* Allocate Queue */
-    // queue_motion = xQueueCreate( 10, sizeof(motion_cmd_t));
-    // if (queue_motion == NULL) {
-    //     KB_DEBUG_ERROR("Creating motion queue failed!!");
-    // }
-
-    /* Allocate Semaphore */
-    // Max counting is 1, initial is zero
-    semphr_from_isr = xSemaphoreCreateCounting(1, 0);
 }
 
 
 static void control_loop(void *pvParameters)
 {
+    static struct cmd_queue_element cmd;
     system_enable_range_finder();
 
     while (1) {
@@ -207,39 +231,139 @@ static void control_loop(void *pvParameters)
         // taskYIELD();
         xSemaphoreTake(semphr_from_isr, portMAX_DELAY);
 
-        // Get encoder values and calculate speed
+        // Get a cmd
+        int cmd_updated = 0;
+        if (state.cmd_ready) {
+            if (xQueueReceive(cmd_queue, &cmd, 0)) {
+                cmd_updated = 1;
+                state.cmd_ready = 0;
+                state.current_cmd = cmd.type;
+                
+                // decode and apply command
+                switch(cmd.type) {
+                    /* Low Level commands */
+                    case CMD_LOW_PID_AND_GO:
+                        pid_input_setpoint(&pid.tran, cmd.pid.setpoint_trans);
+                        pid_input_setpoint(&pid.rot, cmd.pid.setpoint_rot);
+                        system_enable_range_finder();
+                        system_start_driving();
+                        state.cmd_ready = 1;
+                        state.current_cmd = CMD_NOTHING;
+                    break;
+                    case CMD_LOW_PID_RESET_AND_STOP:
+                        system_stop_driving();
+                        system_disable_range_finder();
+                        pid_reset(&pid.tran);
+                        pid_reset(&pid.rot);
+                        state.cmd_ready = 1;
+                        state.current_cmd = CMD_NOTHING;
+                    break;
+                    /* High level commands */
+                    case CMD_F:
+                        pid_set_pid(&pid.tran, &pid_tran_forwarding_value);
+                        pid_set_pid(&pid.rot, &pid_rot_forwarding_value);
+
+                        pid_input_setpoint(&pid.tran, 18);
+                        pid_input_setpoint(&pid.rot, 0);
+
+                        target_step.left = MEASURE_STEPS_PER_CELL;
+                        target_step.left += MEASURE_ENCODER_DEFAULT;
+                        target_step.right = MEASURE_STEPS_PER_CELL;
+                        target_step.right += MEASURE_ENCODER_DEFAULT;
+
+                        state.left_wheel = WHEEL_FORWARD;
+                        state.right_wheel = WHEEL_FORWARD;
+
+                        system_enable_range_finder();
+                        system_start_driving();
+                    break;
+                    case CMD_H_F:
+                        pid_set_pid(&pid.tran, &pid_tran_forwarding_value);
+                        pid_set_pid(&pid.rot, &pid_rot_forwarding_value);
+
+                        pid_input_setpoint(&pid.tran, 18);
+                        pid_input_setpoint(&pid.rot, 0);
+
+                        target_step.left = MEASURE_STEPS_PER_CELL / 2;
+                        target_step.left += MEASURE_ENCODER_DEFAULT;
+                        target_step.right = MEASURE_STEPS_PER_CELL / 2;
+                        target_step.right += MEASURE_ENCODER_DEFAULT;
+                        
+                        state.left_wheel = WHEEL_FORWARD;
+                        state.right_wheel = WHEEL_FORWARD;
+
+                        system_enable_range_finder();
+                        system_start_driving();
+                    break;
+                    case CMD_L:
+                        pid_set_pid(&pid.tran, &pid_tran_rotating_value);
+                        pid_set_pid(&pid.rot, &pid_rot_rotating_value);
+                        pid_reset(&pid.tran);
+                        pid_reset(&pid.rot);
+
+                        pid_input_setpoint(&pid.tran, 0);
+                        pid_input_setpoint(&pid.rot, -30);
+                        
+                        target_step.left = -MEASURE_STEPS_90DEG_CCW;
+                        target_step.left += MEASURE_ENCODER_DEFAULT;
+                        target_step.right = MEASURE_STEPS_90DEG_CCW;
+                        target_step.right += MEASURE_ENCODER_DEFAULT;
+
+                        state.left_wheel = WHEEL_BACKWARD;
+                        state.right_wheel = WHEEL_FORWARD;
+
+                        system_disable_range_finder();  // MUST BE OFF
+                        system_start_driving();
+                    break;
+                    case CMD_R:
+                        pid_set_pid(&pid.tran, &pid_tran_rotating_value);
+                        pid_set_pid(&pid.rot, &pid_rot_rotating_value);
+                        pid_reset(&pid.tran);
+                        pid_reset(&pid.rot);
+                        
+                        pid_input_setpoint(&pid.tran, 0);
+                        pid_input_setpoint(&pid.rot, 30);
+                        
+                        target_step.left = MEASURE_STEPS_90DEG_CW;
+                        target_step.left += MEASURE_ENCODER_DEFAULT;
+                        target_step.right = -MEASURE_STEPS_90DEG_CW;
+                        target_step.right += MEASURE_ENCODER_DEFAULT;
+                        
+                        state.left_wheel = WHEEL_FORWARD;
+                        state.right_wheel = WHEEL_BACKWARD;
+
+                        system_disable_range_finder();  // MUST BE OFF
+                        system_start_driving();
+                    break;
+                    default:
+                        state.cmd_ready = 1;
+                        state.current_cmd = CMD_NOTHING;
+                    break;
+                    // case CMD_S_L:
+                    // break;
+                    // case CMD_S_R:
+                    // break;
+                }
+            } else {
+                cmd_updated = 0;
+            }
+        } else {
+            cmd_updated = 0;
+        }
+
         step_old = step;
         encoder_get(&step, ENCODER_CH_BOTH);
-
+        // update speed
         speed.left = (step.left - step_old.left);// * CONFIG_LEN_PER_CNT;
         speed.right = (step.right - step_old.right);// * CONFIG_LEN_PER_CNT;
         speed.diff = speed.left - speed.right;
 
-        // /* Motion controller notification */
-        // for (int i = 0; i < 2; i++) {
-        //     // Change variables being checked
-        //     static enum motion_status *status;
-        //     static int32_t steps;
-        //     static uint32_t target;
-        //     if (i == 0) {
-        //         status = &state.wheel_left;
-        //         steps = step.left;
-        //         steps = step.right;
-        //         target = g_motion_target_R;
-        //     }
-        //     // check variables
-        //     if (disabled != *status) {
-        //         if ((forward == *status) &&
-        //                 (steps >= target)) {
-        //             *status = disabled;
-        //             xSemaphoreGiveFromISR(g_motion_semphr, &xHigherPriorityTaskWoken);
-        //         } else if ((backward == *status) &&
-        //                 (steps <= target)) {
-        //             *status = disabled;
-        //             xSemaphoreGiveFromISR(g_motion_semphr, &xHigherPriorityTaskWoken);
-        //         }
-        //     }
-        // }
+        if (cmd_updated) {
+            // Reset steps and encoders
+            encoder_reset(ENCODER_CH_BOTH);
+            step.left = MEASURE_ENCODER_DEFAULT;
+            step.right = MEASURE_ENCODER_DEFAULT;
+        }
 
         /* Start PID calculation */
         // calculate errorT
@@ -288,6 +412,44 @@ static void control_loop(void *pvParameters)
         motor_speed_permyriad(CH_RIGHT, outputT - outputR);
         motor_start(CH_BOTH);
 
+        // check tartget steps status
+        if (!state.cmd_ready) {
+            // update both wheels
+            // left
+            if (state.left_wheel == WHEEL_FORWARD) {
+                if (step.left > target_step.left) {
+                    state.left_wheel = WHEEL_DISABLED;
+                }
+            } else if (state.left_wheel == WHEEL_BACKWARD) {
+                if (step.left < target_step.left) {
+                    state.left_wheel = WHEEL_DISABLED;
+                }
+            }
+
+            // right
+            if (state.right_wheel == WHEEL_FORWARD) {
+                if (step.right > target_step.right) {
+                    state.right_wheel = WHEEL_DISABLED;
+                }
+            } else if (state.right_wheel == WHEEL_BACKWARD) {
+                if (step.right < target_step.right) {
+                    state.right_wheel = WHEEL_DISABLED;
+                }
+            }
+
+            // if both wheels are completed then a command is complete
+            if ((state.left_wheel == WHEEL_DISABLED) && (state.right_wheel == WHEEL_DISABLED)) {
+                state.cmd_ready = 1;
+                // state.current_cmd = CMD_NOTHING;
+                if ((state.current_cmd == CMD_R) || (state.current_cmd == CMD_L)) {
+                    pid_reset(&pid.tran);
+                    pid_reset(&pid.rot);
+                }
+                // Send a notification
+// Semaphr give asdfasdfasdfasdfasdfasdf
+            }
+        }
+
         // Print the result in json format
         terminal_puts("{");
         terminal_printf("\"LS\":%d,", speed.left);
@@ -304,17 +466,18 @@ static void control_loop(void *pvParameters)
     vTaskDelete(NULL);
 }
 
-// void motion_queue(motion_cmd_t *commend)
-// {
-//     xQueueSend(queue_motion, commend, portMAX_DELAY);
-// }
+
+QueueHandle_t thread_control_loop_cmd_queue(void)
+{
+    return cmd_queue;
+}
 
 // static void process_cmd(motion_cmd_t *cmd)
 // {
 //     static int32_t target_pid_T;
 //     static int32_t target_pid_R;
-//     static int32_t target_steps_L;
-//     static int32_t target_steps_R;
+//     static int32_t target_step.left;
+//     static int32_t target_step.right;
 //     // reset encoder first
 //     system_reset_encoder();
 
@@ -327,8 +490,8 @@ static void control_loop(void *pvParameters)
 //         target_pid_T = 18;
 //         target_pid_R = 0;
 //         // Set target steps
-//         target_steps_L = MEASURE_STEPS_PER_CELL * cmd->unit;
-//         target_steps_R = MEASURE_STEPS_PER_CELL * cmd->unit;
+//         target_step.left = MEASURE_STEPS_PER_CELL * cmd->unit;
+//         target_step.right = MEASURE_STEPS_PER_CELL * cmd->unit;
 //         break;
 //     case turn:
 //         // Disable the range finder
@@ -337,12 +500,12 @@ static void control_loop(void *pvParameters)
 //         target_pid_T = 0;
 //         if (cmd->unit >= 0) {
 //             target_pid_R = -60;
-//             target_steps_L = -MEASURE_STEPS_90DEG_CCW * cmd->unit;
-//             target_steps_R = MEASURE_STEPS_90DEG_CCW * cmd->unit;
+//             target_step.left = -MEASURE_STEPS_90DEG_CCW * cmd->unit;
+//             target_step.right = MEASURE_STEPS_90DEG_CCW * cmd->unit;
 //         } else {
 //             target_pid_R = 60;
-//             target_steps_L = -MEASURE_STEPS_90DEG_CW * cmd->unit;
-//             target_steps_R = MEASURE_STEPS_90DEG_CW * cmd->unit;
+//             target_step.left = -MEASURE_STEPS_90DEG_CW * cmd->unit;
+//             target_step.right = MEASURE_STEPS_90DEG_CW * cmd->unit;
 //         }
 //         break;
 //     case curve:
@@ -359,8 +522,8 @@ static void control_loop(void *pvParameters)
 //         system_motion_backward_L();
 //     }
 //     // right
-//     g_motion_target_R = MEASURE_ENCODER_DEFAULT + target_steps_R;
-//     if (target_steps_R >= 0) {
+//     g_motion_target_R = MEASURE_ENCODER_DEFAULT + target_step.right;
+//     if (target_step.right >= 0) {
 //         system_motion_forward_R();
 //     } else {
 //         system_motion_backward_R();
@@ -459,14 +622,4 @@ void system_enable_range_finder(void)
 void system_disable_range_finder(void)
 {
     state.range = 0;
-}
-
-void system_reset_encoder(void)
-{
-    /* before reset hardware, reset old steps */
-    // first compansate values before resetting
-    encoder_get(&step, ENCODER_CH_BOTH); 
-    step_old.left = MEASURE_ENCODER_DEFAULT - (step.left - step_old.left);
-    step_old.right = MEASURE_ENCODER_DEFAULT - (step.right - step_old.right);
-    encoder_reset(ENCODER_CH_BOTH);
 }
