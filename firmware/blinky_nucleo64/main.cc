@@ -5,6 +5,7 @@
 #include "gpio.h"
 #include "terminal.h"
 #include "adc.h"
+#include "flash.h"
 
 // FreeRTOS
 #include "FreeRTOS.h"
@@ -14,8 +15,6 @@
 #include "queue.h"
 #include "semphr.h"
 #include "event_groups.h"
-
-//Hello test --> delete
 
 void on_pressed(void);
 
@@ -95,6 +94,24 @@ int main(void)
 void on_pressed(void)
 {
     trace_puts("Button Pressed\n");
+    terminal_printf("Button Pressed: terminal_printf\n");
+
+    /* Write to flash sector 0 */
+    uint8_t message[11] = {'H', 'e', 'l', 'l', 'o', ' ', 'F', 'l', 'a', 's', 'h'};
+    uint8_t mess_rtrn[11];
+    uint32_t flash_status = 0;
+    
+    flash_status = write_flash(message, 11);
+    
+    /* Read what I just wrote */
+    read_flash(mess_rtrn, 11);
+    /* Chech The read data is valid */
+
+    /* Print to Terminal Results */
+    terminal_printf("Status: %d\n", flash_status);
+    terminal_printf("OG Message: %s\n", message);
+    terminal_printf("Returned Message: %s\n", mess_rtrn);
+
     return;
 }
 
@@ -125,6 +142,6 @@ void task_blinky(void *pvParameters)
         vTaskDelayUntil(&xLastWakeTime, (500 / portTICK_RATE_MS));
     }
 
-    /* It never goes here, but the task should be deleted when it reached here */
+    /* It never goes here, but the task should be deleted when it reaches here */
     vTaskDelete(NULL);
 }

@@ -14,7 +14,7 @@ VERBOSE = 0
 #######################################
 # Hardware
 #######################################
-# board: Should be one of /firmware/src/baord
+# board: Should be one of /firmware/src/board
 BOARD = nucleo_f446re
 
 # One of GCC flags
@@ -67,7 +67,7 @@ stm32f4xx_hal_tim_ex.c \
 stm32f4xx_hal_pwr_ex.c \
 stm32f4xx_hal_dma.c \
 
-# .c files used in /firmware/src/maze
+# .c files used in /firmware/src/math
 MATH_FILES = \
 # pid.c
 
@@ -89,6 +89,7 @@ terminal.c \
 
 # .c files used in /firmware/src/peripheral
 PERIPHERAL_FILES = \
+flash.c \
 adc.c \
 rotary_encoder.c \
 gpio.c \
