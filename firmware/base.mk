@@ -194,7 +194,7 @@ LDSCRIPT ?= $(BOARD_DIR)/linker_script.ld
 
 # libraries
 LIB_FLAGS := -lc -lm -lnosys
-LDFLAGS += $(MCU_FLAGS) -specs=nano.specs -T$(LDSCRIPT) $(LIB_FLAGS) \
+LDFLAGS += $(MCU_FLAGS) -specs=nano.specs -T$(LDSCRIPT) $(LIB_FLAGS) -lstdc++ \
 			-Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
 
 # default action: build all
