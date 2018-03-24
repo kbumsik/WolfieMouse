@@ -5,9 +5,11 @@
 #include <deque>
 
 std::vector<Position> pathPos = {
-	Position{5,1}, Position{5,0}, Position{4,0}, Position{3,0}, Position{3,1}, Position{3,2}, Position{3,3}, Position{3,4}, Position{3,5}, Position{3,6}, Position{3,7}, Position{4,7}, Position{5,7}, Position{6,7}
+	Position{12,1}, Position{13, 1}, Position{13, 2}, Position{12, 2}, Position{12, 1}, Position{13, 1}, Position{14, 1},
+    Position{14, 2}, Position{14, 3}, Position{14, 4}, Position{13, 4}, Position{12, 4}, Position{11, 4},
+    Position{10, 4}, Position{9, 4}, Position{8, 4}, Position{7, 4}, Position{7, 5}, Position{7, 6}
 
-}
+};
 Queue<Position> queue;
 
 enum direction
