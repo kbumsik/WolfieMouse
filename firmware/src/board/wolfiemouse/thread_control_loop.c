@@ -35,6 +35,7 @@ static TaskHandle_t control_loop_handler;
 
 static SemaphoreHandle_t semphr_from_isr = NULL;
 static QueueHandle_t cmd_queue = NULL;
+static SemaphoreHandle_t cmd_semphr = NULL;
 
 /*******************************************************************************
  * Private variables and functions
@@ -217,13 +218,14 @@ void thread_control_loop_init(void)
     if (NULL == cmd_queue) {
         KB_DEBUG_ERROR("Creating cmd queue failed!!");
     }
+    cmd_semphr = xSemaphoreCreateCounting(1, 0);
     state.cmd_ready = 1;
 
     /* Allocate task */
     BaseType_t result;
     result = xTaskCreate(
             control_loop,
-            "Mot",
+            "Cnrt",
             configMINIMAL_STACK_SIZE+2000,
             NULL,
             configMAX_PRIORITIES,
@@ -442,21 +444,40 @@ static void control_loop(void *pvParameters)
             range_get(&range, RANGE_CH_ALL);
         }
 
+        // if it is too close stop
+        if (range.front > MEASURE_RANGE_F_NEAR_DETECT) {
+            system_start_driving();
+            state.cmd_ready = 1;
+            pid_reset(&pid.tran);
+            pid_reset(&pid.rot);
+            // Send a notification
+            xSemaphoreGive(cmd_semphr);
+            continue;
+        }
+
+        if (range.left > MEASURE_RANGE_L_MAX_DETECT) {
+            range.left = MEASURE_RANGE_L_MAX_DETECT;
+        }
+
+        if (range.right > MEASURE_RANGE_R_MAX_DETECT) {
+            range.right = MEASURE_RANGE_R_MAX_DETECT;
+        }
+
         // get errorR
         int32_t feedback_R;
-        if(state.range && (range.left > MEASURE_RANGE_L_DETECT)
-                            && (range.right > MEASURE_RANGE_R_DETECT) ) {
+        if(state.range && (range.left > (MEASURE_RANGE_L_MIN_DETECT))
+                            && (range.right > MEASURE_RANGE_R_MIN_DETECT) ) {
             // If both range are within wall detecting distance,
             // Use range sensor to get rotational error
             feedback_R = (range.right - range.left - MEASURE_RANGE_R_OFFSET) / 10;
-        } else if (state.range && range.left > MEASURE_RANGE_L_DETECT) {
+        } else if (state.range && range.left > (MEASURE_RANGE_L_MIN_DETECT + 50)) {
             // If only left side is within range
             // use the middle value of the right range
-            feedback_R = (MEASURE_RANGE_R_MIDDLE - range.left) / 10;
-        } else if (state.range && range.right > MEASURE_RANGE_R_DETECT) {
+            feedback_R = (MEASURE_RANGE_R_M_DETECT - range.left) / 10;
+        } else if (state.range && range.right > (MEASURE_RANGE_R_MIN_DETECT + 50)) {
             // If only right side is within range
             // use the middle value of the left range
-            feedback_R = (range.right - MEASURE_RANGE_L_MIDDLE) / 10;
+            feedback_R = (range.right - MEASURE_RANGE_L_M_DETECT) / 10;
         } else {
             // in open space, use rotary encoder
             feedback_R = speed.diff;
@@ -513,18 +534,21 @@ static void control_loop(void *pvParameters)
                     pid_reset(&pid.rot);
                 }
                 // Send a notification
-// Semaphr give asdfasdfasdfasdfasdfasdf
+                xSemaphoreGive(cmd_semphr);
             }
         }
 
         // Print the result in json format
         terminal_puts("{");
-        terminal_printf("\"LS\":%d,", speed.left);
-        terminal_printf("\"RS\":%d,", speed.right);
-        terminal_printf("\"LO\":%d,", outputT + outputR);
-        terminal_printf("\"RO\":%d,", outputT - outputR);
-        terminal_printf("\"TTS\":%d,", pid.tran.setpoint);
-        terminal_printf("\"TRS\":%d", pid.rot.setpoint);
+        terminal_printf("\"L\":%d,", range.left);
+        terminal_printf("\"R\":%d,", range.right);
+        terminal_printf("\"F\":%d", range.front);
+        // terminal_printf("\"LS\":%d,", speed.left);
+        // terminal_printf("\"RS\":%d,", speed.right);
+        // terminal_printf("\"LO\":%d,", outputT + outputR);
+        // terminal_printf("\"RO\":%d,", outputT - outputR);
+        // terminal_printf("\"TTS\":%d,", pid.tran.setpoint);
+        // terminal_printf("\"TRS\":%d", pid.rot.setpoint);
         // terminal_printf("\"T\":%d", tick_us() - time);
         terminal_puts("},\n");
     }
@@ -539,6 +563,10 @@ QueueHandle_t thread_control_loop_cmd_queue(void)
     return cmd_queue;
 }
 
+SemaphoreHandle_t thread_control_loop_cmd_semphr(void)
+{
+    return cmd_semphr;
+}
 // static void process_cmd(motion_cmd_t *cmd)
 // {
 //     static int32_t target_pid_T;

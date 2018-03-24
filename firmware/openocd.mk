@@ -18,7 +18,10 @@
 ##
 
 # OpenOCD target configuration
-OPENOCD ?= openocd -f board/st_nucleo_f4.cfg
+STLINK_BOARD_CFG := board/st_nucleo_f4.cfg
+JLINK_BOARD_CFG := ../openocd_jlink_ob_stlink.cfg
+
+OPENOCD ?= openocd
 
 HELP_TEXT += \n\
   flash - Flash using OpenOCD\n\
@@ -44,7 +47,17 @@ $(BUILD_DIR)/$(TARGET).cdt:
 
 .PHONY: flash
 flash: $(BUILD_DIR)/$(TARGET).hex
-	$(CMD_ECHO) $(OPENOCD) -c \
+	$(CMD_ECHO) $(OPENOCD) -f $(STLINK_BOARD_CFG) -c \
+	"init; \
+	reset halt; \
+	sleep 100; \
+	flash write_image erase $^; \
+	reset run; \
+	shutdown"
+
+.PHONY: jlink
+jlink: $(BUILD_DIR)/$(TARGET).hex
+	$(CMD_ECHO) $(OPENOCD) -f $(JLINK_BOARD_CFG) -c \
 	"init; \
 	reset halt; \
 	sleep 100; \

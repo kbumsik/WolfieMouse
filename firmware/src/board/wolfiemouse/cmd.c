@@ -12,7 +12,7 @@
 // #include "portable.h" // TODO: Delete
 // #include "task.h"
 #include "queue.h"
-// #include "semphr.h"
+#include "semphr.h"
 
 /*******************************************************************************
  * Global variables
@@ -29,6 +29,7 @@
 // static void (*completed_callback)(void);
 // static TaskHandle_t task_motion_handler;
 static QueueHandle_t cmd_queue = NULL;
+static SemaphoreHandle_t cmd_semphr = NULL;
 
 /*******************************************************************************
  * Function definition
@@ -50,6 +51,7 @@ void cmd_init(void)
 
     // /* Get queue from the controll loop */
     cmd_queue = thread_control_loop_cmd_queue();
+    cmd_semphr = thread_control_loop_cmd_semphr();
     if (cmd_queue == NULL) {
         KB_DEBUG_ERROR("Getting cmd queue failed!!");
     }
@@ -187,8 +189,8 @@ void cmd_polling(enum cmd_type type)
     if (xQueueSend(cmd_queue, &commend, portMAX_DELAY) != pdPASS) {
         // failed to send a commend
     }
-
-    /// return semaphore value
+    // Wait for semaphore
+    xSemaphoreTake(cmd_semphr, portMAX_DELAY);
 }
 
 // static void task_motion(void *pvParameters)
