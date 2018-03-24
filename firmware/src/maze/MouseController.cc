@@ -44,10 +44,12 @@ bool MouseController::scanWalls(void)
     for (int i = (int) row_plus; i <= (int) col_minus; i++) {
     	Direction dir = (Direction) i;
         result = finder->examineWall(nextPos, dir, *this);
-        if (getWall(nextPos, dir) != result) {
-               newInfo = true;
-           }
-        setWall(nextPos, dir, result);
+        if (result != wallError) {
+            if (getWall(nextPos, dir) != result) {
+                   newInfo = true;
+            }
+            setWall(nextPos, dir, result);
+        }
     }
     // Lastly, update state of cells.
     updateCell(curPos);
@@ -180,15 +182,16 @@ void MouseController::getShortestPath()
 void MouseController::moveNextCell()
 {
     /* 1. turn first */
-    Direction tmp_d = getDirectionToGo();
-    /* before setting direction we need to set how much turn */
+    Direction next_d = getDirectionToGo();
+    mover->rotateTo(next_d, *this);
     setDirectionToGo();
     /* 2. scan side wall */
     scanWalls();		// TODO: Try using this outside
     /* 3. move */
-    Position tmp_p = getNextPos();
     /* move command */
-    setPos(tmp_p);
+    Position next_p = getNextPos();
+    mover->moveTo(next_p, next_d, *this);
+    setPos(next_p);
     /* 4. scan the front wall */
     /* 5. update */
     updateCell();
