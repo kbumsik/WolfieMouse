@@ -19,8 +19,9 @@ print(df.tail())
 fig, axes = plt.subplots(nrows=2, ncols=1)
 speeds = df[["Speed_Left", "Speed_Right", "T_setpoint", "R_setpoint"]]
 pwms = df[["Output_Left", "Output_Right"]]  
-speeds.plot(ylim=(0,speeds["T_setpoint"].max()+10), ax=axes[0])
-pwms.plot(ylim=(-10,pwms["Output_Left"].max()), ax=axes[1])
+
+speeds.plot(ax=axes[0]) #, ylim=(0,speeds["T_setpoint"].max()+10), 
+pwms.plot(ax=axes[1]) #, ylim=(-10,pwms["Output_Left"].max()), 
 # df.plot(secondary_y=["Output_Left", "Output_Right"], mark_right=False)
 plt.show()
 

@@ -27,9 +27,6 @@ void system_motion_backward_L(void);
 void system_motion_forward_R(void);
 void system_motion_backward_R(void);
 
-// Encoder control
-void system_reset_encoder(void);
-
 #ifdef __cplusplus
 }
 #endif

@@ -19,10 +19,7 @@
 // Micromouse system
 #include "system_control.h"
 #include "thread_control_loop.h"
-#include "pid.h"
-#include "encoder.h"
-#include "range.h"
-#include "motor.h"
+#include "cmd.h"
 
 void on_pressed(void);
 
@@ -30,10 +27,6 @@ static void task_blinky(void *pvParameters);
 
 /* Task Handlers */
 TaskHandle_t task_blinky_handler;
-
-// PID handler
-extern pid_handler_t g_pid_T;
-extern pid_handler_t g_pid_R;
 
 int main(void)
 {
@@ -49,6 +42,9 @@ int main(void)
 
     // Initialize all configured peripherals and then start control loop
     thread_control_loop_init();
+
+    // Initialize command system
+    cmd_init();
 
     BaseType_t result;
     /* definition and creation of defaultTask */
@@ -99,27 +95,25 @@ void task_blinky(void *pvParameters)
     gpio_toggle(LED5_PORT, LED5_PIN);
     gpio_toggle(LED6_PORT, LED6_PIN);
 
-    // Apply to the motor
-    pid_reset(&g_pid_T);
-    pid_reset(&g_pid_R);
+    // // Apply to the motor
+    // struct cmd_pid setpoints = {
+    //     .setpoint_trans = 20,
+    //     .setpoint_rot = 0,
+    //     // .step_left = 0,
+    //     // .step_right = 0
+    // };
+    // cmd_low_pid_and_go(&setpoints, NULL);
+    // delay_ms(2000);
 
-    system_enable_range_finder();
-    pid_input_setpoint(&g_pid_T, 60);
-    pid_input_setpoint(&g_pid_R, 0);
-    system_start_driving();
-    delay_ms(2000);
+    cmd_polling(CMD_S_L);
+    cmd_polling(CMD_F);
+    cmd_polling(CMD_S_R);
+    cmd_low_pid_reset_and_stop(NULL);
     /* Motor test running done */
-    system_stop_driving();
-    system_disable_range_finder();
-
-    struct encoder_data step;
-    struct range_data range;
 
     xLastWakeTime = xTaskGetTickCount();
     
     while (1) {
-
-
         gpio_toggle(LED1_PORT, LED1_PIN);
         gpio_toggle(LED2_PORT, LED2_PIN);
         gpio_toggle(LED3_PORT, LED3_PIN);
