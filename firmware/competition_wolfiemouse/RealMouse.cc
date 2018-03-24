@@ -48,12 +48,12 @@ Wall RealMouse::examineWall(int row, int col, Direction wallDir, PositionControl
     Wall ret = wallError;
     if (wallDir == mouseDir) {
         // Use front sensor
-        ret = (range.front > MEASURE_RANGE_F_DETECT)?wall:empty;
+        ret = (range.front > MEASURE_RANGE_F_FAR_DETECT)?wall:empty;
     } else if (wallDir == (++mouseDir)) {
         // Use left sensor
-        ret = (range.left > MEASURE_RANGE_L_DETECT)?wall:empty;
+        ret = (range.left > MEASURE_RANGE_L_WALL_DETECT)?wall:empty;
     } else if ((++wallDir) == (--mouseDir)) {
-        ret = (range.right > MEASURE_RANGE_R_DETECT)?wall:empty;
+        ret = (range.right > MEASURE_RANGE_R_WALL_DETECT)?wall:empty;
     }
     gpio_set(LED3_PORT, LED3_PIN, GPIO_PIN_RESET);
     return ret;
