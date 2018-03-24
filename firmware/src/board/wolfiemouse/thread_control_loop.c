@@ -94,6 +94,19 @@ pid_value_t pid_rot_rotating_value = {
             .kd = 20
 };
 
+pid_value_t pid_tran_smooth_value = {
+        .kp = 35,
+        .ki = 5, // 0.01
+        .kd = 10
+};
+
+pid_value_t pid_rot_smooth_value = {
+            .kp = 30,
+            .ki = 0,
+            .kd = 20
+};
+
+
 // Range finder value
 volatile struct range_data range;
 
@@ -259,6 +272,24 @@ static void control_loop(void *pvParameters)
                         state.current_cmd = CMD_NOTHING;
                     break;
                     /* High level commands */
+                    case CMD_BACK_TO_SART_CENTER:
+                        pid_set_pid(&pid.tran, &pid_tran_forwarding_value);
+                        pid_set_pid(&pid.rot, &pid_rot_forwarding_value);
+
+                        pid_input_setpoint(&pid.tran, 18);
+                        pid_input_setpoint(&pid.rot, 0);
+
+                        target_step.left = MEASURE_STEPS_BACK_TO_START_CENTER;
+                        target_step.left += MEASURE_ENCODER_DEFAULT;
+                        target_step.right = MEASURE_STEPS_BACK_TO_START_CENTER;
+                        target_step.right += MEASURE_ENCODER_DEFAULT;
+
+                        state.left_wheel = WHEEL_FORWARD;
+                        state.right_wheel = WHEEL_FORWARD;
+
+                        system_enable_range_finder();
+                        system_start_driving();
+                    break;
                     case CMD_F:
                         pid_set_pid(&pid.tran, &pid_tran_forwarding_value);
                         pid_set_pid(&pid.rot, &pid_rot_forwarding_value);
@@ -331,6 +362,42 @@ static void control_loop(void *pvParameters)
                         
                         state.left_wheel = WHEEL_FORWARD;
                         state.right_wheel = WHEEL_BACKWARD;
+
+                        system_disable_range_finder();  // MUST BE OFF
+                        system_start_driving();
+                    break;
+                    case CMD_S_L:
+                        pid_set_pid(&pid.tran, &pid_tran_smooth_value);
+                        pid_set_pid(&pid.rot, &pid_rot_smooth_value);
+
+                        pid_input_setpoint(&pid.tran, 15);
+                        pid_input_setpoint(&pid.rot, -30);
+                        
+                        target_step.left = MEASURE_STEPS_SMOOTH_L_LEFT;
+                        target_step.left += MEASURE_ENCODER_DEFAULT;
+                        target_step.right = MEASURE_STEPS_SMOOTH_L_RIGHT;
+                        target_step.right += MEASURE_ENCODER_DEFAULT;
+
+                        state.left_wheel = WHEEL_FORWARD;
+                        state.right_wheel = WHEEL_FORWARD;
+
+                        system_disable_range_finder();  // MUST BE OFF
+                        system_start_driving();
+                    break;
+                    case CMD_S_R:
+                        pid_set_pid(&pid.tran, &pid_tran_smooth_value);
+                        pid_set_pid(&pid.rot, &pid_rot_smooth_value);
+
+                        pid_input_setpoint(&pid.tran, 15);
+                        pid_input_setpoint(&pid.rot, 30);
+                        
+                        target_step.left = MEASURE_STEPS_SMOOTH_R_LEFT;
+                        target_step.left += MEASURE_ENCODER_DEFAULT;
+                        target_step.right = MEASURE_STEPS_SMOOTH_R_RIGHT;
+                        target_step.right += MEASURE_ENCODER_DEFAULT;
+
+                        state.left_wheel = WHEEL_FORWARD;
+                        state.right_wheel = WHEEL_FORWARD;
 
                         system_disable_range_finder();  // MUST BE OFF
                         system_start_driving();

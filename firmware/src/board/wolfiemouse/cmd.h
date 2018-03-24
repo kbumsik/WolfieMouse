@@ -19,6 +19,7 @@ enum cmd_type {
     // low commands
     CMD_LOW_PID_AND_GO, CMD_LOW_PID_RESET_AND_STOP,
     // high level commands
+    CMD_BACK_TO_SART_CENTER, //< move forward from the back of the cell to the center of the cell
     CMD_F,      //< move forward 1 cell
     CMD_H_F,    //< move forward 1/2 cell
     CMD_L,      //< turn left in-place
