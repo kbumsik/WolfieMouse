@@ -188,12 +188,18 @@ int main(void)
     gpio_isr_enable(B2_PORT, B2_PIN, &GPIO_InitStruct, FALLING_EDGE);
     gpio_isr_register(B2_PORT, B2_PIN, on_b2_pressed);
 
+    system_disable_range_finder();
+    system_stop_driving();
 
     // Initialize all configured peripherals and then start control loop
     thread_control_loop_init();
 
     // Initialize command system
     cmd_init();
+
+    system_disable_range_finder();
+    system_stop_driving();
+    cmd_low_pid_reset_and_stop(NULL);
 
     /* Task creation and definition */
     BaseType_t result;

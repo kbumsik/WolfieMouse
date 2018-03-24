@@ -446,13 +446,15 @@ static void control_loop(void *pvParameters)
 
         // if it is too close stop
         if (range.front > MEASURE_RANGE_F_NEAR_DETECT) {
-            system_start_driving();
-            state.cmd_ready = 1;
-            pid_reset(&pid.tran);
-            pid_reset(&pid.rot);
-            // Send a notification
-            xSemaphoreGive(cmd_semphr);
-            continue;
+            if ((cmd.type != CMD_L) || (cmd.type != CMD_R)){
+                system_start_driving();
+                state.cmd_ready = 1;
+                pid_reset(&pid.tran);
+                pid_reset(&pid.rot);
+                // Send a notification
+                xSemaphoreGive(cmd_semphr);
+                continue;
+            }
         }
 
         if (range.left > MEASURE_RANGE_L_MAX_DETECT) {
@@ -539,18 +541,18 @@ static void control_loop(void *pvParameters)
         }
 
         // Print the result in json format
-        terminal_puts("{");
-        terminal_printf("\"L\":%d,", range.left);
-        terminal_printf("\"R\":%d,", range.right);
-        terminal_printf("\"F\":%d", range.front);
-        // terminal_printf("\"LS\":%d,", speed.left);
-        // terminal_printf("\"RS\":%d,", speed.right);
-        // terminal_printf("\"LO\":%d,", outputT + outputR);
-        // terminal_printf("\"RO\":%d,", outputT - outputR);
-        // terminal_printf("\"TTS\":%d,", pid.tran.setpoint);
-        // terminal_printf("\"TRS\":%d", pid.rot.setpoint);
-        // terminal_printf("\"T\":%d", tick_us() - time);
-        terminal_puts("},\n");
+        // terminal_puts("{");
+        // terminal_printf("\"L\":%d,", range.left);
+        // terminal_printf("\"R\":%d,", range.right);
+        // terminal_printf("\"F\":%d", range.front);
+        // // terminal_printf("\"LS\":%d,", speed.left);
+        // // terminal_printf("\"RS\":%d,", speed.right);
+        // // terminal_printf("\"LO\":%d,", outputT + outputR);
+        // // terminal_printf("\"RO\":%d,", outputT - outputR);
+        // // terminal_printf("\"TTS\":%d,", pid.tran.setpoint);
+        // // terminal_printf("\"TRS\":%d", pid.rot.setpoint);
+        // // terminal_printf("\"T\":%d", tick_us() - time);
+        // terminal_puts("},\n");
     }
 
     /* It never goes here, but the task should be deleted when it reached here */
