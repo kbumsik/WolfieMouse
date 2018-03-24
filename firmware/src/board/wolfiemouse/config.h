@@ -13,7 +13,7 @@
  * If an MCU you look for is not on the list, port KB_LIB yourself
  ******************************************************************************/
 /* STM32F4 Series */
-#define STM32F446xx
+// #define STM32F446xx
 //#define STM32F407xx
 
 /* Nordic NRF Series */
@@ -37,7 +37,7 @@
  * Vendor specific settings. The setting depends on MCU you choose
  ******************************************************************************/
 #if defined(STM32F446xx)|defined(STM32F407xx)
-    #define USE_HAL_DRIVER
+    // #define USE_HAL_DRIVER
     #define USE_FULL_ASSERT // comment it out for production to reduce code size
 #endif
 
