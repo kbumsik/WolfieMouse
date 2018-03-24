@@ -103,11 +103,12 @@ void task_blinky(void *pvParameters)
     //     // .step_right = 0
     // };
     // cmd_low_pid_and_go(&setpoints, NULL);
-    // delay_ms(2000);
+    
+     delay_ms(1000);
 
-    cmd_polling(CMD_S_L);
     cmd_polling(CMD_F);
-    cmd_polling(CMD_S_R);
+    cmd_polling(CMD_F);
+    //cmd_polling(CMD_F);
     cmd_low_pid_reset_and_stop(NULL);
     /* Motor test running done */
 

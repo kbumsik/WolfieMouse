@@ -77,9 +77,9 @@ pid_value_t pid_tran_forwarding_value = {
 };
 
 pid_value_t pid_rot_forwarding_value = {
-            .kp = 7,
+            .kp = 3,
             .ki = 0,
-            .kd = 20
+            .kd = 400
 };
 
 pid_value_t pid_tran_rotating_value = {
@@ -276,7 +276,7 @@ static void control_loop(void *pvParameters)
                         pid_set_pid(&pid.tran, &pid_tran_forwarding_value);
                         pid_set_pid(&pid.rot, &pid_rot_forwarding_value);
 
-                        pid_input_setpoint(&pid.tran, 18);
+                        pid_input_setpoint(&pid.tran, 10);
                         pid_input_setpoint(&pid.rot, 0);
 
                         target_step.left = MEASURE_STEPS_BACK_TO_START_CENTER;
@@ -294,7 +294,7 @@ static void control_loop(void *pvParameters)
                         pid_set_pid(&pid.tran, &pid_tran_forwarding_value);
                         pid_set_pid(&pid.rot, &pid_rot_forwarding_value);
 
-                        pid_input_setpoint(&pid.tran, 18);
+                        pid_input_setpoint(&pid.tran, 10);
                         pid_input_setpoint(&pid.rot, 0);
 
                         target_step.left = MEASURE_STEPS_PER_CELL;
@@ -312,7 +312,7 @@ static void control_loop(void *pvParameters)
                         pid_set_pid(&pid.tran, &pid_tran_forwarding_value);
                         pid_set_pid(&pid.rot, &pid_rot_forwarding_value);
 
-                        pid_input_setpoint(&pid.tran, 18);
+                        pid_input_setpoint(&pid.tran, 10);
                         pid_input_setpoint(&pid.rot, 0);
 
                         target_step.left = MEASURE_STEPS_PER_CELL / 2;
