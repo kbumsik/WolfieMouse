@@ -27,7 +27,11 @@ extern "C" {
 uint32_t write_flash(uint8_t* data, uint32_t num_of_bytes);
 
 /**
+ * Reads a number of bytes, specified by num_of_bytes, from flash and
+ * stores them in the data array. Specifically reads from Sector 1.
  * 
+ * @param data          pointer to data array
+ * @param num_of_bytes  number of bytes to be read
  */
 void read_flash(uint8_t* data, uint32_t num_of_bytes);
 
