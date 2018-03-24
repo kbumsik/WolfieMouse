@@ -65,6 +65,7 @@ void RealMouse::moveTo(int row, int col, Direction destDir, PositionController &
     gpio_set(LED5_PORT, LED5_PIN, GPIO_PIN_SET);
     // Just move it by one cell
     cmd_polling(CMD_F);
+    cmd_low_pid_reset_and_stop(NULL);
     delay_ms(500);
     gpio_set(LED5_PORT, LED5_PIN, GPIO_PIN_RESET);
     return;
@@ -79,16 +80,19 @@ void RealMouse::rotateTo(Direction destDir, PositionController &mousePos)
     } else if (destDir == (++mouseDir)) {
         // Turn left
         cmd_polling(CMD_L);
+        cmd_low_pid_reset_and_stop(NULL);
         delay_ms(500);
     } else if ((++destDir) == (--mouseDir)) {
         // Turn right
         cmd_polling(CMD_R);
+        cmd_low_pid_reset_and_stop(NULL);
         delay_ms(500);
     } else {
         // turn 180 degree
         // Turn left
         cmd_polling(CMD_L);
         cmd_polling(CMD_L);
+        cmd_low_pid_reset_and_stop(NULL);
         delay_ms(500);
     }
     gpio_set(LED4_PORT, LED4_PIN, GPIO_PIN_RESET);

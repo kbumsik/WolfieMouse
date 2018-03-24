@@ -35,6 +35,7 @@ static TaskHandle_t control_loop_handler;
 
 static SemaphoreHandle_t semphr_from_isr = NULL;
 static QueueHandle_t cmd_queue = NULL;
+static SemaphoreHandle_t cmd_semphr = NULL;
 
 /*******************************************************************************
  * Private variables and functions
@@ -217,13 +218,14 @@ void thread_control_loop_init(void)
     if (NULL == cmd_queue) {
         KB_DEBUG_ERROR("Creating cmd queue failed!!");
     }
+    cmd_semphr = xSemaphoreCreateCounting(1, 0);
     state.cmd_ready = 1;
 
     /* Allocate task */
     BaseType_t result;
     result = xTaskCreate(
             control_loop,
-            "Mot",
+            "Cnrt",
             configMINIMAL_STACK_SIZE+2000,
             NULL,
             configMAX_PRIORITIES,
@@ -513,7 +515,7 @@ static void control_loop(void *pvParameters)
                     pid_reset(&pid.rot);
                 }
                 // Send a notification
-// Semaphr give asdfasdfasdfasdfasdfasdf
+                xSemaphoreGive(cmd_semphr);
             }
         }
 
@@ -539,6 +541,10 @@ QueueHandle_t thread_control_loop_cmd_queue(void)
     return cmd_queue;
 }
 
+SemaphoreHandle_t thread_control_loop_cmd_semphr(void)
+{
+    return cmd_semphr;
+}
 // static void process_cmd(motion_cmd_t *cmd)
 // {
 //     static int32_t target_pid_T;
