@@ -30,10 +30,10 @@ FLOAT_ABI_FLAG = -mfloat-abi=hard
 C_DEFS =  \
 -DUSE_HAL_DRIVER \
 -DSTM32F446xx \
--DOS_USE_TRACE_SEMIHOSTING_DEBUG \
 -DHSE_VALUE=8000000 \
 -DKB_BLACKWOLF \
-# -DEBUG \
+-DDEBUG \
+# -DOS_USE_TRACE_SEMIHOSTING_DEBUG \
 
 # AS defines
 #AS_DEFS = 
@@ -75,12 +75,12 @@ pid.c
 
 # .c files used in /firmware/src/maze
 MAZE_FILES = \
-# fakeIO.cc \
-# MazeIO.cc \
-# PositionController.cc \
+fakeIO.cc \
+MazeIO.cc \
+Maze.cc \
+MouseController.cc \
+PositionController.cc \
 # StdIO.cc \
-# Maze.cc \
-# MouseController.cc \
 # SimulMouse.cc \
 
 # .c files used in /firmware/src/module

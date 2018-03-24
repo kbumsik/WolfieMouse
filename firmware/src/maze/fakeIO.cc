@@ -24,7 +24,7 @@ void FakeIO::open(char *filename, char *mode)
 {
 }
 
-int FakeIO::get_char()
+int FakeIO::getchar()
 {
     return 1;
 }
