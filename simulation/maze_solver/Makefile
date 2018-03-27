@@ -119,6 +119,7 @@ $(TARGET): $(OBJECTS)
 	@echo ""
 	@echo "===== Build Completed ====="
 	@echo ""
+	@echo "Please run ./$(TARGET) to start the program"
 
 $(BUILD_DIR):
 	mkdir $@		
