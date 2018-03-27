@@ -65,8 +65,6 @@ void RealMouse::moveTo(int row, int col, Direction destDir, PositionController &
     gpio_set(LED5_PORT, LED5_PIN, GPIO_PIN_SET);
     // Just move it by one cell
     cmd_polling(CMD_F);
-    cmd_low_pid_reset_and_stop(NULL);
-    delay_ms(500);
     gpio_set(LED5_PORT, LED5_PIN, GPIO_PIN_RESET);
     return;
 }

@@ -445,8 +445,10 @@ static void control_loop(void *pvParameters)
         }
 
         // if it is too close stop
-        if (range.front > MEASURE_RANGE_F_NEAR_DETECT) {
-            if ((cmd.type != CMD_L) || (cmd.type != CMD_R)){
+        if ((range.front > MEASURE_RANGE_F_NEAR_DETECT) ||
+        (range.front_right > MEASURE_RANGE_F_NEAR_DETECT))
+        {
+            if ((cmd.type != CMD_L) && (cmd.type != CMD_R)){
                 system_start_driving();
                 state.cmd_ready = 1;
                 pid_reset(&pid.tran);
