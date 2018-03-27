@@ -2,6 +2,7 @@
 #include "tick.h"
 // KB library
 #include "system_config.h"
+#include "module_config.h"
 #include "gpio.h"
 #include "terminal.h"
 #include "hcms_290x_display.h"
@@ -20,6 +21,7 @@
 #include "system_control.h"
 #include "thread_control_loop.h"
 #include "cmd.h"
+#include "range.h"
 
 void on_pressed(void);
 
@@ -108,13 +110,28 @@ void task_blinky(void *pvParameters)
 
     cmd_polling(CMD_F);
     cmd_polling(CMD_F);
+    cmd_polling(CMD_F);
     //cmd_polling(CMD_F);
     cmd_low_pid_reset_and_stop(NULL);
     /* Motor test running done */
 
     xLastWakeTime = xTaskGetTickCount();
     
+    struct range_data range;
     while (1) {
+        // range_get(&range, RANGE_CH_ALL);
+        // terminal_puts("{");
+        // terminal_printf("\"L\":%d,", range.left);
+        // terminal_printf("\"R\":%d,", range.right);
+        // terminal_printf("\"F\":%d", range.front);
+        // // terminal_printf("\"LS\":%d,", speed.left);
+        // // terminal_printf("\"RS\":%d,", speed.right);
+        // // terminal_printf("\"LO\":%d,", outputT + outputR);
+        // // terminal_printf("\"RO\":%d,", outputT - outputR);
+        // // terminal_printf("\"TTS\":%d,", pid.tran.setpoint);
+        // // terminal_printf("\"TRS\":%d", pid.rot.setpoint);
+        // // terminal_printf("\"T\":%d", tick_us() - time);
+        // terminal_puts("},\n");
         gpio_toggle(LED1_PORT, LED1_PIN);
         gpio_toggle(LED2_PORT, LED2_PIN);
         gpio_toggle(LED3_PORT, LED3_PIN);
