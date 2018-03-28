@@ -1,4 +1,0 @@
-(fp_lib_table
-  (lib (name footprints_micromouse)(type KiCad)(uri "$(KIPRJMOD)\\footprints_micromouse.pretty")(options "")(descr ""))
-  (lib (name MPU-9250)(type Legacy)(uri "$(KIPRJMOD)\\backup\\MPU-9250.mod")(options "")(descr ""))
-)
