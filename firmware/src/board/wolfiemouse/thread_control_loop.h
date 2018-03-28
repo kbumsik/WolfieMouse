@@ -8,7 +8,9 @@
 #ifndef SRC_BOARD_THREAD_CONTROL_LOOP_H_
 #define SRC_BOARD_THREAD_CONTROL_LOOP_H_
 
+#include "FreeRTOS.h"
 #include "queue.h"
+#include "semphr.h"
 
 #ifdef __cplusplus
 extern "C" {
