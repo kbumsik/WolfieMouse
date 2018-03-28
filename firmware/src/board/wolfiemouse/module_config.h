@@ -99,6 +99,7 @@
 #define RECV_L_PIN          GPIO_PIN_2
 #define RECV_FL_PORT        GPIOC
 #define RECV_FL_PIN         GPIO_PIN_3
+
 // Range sensor emitters
 // right front : PC13
 // sides : PA0
