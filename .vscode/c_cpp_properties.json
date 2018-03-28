@@ -1,55 +1,6 @@
 {
     "configurations": [
         {
-            "name": "Mac",
-            "includePath": [
-                "/usr/lib/gcc/arm-none-eabi/7.3.0/include",
-                "/usr/lib/gcc/arm-none-eabi/7.3.0/include-fixed",
-                "/usr/lib/gcc/arm-none-eabi/7.3.0/../../../../arm-none-eabi/include",
-                "${workspaceRoot}/firmware/lib/CMSIS/Include",
-                "${workspaceRoot}/firmware/lib/CMSIS/Device/ST/STM32F4xx/Include",
-                "${workspaceRoot}/firmware/lib/STM32F4xx_HAL_Driver/Inc",
-                "${workspaceRoot}/firmware/lib/STM32F4xx_HAL_Driver/Inc/Legacy",
-                "${workspaceRoot}/firmware/lib/FreeRTOS/Source/portable/GCC/ARM_CM4F",
-                "${workspaceRoot}/firmware/lib/FreeRTOS/Source/include",
-                "${workspaceRoot}/firmware/lib/FreeRTOS/Source/CMSIS_RTOS",
-                "${workspaceRoot}/firmware/src/board/nucleo_f446re",
-                "${workspaceRoot}/firmware/src/math",
-                "${workspaceRoot}/firmware/src/maze",
-                "${workspaceRoot}/firmware/src/module",
-                "${workspaceRoot}/firmware/src/peripheral",
-                "${workspaceRoot}/firmware/src/system"
-            ],
-            "defines": [],
-            "intelliSenseMode": "clang-x64",
-            "browse": {
-                "path": [
-                    "/usr/lib/gcc/arm-none-eabi/7.3.0/include",
-                    "/usr/lib/gcc/arm-none-eabi/7.3.0/include-fixed",
-                    "/usr/lib/gcc/arm-none-eabi/7.3.0/../../../../arm-none-eabi/include",
-                    "${workspaceRoot}/firmware/lib/CMSIS/Include",
-                    "${workspaceRoot}/firmware/lib/CMSIS/Device/ST/STM32F4xx/Include",
-                    "${workspaceRoot}/firmware/lib/STM32F4xx_HAL_Driver/Inc",
-                    "${workspaceRoot}/firmware/lib/STM32F4xx_HAL_Driver/Inc/Legacy",
-                    "${workspaceRoot}/firmware/lib/FreeRTOS/Source/portable/GCC/ARM_CM4F",
-                    "${workspaceRoot}/firmware/lib/FreeRTOS/Source/include",
-                    "${workspaceRoot}/firmware/lib/FreeRTOS/Source/CMSIS_RTOS",
-                    "${workspaceRoot}/firmware/src/board/nucleo_f446re",
-                    "${workspaceRoot}/firmware/src/math",
-                    "${workspaceRoot}/firmware/src/maze",
-                    "${workspaceRoot}/firmware/src/module",
-                    "${workspaceRoot}/firmware/src/peripheral",
-                    "${workspaceRoot}/firmware/src/system"
-                ],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            "macFrameworkPath": [
-                "/System/Library/Frameworks",
-                "/Library/Frameworks"
-            ]
-        },
-        {
             "name": "Linux",
             "includePath": [
                 "/usr/lib/gcc/arm-none-eabi/7.3.0/include",
@@ -521,27 +472,6 @@
                     "${workspaceRoot}/firmware/src/module",
                     "${workspaceRoot}/firmware/src/peripheral",
                     "${workspaceRoot}/firmware/src/system"
-                ],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            }
-        },
-        {
-            "name": "Win32",
-            "includePath": [
-                "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include",
-                "${workspaceRoot}"
-            ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
-            ],
-            "intelliSenseMode": "msvc-x64",
-            "browse": {
-                "path": [
-                    "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
-                    "${workspaceRoot}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
