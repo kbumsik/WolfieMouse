@@ -6,7 +6,6 @@
  */
 
 #include "system_config.h"
-// #include "motion_controller.h"
 #include "system_control.h"
 #include "common_source.h"
 #include "encoder.h"
@@ -37,15 +36,6 @@ static SemaphoreHandle_t semphr_from_isr = NULL;
 static QueueHandle_t cmd_queue = NULL;
 static SemaphoreHandle_t cmd_semphr = NULL;
 
-/*******************************************************************************
- * Private variables and functions
- ******************************************************************************/
-// static void process_cmd(motion_cmd_t *cmd);
-
-void on_motion_completed (void);
-
-// static void (*completed_callback)(void);
-// static QueueHandle_t queue_motion;
 
 /*******************************************************************************
  * Static local variables
@@ -445,14 +435,18 @@ static void control_loop(void *pvParameters)
         }
 
         // if it is too close stop
-        if (range.front > MEASURE_RANGE_F_NEAR_DETECT) {
-            system_start_driving();
-            state.cmd_ready = 1;
-            pid_reset(&pid.tran);
-            pid_reset(&pid.rot);
-            // Send a notification
-            xSemaphoreGive(cmd_semphr);
-            continue;
+        if ((range.front > MEASURE_RANGE_F_NEAR_DETECT) ||
+        (range.front_right > MEASURE_RANGE_F_NEAR_DETECT))
+        {
+            if ((cmd.type != CMD_L) && (cmd.type != CMD_R)){
+                system_start_driving();
+                state.cmd_ready = 1;
+                pid_reset(&pid.tran);
+                pid_reset(&pid.rot);
+                // Send a notification
+                xSemaphoreGive(cmd_semphr);
+                continue;
+            }
         }
 
         if (range.left > MEASURE_RANGE_L_MAX_DETECT) {
@@ -539,18 +533,18 @@ static void control_loop(void *pvParameters)
         }
 
         // Print the result in json format
-        terminal_puts("{");
-        terminal_printf("\"L\":%d,", range.left);
-        terminal_printf("\"R\":%d,", range.right);
-        terminal_printf("\"F\":%d", range.front);
-        // terminal_printf("\"LS\":%d,", speed.left);
-        // terminal_printf("\"RS\":%d,", speed.right);
-        // terminal_printf("\"LO\":%d,", outputT + outputR);
-        // terminal_printf("\"RO\":%d,", outputT - outputR);
-        // terminal_printf("\"TTS\":%d,", pid.tran.setpoint);
-        // terminal_printf("\"TRS\":%d", pid.rot.setpoint);
-        // terminal_printf("\"T\":%d", tick_us() - time);
-        terminal_puts("},\n");
+        // terminal_puts("{");
+        // terminal_printf("\"L\":%d,", range.left);
+        // terminal_printf("\"R\":%d,", range.right);
+        // terminal_printf("\"F\":%d", range.front);
+        // // terminal_printf("\"LS\":%d,", speed.left);
+        // // terminal_printf("\"RS\":%d,", speed.right);
+        // // terminal_printf("\"LO\":%d,", outputT + outputR);
+        // // terminal_printf("\"RO\":%d,", outputT - outputR);
+        // // terminal_printf("\"TTS\":%d,", pid.tran.setpoint);
+        // // terminal_printf("\"TRS\":%d", pid.rot.setpoint);
+        // // terminal_printf("\"T\":%d", tick_us() - time);
+        // terminal_puts("},\n");
     }
 
     /* It never goes here, but the task should be deleted when it reached here */
@@ -567,115 +561,6 @@ SemaphoreHandle_t thread_control_loop_cmd_semphr(void)
 {
     return cmd_semphr;
 }
-// static void process_cmd(motion_cmd_t *cmd)
-// {
-//     static int32_t target_pid_T;
-//     static int32_t target_pid_R;
-//     static int32_t target_step.left;
-//     static int32_t target_step.right;
-//     // reset encoder first
-//     system_reset_encoder();
-
-//     // Set target steps and pid
-//     switch (cmd->type) {
-//     case straight:
-//         // Enable the range finder
-//         system_enable_range_finder();
-//         // set PID
-//         target_pid_T = 18;
-//         target_pid_R = 0;
-//         // Set target steps
-//         target_step.left = MEASURE_STEPS_PER_CELL * cmd->unit;
-//         target_step.right = MEASURE_STEPS_PER_CELL * cmd->unit;
-//         break;
-//     case turn:
-//         // Disable the range finder
-//         system_disable_range_finder();
-//         // set PID
-//         target_pid_T = 0;
-//         if (cmd->unit >= 0) {
-//             target_pid_R = -60;
-//             target_step.left = -MEASURE_STEPS_90DEG_CCW * cmd->unit;
-//             target_step.right = MEASURE_STEPS_90DEG_CCW * cmd->unit;
-//         } else {
-//             target_pid_R = 60;
-//             target_step.left = -MEASURE_STEPS_90DEG_CW * cmd->unit;
-//             target_step.right = MEASURE_STEPS_90DEG_CW * cmd->unit;
-//         }
-//         break;
-//     case curve:
-//         // Not implemented yet.
-//         break;
-//     default:
-//         break;
-//     }
-//     // apply new values
-//     pid_input_setpoint(&pid.tran, target_pid_T);
-//     pid_input_setpoint(&pid.rot, target_pid_R);
-//     // leftforward_L();
-//     } else {
-//         system_motion_backward_L();
-//     }
-//     // right
-//     g_motion_target_R = MEASURE_ENCODER_DEFAULT + target_step.right;
-//     if (target_step.right >= 0) {
-//         system_motion_forward_R();
-//     } else {
-//         system_motion_backward_R();
-//     }
-//     // Register on_completed callback function
-//     completed_callback = cmd->on_completed;
-
-//     // Invoke the on_start callback function.
-//     if (NULL != cmd->on_start) {
-//         cmd->on_start();
-//     }
-// }
-
-// static void task_motion(void *pvParameters)
-// {
-//     motion_cmd_t cmd;
-//     int cmd_available = 0;
-//     while (1) {
-//         xQueueReceive(queue_motion, &cmd, portMAX_DELAY);
-//         if (!cmd_available) {
-//             // If it is the first run after turn off motors,
-//             // power up motors
-//             cmd_available = 1;
-//             system_start_driving();
-//         }
-//         // Process the next commend
-//         process_cmd(&cmd);
-//         // wait for motion completed.
-//         // Take semaphore TWO times, left and right.
-//         xSemaphoreTake(g_motion_semphr, portMAX_DELAY);
-//         xSemaphoreTake(g_motion_semphr, portMAX_DELAY);
-
-//         // Invoke callback
-//         on_motion_completed();
-
-//         // Check if there is message wating
-//         cmd_available = uxQueueMessagesWaiting(queue_motion);
-//         KB_DEBUG_MSG("Motion available: %d\r\n", cmd_available);
-//         if (0 == cmd_available){
-//             //turn of motors
-//             system_stop_driving();
-//             system_disable_range_finder();
-//             pid_reset(&pid.tran);
-//             pid_reset(&pid.rot);
-//         }
-//     }
-// }
-
-// void on_motion_completed (void)
-// {
-//     // call callback
-//     if (completed_callback != NULL) {
-//         completed_callback();
-//     }
-// }
-
-
 
 void SysTick_hook(void)
 {

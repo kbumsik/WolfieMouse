@@ -17,6 +17,7 @@
 static adc_t _adc_left;
 static adc_t _adc_right;
 static adc_t _adc_front_left;
+static adc_t _adc_front_right;
 
 void range_init(void)
 {
@@ -34,6 +35,14 @@ void range_init(void)
 
     adc_init(&_adc_right, &adc_init_obj);
     adc_pin(RECV_R_PORT, RECV_R_PIN);
+
+    // Front (actually FR)
+    adc_init_obj.device = KB_ADC3;
+    adc_init_obj.channel = KB_ADC_CH10;
+
+    adc_init(&_adc_front_right, &adc_init_obj);
+    adc_pin(RECV_FR_PORT, RECV_FR_PIN);
+
     // Front (actually FL)
     adc_init_obj.device = KB_ADC3;
     adc_init_obj.channel = KB_ADC_CH13;
@@ -49,10 +58,12 @@ void range_init(void)
     gpio_init(EMITTER_L_PORT, EMITTER_L_PIN, &GPIO_InitStruct);
     gpio_init(EMITTER_R_PORT, EMITTER_R_PIN, &GPIO_InitStruct);
     gpio_init(EMITTER_FL_PORT, EMITTER_FL_PIN, &GPIO_InitStruct);
+    gpio_init(EMITTER_FR_PORT, EMITTER_FR_PIN, &GPIO_InitStruct);
 
     gpio_set(EMITTER_L_PORT, EMITTER_L_PIN, GPIO_PIN_RESET);
     gpio_set(EMITTER_R_PORT, EMITTER_R_PIN, GPIO_PIN_RESET);
     gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_RESET);
+    gpio_set(EMITTER_FR_PORT, EMITTER_FR_PIN, GPIO_PIN_RESET);
 }
 
 void range_get(struct range_data *out, enum range_ch ch)
@@ -83,6 +94,11 @@ void range_get(struct range_data *out, enum range_ch ch)
             delay_us(60);
             out->front = adc_measure(&_adc_front_left);
             gpio_set(EMITTER_FL_PORT, EMITTER_FL_PIN, GPIO_PIN_RESET);
+
+            gpio_set(EMITTER_FR_PORT, EMITTER_FR_PIN, GPIO_PIN_SET);
+            delay_us(60);
+            out->front_right = adc_measure(&_adc_front_right);
+            gpio_set(EMITTER_FR_PORT, EMITTER_FR_PIN, GPIO_PIN_RESET);
         break;
         case RANGE_CH_ALL:
             range_get(out, RANGE_CH_LEFT);

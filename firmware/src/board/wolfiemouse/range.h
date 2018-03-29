@@ -21,7 +21,7 @@ struct range_data {
     uint16_t right;
     uint16_t front;
     // uint16_t front_left;
-    // uint16_t front_right;
+    uint16_t front_right;
 };
 
 enum range_ch {

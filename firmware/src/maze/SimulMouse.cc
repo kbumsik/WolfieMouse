@@ -30,3 +30,8 @@ void SimulMouse::moveTo(int row, int col, Direction destDir, PositionController 
 {
 	return;
 }
+
+void SimulMouse::rotateTo(Direction destDir, PositionController &mousePos)
+{
+	return;
+}
