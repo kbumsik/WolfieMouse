@@ -112,4 +112,5 @@ uart.c \
 
 # These shoud be included to make it work
 include ../base.mk
+include ../toolchain.mk
 include ../openocd.mk  # For flash, debug and gdb targets
