@@ -2,11 +2,18 @@
 # Detect Environment
 #######################################
 OS := $(shell uname)
+
+# Linux specific
 ifeq ($(OS),Linux)
+  # Detect Windows Subsystem for Linux
   MS_WSL := $(shell if grep -q Microsoft /proc/version; then echo Microsoft; fi)
   ifeq ($(MS_WSL),Microsoft)
     OS := WSL
   endif
+endif
+
+# macOS specific
+ifeq ($(OS),Darwin)
 endif
 
 #######################################
@@ -19,9 +26,12 @@ endif
 ifeq ($(OS),Linux)
   SUFFIX := ""
 endif
+ifeq ($(OS),Darwin)
+  SUFFIX := ""
+endif
 
 CC := $(PREFIX)gcc$(SUFFIX) -std=gnu99 -fdiagnostics-color=auto
-CXX := $(PREFIX)gcc$(SUFFIX) -std=c++11 -fdiagnostics-color=auto
+CXX := $(PREFIX)g++$(SUFFIX) -std=c++11 -fdiagnostics-color=auto
 AS := $(PREFIX)gcc$(SUFFIX) -fdiagnostics-color=auto -x assembler-with-cpp
 CP := $(PREFIX)objcopy$(SUFFIX)
 AR := $(PREFIX)ar$(SUFFIX)
@@ -33,8 +43,14 @@ OPENOCD := openocd$(SUFFIX)
 #######################################
 # Flags
 #######################################
-# mcu_flags
+# MCU flags
+CPU_FLAG ?= -mcpu=cortex-m4
+FPU_FLAG ?= -mfpu=fpv4-sp-d16
+FLOAT_ABI_FLAG ?= -mfloat-abi=hard
 MCU_FLAGS := $(CPU_FLAG) -mthumb $(FPU_FLAG) $(FLOAT_ABI_FLAG)
+
+# optimization
+OPTIMIZATION_FLAG ?= -Og
 
 # macros for gcc
 # AS defines

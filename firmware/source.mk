@@ -151,11 +151,8 @@ C_INCLUDES =  \
 # link script
 LDSCRIPT ?= $(BOARD_DIR)/linker_script.ld
 
-# default action: build all
-all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin
-
 #######################################
-# build the application
+# Objects and file path
 #######################################
 
 # Divide C and CPP
@@ -166,45 +163,10 @@ C_SOURCES := $(filter-out %.cc,$(C_SOURCES))
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
 vpath %.c $(sort $(dir $(C_SOURCES)))
 
-# build C files
-$(BUILD_DIR)/%.o: %.c | $(BUILD_DIR) 
-	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
-
 # list of CPP objects
 OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(CPP_SOURCES:.cc=.o)))
 vpath %.cc $(sort $(dir $(CPP_SOURCES)))
 
-# build CPP files
-$(BUILD_DIR)/%.o: %.cc | $(BUILD_DIR) 
-	$(CXX) -c $(CXXFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.cc=.lst)) $< -o $@
-
 # list of ASM program objects
 OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
 vpath %.s $(sort $(dir $(ASM_SOURCES)))
-
-# build ASM files
-$(BUILD_DIR)/%.o: %.s | $(BUILD_DIR)
-	$(AS) -c $(CFLAGS) $< -o $@
-
-$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS)
-	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
-	@echo ""
-	@echo "===== Build Completed ====="
-	$(SZ) $@
-	@echo ""
-
-$(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
-	$(HEX) $< $@
-	
-$(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
-	$(BIN) $< $@	
-	
-$(BUILD_DIR):
-	mkdir $@		
-
-#######################################
-# clean up
-#######################################
-.PHONY: clean
-clean:
-	-rm -fR $(BUILD_DIR)
