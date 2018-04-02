@@ -114,11 +114,15 @@ $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 $(BUILD_DIR)/%.o: %.cc | $(BUILD_DIR) 
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
-$(TARGET): $(OBJECTS)
+$(TARGET): out.txt $(OBJECTS)
 	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 	@echo ""
 	@echo "===== Build Completed ====="
 	@echo ""
+	@echo "Please run ./$(TARGET) to start the program"
+
+out.txt:
+	cp out_original.txt out.txt
 
 $(BUILD_DIR):
 	mkdir $@		
@@ -129,7 +133,7 @@ $(BUILD_DIR):
 .PHONY: clean
 clean:
 	-rm -fR $(BUILD_DIR) $(TARGET)
-	-cp out_original.txt out.txt
+	cp out_original.txt out.txt
 
 #######################################
 # Debugger

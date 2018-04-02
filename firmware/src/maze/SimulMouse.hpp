@@ -25,6 +25,7 @@ public:
 	Wall examineWall(int row, int col, Direction wallDir, PositionController &mousePos) override;
     /* Overriding MoverInterface methods */
 	void moveTo(int row, int col, Direction destDir, PositionController &mousePos) override;
+    void rotateTo(Direction destDir, PositionController &mousePos) override;
 };
 
 #endif /* SIMULMOUSE_HPP_ */
