@@ -1,4 +1,7 @@
 define HELP_TEXT =
+
+Build commands:
+  Example: `make all`
 	all    - Buid the application
 	clean  - Cleanup the build files
 	help   - Prompt the help information

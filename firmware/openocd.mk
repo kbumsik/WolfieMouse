@@ -1,12 +1,10 @@
-# OpenOCD target configuration
-STLINK_BOARD_CFG := board/st_nucleo_f4.cfg
-JLINK_BOARD_CFG := ../openocd_jlink_ob_stlink.cfg
-
-OPENOCD ?= openocd
-
+# Add help text
 define OPENOCD_HELP_TEXT = 
+
+OpenOCD commands:
+  you can optionally use JLink with `PROGRAMMER=jlink`. ST-Link is used by default.
+  Example: `make flash PROGRAMMER=jlink`
 	flash  - Flash using OpenOCD
-	jlink  - Flash using JLink
 	reset  - Reset the target MCU using OpenOCD
 	gdb    - Start OpenOCD as GDB server
 
@@ -14,19 +12,22 @@ endef
 
 HELP_TEXT += $(OPENOCD_HELP_TEXT)
 
+# Openocd name
+OPENOCD ?= openocd
+
+# PROGRAMMER can be imported from arugment variable
+PROGRAMMER ?= stlink
+ifeq ($(PROGRAMMER),stlink)
+  OPENOCD_CFG = board/st_nucleo_f4.cfg
+endif
+ifeq ($(PROGRAMMER),jlink)
+  OPENOCD_CFG = ../openocd_jlink_ob_stlink.cfg
+endif
+
+# Targets
 .PHONY: flash
 flash: $(BUILD_DIR)/$(TARGET).hex
-	$(OPENOCD) -f $(STLINK_BOARD_CFG) -c \
-	"init; \
-	reset halt; \
-	sleep 100; \
-	flash write_image erase $^; \
-	reset run; \
-	shutdown"
-
-.PHONY: jlink
-jlink: $(BUILD_DIR)/$(TARGET).hex
-	$(OPENOCD) -f $(JLINK_BOARD_CFG) -c \
+	$(OPENOCD) -f $(OPENOCD_CFG) -c \
 	"init; \
 	reset halt; \
 	sleep 100; \
@@ -36,7 +37,7 @@ jlink: $(BUILD_DIR)/$(TARGET).hex
 
 .PHONY: reset
 reset:
-	$(OPENOCD) -c \
+	$(OPENOCD) -f $(OPENOCD_CFG) -c \
 	"init; \
 	reset halt; \
 	sleep 100; \
@@ -45,7 +46,7 @@ reset:
 
 .PHONY: gdb
 gdb: $(BUILD_DIR)/$(TARGET).hex
-	$(OPENOCD) -c \
+	$(OPENOCD) -f $(OPENOCD_CFG) -c \
 	"init; \
 	reset halt; \
 	sleep 100; \

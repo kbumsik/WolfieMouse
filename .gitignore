@@ -5,3 +5,4 @@
 # Visual Studio Code
 *.code-workspace
 .vscode/settings.json
+.vscode/.cortex-debug*.json

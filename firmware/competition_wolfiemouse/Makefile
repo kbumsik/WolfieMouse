@@ -2,7 +2,7 @@
 # Project build settings
 #######################################
 # Project name
-TARGET = competition_wolfimouse
+TARGET = competition_wolfiemouse
 
 # debug build?
 DEBUG = 1
