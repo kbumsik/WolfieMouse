@@ -134,7 +134,10 @@ void MazeIO::loadMazeFromString(char* str)
 void MazeIO::loadMazeFromFile(char* fileName)
 {
     //Open maze file
-    fileIO->open(fileName, "r");
+    if (fileIO->open(fileName, "r") < 0) {
+        printf("No maze data.\n");
+        return;
+    }
 
     //Copy maze file to buffer
     size_t count = fileIO->read(this->buffer, sizeof(char), sizeof(this->buffer));
@@ -155,7 +158,9 @@ void MazeIO::saveMazeToFile(char* fileName)
     }
 
     // try opening file
-    fileIO->open(fileName, "w");
+    if (fileIO->open(fileName, "w") < 0) {
+        return;
+    }
 
     writeBufferFromMaze(false);
     writeIOFromBuffer(fileIO);

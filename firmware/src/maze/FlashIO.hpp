@@ -16,12 +16,13 @@
 #include "IOInterface.hpp"
 #include "flash.h"
 
-#define NO_FLASH_DATA   0x01    /* No Data in flash */
-#define NEW_FLASH_DATA  0x02    /* Flash programmed */ 
-
 class FlashIO: public IOInterface
 {
 private:
+    enum MemStatus {
+        NO_DATA = 0x01,    /* No Data in flash */
+        DATA_STORED = 0x02 /* Flash programmed */
+    };
     uint8_t dataStatus;
     size_t offset;
 
@@ -55,7 +56,7 @@ public:
     size_t read(void * ptr, size_t size, size_t count) override;
 
     /* Overidden Methods */
-    void open(char *filename, char *mode) override;
+    int open(char *filename, char *mode) override;
     int getchar() override;
 };
 

@@ -19,15 +19,16 @@ StdIO::StdIO(bool allowFile) :
 /*******************************************************************************
  * Public Methods
  ******************************************************************************/
-void StdIO::open(char *filename, char *mode)
+int StdIO::open(char *filename, char *mode)
 {
 	if (!allowFile) {
     	printf("This StdIO does not allow file");
-		return;
+		return 0;
 	}
     _file = fopen(filename, mode);
     if (NULL == _file) {
     	printf("Failed to open file");
+		return -1;
     }
 }
 

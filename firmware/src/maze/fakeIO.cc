@@ -20,8 +20,9 @@ FakeIO::FakeIO()
 /*******************************************************************************
  * Public Methods
  ******************************************************************************/
-void FakeIO::open(char *filename, char *mode)
+int FakeIO::open(char *filename, char *mode)
 {
+    return 0;
 }
 
 int FakeIO::getchar()

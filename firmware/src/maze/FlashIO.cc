@@ -19,9 +19,9 @@ FlashIO::FlashIO()
 
     uint32_t magic_num = *((uint32_t*) FLASH_MAGIC_ADDR);
     if (magic_num != FLASH_MAGIC_NUMBER) {
-        dataStatus = NO_FLASH_DATA;
+        dataStatus = FlashIO::NO_DATA;
     } else {
-        dataStatus = NEW_FLASH_DATA;
+        dataStatus = FlashIO::DATA_STORED;
     }
 }
 
@@ -30,7 +30,7 @@ size_t FlashIO::write(const void *ptr, size_t size, size_t count)
     uint32_t writeStatus = write_flash((uint8_t*) ptr, size * count);
     /* If every thing is ok */
     if (writeStatus == KB_OK) {
-        dataStatus = NEW_FLASH_DATA;
+        dataStatus = FlashIO::DATA_STORED;
         return KB_OK;
     }
     return writeStatus;
@@ -39,7 +39,7 @@ size_t FlashIO::write(const void *ptr, size_t size, size_t count)
 int FlashIO::read(uint8_t* readBuffer, size_t offset, size_t size)
 {
     /* Check flash was actually written */
-    if (dataStatus == NO_FLASH_DATA) {
+    if (dataStatus == FlashIO::NO_DATA) {
         return KB_ERROR;
     }
     /* Check for null pointer */
@@ -61,10 +61,20 @@ size_t FlashIO::read(void * ptr, size_t size, size_t count)
     return count;
 }
 
-void FlashIO::open(char *filename, char *mode)
+int FlashIO::open(char *filename, char *mode)
 {
+    // When writing, it is always return yes
+    if ((mode != NULL) && (*mode == 'w')) {
+        return 0;
+    }
     // reset offset. filename doesn't do anything.
     offset = 0;
+
+    if (FlashIO::DATA_STORED == dataStatus) {
+        return 0;
+    } else {
+        return -1; // There is no data in flash yet
+    }
 }
 
 int FlashIO::getchar()

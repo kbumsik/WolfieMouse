@@ -17,7 +17,7 @@ protected:
 public:
     IOInterface(void) : _file(NULL) {}
     // replacement for fopen()
-    virtual void open(char *filename, char *mode) = 0;
+    virtual int open(char *filename, char *mode) = 0;
     // replacement for fgetc()
     virtual int getchar() = 0;
     // replacement for fread()
