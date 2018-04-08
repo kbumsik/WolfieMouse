@@ -18,7 +18,7 @@
 
 // Terminal settings
 #define TERMINAL_UART			USART2
-#define TERMINAL_BAUD_RATE		9600 // or 115200
+#define TERMINAL_BAUD_RATE		115200 // or 9600
 #define TERMINAL_TX_PORT 		GPIOA
 #define TERMINAL_TX_PIN 		GPIO_PIN_2
 #define TERMINAL_RX_PORT 		GPIOA
