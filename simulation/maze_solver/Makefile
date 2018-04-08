@@ -130,7 +130,7 @@ out.txt:
 	cp out_original.txt out.txt
 
 mazeString.hpp: $(MAZE_QUESTION)
-	python mazeTextToCCString.py $^ > $@
+	python ../../firmware/mazeTextToCCString.py $^ > $@
 
 $(BUILD_DIR):
 	mkdir $@		

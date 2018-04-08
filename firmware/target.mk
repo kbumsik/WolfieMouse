@@ -25,7 +25,7 @@ $(BUILD_DIR)/%.o: %.cc | $(BUILD_DIR)
 $(BUILD_DIR)/%.o: %.s | $(BUILD_DIR)
 	$(AS) -c $(CFLAGS) $< -o $@
 
-$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS)
+$(BUILD_DIR)/$(TARGET).elf: $(MAZE_STRING_HPP) $(OBJECTS)
 	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 	@echo ""
 	@echo "===== Build Completed ====="
@@ -39,14 +39,17 @@ $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	$(BIN) $< $@	
 	
 $(BUILD_DIR):
-	mkdir $@		
+	mkdir $@
+
+$(MAZE_STRING_HPP): $(MAZE_QUESTION)
+	python ../mazeTextToCCString.py $^ > $@
 
 #######################################
 # Others
 #######################################
 .PHONY: clean
 clean:
-	-rm -fR $(BUILD_DIR)
+	-rm -fR $(BUILD_DIR) $(MAZE_STRING_HPP)
 
 .PHONY: help
 help:
