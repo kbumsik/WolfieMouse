@@ -23,6 +23,9 @@ int write_flash(uint8_t* data, size_t bytes)
 
     /* Unlock Flash */
     HAL_FLASH_Unlock();
+    
+    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR
+                    | FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
 
     /* Erase Flash Struct */
     flash_erase_struct.TypeErase = FLASH_TYPEERASE_SECTORS;
