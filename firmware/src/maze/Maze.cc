@@ -60,6 +60,10 @@ Maze::Maze(char *filename, IOInterface *fileIO, IOInterface *printIO) :
     /* Load maze */
     goalPos.clear();    /* Clear goals first */
     readMazeFromFile(filename);
+    
+    if (goalPos.empty()) {
+        goalPos = CONFIG_DEFAULT_MAZE_GOAL;
+    }
 }
 
 /**
