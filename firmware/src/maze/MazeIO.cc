@@ -133,10 +133,6 @@ void MazeIO::loadMazeFromString(char* str)
 
 void MazeIO::loadMazeFromFile(char* fileName)
 {
-    if (NULL == fileName) {
-        printf("No file to load maze.\n");
-        return;
-    }
     //Open maze file
     fileIO->open(fileName, "r");
 

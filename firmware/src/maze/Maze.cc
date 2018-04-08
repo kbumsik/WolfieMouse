@@ -58,10 +58,8 @@ Maze::Maze(char *filename, IOInterface *fileIO, IOInterface *printIO) :
     Maze(fileIO, printIO)
 {
     /* Load maze */
-    if (filename != NULL) {
-    	goalPos.clear();    /* Clear goals first */
-        readMazeFromFile(filename);
-    }
+    goalPos.clear();    /* Clear goals first */
+    readMazeFromFile(filename);
 }
 
 /**

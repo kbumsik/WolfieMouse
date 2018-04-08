@@ -22,19 +22,14 @@
 class FlashIO: public IOInterface
 {
 private:
-    uint32_t sizeOfBuffer;
     uint8_t dataStatus;
+    size_t offset;
 
 public:
     /**
      * Class Constructor
      */
     FlashIO();
-
-    /**
-     * Class Deconstructor
-     */
-    ~FlashIO();
 
     /**
      * This function writes the data given to it into flash memory.
@@ -47,7 +42,7 @@ public:
      * @param nmemb
      * @return status code indicating if this were written ok
      */
-    size_t write(const void* ptr, size_t size, size_t nmemb);
+    size_t write(const void* ptr, size_t size, size_t count) override;
 
     /**
      * This function reads from flash and stores the contents in
@@ -56,11 +51,12 @@ public:
      * @param readBuffer    pointer to array to hold data
      * @param size          size of buffer
      */
-    size_t read(uint8_t* readBuffer, uint32_t size);
+    int read(uint8_t* readBuffer, size_t offset, size_t size);
+    size_t read(void * ptr, size_t size, size_t count) override;
 
     /* Overidden Methods */
-    void open(char *filename, char *mode);
-    int getchar();
+    void open(char *filename, char *mode) override;
+    int getchar() override;
 };
 
 #endif /* FLASH_IO_H_ */

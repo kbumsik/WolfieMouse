@@ -281,6 +281,12 @@ static void wait_for_button(MouseController &mouse)
     
     // Wait for the button pressed.
     xSemaphoreTake(b1_semphr, portMAX_DELAY);
+
+    // Check if B2 pressed
+    if (xSemaphoreTake(b2_semphr, 0) == pdTRUE) {
+        // Then save it to FLASH
+        mouse.saveMazeFile(NULL);
+    }
 }
 
 /*******************************************************************************
