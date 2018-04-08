@@ -34,8 +34,7 @@ private:
     int maxColSize;
     PositionController mousePosition;
     std::vector<Position> destinations;
-    /* Printing buffer (the last + 1 is for newline character */
-    char buffer[(CONFIG_MAX_ROW_SIZE * 2 + 1) * (CONFIG_MAX_COL_SIZE * 3 + 1 + 1)];
+    char buffer[CONFIG_MAZE_IO_BUFFER_SIZE];
     // IOInterface objects for IO
     IOInterface *fileIO;
     IOInterface *printIO;
@@ -55,8 +54,9 @@ public:
     bool positionIsDestination(Position pos);
     // Actual IO
     void printMaze(void);
-    void loadMaze(char* fileName);
-    void saveMaze(char* fileName);
+    void loadMazeFromString(char* str);
+    void loadMazeFromFile(char* fileName);
+    void saveMazeToFile(char* fileName);
 };
 
 /*******************************************************************************

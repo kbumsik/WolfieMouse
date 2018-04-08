@@ -16,6 +16,12 @@ SimulMouse::SimulMouse(char *mazeFile, IOInterface *fileIO, IOInterface *printIO
     // The initializer does it all
 }
 
+SimulMouse::SimulMouse(Maze::StringMaze *stringMaze, IOInterface *fileIO, IOInterface *printIO):
+	maze(stringMaze, fileIO, printIO)
+{
+    // The initializer does it all
+}
+
 /*******************************************************************************
  * Public Methods
  ******************************************************************************/

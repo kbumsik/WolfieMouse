@@ -9,16 +9,6 @@
  * @brief      maze constructor
  */
 Maze::Maze(IOInterface *fileIO, IOInterface *printIO) :
-    Maze(NULL, fileIO, printIO)
-{
-}
-
-/**
- * @brief      maze constructor. Maze is built based on the file
- *
- * @param      filename  the name of the file to read
- */
-Maze::Maze(char *filename, IOInterface *fileIO, IOInterface *printIO) :
     mazeIO(this, fileIO, printIO),
 	startPos(CONFIG_DEFAULT_MAZE_START)
 {
@@ -54,14 +44,39 @@ Maze::Maze(char *filename, IOInterface *fileIO, IOInterface *printIO) :
 
     /* update the cell */
     updateCell();
+    
+    /* Init default goals */
+    goalPos = CONFIG_DEFAULT_MAZE_GOAL;
+}
 
+/**
+ * @brief      maze constructor. Maze is built based on the file
+ *
+ * @param      filename  the name of the file to read
+ */
+Maze::Maze(char *filename, IOInterface *fileIO, IOInterface *printIO) :
+    Maze(fileIO, printIO)
+{
     /* Load maze */
-    readMazeFromFile(filename);
-    /* Init default goals if no file  */
-    if (filename == NULL) {
-    	goalPos = CONFIG_DEFAULT_MAZE_GOAL;
+    if (filename != NULL) {
+    	goalPos.clear();    /* Clear goals first */
+        readMazeFromFile(filename);
     }
+}
 
+/**
+ * @brief      maze constructor. Maze is built based on the file
+ *
+ * @param      filename  the name of the file to read
+ */
+Maze::Maze(Maze::StringMaze *stringMaze, IOInterface *fileIO, IOInterface *printIO) :
+    Maze(fileIO, printIO)
+{
+    /* Load maze */
+    if (stringMaze != NULL) {
+    	goalPos.clear();    /* Clear goals first */
+        readMazeFromString(stringMaze);
+    }
 }
 
 /*******************************************************************************
@@ -212,7 +227,17 @@ void Maze::updateCell()
  */
 void Maze::readMazeFromFile(char* fileName)
 {
-    mazeIO.loadMaze(fileName);
+    mazeIO.loadMazeFromFile(fileName);
+}
+
+/**
+ * @brief      construct Maze from String
+ *
+ * @param      stringMaze  string to construct
+ */
+void Maze::readMazeFromString(StringMaze *stringMaze)
+{
+    mazeIO.loadMazeFromString(stringMaze->buf);
 }
 
 /**
@@ -230,7 +255,7 @@ void Maze::printMaze()
  */
 void Maze::saveMazeFile(char* fileName)
 {
-    mazeIO.saveMaze(fileName);
+    mazeIO.saveMazeToFile(fileName);
 }
 
 /*******************************************************************************
