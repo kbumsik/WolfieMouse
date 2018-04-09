@@ -46,9 +46,11 @@ bool MouseController::scanAndMove(void (*wait_func)(MouseController *mouse))
     moveNextShortestCell();
 
     /* Update path */
-    getDistanceAllCell();
-    getShortestPath();
-
+    if (!destinations.empty()) {
+        getDistanceAllCell();
+        getShortestPath();
+    }
+    
     /* Block after moving */
     if (wait_func) {
         wait_func(this);
