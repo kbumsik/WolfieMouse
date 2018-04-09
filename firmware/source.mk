@@ -55,6 +55,8 @@ C_SOURCES += $(wildcard ./*.cc)
 # board sources
 BOARD_SOURCES := $(addsuffix /*.c,$(BOARD_SRC_DIR))
 BOARD_SOURCES := $(wildcard $(BOARD_SOURCES))
+BOARD_SOURCES_CXX := $(addsuffix /*.cc,$(BOARD_SRC_DIR))
+BOARD_SOURCES += $(wildcard $(BOARD_SOURCES_CXX))
 
 C_SOURCES += $(BOARD_SOURCES)
 
