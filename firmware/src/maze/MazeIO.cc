@@ -47,7 +47,8 @@ void MazeIO::setDestinations(const std::vector<Position> &des)
 
 bool MazeIO::positionIsDestination(Position pos)
 {
-	for (int i = 0; i < destinations.size(); i++) {
+    unsigned int i;
+	for (i = 0; i < destinations.size(); i++) {
 		if (pos == destinations[i]) {
 			return true; /* return true if position found in destination vector*/
 		}
@@ -118,7 +119,7 @@ void MazeIO::loadMazeFromString(char* str)
         }
         /* Move buffer until newline */
         while (*buf != '\n') {
-            if ((buf - str) >= sizeof(str)) {
+            if ((size_t)(buf - str) >= sizeof(str)) {
                 break;
             } else {
                 buf++;

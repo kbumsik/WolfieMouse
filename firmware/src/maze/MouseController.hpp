@@ -27,8 +27,10 @@ private:
     Queue<PositionController> pathStack; /**< This is an assistant stack. When @getShortestPath invoked the path to the goal is constructed. */
     Queue<PositionController> availablePositionStack; /**< I don't even know what is this. */
     /* Interfaces */
-    FinderInterface *finder;
+    FinderInterface *finder; 
     MoverInterface *mover;
+    /* Vector destination */
+    std::vector<Position> destinations;
     /* Distance getter and setters */ 
     inline int getDis(int row, int col);
     inline int getDis(Position pos);
@@ -39,12 +41,17 @@ private:
     inline void setDis(Position pos, int dis);
     /* Cell getter and setter */
     Cell getCell(Position pos);
+
+    /*************** Floodfiil Algorithm Implementation ***********************/
+    /* Algorithm solver */
+    void getDistanceAllCell(void);
+    void getShortestPath(void);
     /* Used in algorithm implementation */
-    void initDistance();
+    void initDistance(void);
     int getHighestNeighbouringDistance(int row, int col);
     /* Setting Direction */
-    Direction getDirectionToGo();
-    void setDirectionToGo();
+    Direction getDirectionToGo(void);
+    void setDirectionToGo(void);
 
     /*************** Interacting physical interfaces **************************/
     /**
@@ -62,13 +69,10 @@ private:
 
     /* Moving methods */
     /* TODO: These are not yet physically move. check these moving methods */
-    void turnRight() override;
-    void turnLeft() override;
-    int goForward() override;
+    void turnRight(void) override;
+    void turnLeft(void) override;
+    int goForward(void) override;
     
-    /* Algorithm solver */
-    void getDistanceAllCell();
-    void getShortestPath();
     
     /** On development
      void movingCompleted();
@@ -78,15 +82,12 @@ private:
      virtual void setWall(int row, int col, direction_e dir, wall_e status);
      virtual void updateCell(int row, int col);
      */
-    /* Vector destination */
-    std::vector<Position> destinations;
 public:
-    /* Constructors */
-    MouseController();
+    /*********************  Constructors **************************************/
     MouseController(char *filename, IOInterface *fileIO, IOInterface *printIO,
                     FinderInterface *finder, MoverInterface *mover);
 
-    /* Movement commands */
+    /*********************  Movement commands *********************************/
     /**
      * @brief Scan, update path, and move one cell
      * 
@@ -98,21 +99,23 @@ public:
      */
     bool scanAndMove(void (*wait_func)(MouseController *mouse));
 
-    /* setters for destinations */
-    void setUnsearchDes(int n);
-    void setStartAsDes();
-    void setGoalAsDes();
-    /* boolean functions for goal, start and destination */
-    bool anyDestinationCellSearched();
+    /*************************  Destination changers **************************/
+    void makeRandomDest(unsigned int n);
+    void makeStartAsDest(void);
+    void makeGoalAsDest(void);
+
+    /************* boolean functions for goal, start and destination **********/
+    bool anyDestinationCellSearched(void);
     bool positionIsDestination(Position pos);
-    bool isInDestinationCell();
-    bool allDestinationsReached();
-    bool isInGoal();
-    bool isInStart();
-    /* print information of stack used in the algorithm */
-    void printMaze() override;
-    void printPathStack();
-    void printAvailablePositionStack();
+    bool isInDestinationCell(void);
+    bool allDestinationsReached(void);
+    bool isInGoal(void);
+    bool isInStart(void);
+
+    /*************** print information of stack used in the algorithm *********/
+    void printMaze(void) override;
+    void printPathStack(void);
+    void printAvailablePositionStack(void);
 };
 
 /*******************************************************************************
