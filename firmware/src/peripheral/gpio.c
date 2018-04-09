@@ -132,72 +132,55 @@ int gpio_isr_disable(gpio_port_t port, gpio_pin_t pin)
 static int register_callback_(gpio_pin_t pin, void (*callback)(void))
 {
     // Set NVIC and put the callback
-    IRQn_Type irq_num;
     int idx;
     switch(pin)
     {
     case PIN_0:
-        irq_num = EXTI0_IRQn;
         idx = 0;
         break;
     case PIN_1:
-        irq_num = EXTI1_IRQn;
         idx = 1;
         break;
     case PIN_2:
-        irq_num = EXTI2_IRQn;
         idx = 2;
         break;
     case PIN_3:
-        irq_num = EXTI3_IRQn;
         idx = 3;
         break;
     case PIN_4:
-        irq_num = EXTI4_IRQn;
         idx = 4;
         break;
     case PIN_5:
-        irq_num = EXTI9_5_IRQn;
         idx = 5;
         break;
     case PIN_6:
-        irq_num = EXTI9_5_IRQn;
         idx = 6;
         break;
     case PIN_7:
-        irq_num = EXTI9_5_IRQn;
         idx = 7;
         break;
     case PIN_8:
-        irq_num = EXTI9_5_IRQn;
         idx = 8;
         break;
     case PIN_9:
-        irq_num = EXTI9_5_IRQn;
         idx = 9;
         break;
     case PIN_10:
-        irq_num = EXTI15_10_IRQn;
         idx = 10;
         break;
     case PIN_11:
-        irq_num = EXTI15_10_IRQn;
         idx = 11;
         break;
     case PIN_12:
-        irq_num = EXTI15_10_IRQn;
         idx = 12;
         break;
     case PIN_13:
-        irq_num = EXTI15_10_IRQn;
         idx = 13;
         break;
     case PIN_14:
-        irq_num = EXTI15_10_IRQn;
         idx = 14;
         break;
     case PIN_15:
-        irq_num = EXTI15_10_IRQn;
         idx = 15;
         break;
     default:
@@ -216,72 +199,55 @@ static int set_isr_(gpio_pin_t pin, uint8_t enable)
 {
     // Set NVIC and put the callback
     IRQn_Type irq_num;
-    int idx;
     switch(pin)
     {
     case PIN_0:
         irq_num = EXTI0_IRQn;
-        idx = 0;
         break;
     case PIN_1:
         irq_num = EXTI1_IRQn;
-        idx = 1;
         break;
     case PIN_2:
         irq_num = EXTI2_IRQn;
-        idx = 2;
         break;
     case PIN_3:
         irq_num = EXTI3_IRQn;
-        idx = 3;
         break;
     case PIN_4:
         irq_num = EXTI4_IRQn;
-        idx = 4;
         break;
     case PIN_5:
         irq_num = EXTI9_5_IRQn;
-        idx = 5;
         break;
     case PIN_6:
         irq_num = EXTI9_5_IRQn;
-        idx = 6;
         break;
     case PIN_7:
         irq_num = EXTI9_5_IRQn;
-        idx = 7;
         break;
     case PIN_8:
         irq_num = EXTI9_5_IRQn;
-        idx = 8;
         break;
     case PIN_9:
         irq_num = EXTI9_5_IRQn;
-        idx = 9;
         break;
     case PIN_10:
         irq_num = EXTI15_10_IRQn;
-        idx = 10;
         break;
     case PIN_11:
         irq_num = EXTI15_10_IRQn;
-        idx = 11;
         break;
     case PIN_12:
         irq_num = EXTI15_10_IRQn;
-        idx = 12;
         break;
     case PIN_13:
         irq_num = EXTI15_10_IRQn;
-        idx = 13;
         break;
     case PIN_14:
         irq_num = EXTI15_10_IRQn;
-        idx = 14;
         break;
     case PIN_15:
         irq_num = EXTI15_10_IRQn;
-        idx = 15;
         break;
     default:
         KB_DEBUG_ERROR("Wrong Pin selected!\r\n");

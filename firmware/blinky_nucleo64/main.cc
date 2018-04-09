@@ -131,17 +131,12 @@ static void task_main(void *pvParameters)
         goStart = 1,
         explore = 2
     } mouseState = goGoal;
-    char serialInput;
 
     MouseController mouse(NULL, &flashIO, &printIO,
             (FinderInterface*) &virtualMouse, (MoverInterface*) &virtualMouse);
 
     /* First just print maze and wait */
     wait_for_button(&mouse);
-
-    /* Initialize xLastWakeTime for vTaskDelayUntil */
-    /* This variable is updated every vTaskDelayUntil is called */
-    portTickType xLastWakeTime = xTaskGetTickCount();
 
     while (true) {
         //Finite State Machine
@@ -182,8 +177,6 @@ void task_blinky(void *pvParameters)
     /* Initialize xLastWakeTime for vTaskDelayUntil */
     /* This variable is updated every vTaskDelayUntil is called */
     xLastWakeTime = xTaskGetTickCount();
-
-    uint32_t seconds = 0;
 
     while (1) {
         // Wait for the first pressing.

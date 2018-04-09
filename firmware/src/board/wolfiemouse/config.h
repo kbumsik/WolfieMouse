@@ -37,7 +37,6 @@
  * Vendor specific settings. The setting depends on MCU you choose
  ******************************************************************************/
 #if defined(STM32F446xx)|defined(STM32F407xx)
-    // #define USE_HAL_DRIVER
     #define USE_FULL_ASSERT // comment it out for production to reduce code size
 #endif
 

@@ -83,7 +83,7 @@ void read_flash(uint8_t* data, size_t offset, size_t bytes)
         return;
     }
     /* Read Flash */
-    uint8_t *address = (__IO uint32_t*)(FLASH_ADDR_SECTOR_1 + offset);
+    uint8_t *address = (uint8_t*)(FLASH_ADDR_SECTOR_1 + offset);
     for (; bytes > 0; bytes--) {
         *(data++) = *(address++);
     }
