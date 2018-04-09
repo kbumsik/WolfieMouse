@@ -12,6 +12,7 @@ MouseController::MouseController(char *filename, IOInterface *fileIO,
 		mover(mover),
 		destinations(goalPos)
 {
+	srand(101);
     pathStack = Queue<PositionController>();
     availablePositionStack = Queue<PositionController>();
     /* FIXME: Set the default start point */
@@ -51,9 +52,8 @@ bool MouseController::scanAndMove(void (*wait_func)(MouseController *mouse))
     return true;
 }
 
-void MouseController::setUnsearchDes(int n)
+void MouseController::makeRandomDest(unsigned int n)
 {
-	srand(101);
 	int count = 0;
 	//count non searched cells
 	for (int i = 0; i < CONFIG_MAX_ROW_SIZE; i++) {
@@ -64,7 +64,7 @@ void MouseController::setUnsearchDes(int n)
 		}
 	}
 	//find destinations
-	while (destinations.size() < n && count > 0) {
+	while ((destinations.size() < n) && (count > 0)) {
 		//choose random row
 		int temp = (int) (rand()%16);
 	    int i = temp;
@@ -82,7 +82,7 @@ void MouseController::setUnsearchDes(int n)
 	}
 }
 
-void MouseController::setStartAsDes()
+void MouseController::makeStartAsDest(void)
 {
 	if (positionIsDestination(CONFIG_DEFAULT_MAZE_START)) {
 		return;
@@ -90,7 +90,7 @@ void MouseController::setStartAsDes()
 	destinations.push_back(CONFIG_DEFAULT_MAZE_START);
 }
 
-void MouseController::setGoalAsDes()
+void MouseController::makeGoalAsDest(void)
 {
     for (int i = 0; i < CONFIG_MAX_ROW_SIZE; i++) {
         for (int j = 0; j < CONFIG_MAX_COL_SIZE; j++) {

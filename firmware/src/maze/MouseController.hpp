@@ -99,10 +99,10 @@ public:
      */
     bool scanAndMove(void (*wait_func)(MouseController *mouse));
 
-    /*********************  setters for destinations **************************/
-    void setUnsearchDes(int n);
-    void setStartAsDes(void);
-    void setGoalAsDes(void);
+    /*************************  Destination changers **************************/
+    void makeRandomDest(unsigned int n);
+    void makeStartAsDest(void);
+    void makeGoalAsDest(void);
 
     /************* boolean functions for goal, start and destination **********/
     bool anyDestinationCellSearched(void);

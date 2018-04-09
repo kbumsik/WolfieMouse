@@ -150,15 +150,15 @@ static void task_main(void *pvParameters)
             switch (mouseState) {
             case goGoal:
                 mouseState = explore;
-                mouse.setUnsearchDes(4);
+                mouse.makeRandomDest(4);
                 break;
             case explore:
                 mouseState = goStart;
-                mouse.setStartAsDes();
+                mouse.makeStartAsDest();
                 break;
             case goStart:
                 mouseState = goGoal;
-                mouse.setGoalAsDes();
+                mouse.makeGoalAsDest();
                 break;
             default:
                 //printf("Invalid state");
