@@ -30,6 +30,7 @@ int StdIO::open(char *filename, char *mode)
     	printf("Failed to open file");
 		return -1;
     }
+	return 0;
 }
 
 int StdIO::getchar()

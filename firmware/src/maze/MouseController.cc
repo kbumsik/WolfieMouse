@@ -103,7 +103,8 @@ void MouseController::makeGoalAsDest(void)
 
 bool MouseController::anyDestinationCellSearched()
 {
-	for (int i = 0; i < destinations.size(); i++) {
+    unsigned int i;
+	for (i = 0; i < destinations.size(); i++) {
 		if (getDis(destinations[i].row, destinations[i].col) != CELL_DISTANCE_UNREACHED) {
 			return true; /* return true if any of the destinations has been searched */
 		}
@@ -113,7 +114,8 @@ bool MouseController::anyDestinationCellSearched()
 
 bool MouseController::positionIsDestination(Position pos)
 {
-	for (int i = 0; i < destinations.size(); i++) {
+    unsigned int i;
+	for (i = 0; i < destinations.size(); i++) {
 		if ((pos == destinations[i]) ) {
 			return true; /* return true if position found in destination vector*/
 		}

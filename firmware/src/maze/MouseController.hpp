@@ -69,9 +69,9 @@ private:
 
     /* Moving methods */
     /* TODO: These are not yet physically move. check these moving methods */
-    void turnRight() override;
-    void turnLeft() override;
-    int goForward() override;
+    void turnRight(void) override;
+    void turnLeft(void) override;
+    int goForward(void) override;
     
     
     /** On development

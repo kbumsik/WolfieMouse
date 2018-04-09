@@ -195,7 +195,8 @@ int Maze::updateCell(int row, int col)
         return COMMON_MAZE_SUCCESS;
     }
 
-    for (int i = 0; i < goalPos.size(); i++) {
+    unsigned int i;
+    for (i = 0; i < goalPos.size(); i++) {
     	  /* checking goal */
     	if ((row == goalPos[i].row) && (col == goalPos[i].col)) {
     		cell[row][col].attribute = goal;
