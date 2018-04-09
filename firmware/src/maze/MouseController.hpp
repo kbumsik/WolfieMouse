@@ -45,12 +45,32 @@ private:
     /* Setting Direction */
     Direction getDirectionToGo();
     void setDirectionToGo();
+
+    /*************** Interacting physical interfaces **************************/
+    /**
+     * @brief Scan walls around the mouse.
+     * 
+     * @return true     Any new wall updated 
+     * @return false    No wall information updated
+     */
+    bool scanWalls(void);
+    /**
+     * @brief Move one cell toward the shortest path, with given machine state 
+     *        and information.
+     */
+    void moveNextShortestCell(void);
+
     /* Moving methods */
+    /* TODO: These are not yet physically move. check these moving methods */
     void turnRight() override;
     void turnLeft() override;
     int goForward() override;
+    
+    /* Algorithm solver */
+    void getDistanceAllCell();
+    void getShortestPath();
+    
     /** On development
-     void moveNextCell();
      void movingCompleted();
 
      Cell* getNextCell();
@@ -65,11 +85,19 @@ public:
     MouseController();
     MouseController(char *filename, IOInterface *fileIO, IOInterface *printIO,
                     FinderInterface *finder, MoverInterface *mover);
-    /* Algorithm solver */
-    bool scanWalls(void);     // Detect and update walls while not moving.
-    void getDistanceAllCell();
-    void getShortestPath();
-    void moveNextCell();
+
+    /* Movement commands */
+    /**
+     * @brief Scan, update path, and move one cell
+     * 
+     * @param wait_func Blocking method before moving and after moving. Useful
+     *                  for simulation but you may not want use it in the
+     *                  competition. Can be NULL if not used.
+     * @return true     When successful move
+     * @return false    When move failed
+     */
+    bool scanAndMove(void (*wait_func)(MouseController *mouse));
+
     /* setters for destinations */
     void setUnsearchDes(int n);
     void setStartAsDes();

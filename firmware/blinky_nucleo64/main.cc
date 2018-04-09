@@ -39,8 +39,7 @@ static SemaphoreHandle_t b1_semphr = NULL;
 static SemaphoreHandle_t one_clikc_semphr = NULL;
 static SemaphoreHandle_t double_click_semphr = NULL;
 
-static bool moveOneCell(MouseController &mouse);
-static void wait_for_button(MouseController &mouse);
+static void wait_for_button(MouseController *mouse);
 /* peripheral objects */
 // adc_t range_front_right;
 
@@ -138,7 +137,7 @@ static void task_main(void *pvParameters)
             (FinderInterface*) &virtualMouse, (MoverInterface*) &virtualMouse);
 
     /* First just print maze and wait */
-    wait_for_button(mouse);
+    wait_for_button(&mouse);
 
     /* Initialize xLastWakeTime for vTaskDelayUntil */
     /* This variable is updated every vTaskDelayUntil is called */
@@ -165,7 +164,7 @@ static void task_main(void *pvParameters)
                 break;
             }
         } else {
-            if (!moveOneCell(mouse)) {
+            if (!mouse.scanAndMove(wait_for_button)) {
                 goto end;
             }
         }
@@ -210,32 +209,10 @@ void task_blinky(void *pvParameters)
 /*******************************************************************************
  * static functions
  ******************************************************************************/
-static bool moveOneCell(MouseController &mouse)
-{
-    char serialInput;
-    /* Then scan walls then calculate the distance */
-    if (mouse.scanWalls()) {
-        mouse.getDistanceAllCell();
-        /* then get shortest path */
-        mouse.getShortestPath();
-    } else {
-        mouse.getDistanceAllCell();
-    }
-    /* print and wait */
-    wait_for_button(mouse);
-
-    /* Then move */
-    mouse.moveNextCell();
-    
-    /* print and wait */
-    wait_for_button(mouse);
-    return true;
-}
-
-static void wait_for_button(MouseController &mouse)
+static void wait_for_button(MouseController *mouse)
 {
     /* And print */
-    mouse.printMaze();
+    mouse->printMaze();
     printf("please press a button\n");
     fflush(stdout);
     
@@ -245,10 +222,9 @@ static void wait_for_button(MouseController &mouse)
     // Check if B2 pressed
     if (xSemaphoreTake(double_click_semphr, 0) == pdTRUE) {
         // Then save it to FLASH
-        mouse.saveMazeFile(NULL);
+        mouse->saveMazeFile(NULL);
     }
 }
-
 
 /*******************************************************************************
  * Event handlers

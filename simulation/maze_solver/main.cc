@@ -21,7 +21,7 @@
     #define MAZE_OUT "out.txt"
 #endif
 
-bool moveOneCell(MouseController &mouse);
+void wait(MouseController *mouse);
 
 int main()
 {
@@ -88,29 +88,22 @@ int main()
                 break;
             }
         } else {
-            if (!moveOneCell(mouse)) {
+            if (!mouse.scanAndMove(wait)) {
                 goto end;
             }
         }
     }
 
 end:
+    printf("Mose failed!!!!\n");
     mouse.saveMazeFile(MAZE_OUT);
     return 0;
 }
 
-bool moveOneCell(MouseController &mouse)
+void wait(MouseController *mouse)
 {
     char keyinput;
-    /* Then scan walls then calculate the distance */
-    if (mouse.scanWalls()) {
-        mouse.getDistanceAllCell();
-        /* then get shortest path */
-        mouse.getShortestPath();
-    } else {
-        mouse.getDistanceAllCell();
-    }
-    mouse.printMaze();
+    mouse->printMaze();
     printf("please input a command\n");
     printf("q: exit, n:next, p: print stack\n");
     fflush(stdout);
@@ -119,31 +112,17 @@ bool moveOneCell(MouseController &mouse)
         if (keyinput == 'n') {
             break;
         } else if (keyinput == 'q') {
-            return false;
+            goto save_and_exit;
         } else if (keyinput == 'p') {
-            mouse.printPathStack();
+            mouse->printPathStack();
             fflush(stdout);
         } else {
             continue;
         }
     }
-    /* Then move */
-    mouse.moveNextCell();
-
-    /* And print */
-    mouse.printMaze();
-    printf("please input a command\n");
-    printf("q: exit, n:next\n");
-    fflush(stdout);
-    while (true) {
-        keyinput = getchar();
-        if (keyinput == 'n') {
-            break;
-        } else if (keyinput == 'q') {
-            return false;
-        } else {
-            continue;
-        }
-    }
-    return true;
+    return;
+save_and_exit:
+    mouse->saveMazeFile(MAZE_OUT);
+    exit(0);
+    return;
 }

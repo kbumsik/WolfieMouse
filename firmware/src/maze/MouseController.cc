@@ -28,6 +28,35 @@ MouseController::MouseController(char *filename, IOInterface *fileIO,
 /*******************************************************************************
  * Public Methods
  ******************************************************************************/
+bool MouseController::scanAndMove(void (*wait_func)(MouseController *mouse))
+{
+    /* Then scan walls then calculate the distance */
+    if (scanWalls()) {
+        getDistanceAllCell();
+        /* then get shortest path */
+        getShortestPath();
+    } else {
+        /* If the walls changed do nothing */
+    }
+    /* Block before moving */
+    if (wait_func) {
+        wait_func(this);
+    }
+    /* Then move */
+    moveNextShortestCell();
+
+    /* Update path */
+    getDistanceAllCell();
+    getShortestPath();
+
+    /* Block after moving */
+    if (wait_func) {
+        wait_func(this);
+    }
+    return true;
+
+}
+
 bool MouseController::scanWalls(void)
 {
     bool newInfo = false;
@@ -179,7 +208,7 @@ void MouseController::getShortestPath()
 	pathStack.popFromFront();
 }
 
-void MouseController::moveNextCell()
+void MouseController::moveNextShortestCell(void)
 {
     /* 1. turn first */
     Direction next_d = getDirectionToGo();
