@@ -75,7 +75,7 @@ pid.c
 
 # .c files used in /firmware/src/maze
 MAZE_FILES = \
-fakeIO.cc \
+FakeIO.cc \
 MazeIO.cc \
 Maze.cc \
 MouseController.cc \

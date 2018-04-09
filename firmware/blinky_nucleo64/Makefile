@@ -78,7 +78,7 @@ MATH_FILES = \
 # .c files used in /firmware/src/maze
 MAZE_FILES = \
 FlashIO.cc \
-fakeIO.cc \
+FakeIO.cc \
 Maze.cc \
 MouseController.cc \
 SimulMouse.cc \

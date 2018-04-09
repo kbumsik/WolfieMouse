@@ -19,7 +19,7 @@
 // Algorithm
 #include "MouseController.hpp"
 #include "IOInterface.hpp"
-#include "fakeIO.hpp"
+#include "FakeIO.hpp"
 #include "SimulMouse.hpp"
 #include "StdIO.hpp"
 #include "FlashIO.hpp"
