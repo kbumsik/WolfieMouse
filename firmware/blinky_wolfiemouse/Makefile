@@ -4,6 +4,9 @@
 # Project name
 TARGET = blinky_wolfiemouse
 
+MAZE_QUESTION = maze_ieee_region_1_2015.txt
+MAZE_STRING_HPP = mazeString.hpp
+
 # debug build?
 DEBUG = 1
 # optimization
@@ -28,6 +31,7 @@ FLOAT_ABI_FLAG = -mfloat-abi=hard
 # macros for gcc
 # C defines
 C_DEFS =  \
+-DMAZE_QUESTION=\"$(MAZE_QUESTION)\" \
 -DUSE_HAL_DRIVER \
 -DSTM32F446xx \
 -DHSE_VALUE=8000000 \
@@ -75,13 +79,14 @@ pid.c
 
 # .c files used in /firmware/src/maze
 MAZE_FILES = \
-# fakeIO.cc \
-# MazeIO.cc \
-# PositionController.cc \
-# StdIO.cc \
-# Maze.cc \
-# MouseController.cc \
-# SimulMouse.cc \
+FlashIO.cc \
+fakeIO.cc \
+Maze.cc \
+MouseController.cc \
+SimulMouse.cc \
+MazeIO.cc \
+PositionController.cc \
+StdIO.cc \
 
 # .c files used in /firmware/src/module
 MODULE_FILES = \
@@ -91,6 +96,7 @@ hcms_290x_display.c \
 
 # .c files used in /firmware/src/peripheral
 PERIPHERAL_FILES = \
+flash.c \
 adc.c \
 rotary_encoder.c \
 gpio.c \

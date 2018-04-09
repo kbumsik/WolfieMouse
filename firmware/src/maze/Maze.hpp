@@ -45,10 +45,15 @@ protected:
 public:
     Position startPos;
     std::vector<Position> goalPos;
+    struct StringMaze {
+        /* +1 is null character */
+        char buf[CONFIG_MAZE_IO_BUFFER_SIZE + 1];
+    };
 
     /* Constructors */
     Maze(IOInterface *fileIO, IOInterface *printIO);
     Maze(char* filename, IOInterface *fileIO, IOInterface *printIO);
+    Maze(StringMaze *stringMaze, IOInterface *fileIO, IOInterface *printIO);
     /* Related to wall */
     Wall getWall(int row, int col, Direction dir);
     inline Wall getWall(Position pos, Direction dir);
@@ -69,6 +74,7 @@ public:
     inline int setDistance(Position pos, int dis);
     /* IO Related */
     void readMazeFromFile(char* fileName);
+    void readMazeFromString(StringMaze *stringMaze);
     virtual void printMaze();
     void saveMazeFile(char* fileName);
 };

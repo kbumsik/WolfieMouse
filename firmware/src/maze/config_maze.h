@@ -4,6 +4,8 @@
 
 #define CONFIG_MAX_ROW_SIZE	16
 #define CONFIG_MAX_COL_SIZE	16
+/* Printing buffer (the column's last + 1 is for newline character) */
+#define CONFIG_MAZE_IO_BUFFER_SIZE	((CONFIG_MAX_ROW_SIZE * 2 + 1) * (CONFIG_MAX_COL_SIZE * 3 + 1 + 1))
 #define CONFIG_QUEUE_MAX_BUFFER (CONFIG_MAX_COL_SIZE*CONFIG_MAX_ROW_SIZE)
 #define CONFIG_DEFAULT_MAZE_START		Position{15,0}
 #define CONFIG_DEFAULT_MAZE_GOAL		{Position{7,7}, Position{7,8}, Position{8,7}, Position{8,8}}

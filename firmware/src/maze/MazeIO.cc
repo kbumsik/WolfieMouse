@@ -7,8 +7,6 @@
 #include "MazeIO.hpp"
 #include "Maze.hpp"
 
-
-static void clearLine(IOInterface* io);
 /** FIXME: dynamically decide the starting direction */
 
 /*******************************************************************************
@@ -67,50 +65,48 @@ void MazeIO::printMaze(void)
     writeIOFromBuffer(printIO);
 }
 
-void MazeIO::loadMaze(char* fileName)
+void MazeIO::loadMazeFromString(char* str)
 {
-    char buf;
-    if (NULL == fileName) {
-        printf("No file to load maze.\n");
+    if (NULL == str) {
+        printf("No str to load maze.\n");
         return;
     }
-    //Open maze file
-    fileIO->open(fileName, "r");
-    // Reading part
+
+    // Reading from str
     Wall wallToPut;
+    char tmp;
+    char *buf = str;
     for (int i = 0; i < (CONFIG_MAX_ROW_SIZE * 2 + 1); i++) {
         for (int j = 0; j < (CONFIG_MAX_COL_SIZE * 2 + 1); j++) {
-            if ((buf = fileIO->getchar()) == EOF) {
-                printf("error?\n"); /* TODO: check error condition of fgets */
-            }
-            switch (buf) {
+            tmp = *buf++;
+            switch (tmp) {
             case '_':
             case '|':
-                wallToPut = wall;
+                wallToPut = Wall::wall;
                 if (j != CONFIG_MAX_COL_SIZE * 2) {
-                	fileIO->getchar();
+                	buf++;
                 }
                 break;
             case '.':
-                wallToPut = empty;
-				fileIO->getchar();
+                wallToPut = Wall::empty;
+				buf++;
                 break;
             case '*':
-                wallToPut = unknown;
-				fileIO->getchar();
+                wallToPut = Wall::unknown;
+				buf++;
                 break;
             case 'S': /* Starting point */
                 maze->startPos.row = i / 2;
                 maze->startPos.col = j / 2;
-                wallToPut = wallError;
+                wallToPut = Wall::wallError;
                 continue;
             case 'G':
             	maze->goalPos.push_back(Position{i/2, j/2});
-                wallToPut = wallError;
+                wallToPut = Wall::wallError;
                 continue;
             case ' ':
             default:
-                wallToPut = wallError;
+                wallToPut = Wall::wallError;
                 continue;
                 break;
             }
@@ -120,15 +116,40 @@ void MazeIO::loadMaze(char* fileName)
                 maze->colWall[i / 2][j / 2] = wallToPut;
             }
         }
-        // TODO: Wait. Do we really need this function?
-        clearLine(fileIO);
+        /* Move buffer until newline */
+        while (*buf != '\n') {
+            if ((buf - str) >= sizeof(str)) {
+                break;
+            } else {
+                buf++;
+            }
+        }
+        buf++;  /* Skip '\n' */
     }
 
     /* update the cell */
     maze->updateCell();
 }
 
-void MazeIO::saveMaze(char* fileName)
+void MazeIO::loadMazeFromFile(char* fileName)
+{
+    //Open maze file
+    if (fileIO->open(fileName, "r") < 0) {
+        printf("No maze data.\n");
+        return;
+    }
+
+    //Copy maze file to buffer
+    size_t count = fileIO->read(this->buffer, sizeof(char), sizeof(this->buffer));
+    if (count != sizeof(this->buffer)) {
+        printf("Error reading file, check the format of the file.\n");
+        return;
+    }
+
+    loadMazeFromString(this->buffer);
+}
+
+void MazeIO::saveMazeToFile(char* fileName)
 {
     // check maze object
     if (NULL == maze) {
@@ -137,7 +158,9 @@ void MazeIO::saveMaze(char* fileName)
     }
 
     // try opening file
-    fileIO->open(fileName, "w");
+    if (fileIO->open(fileName, "w") < 0) {
+        return;
+    }
 
     writeBufferFromMaze(false);
     writeIOFromBuffer(fileIO);
@@ -155,21 +178,21 @@ void MazeIO::writeBufferFromMaze(bool isShowMouse)
                 // print a space then wall
                 *ptr++ = ' ';
                 switch (maze->rowWall[i / 2][j]) {
-                case empty:
+                case Wall::empty:
                     *ptr++ = '.';
                     *ptr++ = '.';
                     break;
-                case wall:
+                case Wall::wall:
                 	// The cell size is twice as long
                     *ptr++ = '_';
                     *ptr++ = '_';
                     break;
-                case unknown:
+                case Wall::unknown:
                 	// The cell size is twice as long
                     *ptr++ = '*';
                     *ptr++ = '*';
                     break;
-                case wallError:
+                case Wall::wallError:
                 default:
                     printf("Error on rowWall!");
                     *ptr++ = '?';
@@ -182,16 +205,16 @@ void MazeIO::writeBufferFromMaze(bool isShowMouse)
             for (int j = 0; j < CONFIG_MAX_COL_SIZE + 1; j++) {
                 /* print wall first */
                 switch (maze->colWall[i / 2][j]) {
-                case empty:
+                case Wall::empty:
                     *ptr++ = '.';
                     break;
-                case wall:
+                case Wall::wall:
                     *ptr++ = '|';
                     break;
-                case unknown:
+                case Wall::unknown:
                     *ptr++ = '*';
                     break;
-                case wallError:
+                case Wall::wallError:
                 default:
                     printf("Error on rowWall!");
                     *ptr++ = '?';
@@ -220,23 +243,23 @@ void MazeIO::printCell(int row, int col, bool isShowMouse, char* buf)
     if (mousePosition.getCurrentPos().col == col &&
     	mousePosition.getCurrentPos().row == row && isShowMouse) {
     	switch(mousePosition.getCurrentDir()) {
-			case row_minus:		//mouse pointing up
+			case Direction::row_minus:		//mouse pointing up
 				*buf++ = 'M';
 				*buf = '^';
 				break;
-			case col_minus:
+			case Direction::col_minus:
 				*buf++ = '<';	//mouse pointing left
 				*buf = 'M';
 				break;
-			case row_plus:		//mouse pointing down
+			case Direction::row_plus:		//mouse pointing down
 				*buf++ = 'M';
 				*buf = 'v';
 				break;
-			case col_plus:		//mouse pointing right
+			case Direction::col_plus:		//mouse pointing right
 				*buf++ = 'M';
 				*buf = '>';
 				break;
-			case eDirError:
+			case Direction::eDirError:
 				*buf++ = 'M';
 				*buf = 'M';
 				break;
@@ -248,10 +271,10 @@ void MazeIO::printCell(int row, int col, bool isShowMouse, char* buf)
     } else if (positionIsDestination(Position{row, col}) && isShowMouse) {
     	*buf++ = ' ';
     	*buf = 'D';
-    } else if (maze->getCell(row, col).attribute == start) {
+    } else if (maze->getCell(row, col).attribute == Attribute::start) {
         *buf++ = ' ';
         *buf = 'S';
-    } else if (maze->getCell(row, col).attribute == goal) {
+    } else if (maze->getCell(row, col).attribute == Attribute::goal) {
         *buf++ = ' ';
         *buf = 'G';
     } else if (isShowMouse) {
@@ -266,17 +289,5 @@ void MazeIO::printCell(int row, int col, bool isShowMouse, char* buf)
     } else if (col != CONFIG_MAX_COL_SIZE) {
         *buf++ = ' ';
         *buf = ' ';
-    }
-}
-
-/*******************************************************************************
- * Private Functions
- ******************************************************************************/
-static void clearLine(IOInterface* io)
-{
-    char buf;
-    while ((buf = io->getchar()) != '\n') {
-        if (buf == EOF)
-            break;
     }
 }
