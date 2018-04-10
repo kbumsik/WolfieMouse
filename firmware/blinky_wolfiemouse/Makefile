@@ -90,6 +90,9 @@ StdIO.cc \
 
 # .c files used in /firmware/src/module
 MODULE_FILES = \
+encoder.c \
+motor.c \
+range.c \
 terminal.c \
 hcms_290x_display.c \
 # terminal_test.c \
