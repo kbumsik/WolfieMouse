@@ -7,19 +7,25 @@
 #include "common_source.h"
 #include "flash.h"
 
-uint32_t write_flash(uint8_t* data, uint32_t num_of_bytes)
+int write_flash(uint8_t* data, size_t bytes)
 {
     /* Check Parameters */
-    if (num_of_bytes > 0 && data == NULL) {
+    if (bytes > 0 && data == NULL) {
+        return KB_ERROR;
+    }
+    if (bytes >= FLASH_SIZE_SECTOR_1) {
         return KB_ERROR;
     }
     /* Variables */
     static FLASH_EraseInitTypeDef flash_erase_struct;
     uint32_t sector_error;
-    uint32_t address = ADDR_FLASH_SECTOR_1;
+    uint32_t address = FLASH_ADDR_SECTOR_1;
 
     /* Unlock Flash */
     HAL_FLASH_Unlock();
+    
+    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR
+                    | FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
 
     /* Erase Flash Struct */
     flash_erase_struct.TypeErase = FLASH_TYPEERASE_SECTORS;
@@ -29,7 +35,7 @@ uint32_t write_flash(uint8_t* data, uint32_t num_of_bytes)
 
     /* Erase Flash */
     if (HAL_FLASHEx_Erase(&flash_erase_struct, &sector_error) != HAL_OK) {
-        return sector_error;
+        return HAL_ERROR;
     }
 
     /* Clear Cache */
@@ -43,14 +49,24 @@ uint32_t write_flash(uint8_t* data, uint32_t num_of_bytes)
     __HAL_FLASH_DATA_CACHE_ENABLE();
     
     /* Write Bytes to Flash */
-    for (num_of_bytes; num_of_bytes > 0; num_of_bytes--) {
-        sector_error = HAL_FLASH_Program(FLASH_TYPEPROGRAM_BYTE,  address++, *(data++));
-        if (sector_error != HAL_OK) {
+    HAL_StatusTypeDef ret;
+    for (; bytes > 0; bytes--) {
+        ret = HAL_FLASH_Program(FLASH_TYPEPROGRAM_BYTE, address++, *(data++));
+        if (ret != HAL_OK) {
             /* Lock Flash */
             HAL_FLASH_Lock();
             /* Return Error */
-            return sector_error;
+            return ret;
         }
+    }
+
+    /* Write Magic number */
+    ret = HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, FLASH_MAGIC_ADDR, FLASH_MAGIC_NUMBER);
+    if (ret != HAL_OK) {
+        /* Lock Flash */
+        HAL_FLASH_Lock();
+        /* Return Error */
+        return ret;
     }
     
     /* Lock Flash */
@@ -60,15 +76,15 @@ uint32_t write_flash(uint8_t* data, uint32_t num_of_bytes)
     return HAL_OK;
 }
 
-void read_flash(uint8_t* data, uint32_t num_of_bytes)
+void read_flash(uint8_t* data, size_t offset, size_t bytes)
 {
     /* Check Parameters */
-    if ( num_of_bytes > 0 && data == NULL) {
+    if (bytes > 0 && data == NULL) {
         return;
     }
     /* Read Flash */
-    uint32_t address = ADDR_FLASH_SECTOR_1;
-    for (num_of_bytes; num_of_bytes > 0; num_of_bytes--) {
-        *(data++) = *( (__IO uint32_t*) address++ );
+    uint8_t *address = (uint8_t*)(FLASH_ADDR_SECTOR_1 + offset);
+    for (; bytes > 0; bytes--) {
+        *(data++) = *(address++);
     }
 }

@@ -16,15 +16,32 @@
 #include "semphr.h"
 #include "event_groups.h"
 
-void on_pressed(void);
+// Algorithm
+#include "MouseController.hpp"
+#include "IOInterface.hpp"
+#include "FakeIO.hpp"
+#include "SimulMouse.hpp"
+#include "StdIO.hpp"
+#include "FlashIO.hpp"
+
+// Maze String file
+#include "mazeString.hpp"
+
+void on_b1_pressed(void);
 
 static void task_blinky(void *pvParameters);
+static void task_main(void *pvParameters);
 
 /* Task Handlers */
 TaskHandle_t task_blinky_handler;
+TaskHandle_t task_main_handler;
+static SemaphoreHandle_t b1_semphr = NULL;
+static SemaphoreHandle_t one_clikc_semphr = NULL;
+static SemaphoreHandle_t double_click_semphr = NULL;
 
+static void wait_for_button(MouseController *mouse);
 /* peripheral objects */
-adc_t range_front_right;
+// adc_t range_front_right;
 
 int main(void)
 {
@@ -36,38 +53,31 @@ int main(void)
 
     // ADC
     // This is A5 Pin in Nucleo-64
-    adc_init_t adc = {
-            .device = RECV_ADC,
-            .channel = KB_ADC_CH10
-    };
-    adc_init(&range_front_right, &adc);
-    adc_pin(RECV_FR_PORT, RECV_FR_PIN);
+    // adc_init_t adc = {
+    //         .device = RECV_ADC,
+    //         .channel = KB_ADC_CH10
+    // };
+    // adc_init(&range_front_right, &adc);
+    // adc_pin(RECV_FR_PORT, RECV_FR_PIN);
 
     // Set interrupt button
     gpio_init_t GPIO_InitStruct;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = NOPULL;
-    gpio_isr_enable(B1_PORT, B1_PIN, &GPIO_InitStruct, RISING_EDGE);
-    gpio_isr_register(B1_PORT, B1_PIN, on_pressed);
+    gpio_isr_enable(B1_PORT, B1_PIN, &GPIO_InitStruct, FALLING_EDGE);
+    gpio_isr_register(B1_PORT, B1_PIN, on_b1_pressed);
+    b1_semphr = xSemaphoreCreateCounting(1, 0);
+    one_clikc_semphr = xSemaphoreCreateCounting(1, 0);
+    double_click_semphr = xSemaphoreCreateCounting(1, 0);
 
     // Set toggling pin controlled by the button
     // This pin controls the infared LED.
     // This is A0 pin in Nucleo-64
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    gpio_init(PORTA, PIN_0, &GPIO_InitStruct);
-    gpio_set(PORTA, PIN_0, GPIO_PIN_RESET);
-
-    // Toggle LED once
-    gpio_toggle(LED1_PORT, LED1_PIN);
-
-    // wait for .5 second
-    delay_ms(500);
-    gpio_toggle(LED1_PORT, LED1_PIN);
-
-    trace_puts("Hello ARM World!");
-    terminal_puts("Hello World!\n");
+    // GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    // GPIO_InitStruct.Pull = GPIO_NOPULL;
+    // GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    // gpio_init(PORTA, PIN_0, &GPIO_InitStruct);
+    // gpio_set(PORTA, PIN_0, GPIO_PIN_RESET);
 
     BaseType_t result;
     /* definition and creation of defaultTask */
@@ -76,11 +86,22 @@ int main(void)
             "Blinky",               /* Text name for the task. This is to facilitate debugging only. It is not used in the scheduler */
             configMINIMAL_STACK_SIZE, /* Stack depth in words */
             NULL,                   /* Pointer to a task parameters */
-            1,                      /* The task priority */
+            configMAX_PRIORITIES-1,                      /* The task priority */
             &task_blinky_handler);  /* Pointer of its task handler, if you don't want to use, you can leave it NULL */
 
     if (result != pdPASS) {
         KB_DEBUG_ERROR("Creating task failed!!");
+    }
+
+    result = xTaskCreate(
+            task_main,
+            "Main",
+            configMINIMAL_STACK_SIZE+15500,
+            NULL,
+            configMAX_PRIORITIES-2,
+            &task_main_handler);
+    if (result != pdPASS) {
+        terminal_puts("Creating task failed!!");
     }
     /* Do not put delay function in this section!
      * Because xTaskCreate will stop systick until the scheduler called */
@@ -91,28 +112,62 @@ int main(void)
     }
 }
 
-void on_pressed(void)
+/*******************************************************************************
+ * Tasks
+ ******************************************************************************/
+static void task_main(void *pvParameters)
 {
-    trace_puts("Button Pressed\n");
-    terminal_printf("Button Pressed: terminal_printf\n");
+    // Create virtual mouse hardware for simulation
+    static StdIO fileIO(true);
+    static StdIO printIO(false);
+    static FakeIO fakeIO;
+    static FlashIO flashIO;
 
-    /* Write to flash sector 0 */
-    uint8_t message[11] = {'H', 'e', 'l', 'l', 'o', ' ', 'F', 'l', 'a', 's', 'h'};
-    uint8_t mess_rtrn[11];
-    uint32_t flash_status = 0;
-    
-    flash_status = write_flash(message, 11);
-    
-    /* Read what I just wrote */
-    read_flash(mess_rtrn, 11);
-    /* Chech The read data is valid */
+    // mazeString is located in mazeString.hpp
+    static SimulMouse virtualMouse(const_cast<Maze::StringMaze *>(&mazeString), &fakeIO, &fakeIO);
 
-    /* Print to Terminal Results */
-    terminal_printf("Status: %d\n", flash_status);
-    terminal_printf("OG Message: %s\n", message);
-    terminal_printf("Returned Message: %s\n", mess_rtrn);
+    enum WolfieState {
+        goGoal  = 0,
+        goStart = 1,
+        explore = 2
+    } mouseState = goGoal;
 
-    return;
+    MouseController mouse(NULL, &flashIO, &printIO,
+            (FinderInterface*) &virtualMouse, (MoverInterface*) &virtualMouse);
+
+    /* First just print maze and wait */
+    wait_for_button(&mouse);
+
+    while (true) {
+        //Finite State Machine
+        if (mouse.allDestinationsReached()) {
+            switch (mouseState) {
+            case goGoal:
+                mouseState = explore;
+                mouse.makeRandomDest(4);
+                break;
+            case explore:
+                mouseState = goStart;
+                mouse.makeStartAsDest();
+                break;
+            case goStart:
+                mouseState = goGoal;
+                mouse.makeGoalAsDest();
+                break;
+            default:
+                //printf("Invalid state");
+                break;
+            }
+        } else {
+            if (!mouse.scanAndMove(wait_for_button)) {
+                goto end;
+            }
+        }
+    }
+
+end:
+    /* It never goes here, but the task should be deleted when it reached here */
+    vTaskDelete(NULL);
 }
 
 /* vBlinkyTask function */
@@ -123,25 +178,54 @@ void task_blinky(void *pvParameters)
     /* This variable is updated every vTaskDelayUntil is called */
     xLastWakeTime = xTaskGetTickCount();
 
-    uint32_t seconds = 0;
-
     while (1) {
-        gpio_toggle(LED1_PORT, LED1_PIN);
-        ++seconds;
-        // Count seconds on the trace device.
-        trace_printf("Second %u\n", seconds);
+        // Wait for the first pressing.
+        xSemaphoreTake(b1_semphr, portMAX_DELAY);
+        gpio_set(LED1_PORT, LED1_PIN, GPIO_PIN_SET);
 
-        // Range sensor test
-        gpio_set(PORTA, PIN_0, GPIO_PIN_SET);
-        delay_us(60);
-        uint32_t result = adc_measure(&range_front_right);
-        gpio_set(PORTA, PIN_0, GPIO_PIN_RESET);
-        trace_printf("result: %d\n", result);
+        // wait for the second until 500 ms
+        if (pdTRUE == xSemaphoreTake(b1_semphr, (500 / portTICK_RATE_MS))) {
+            xSemaphoreGive(double_click_semphr);
+        } else {
+            xSemaphoreGive(one_clikc_semphr);
+        }
+        gpio_set(LED1_PORT, LED1_PIN, GPIO_PIN_RESET);
 
-        /* Call this Task explicitly every 50ms ,NOT Delay for 50ms */
-        vTaskDelayUntil(&xLastWakeTime, (500 / portTICK_RATE_MS));
+        /* Call this Task explicitly every 10ms ,NOT Delay for 10ms */
+        vTaskDelayUntil(&xLastWakeTime, (10 / portTICK_RATE_MS));
     }
 
     /* It never goes here, but the task should be deleted when it reaches here */
     vTaskDelete(NULL);
+}
+
+/*******************************************************************************
+ * static functions
+ ******************************************************************************/
+static void wait_for_button(MouseController *mouse)
+{
+    /* And print */
+    mouse->printMaze();
+    printf("please press a button\n");
+    fflush(stdout);
+    
+    // Wait for the button pressed.
+    xSemaphoreTake(one_clikc_semphr, portMAX_DELAY);
+
+    // Check if B2 pressed
+    if (xSemaphoreTake(double_click_semphr, 0) == pdTRUE) {
+        // Then save it to FLASH
+        mouse->saveMazeFile(NULL);
+    }
+}
+
+/*******************************************************************************
+ * Event handlers
+ ******************************************************************************/
+void on_b1_pressed(void)
+{
+    if (b1_semphr != NULL) {
+        xSemaphoreGiveFromISR(b1_semphr, NULL);
+    }
+    return;
 }

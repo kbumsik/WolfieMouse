@@ -41,7 +41,7 @@ static SemaphoreHandle_t cmd_semphr = NULL;
  * Static local variables
  ******************************************************************************/
 // Target steps
-volatile struct _target_step {
+struct _target_step {
     uint32_t left;
     uint32_t right;
 } target_step;
@@ -53,8 +53,8 @@ struct _pid_struct {
 } pid;
 
 // Encoder value
-volatile struct encoder_data step, step_old;
-volatile struct _speed_struct {
+struct encoder_data step, step_old;
+struct _speed_struct {
     int32_t left;
     int32_t right;
     int32_t diff;    // left - right
@@ -99,7 +99,7 @@ pid_value_t pid_rot_smooth_value = {
 
 
 // Range finder value
-volatile struct range_data range;
+struct range_data range;
 
 /*******************************************************************************
  * States 
@@ -120,7 +120,7 @@ struct _state {
     enum wheel_state right_wheel;
 };
 
-static volatile struct _state state = {
+static struct _state state = {
     .hardware = 0,
     .pid = 0,
     .pid_tran = 0,

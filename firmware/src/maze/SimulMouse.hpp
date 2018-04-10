@@ -21,6 +21,7 @@ private:
 public:
 	// Constructor
 	SimulMouse(char *mazeFile, IOInterface *fileIO, IOInterface *printIO);
+	SimulMouse(Maze::StringMaze *stringMaze, IOInterface *fileIO, IOInterface *printIO);
     /* Overriding FinderInterface methods */
 	Wall examineWall(int row, int col, Direction wallDir, PositionController &mousePos) override;
     /* Overriding MoverInterface methods */

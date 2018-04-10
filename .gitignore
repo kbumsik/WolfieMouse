@@ -1,8 +1,8 @@
-.metadata
-AtollicWebServices_app.log
-AtollicWebServices_app.log.lck
-board_init.cpp
-**/.settings/
-**/Debug/
 .vagrant
 *.log
+*build
+
+# Visual Studio Code
+*.code-workspace
+.vscode/settings.json
+.vscode/.cortex-debug*.json

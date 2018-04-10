@@ -1,7 +1,7 @@
 
 #include "MouseController.hpp"
 #include "IOInterface.hpp"
-#include "fakeIO.hpp"
+#include "FakeIO.hpp"
 #include "RealMouse.hpp"
 
 
@@ -12,14 +12,11 @@ static FakeIO fake;
 // Create virtual mouse hardware for simulation
 static RealMouse realmouse;
 
-enum WolfieState
-{
+enum WolfieState {
     goGoal  = 0,
     goStart = 1,
     explore = 2
 };
-
-bool moveOneCell(MouseController &mouse);
 
 void main_run(void)
 {
@@ -37,22 +34,22 @@ void main_run(void)
             switch (mouseState) {
             case goGoal:
                 mouseState = explore;
-                mouse.setUnsearchDes(4);
+                mouse.makeRandomDest(4);
                 break;
             case explore:
                 mouseState = goStart;
-                mouse.setStartAsDes();
+                mouse.makeStartAsDest();
                 break;
             case goStart:
                 mouseState = goGoal;
-                mouse.setGoalAsDes();
+                mouse.makeGoalAsDest();
                 break;
             default:
                 //printf("Invalid state");
                 break;
             }
         } else {
-            if (!moveOneCell(mouse)) {
+            if (!mouse.scanAndMove(NULL)) {
                 goto end;
             }
         }
@@ -60,21 +57,4 @@ void main_run(void)
 
 end:
     return;
-}
-
-bool moveOneCell(MouseController &mouse)
-{
-    char tmp;
-    /* Then scan walls then calculate the distance */
-    if (mouse.scanWalls()) {
-        mouse.getDistanceAllCell();
-        /* then get shortest path */
-        mouse.getShortestPath();
-    } else {
-        mouse.getDistanceAllCell();
-    }
-    /* Then move */
-    mouse.moveNextCell();
-    //mouse.printMaze();
-    return true;
 }

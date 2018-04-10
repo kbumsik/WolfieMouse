@@ -19,16 +19,18 @@ StdIO::StdIO(bool allowFile) :
 /*******************************************************************************
  * Public Methods
  ******************************************************************************/
-void StdIO::open(char *filename, char *mode)
+int StdIO::open(char *filename, char *mode)
 {
 	if (!allowFile) {
     	printf("This StdIO does not allow file");
-		return;
+		return 0;
 	}
     _file = fopen(filename, mode);
     if (NULL == _file) {
     	printf("Failed to open file");
+		return -1;
     }
+	return 0;
 }
 
 int StdIO::getchar()
@@ -40,11 +42,20 @@ int StdIO::getchar()
 	}
 }
 
-size_t StdIO::write(const void *ptr, size_t size, size_t nmemb)
+size_t StdIO::read(void *ptr, size_t size, size_t count)
 {
 	if (allowFile) {
-	    return fwrite(ptr, size, nmemb, _file);
+	    return fread(ptr, size, count, _file);
 	} else {
-	    return fwrite(ptr, size, nmemb, stdout);
+	    return fread(ptr, size, count, stdout);
+	}
+}
+
+size_t StdIO::write(const void *ptr, size_t size, size_t count)
+{
+	if (allowFile) {
+	    return fwrite(ptr, size, count, _file);
+	} else {
+	    return fwrite(ptr, size, count, stdout);
 	}
 }

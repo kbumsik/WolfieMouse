@@ -2,7 +2,7 @@
 # Project build settings
 #######################################
 # Project name
-TARGET = competition_wolfimouse
+TARGET = competition_wolfiemouse
 
 # debug build?
 DEBUG = 1
@@ -75,7 +75,7 @@ pid.c
 
 # .c files used in /firmware/src/maze
 MAZE_FILES = \
-fakeIO.cc \
+FakeIO.cc \
 MazeIO.cc \
 Maze.cc \
 MouseController.cc \
@@ -111,5 +111,7 @@ uart.c \
 
 
 # These shoud be included to make it work
-include ../base.mk
+include ../source.mk
+include ../toolchain.mk
+include ../target.mk
 include ../openocd.mk  # For flash, debug and gdb targets

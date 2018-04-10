@@ -41,7 +41,7 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 MEMORY
 {
 RAM (xrw)         : ORIGIN = 0x20000000, LENGTH = 128K
-FLASH_BOOT (rx)   : ORIGIN = 0x08000000, LENGTH = 16K
+FLASH_ISR (rx)    : ORIGIN = 0x08000000, LENGTH = 16K
 FLASH_RSRV (rx)   : ORIGIN = 0x08004000, LENGTH = 16K
 FLASH (rx)        : ORIGIN = 0x08008000, LENGTH = 480K
 }
@@ -49,13 +49,16 @@ FLASH (rx)        : ORIGIN = 0x08008000, LENGTH = 480K
 /* Define output sections */
 SECTIONS
 {
-  /* The startup code goes first into FLASH */
+  /**
+   * The vector table goes first into FLASH.
+   * The machine goes here first on boot an look where is the reset handler.
+   */
   .isr_vector :
   {
     . = ALIGN(4);
-    KEEP(*(.isr_vector)) /* Startup code */
+    KEEP(*(.isr_vector))
     . = ALIGN(4);
-  } >FLASH_BOOT
+  } >FLASH_ISR
 
   /* Reserve Sector 1 for Data*/
   .sector_1_reserve :
@@ -63,7 +66,7 @@ SECTIONS
 
   } >FLASH_RSRV
 
-  /* The program code and other data goes into FLASH */
+  /* The program code data goes into FLASH */
   .text :
   {
     . = ALIGN(4);

@@ -17,11 +17,13 @@ protected:
 public:
     IOInterface(void) : _file(NULL) {}
     // replacement for fopen()
-    virtual void open(char *filename, char *mode) = 0;
+    virtual int open(char *filename, char *mode) = 0;
     // replacement for fgetc()
     virtual int getchar() = 0;
+    // replacement for fread()
+    virtual size_t read(void * ptr, size_t size, size_t count) = 0;
     // replacement for fwrite()
-    virtual size_t write(const void *ptr, size_t size, size_t nmemb) = 0;
+    virtual size_t write(const void *ptr, size_t size, size_t count) = 0;
 };
 
 #endif

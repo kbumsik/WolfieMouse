@@ -6,28 +6,36 @@
 #include "StdIO.hpp"
 #include "SimulMouse.hpp"
 #include <stdio.h>
+#include "mazeString.hpp"
 
-#define INPUT_FILE "maze_ieee_region_1_2015.txt"
-#define SAVED_FILE "out.txt"
-#define OUTPUT_FILE "out.txt"
+#ifndef MAZE_QUESTION
+    #warning MAZE_QUESTION is not defined in Makefile. Set to default.
+    #define MAZE_QUESTION "maze_ieee_region_1_2015.txt"
+#endif
+#ifndef MAZE_SAVED
+    #warning MAZE_SAVED is not defined in Makefile. Set to default.
+    #define MAZE_SAVED "out.txt"
+#endif
+#ifndef MAZE_OUT
+    #warning MAZE_OUT is not defined in Makefile. Set to default.
+    #define MAZE_OUT "out.txt"
+#endif
 
-StdIO fileIO(true);
-StdIO printIO(false);
-enum WolfieState
-{
-    goGoal  = 0,
-    goStart = 1,
-    explore = 2
-};
-
-bool moveOneCell(MouseController &mouse);
+void wait(MouseController *mouse);
 
 int main()
 {
-    char tmp;
+    StdIO fileIO(true);
+    StdIO printIO(false);
+    enum WolfieState {
+        goGoal  = 0,
+        goStart = 1,
+        explore = 2
+    } mouseState = goGoal;
+    char keyinput;
     
     /* Check if files exists first */
-    char *file_names[3] = {INPUT_FILE, SAVED_FILE, OUTPUT_FILE};
+    char *file_names[3] = {MAZE_QUESTION, MAZE_SAVED, MAZE_OUT};
     for (unsigned int i = 0; i < (sizeof(file_names)/sizeof(char *)); i++) {
         FILE *file = NULL;
         if ((file = fopen(file_names[i], "r")) == NULL) {
@@ -37,12 +45,10 @@ int main()
         fclose(file);
     }
 
-    /* Create object */
-    WolfieState mouseState = goGoal;
     // Create virtual mouse hardware for simulation
-    SimulMouse virtualMouse(INPUT_FILE, &fileIO, &printIO);
+    SimulMouse virtualMouse(const_cast<Maze::StringMaze *>(&mazeString), &fileIO, &printIO);
     // Create a mouse object
-    MouseController mouse(SAVED_FILE, &fileIO, &printIO,
+    MouseController mouse(MAZE_SAVED, &fileIO, &printIO,
             (FinderInterface*) &virtualMouse, (MoverInterface*) &virtualMouse);
 
     /* First just print maze */
@@ -51,10 +57,10 @@ int main()
     printf("q: exit, n:next\n");
     fflush(stdout);
     while (true) {
-        tmp = getchar();
-        if (tmp == 'n') {
+        keyinput = getchar();
+        if (keyinput == 'n') {
             break;
-        } else if (tmp == 'q') {
+        } else if (keyinput == 'q') {
             goto end;
         } else {
             continue;
@@ -67,75 +73,56 @@ int main()
             switch (mouseState) {
             case goGoal:
                 mouseState = explore;
-                mouse.setUnsearchDes(4);
+                mouse.makeRandomDest(4);
                 break;
             case explore:
                 mouseState = goStart;
-                mouse.setStartAsDes();
+                mouse.makeStartAsDest();
                 break;
             case goStart:
                 mouseState = goGoal;
-                mouse.setGoalAsDes();
+                mouse.makeGoalAsDest();
                 break;
             default:
                 printf("Invalid state");
                 break;
             }
         } else {
-            if (!moveOneCell(mouse)) {
+            if (!mouse.scanAndMove(wait)) {
                 goto end;
             }
         }
     }
 
 end:
-    mouse.saveMazeFile(OUTPUT_FILE);
+    printf("Mose failed!!!!\n");
+    mouse.saveMazeFile(MAZE_OUT);
     return 0;
 }
 
-bool moveOneCell(MouseController &mouse)
+void wait(MouseController *mouse)
 {
-    char tmp;
-    /* Then scan walls then calculate the distance */
-    if (mouse.scanWalls()) {
-        mouse.getDistanceAllCell();
-        /* then get shortest path */
-        mouse.getShortestPath();
-    } else {
-        mouse.getDistanceAllCell();
-    }
-    mouse.printMaze();
+    char keyinput;
+    mouse->printMaze();
     printf("please input a command\n");
     printf("q: exit, n:next, p: print stack\n");
     fflush(stdout);
     while (true) {
-        tmp = getchar();
-        if (tmp == 'n') {
+        keyinput = getchar();
+        if (keyinput == 'n') {
             break;
-        } else if (tmp == 'q') {
-            return false;
-        } else if (tmp == 'p') {
-            mouse.printPathStack();
+        } else if (keyinput == 'q') {
+            goto save_and_exit;
+        } else if (keyinput == 'p') {
+            mouse->printPathStack();
             fflush(stdout);
         } else {
             continue;
         }
     }
-    /* Then move */
-    mouse.moveNextCell();
-    mouse.printMaze();
-    printf("please input a command\n");
-    printf("q: exit, n:next\n");
-    fflush(stdout);
-    while (true) {
-        tmp = getchar();
-        if (tmp == 'n') {
-            break;
-        } else if (tmp == 'q') {
-            return false;
-        } else {
-            continue;
-        }
-    }
-    return true;
+    return;
+save_and_exit:
+    mouse->saveMazeFile(MAZE_OUT);
+    exit(0);
+    return;
 }

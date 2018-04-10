@@ -27,8 +27,10 @@ private:
     Queue<PositionController> pathStack; /**< This is an assistant stack. When @getShortestPath invoked the path to the goal is constructed. */
     Queue<PositionController> availablePositionStack; /**< I don't even know what is this. */
     /* Interfaces */
-    FinderInterface *finder;
+    FinderInterface *finder; 
     MoverInterface *mover;
+    /* Vector destination */
+    std::vector<Position> destinations;
     /* Distance getter and setters */ 
     inline int getDis(int row, int col);
     inline int getDis(Position pos);
@@ -39,18 +41,40 @@ private:
     inline void setDis(Position pos, int dis);
     /* Cell getter and setter */
     Cell getCell(Position pos);
+
+    /*************** Floodfiil Algorithm Implementation ***********************/
+    /* Algorithm solver */
+    void getDistanceAllCell(void);
+    void getShortestPath(void);
     /* Used in algorithm implementation */
-    void initDistance();
+    void initDistance(void);
     int getHighestNeighbouringDistance(int row, int col);
     /* Setting Direction */
-    Direction getDirectionToGo();
-    void setDirectionToGo();
+    Direction getDirectionToGo(void);
+    void setDirectionToGo(void);
+
+    /*************** Interacting physical interfaces **************************/
+    /**
+     * @brief Scan walls around the mouse.
+     * 
+     * @return true     Any new wall updated 
+     * @return false    No wall information updated
+     */
+    bool scanWalls(void);
+    /**
+     * @brief Move one cell toward the shortest path, with given machine state 
+     *        and information.
+     */
+    void moveNextShortestCell(void);
+
     /* Moving methods */
-    void turnRight() override;
-    void turnLeft() override;
-    int goForward() override;
+    /* TODO: These are not yet physically move. check these moving methods */
+    void turnRight(void) override;
+    void turnLeft(void) override;
+    int goForward(void) override;
+    
+    
     /** On development
-     void moveNextCell();
      void movingCompleted();
 
      Cell* getNextCell();
@@ -58,33 +82,40 @@ private:
      virtual void setWall(int row, int col, direction_e dir, wall_e status);
      virtual void updateCell(int row, int col);
      */
-    /* Vector destination */
-    std::vector<Position> destinations;
 public:
-    /* Constructors */
-    MouseController();
+    /*********************  Constructors **************************************/
     MouseController(char *filename, IOInterface *fileIO, IOInterface *printIO,
                     FinderInterface *finder, MoverInterface *mover);
-    /* Algorithm solver */
-    bool scanWalls(void);     // Detect and update walls while not moving.
-    void getDistanceAllCell();
-    void getShortestPath();
-    void moveNextCell();
-    /* setters for destinations */
-    void setUnsearchDes(int n);
-    void setStartAsDes();
-    void setGoalAsDes();
-    /* boolean functions for goal, start and destination */
-    bool anyDestinationCellSearched();
+
+    /*********************  Movement commands *********************************/
+    /**
+     * @brief Scan, update path, and move one cell
+     * 
+     * @param wait_func Blocking method before moving and after moving. Useful
+     *                  for simulation but you may not want use it in the
+     *                  competition. Can be NULL if not used.
+     * @return true     When successful move
+     * @return false    When move failed
+     */
+    bool scanAndMove(void (*wait_func)(MouseController *mouse));
+
+    /*************************  Destination changers **************************/
+    void makeRandomDest(unsigned int n);
+    void makeStartAsDest(void);
+    void makeGoalAsDest(void);
+
+    /************* boolean functions for goal, start and destination **********/
+    bool anyDestinationCellSearched(void);
     bool positionIsDestination(Position pos);
-    bool isInDestinationCell();
-    bool allDestinationsReached();
-    bool isInGoal();
-    bool isInStart();
-    /* print information of stack used in the algorithm */
-    void printMaze() override;
-    void printPathStack();
-    void printAvailablePositionStack();
+    bool isInDestinationCell(void);
+    bool allDestinationsReached(void);
+    bool isInGoal(void);
+    bool isInStart(void);
+
+    /*************** print information of stack used in the algorithm *********/
+    void printMaze(void) override;
+    void printPathStack(void);
+    void printAvailablePositionStack(void);
 };
 
 /*******************************************************************************

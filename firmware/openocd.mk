@@ -1,63 +1,33 @@
-##
-##  This file is part of CM-Makefile.
-##
-##  Copyright (C) 2015 Adam Heinrich <adam@adamh.cz>
-##
-##  CM-Makefile is free software: you can redistribute it and/or modify
-##  it under the terms of the GNU Lesser General Public License as published by
-##  the Free Software Foundation, either version 3 of the License, or
-##  (at your option) any later version.
-##
-##  CM-Makefile is distributed in the hope that it will be useful,
-##  but WITHOUT ANY WARRANTY; without even the implied warranty of
-##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-##  GNU Lesser General Public License for more details.
-##
-##  You should have received a copy of the GNU Lesser General Public License
-##  along with CM-Makefile.  If not, see <http://www.gnu.org/licenses/>.
-##
+# Add help text
+define OPENOCD_HELP_TEXT = 
 
-# OpenOCD target configuration
-STLINK_BOARD_CFG := board/st_nucleo_f4.cfg
-JLINK_BOARD_CFG := ../openocd_jlink_ob_stlink.cfg
+OpenOCD commands:
+  you can optionally use JLink with `PROGRAMMER=jlink`. ST-Link is used by default.
+  Example: `make flash PROGRAMMER=jlink`
+	flash  - Flash using OpenOCD
+	reset  - Reset the target MCU using OpenOCD
+	gdb    - Start OpenOCD as GDB server
 
+endef
+
+HELP_TEXT += $(OPENOCD_HELP_TEXT)
+
+# Openocd name
 OPENOCD ?= openocd
 
-HELP_TEXT += \n\
-  flash - Flash using OpenOCD\n\
-  reset - Reset the target MCU using OpenOCD\n\
-  gdb - Start OpenOCD as GDB server\n\
-  debug - Start debugger and connect to the GDB server
-
-# Verbosity: Set V=1 to display command echo
-V ?= 1
-
-ifeq ($(V), 0)
-	CMD_ECHO = @
-else
-	CMD_ECHO =
+# PROGRAMMER can be imported from arugment variable
+PROGRAMMER ?= stlink
+ifeq ($(PROGRAMMER),stlink)
+  OPENOCD_CFG = board/st_nucleo_f4.cfg
+endif
+ifeq ($(PROGRAMMER),jlink)
+  OPENOCD_CFG = ../openocd_jlink_ob_stlink.cfg
 endif
 
-# Debugger configuration
-CDTDEBUG = cdtdebug
-
-$(BUILD_DIR)/$(TARGET).cdt:
-	@echo "  ECHO    $(notdir $@)"
-	$(CMD_ECHO) echo "org.eclipse.cdt.dsf.gdb/defaultGdbCommand=$(GDB)" > $@
-
+# Targets
 .PHONY: flash
 flash: $(BUILD_DIR)/$(TARGET).hex
-	$(CMD_ECHO) $(OPENOCD) -f $(STLINK_BOARD_CFG) -c \
-	"init; \
-	reset halt; \
-	sleep 100; \
-	flash write_image erase $^; \
-	reset run; \
-	shutdown"
-
-.PHONY: jlink
-jlink: $(BUILD_DIR)/$(TARGET).hex
-	$(CMD_ECHO) $(OPENOCD) -f $(JLINK_BOARD_CFG) -c \
+	$(OPENOCD) -f $(OPENOCD_CFG) -c \
 	"init; \
 	reset halt; \
 	sleep 100; \
@@ -67,7 +37,7 @@ jlink: $(BUILD_DIR)/$(TARGET).hex
 
 .PHONY: reset
 reset:
-	$(CMD_ECHO) $(OPENOCD) -c \
+	$(OPENOCD) -f $(OPENOCD_CFG) -c \
 	"init; \
 	reset halt; \
 	sleep 100; \
@@ -76,15 +46,9 @@ reset:
 
 .PHONY: gdb
 gdb: $(BUILD_DIR)/$(TARGET).hex
-	$(CMD_ECHO) $(OPENOCD) -c \
+	$(OPENOCD) -f $(OPENOCD_CFG) -c \
 	"init; \
 	reset halt; \
 	sleep 100; \
 	flash write_image erase $^; \
 	reset halt"
-
-.PHONY: debug
-debug: $(BUILD_DIR)/$(TARGET).elf | $(BUILD_DIR)/$(TARGET).cdt
-	@echo "Starting cdtdebug with $(GDB)..."
-	$(CMD_ECHO) $(CDTDEBUG) -pluginCustomization $| -r localhost:3333 \
-	-e $(realpath $^) &

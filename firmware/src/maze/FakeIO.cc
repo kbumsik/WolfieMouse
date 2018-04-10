@@ -7,7 +7,7 @@
 
 
 
-#include "fakeIO.hpp"
+#include "FakeIO.hpp"
 
 /*******************************************************************************
  * Constructor
@@ -20,17 +20,23 @@ FakeIO::FakeIO()
 /*******************************************************************************
  * Public Methods
  ******************************************************************************/
-void FakeIO::open(char *filename, char *mode)
+int FakeIO::open(char *filename, char *mode)
 {
+    return 0;
 }
 
 int FakeIO::getchar()
 {
-    return 1;
+    return EOF;
 }
 
-size_t FakeIO::write(const void *ptr, size_t size, size_t nmemb)
+size_t FakeIO::read(void *ptr, size_t size, size_t count)
 {
-    return 1;
+    return count;
+}
+
+size_t FakeIO::write(const void *ptr, size_t size, size_t count)
+{
+    return count;
 }
 

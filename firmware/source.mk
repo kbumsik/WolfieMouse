@@ -55,6 +55,8 @@ C_SOURCES += $(wildcard ./*.cc)
 # board sources
 BOARD_SOURCES := $(addsuffix /*.c,$(BOARD_SRC_DIR))
 BOARD_SOURCES := $(wildcard $(BOARD_SOURCES))
+BOARD_SOURCES_CXX := $(addsuffix /*.cc,$(BOARD_SRC_DIR))
+BOARD_SOURCES += $(wildcard $(BOARD_SOURCES_CXX))
 
 C_SOURCES += $(BOARD_SOURCES)
 
@@ -121,36 +123,10 @@ NEWLIB_SOURCES := $(wildcard $(NEWLIB_SOURCES))
 
 C_SOURCES += $(NEWLIB_SOURCES)
 
-
 # ASM sources
 STARTUP_ASM ?= $(BOARD_DIR)/startup.s
 ASM_SOURCES =  \
 $(STARTUP_ASM)
-
-#######################################
-# binaries
-#######################################
-PREFIX := arm-none-eabi-
-CC := $(PREFIX)gcc
-AS := $(PREFIX)gcc -x assembler-with-cpp
-CP := $(PREFIX)objcopy
-AR := $(PREFIX)ar
-SZ := $(PREFIX)size
-HEX := $(CP) -O ihex
-BIN := $(CP) -O binary -S
-
-#######################################
-# CFLAGS
-#######################################
-# mcu_flags
-MCU_FLAGS := $(CPU_FLAG) -mthumb $(FPU_FLAG) $(FLOAT_ABI_FLAG)
-
-# macros for gcc
-# AS defines
-AS_DEFS += 
-
-# C defines
-C_DEFS +=
 
 # AS includes
 AS_INCLUDES =  \
@@ -171,43 +147,15 @@ C_INCLUDES =  \
 -I$(PERIPHERAL_SRC_DIR) \
 -I$(SYSTEM_SRC_DIR) \
 
-# compile gcc flags
-ASFLAGS += $(MCU_FLAGS) $(AS_DEFS) $(AS_INCLUDES) $(OPTIMIZATION_FLAG) \
-			-Wall -fdata-sections -ffunction-sections
-
-CFLAGS += $(MCU_FLAGS) $(C_DEFS) $(C_INCLUDES) $(OPTIMIZATION_FLAG) \
-			-Wall -fdata-sections -ffunction-sections
-
-ifeq ($(DEBUG), 1)
-  CFLAGS += -g -ggdb
-endif
-
-# Generate dependency information
-CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)"
-
-
 #######################################
 # LDFLAGS
 #######################################
 # link script
 LDSCRIPT ?= $(BOARD_DIR)/linker_script.ld
 
-# libraries
-LIB_FLAGS := -lc -lm -lnosys
-LDFLAGS += $(MCU_FLAGS) -specs=nano.specs -T$(LDSCRIPT) $(LIB_FLAGS) -lstdc++ \
-			-Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
-
-# default action: build all
-all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin
-
 #######################################
-# build the application
+# Objects and file path
 #######################################
-# Verbose message
-ifeq ($(VERBOSE), 1)
-  CFLAGS += -v
-  LDFLAGS += --verbose
-endif
 
 # Divide C and CPP
 CPP_SOURCES := $(filter-out %.c,$(C_SOURCES))
@@ -217,45 +165,10 @@ C_SOURCES := $(filter-out %.cc,$(C_SOURCES))
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
 vpath %.c $(sort $(dir $(C_SOURCES)))
 
-# build C files
-$(BUILD_DIR)/%.o: %.c | $(BUILD_DIR) 
-	$(CC) -c $(CFLAGS) -std=gnu99 -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
-
 # list of CPP objects
 OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(CPP_SOURCES:.cc=.o)))
 vpath %.cc $(sort $(dir $(CPP_SOURCES)))
 
-# build CPP files
-$(BUILD_DIR)/%.o: %.cc | $(BUILD_DIR) 
-	$(CC) -c $(CFLAGS) -std=c++11 -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.cc=.lst)) $< -o $@
-
 # list of ASM program objects
 OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
 vpath %.s $(sort $(dir $(ASM_SOURCES)))
-
-# build ASM files
-$(BUILD_DIR)/%.o: %.s | $(BUILD_DIR)
-	$(AS) -c $(CFLAGS) $< -o $@
-
-$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS)
-	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
-	@echo ""
-	@echo "===== Build Completed ====="
-	$(SZ) $@
-	@echo ""
-
-$(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
-	$(HEX) $< $@
-	
-$(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
-	$(BIN) $< $@	
-	
-$(BUILD_DIR):
-	mkdir $@		
-
-#######################################
-# clean up
-#######################################
-.PHONY: clean
-clean:
-	-rm -fR $(BUILD_DIR)

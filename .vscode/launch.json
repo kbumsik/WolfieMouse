@@ -1,0 +1,116 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "blinky_nucleo64",
+            "cwd": "${workspaceRoot}",
+            "executable": "${workspaceRoot}/firmware/blinky_nucleo64/build/blinky_nucleo64.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "openocd",
+            "configFiles": [
+                "board/st_nucleo_f4.cfg"
+            ]
+        },
+        {
+            "name": "blinky_wolfiemouse",
+            "cwd": "${workspaceRoot}",
+            "executable": "${workspaceRoot}/firmware/blinky_wolfiemouse/build/blinky_wolfiemouse.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "openocd",
+            "configFiles": [
+                "board/st_nucleo_f4.cfg"
+            ]
+        },
+        {
+            "name": "competition_wolfiemouse",
+            "cwd": "${workspaceRoot}",
+            "executable": "${workspaceRoot}/firmware/competition_wolfiemouse/build/competition_wolfiemouse.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "openocd",
+            "configFiles": [
+                "board/st_nucleo_f4.cfg"
+            ]
+        },
+        {
+            "name": "maze_solver",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "maze_solver",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "./",
+            "environment": [],
+            "externalConsole": true,
+            "pipeTransport": {
+                "debuggerPath": "/usr/bin/gdb",
+                "pipeProgram": "C:\\Windows\\sysnative\\bash.exe",
+                "pipeArgs": ["-c"],
+                "pipeCwd": "${workspaceFolder}/simulation/maze_solver"
+            },
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "sourceFileMap": {
+                "/mnt/d": "d:\\"
+            },
+            "logging": { "engineLogging": true }
+        },
+        {
+            "name": "(Linux) maze_solver",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/simulation/maze_solver/maze_solver",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/simulation/maze_solver",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "pathfinder",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "pathfinder",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "./",
+            "environment": [],
+            "externalConsole": true,
+            "pipeTransport": {
+                "debuggerPath": "/usr/bin/gdb",
+                "pipeProgram": "C:\\Windows\\sysnative\\bash.exe",
+                "pipeArgs": ["-c"],
+                "pipeCwd": "${workspaceFolder}/simulation/pathfinder"
+            },
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "sourceFileMap": {
+                "/mnt/d": "d:\\"
+            },
+            "logging": { "engineLogging": true }
+        }
+    ]
+}

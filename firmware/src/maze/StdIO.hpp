@@ -18,9 +18,10 @@ public:
 	// Constructor
 	StdIO(bool allowFile);
     // Overridden methods
-    void open(char *filename, char *mode) override;
+    int open(char *filename, char *mode) override;
     int getchar() override;
-    size_t write(const void *ptr, size_t size, size_t nmemb) override;
+    size_t read(void * ptr, size_t size, size_t count) override;
+    size_t write(const void *ptr, size_t size, size_t count) override;
 };
 
 #endif /* STDIO_HPP_ */

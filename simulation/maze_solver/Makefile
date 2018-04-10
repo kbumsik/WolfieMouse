@@ -4,6 +4,18 @@
 # Project name
 TARGET = maze_solver
 
+# Project-specific files
+MAZE_QUESTION = maze_ieee_region_1_2015.txt
+MAZE_SAVED	= out.txt
+MAZE_OUT = out.txt
+
+# macros for gcc
+# C defines
+C_DEFS =  \
+-DMAZE_QUESTION=\"$(MAZE_QUESTION)\" \
+-DMAZE_SAVED=\"$(MAZE_SAVED)\" \
+-DMAZE_OUT=\"$(MAZE_OUT)\"
+
 # Build path
 BUILD_DIR := build
 
@@ -23,13 +35,6 @@ CXX := gcc
 
 # Debugger
 DEBUGGER := cdtdebug
-
-#######################################
-# Defines
-#######################################
-# macros for gcc
-# C defines
-C_DEFS =  \
 
 #######################################
 # Source files
@@ -114,12 +119,18 @@ $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 $(BUILD_DIR)/%.o: %.cc | $(BUILD_DIR) 
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
-$(TARGET): $(OBJECTS)
+$(TARGET): out.txt mazeString.hpp $(OBJECTS)
 	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 	@echo ""
 	@echo "===== Build Completed ====="
 	@echo ""
 	@echo "Please run ./$(TARGET) to start the program"
+
+out.txt:
+	cp out_original.txt out.txt
+
+mazeString.hpp: $(MAZE_QUESTION)
+	python ../../firmware/mazeTextToCCString.py $^ > $@
 
 $(BUILD_DIR):
 	mkdir $@		
@@ -129,8 +140,8 @@ $(BUILD_DIR):
 #######################################
 .PHONY: clean
 clean:
-	-rm -fR $(BUILD_DIR) $(TARGET)
-	-cp out_original.txt out.txt
+	-rm -fR $(BUILD_DIR) $(TARGET) mazeString.hpp
+	cp out_original.txt out.txt
 
 #######################################
 # Debugger
