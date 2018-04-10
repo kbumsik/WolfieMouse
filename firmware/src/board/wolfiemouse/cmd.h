@@ -10,6 +10,7 @@
 
 #include "thread_control_loop.h"
 #include "pid.h"
+#include "range.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,7 +19,11 @@ extern "C" {
 enum cmd_type {
     CMD_NOTHING,
     // low commands
-    CMD_LOW_PID_AND_GO, CMD_LOW_PID_RESET_AND_STOP,
+    CMD_LOW_PID_AND_GO,
+    CMD_LOW_PID_RESET_AND_STOP,
+    // Data
+    CMD_RANGE_VALUES,
+    // CMD_ENCODER_VALUES,
     // high level commands
     CMD_BACK_TO_SART_CENTER, //< move forward from the back of the cell to the center of the cell
     CMD_F,      //< move forward 1 cell
@@ -41,18 +46,23 @@ struct cmd_events {
     void (*on_completed)(void); //< on completed callback pointer
 };
 
-struct cmd_queue_element {
+struct cmd_request {
     enum cmd_type type;
     struct cmd_pid pid;
     // uint8_t stop_after;         //< Stop after operation
     // uint8_t get_walls_after;    //< Use range sensors to check walls
 };
 
+struct cmd_response {
+    enum cmd_type type;
+    struct range_data range;
+};
+
 void cmd_init(void);
 void cmd_low_pid_and_go(struct cmd_pid *cmd, struct cmd_events *events);
 void cmd_low_pid_reset_and_stop(struct cmd_events *events);
 
-void cmd_polling(enum cmd_type type);
+struct cmd_response cmd_polling(enum cmd_type type);
 // void cmd_async()
 
 // void motion_queue(motion_cmd_t *commend);

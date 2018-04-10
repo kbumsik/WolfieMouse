@@ -17,11 +17,6 @@
 #include "tick.h"
 
 /*******************************************************************************
- * Global Variables
- ******************************************************************************/
-
-extern volatile struct range_data range;
-/*******************************************************************************
  * Private functions
  ******************************************************************************/
 void moveForward(uint32_t steps);
@@ -44,6 +39,11 @@ Wall RealMouse::examineWall(int row, int col, Direction wallDir, PositionControl
     gpio_set(LED3_PORT, LED3_PIN, GPIO_PIN_SET);
     Direction mouseDir = mousePos.getCurrentDir();
     
+    // Get range data
+    struct cmd_response response; 
+    response = cmd_polling(CMD_RANGE_VALUES);
+    struct range_data range = response.range;
+
     Wall ret = wallError;
     if (wallDir == mouseDir) {
         // Use front sensor

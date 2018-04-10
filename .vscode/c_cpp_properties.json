@@ -49,6 +49,7 @@
                 "databaseFilename": ""
             },
             "defines": [
+                "THREAD_CONTROL_LOOP_PRINT_DATA",
                 "USE_HAL_DRIVER",
                 "STM32F446xx",
                 "__ACCUM_EPSILON__=0x1P-15K",
@@ -529,6 +530,7 @@
                 "databaseFilename": ""
             },
             "defines": [
+                "THREAD_CONTROL_LOOP_PRINT_DATA",
                 "USE_HAL_DRIVER",
                 "STM32F446xx",
                 "__ACCUM_EPSILON__=0x1P-15K",

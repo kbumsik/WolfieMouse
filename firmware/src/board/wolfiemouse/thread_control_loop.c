@@ -25,6 +25,11 @@
 #include "queue.h"
 #include "semphr.h"
 
+#ifdef THREAD_CONTROL_LOOP_PRINT_DATA
+    #warning THREAD_CONTROL_LOOP_PRINT_DATA is defined, it will print dat for \
+             the control loop every 1ms. Turn this off for performance.
+#endif
+
 /*******************************************************************************
  * Control loop thread
  ******************************************************************************/
@@ -32,8 +37,8 @@ static void control_loop(void *pvParameters);
 static TaskHandle_t control_loop_handler;
 
 static SemaphoreHandle_t semphr_from_isr = NULL;
-static QueueHandle_t cmd_queue = NULL;
-static SemaphoreHandle_t cmd_semphr = NULL;
+static QueueHandle_t request_queue = NULL;
+static QueueHandle_t response_queue = NULL;
 
 
 /*******************************************************************************
@@ -214,11 +219,14 @@ void thread_control_loop_init(void)
     // Max counting is 1, initial is zero
     semphr_from_isr = xSemaphoreCreateCounting(1, 0);
     /* Allocate Queue */
-    cmd_queue = xQueueCreate( 10, sizeof(struct cmd_queue_element));
-    if (NULL == cmd_queue) {
+    request_queue = xQueueCreate( 10, sizeof(struct cmd_request));
+    if (NULL == request_queue) {
         KB_DEBUG_ERROR("Creating cmd queue failed!!");
     }
-    cmd_semphr = xSemaphoreCreateCounting(1, 0);
+    response_queue = xQueueCreate( 10, sizeof(struct cmd_response));
+    if (NULL == response_queue) {
+        KB_DEBUG_ERROR("Creating cmd queue failed!!");
+    }
     state.cmd_ready = 1;
 
     /* Allocate task */
@@ -238,7 +246,13 @@ void thread_control_loop_init(void)
 
 static void control_loop(void *pvParameters)
 {
-    static struct cmd_queue_element cmd;
+    static struct cmd_request cmd;
+    static struct cmd_response response;
+    int32_t feedback_R = 0;
+    int32_t feedback_T = 0;
+    int32_t outputT = 0;
+    int32_t outputR = 0;
+
     enable_range_finder();
 
     while (1) {
@@ -246,10 +260,13 @@ static void control_loop(void *pvParameters)
         // taskYIELD();
         xSemaphoreTake(semphr_from_isr, portMAX_DELAY);
 
+#ifdef THREAD_CONTROL_LOOP_PRINT_DATA
+        uint32_t loop_start_time = tick_us();
+#endif
         // Get a cmd
         int cmd_updated = 0;
         if (state.cmd_ready) {
-            if (xQueueReceive(cmd_queue, &cmd, 0)) {
+            if (xQueueReceive(request_queue, &cmd, 0)) {
                 cmd_updated = 1;
                 state.cmd_ready = 0;
                 state.current_cmd = cmd.type;
@@ -272,6 +289,13 @@ static void control_loop(void *pvParameters)
                         pid_reset(&pid.rot);
                         state.cmd_ready = 1;
                         state.current_cmd = CMD_NOTHING;
+                    break;
+                    case CMD_RANGE_VALUES:
+                        response = (struct cmd_response) {
+                            .type = CMD_RANGE_VALUES,
+                            .range = range,
+                        };
+                        goto continue_response;
                     break;
                     /* High level commands */
                     case CMD_BACK_TO_SART_CENTER:
@@ -436,8 +460,8 @@ static void control_loop(void *pvParameters)
 
         /* Start PID calculation */
         // calculate errorT
-        int32_t feedback_T = (speed.left + speed.right) / 2;
-        int32_t outputT = pid_compute(&pid.tran, feedback_T);
+        feedback_T = (speed.left + speed.right) / 2;
+        outputT = pid_compute(&pid.tran, feedback_T);
 
         // Get ADC values
         if(state.range) {
@@ -454,8 +478,7 @@ static void control_loop(void *pvParameters)
                 pid_reset(&pid.tran);
                 pid_reset(&pid.rot);
                 // Send a notification
-                xSemaphoreGive(cmd_semphr);
-                continue;
+                goto continue_empty_response;
             }
         }
 
@@ -468,7 +491,6 @@ static void control_loop(void *pvParameters)
         }
 
         // get errorR
-        int32_t feedback_R;
         if(state.range && (range.left > (MEASURE_RANGE_L_MIN_DETECT))
                             && (range.right > MEASURE_RANGE_R_MIN_DETECT) ) {
             // If both range are within wall detecting distance,
@@ -487,7 +509,7 @@ static void control_loop(void *pvParameters)
             feedback_R = speed.diff;
         }
 
-        int32_t outputR = pid_compute(&pid.rot, feedback_R);
+        outputR = pid_compute(&pid.rot, feedback_R);
 
         if (!state.pid_tran) {
             outputT = 0;
@@ -496,7 +518,7 @@ static void control_loop(void *pvParameters)
             outputR = 0;
         }
         if (!state.pid) {
-            continue;
+            goto continue_without_response;
         }
 
         // Apply to the motor
@@ -537,24 +559,39 @@ static void control_loop(void *pvParameters)
                     pid_reset(&pid.tran);
                     pid_reset(&pid.rot);
                 }
-                // Send a notification
-                xSemaphoreGive(cmd_semphr);
+                goto continue_empty_response;
             }
         }
-
+        goto continue_without_response;
+        
+continue_empty_response:
+        response = (struct cmd_response) {
+            .type = cmd.type,
+            .range = (struct range_data){0},
+        };
+continue_response:
+        // Send a notification
+        if (xQueueSend(response_queue, &response, 0) != pdPASS) {
+            // failed to send a request
+            // TODO: when failed?
+        }
+continue_without_response:
         // Print the result in json format
-        // terminal_puts("{");
-        // terminal_printf("\"L\":%d,", range.left);
-        // terminal_printf("\"R\":%d,", range.right);
-        // terminal_printf("\"F\":%d", range.front);
-        // // terminal_printf("\"LS\":%d,", speed.left);
-        // // terminal_printf("\"RS\":%d,", speed.right);
-        // // terminal_printf("\"LO\":%d,", outputT + outputR);
-        // // terminal_printf("\"RO\":%d,", outputT - outputR);
-        // // terminal_printf("\"TTS\":%d,", pid.tran.setpoint);
-        // // terminal_printf("\"TRS\":%d", pid.rot.setpoint);
-        // // terminal_printf("\"T\":%d", tick_us() - time);
-        // terminal_puts("},\n");
+#ifdef THREAD_CONTROL_LOOP_PRINT_DATA
+        terminal_puts("{");
+        terminal_printf("\"L\":%d,", range.left);
+        terminal_printf("\"R\":%d,", range.right);
+        terminal_printf("\"F\":%d", range.front);
+        terminal_printf("\"LS\":%ld,", speed.left);
+        terminal_printf("\"RS\":%ld,", speed.right);
+        terminal_printf("\"LO\":%ld,", outputT + outputR);
+        terminal_printf("\"RO\":%ld,", outputT - outputR);
+        terminal_printf("\"TTS\":%ld,", pid.tran.setpoint);
+        terminal_printf("\"TRS\":%ld", pid.rot.setpoint);
+        terminal_printf("\"T\":%lu", tick_us() - loop_start_time);
+        terminal_puts("},\n");
+#endif
+        continue;
     }
 
     /* It never goes here, but the task should be deleted when it reached here */
@@ -562,14 +599,14 @@ static void control_loop(void *pvParameters)
 }
 
 
-QueueHandle_t thread_control_loop_cmd_queue(void)
+QueueHandle_t thread_control_loop_request_queue(void)
 {
-    return cmd_queue;
+    return request_queue;
 }
 
-SemaphoreHandle_t thread_control_loop_cmd_semphr(void)
+QueueHandle_t thread_control_loop_response_queue(void)
 {
-    return cmd_semphr;
+    return response_queue;
 }
 
 void SysTick_hook(void)

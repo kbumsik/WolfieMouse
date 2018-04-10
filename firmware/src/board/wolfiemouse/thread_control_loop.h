@@ -17,8 +17,8 @@ extern "C" {
 #endif
 
 void thread_control_loop_init(void);
-QueueHandle_t thread_control_loop_cmd_queue(void);
-SemaphoreHandle_t thread_control_loop_cmd_semphr(void);
+QueueHandle_t thread_control_loop_request_queue(void);
+QueueHandle_t thread_control_loop_response_queue(void);
 
 
 #ifdef __cplusplus
