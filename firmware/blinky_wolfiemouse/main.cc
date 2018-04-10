@@ -18,7 +18,6 @@
 #include "event_groups.h"
 
 // Micromouse system
-#include "system_control.h"
 #include "thread_control_loop.h"
 #include "cmd.h"
 

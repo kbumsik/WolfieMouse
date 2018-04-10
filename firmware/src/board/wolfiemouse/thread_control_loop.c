@@ -6,7 +6,6 @@
  */
 
 #include "system_config.h"
-#include "system_control.h"
 #include "common_source.h"
 #include "encoder.h"
 #include "gpio.h"
@@ -133,6 +132,17 @@ static struct _state state = {
 };
 
 /*******************************************************************************
+ * Private Function declarations.
+ ******************************************************************************/
+// Motor driving
+static void start_driving(void);
+static void stop_driving(void);
+
+// Range finder control
+static void enable_range_finder(void);
+static void disable_range_finder(void);
+
+/*******************************************************************************
  * Function definition
  ******************************************************************************/
 void thread_control_loop_init(void)
@@ -229,7 +239,7 @@ void thread_control_loop_init(void)
 static void control_loop(void *pvParameters)
 {
     static struct cmd_queue_element cmd;
-    system_enable_range_finder();
+    enable_range_finder();
 
     while (1) {
         // Wait from Systick
@@ -250,14 +260,14 @@ static void control_loop(void *pvParameters)
                     case CMD_LOW_PID_AND_GO:
                         pid_input_setpoint(&pid.tran, cmd.pid.setpoint_trans);
                         pid_input_setpoint(&pid.rot, cmd.pid.setpoint_rot);
-                        system_enable_range_finder();
-                        system_start_driving();
+                        enable_range_finder();
+                        start_driving();
                         state.cmd_ready = 1;
                         state.current_cmd = CMD_NOTHING;
                     break;
                     case CMD_LOW_PID_RESET_AND_STOP:
-                        system_stop_driving();
-                        system_disable_range_finder();
+                        stop_driving();
+                        disable_range_finder();
                         pid_reset(&pid.tran);
                         pid_reset(&pid.rot);
                         state.cmd_ready = 1;
@@ -279,8 +289,8 @@ static void control_loop(void *pvParameters)
                         state.left_wheel = WHEEL_FORWARD;
                         state.right_wheel = WHEEL_FORWARD;
 
-                        system_enable_range_finder();
-                        system_start_driving();
+                        enable_range_finder();
+                        start_driving();
                     break;
                     case CMD_F:
                         pid_set_pid(&pid.tran, &pid_tran_forwarding_value);
@@ -297,8 +307,8 @@ static void control_loop(void *pvParameters)
                         state.left_wheel = WHEEL_FORWARD;
                         state.right_wheel = WHEEL_FORWARD;
 
-                        system_enable_range_finder();
-                        system_start_driving();
+                        enable_range_finder();
+                        start_driving();
                     break;
                     case CMD_H_F:
                         pid_set_pid(&pid.tran, &pid_tran_forwarding_value);
@@ -315,8 +325,8 @@ static void control_loop(void *pvParameters)
                         state.left_wheel = WHEEL_FORWARD;
                         state.right_wheel = WHEEL_FORWARD;
 
-                        system_enable_range_finder();
-                        system_start_driving();
+                        enable_range_finder();
+                        start_driving();
                     break;
                     case CMD_L:
                         pid_set_pid(&pid.tran, &pid_tran_rotating_value);
@@ -335,8 +345,8 @@ static void control_loop(void *pvParameters)
                         state.left_wheel = WHEEL_BACKWARD;
                         state.right_wheel = WHEEL_FORWARD;
 
-                        system_disable_range_finder();  // MUST BE OFF
-                        system_start_driving();
+                        disable_range_finder();  // MUST BE OFF
+                        start_driving();
                     break;
                     case CMD_R:
                         pid_set_pid(&pid.tran, &pid_tran_rotating_value);
@@ -355,8 +365,8 @@ static void control_loop(void *pvParameters)
                         state.left_wheel = WHEEL_FORWARD;
                         state.right_wheel = WHEEL_BACKWARD;
 
-                        system_disable_range_finder();  // MUST BE OFF
-                        system_start_driving();
+                        disable_range_finder();  // MUST BE OFF
+                        start_driving();
                     break;
                     case CMD_S_L:
                         pid_set_pid(&pid.tran, &pid_tran_smooth_value);
@@ -373,8 +383,8 @@ static void control_loop(void *pvParameters)
                         state.left_wheel = WHEEL_FORWARD;
                         state.right_wheel = WHEEL_FORWARD;
 
-                        system_disable_range_finder();  // MUST BE OFF
-                        system_start_driving();
+                        disable_range_finder();  // MUST BE OFF
+                        start_driving();
                     break;
                     case CMD_S_R:
                         pid_set_pid(&pid.tran, &pid_tran_smooth_value);
@@ -391,8 +401,8 @@ static void control_loop(void *pvParameters)
                         state.left_wheel = WHEEL_FORWARD;
                         state.right_wheel = WHEEL_FORWARD;
 
-                        system_disable_range_finder();  // MUST BE OFF
-                        system_start_driving();
+                        disable_range_finder();  // MUST BE OFF
+                        start_driving();
                     break;
                     default:
                         state.cmd_ready = 1;
@@ -439,7 +449,7 @@ static void control_loop(void *pvParameters)
         (range.front_right > MEASURE_RANGE_F_NEAR_DETECT))
         {
             if ((cmd.type != CMD_L) && (cmd.type != CMD_R)){
-                system_start_driving();
+                start_driving();
                 state.cmd_ready = 1;
                 pid_reset(&pid.tran);
                 pid_reset(&pid.rot);
@@ -574,17 +584,17 @@ void SysTick_hook(void)
 
 
 /*******************************************************************************
- * system functions from @system_control.h
+ * system functions from @control.h
  ******************************************************************************/
 // Motor driving
-void system_start_driving(void)
+static void start_driving(void)
 {
     state.pid = 1;
     state.pid_tran = 1;
     state.pid_rot = 1;
 }
 
-void system_stop_driving(void)
+static void stop_driving(void)
 {
     state.pid = 0;
     state.pid_tran = 0;
@@ -594,12 +604,12 @@ void system_stop_driving(void)
 }
 
 // Range finder control
-void system_enable_range_finder(void)
+static void enable_range_finder(void)
 {
     state.range = 1;
 }
 
-void system_disable_range_finder(void)
+static void disable_range_finder(void)
 {
     state.range = 0;
 }

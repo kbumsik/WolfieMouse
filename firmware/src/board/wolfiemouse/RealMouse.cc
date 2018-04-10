@@ -6,7 +6,6 @@
  */
 
 #include "RealMouse.hpp"
-#include "system_control.h"
 #include "config_measurements.h"
 
 #include "range.h"
