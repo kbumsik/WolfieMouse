@@ -193,12 +193,12 @@ int main(void)
 		}
 	}
 
-	//     printf("robot path \n");
-	//     while(!path.empty())   {
-	// 	printf("%c -> ",path.front());
-	// 	path.pop_front();
-	//     }
-	//     printf("\n");
+	printf("Not smooth \n");
+	for (auto const& dir: path) {
+		printf("%c -> ",dir);
+
+	}
+	printf("\n");
 
 	///////////////////// I don't delete this for just incase we need it /////////////////////
 
@@ -233,127 +233,124 @@ int main(void)
 		}
 	}
 
-	while (!move.empty())
-	{
-		printf("%c -> ", move.front());
-		move.pop_front();
+
+	printf("\nSmooth \n");
+	for (auto const& dir: move) {
+		printf("%c -> ",dir);
+
 	}
 	printf("\n");
 
-	///////////////////// I don't delete this for just incase we need it /////////////////////
-
 	// diagonal move//
 
-	// move.push_back(F);
-	// move.push_back(H_F);
-	// move.push_back(smooth_R);
-	// move.push_back(smooth_L);
-	// move.push_back(smooth_R);
-	// move.push_back(smooth_L);
-	// move.push_back(H_F);
+	move.push_back(F);
+	move.push_back(H_F);
+	move.push_back(smooth_R);
+	move.push_back(smooth_L);
+	move.push_back(smooth_R);
+	move.push_back(smooth_L);
+	move.push_back(H_F);
 
-	// while (!move.empty())
-	// {
-	// 	if (move.front() == F)
-	// 	{
-	// 		diagonal_move.push_back(move.front());
-	// 		move.pop_front();
-	// 	}
-	// 	else if (move.front() == H_F)
-	// 	{
+	while (!move.empty())
+	{
+		if (move.front() == F)
+		{
+			diagonal_move.push_back(move.front());
+			move.pop_front();
+		}
+		else if (move.front() == H_F)
+		{
 
-	// 		diagonal_move.push_back(H_F); //insert H_F
-	// 		move.pop_front();
-	// 		d_start_direction = move.front();
-	// 		// before_direction = move.front();
-	// 		// d_start_direction = before_direction;
-	// 		while (move.front() == smooth_R || move.front() == smooth_L) // temp_move -> inserting all nearby Left/Right moving direction
-	// 		{
-	// 			temp_move.push_back(move.front());
-	// 			move.pop_front();
-	// 			cnt++;
-	// 		}
+			diagonal_move.push_back(H_F); //insert H_F
+			move.pop_front();
+			d_start_direction = move.front();
+			// before_direction = move.front();
+			// d_start_direction = before_direction;
+			while (move.front() == smooth_R || move.front() == smooth_L) // temp_move -> inserting all nearby Left/Right moving direction
+			{
+				temp_move.push_back(move.front());
+				move.pop_front();
+				cnt++;
+			}
 
-	// 		if (cnt == 1) // 100% smooth turn
-	// 		{
-	// 			diagonal_move.push_back(temp_move.front());
-	// 			temp_move.pop_front();
-	// 			//diagonal_move.push_back(H_F);
-	// 			cnt--;
-	// 		}
-	// 		else if (cnt > 1) // various direction
-	// 		{
-	// 			while (cnt >= 1)
-	// 			{
-	// 				before_direction = temp_move.front();
-	// 				temp_move.pop_front();
-	// 				if (before_direction != temp_move.front()) // diagonal case counting
-	// 				{
-	// 					d_cnt++;
-	// 					before_direction = temp_move.front();
-	// 					d_end_direction = before_direction;
-	// 					temp_move.pop_front();
-	// 					cnt--;
-	// 				}
-	// 				else if (before_direction == temp_move.front() && d_cnt != 1) // diagonal case moving direction
-	// 				{
-	// 					diagonal_move.push_back((d_start_direction == smooth_R) ? R_dia_turn : L_dia_turn);
+			if (cnt == 1) // 100% smooth turn
+			{
+				diagonal_move.push_back(temp_move.front());
+				temp_move.pop_front();
+				//diagonal_move.push_back(H_F);
+				cnt--;
+			}
+			else if (cnt > 1) // various direction
+			{
+				while (cnt >= 1)
+				{
+					before_direction = temp_move.front();
+					temp_move.pop_front();
+					if (before_direction != temp_move.front()) // diagonal case counting
+					{
+						d_cnt++;
+						before_direction = temp_move.front();
+						d_end_direction = before_direction;
+						temp_move.pop_front();
+						cnt--;
+					}
+					else if (before_direction == temp_move.front() && d_cnt != 1) // diagonal case moving direction
+					{
+						diagonal_move.push_back((d_start_direction == smooth_R) ? R_dia_turn : L_dia_turn);
 
-	// 					while (d_cnt != 1)
-	// 					{
-	// 						diagonal_move.push_back(diagonal_forward);
-	// 						d_cnt--;
-	// 					}
-	// 					diagonal_move.push_back(diagonal_forward); // as we start at d_cnt = 1 and ends at d_cnt = 1
-	// 					diagonal_move.push_back((d_end_direction == smooth_R) ? R_dia_turn : L_dia_turn);
-	// 				}
-	// 				else if (before_direction == temp_move.front())
-	// 				{ // smooth turn case
-	// 					if ((diagonal_move.back() != L_dia_turn) && (diagonal_move.back() != R_dia_turn))
-	// 					{
-	// 						diagonal_move.push_back(temp_move.front());
-	// 						temp_move.pop_front(); //////////?????????
-	// 						if (temp_move.empty())
-	// 							diagonal_move.push_back(H_F); //////////?????????
-	// 						cnt--;
-	// 					}
-	// 					else if ((diagonal_move.back()) == (L_dia_turn) || (diagonal_move.back()) == (R_dia_turn))
-	// 					//diagonal case finish
-	// 					{
-	// 						//diagonal_move.push_back(temp_move.front());
-	// 						//temp_move.pop_front(); //////////?????????
-	// 						//diagonal_move.push_back(H_F); //////////?????????
-	// 						cnt--;
-	// 					}
-	// 				}
+						while (d_cnt != 1)
+						{
+							diagonal_move.push_back(diagonal_forward);
+							d_cnt--;
+						}
+						diagonal_move.push_back(diagonal_forward); // as we start at d_cnt = 1 and ends at d_cnt = 1
+						diagonal_move.push_back((d_end_direction == smooth_R) ? R_dia_turn : L_dia_turn);
+					}
+					else if (before_direction == temp_move.front())
+					{ // smooth turn case
+						if ((diagonal_move.back() != L_dia_turn) && (diagonal_move.back() != R_dia_turn))
+						{
+							diagonal_move.push_back(temp_move.front());
+							temp_move.pop_front(); //////////?????????
+							if (temp_move.empty())
+								diagonal_move.push_back(H_F); //////////?????????
+							cnt--;
+						}
+						else if ((diagonal_move.back()) == (L_dia_turn) || (diagonal_move.back()) == (R_dia_turn))
+						//diagonal case finish
+						{
+							//diagonal_move.push_back(temp_move.front());
+							//temp_move.pop_front(); //////////?????????
+							//diagonal_move.push_back(H_F); //////////?????????
+							cnt--;
+						}
+					}
 
-	// 				else if (temp_move.empty() && d_cnt != 1)
-	// 				{
-	// 					diagonal_move.push_back((d_start_direction == smooth_R) ? R_dia_turn : L_dia_turn);
-	// 					while (d_cnt != 1)
-	// 					{
-	// 						diagonal_move.push_back(diagonal_forward);
-	// 						d_cnt--;
-	// 					}
-	// 					diagonal_move.push_back(diagonal_forward); // as we start at d_cnt = 1 and ends at d_cnt = 1
-	// 					diagonal_move.push_back((d_end_direction == smooth_R) ? R_dia_turn : L_dia_turn);
-	// 				}
-	// 			}
+					else if (temp_move.empty() && d_cnt != 1)
+					{
+						diagonal_move.push_back((d_start_direction == smooth_R) ? R_dia_turn : L_dia_turn);
+						while (d_cnt != 1)
+						{
+							diagonal_move.push_back(diagonal_forward);
+							d_cnt--;
+						}
+						diagonal_move.push_back(diagonal_forward); // as we start at d_cnt = 1 and ends at d_cnt = 1
+						diagonal_move.push_back((d_end_direction == smooth_R) ? R_dia_turn : L_dia_turn);
+					}
+				}
 
-	// 			cnt = 0;
-	// 			d_cnt = 1;
-	// 		}
-	// 	}
-	// }
+				cnt = 0;
+				d_cnt = 1;
+			}
+		}
+	}
 
-	// printf(" robot moving direction \n");
+	printf("\nDiagonal \n");
+	for (auto const& dir: diagonal_move) {
+		printf("%c -> ",dir);
 
-	// while (!diagonal_move.empty())
-	// {
-	// 	printf("%c -> ", diagonal_move.front());
-	// 	diagonal_move.pop_front();
-	// }
-	// printf("\n");
+	}
+	printf("\n");
 
 	return 0;
 }
