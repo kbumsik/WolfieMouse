@@ -5,7 +5,7 @@
 TARGET = maze_solver
 
 # Project-specific files
-MAZE_QUESTION = maze_ieee_region_1_2015.txt
+MAZE_QUESTION = maze_ieee_region_1_2018.txt
 MAZE_SAVED	= out.txt
 MAZE_OUT = out.txt
 
