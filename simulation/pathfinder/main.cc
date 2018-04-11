@@ -3,6 +3,7 @@
 #include "Maze.hpp"
 #include "StdIO.hpp"
 
+#include <iostream>
 #include <vector>
 #include <stdio.h>
 #include <deque>
@@ -56,6 +57,38 @@ std::deque<enum real_move> move; // smooth_path
 
 std::deque<enum real_move> diagonal_move; // diagonal path
 std::deque<enum real_move> temp_move;
+
+template<typename T>
+void printPath(std::string name, T &path) {
+	// print name
+	std::cout << name << std::endl;
+
+	char old_dir = path.front();
+	int dup_count = 0;
+	// Print path with duplication counting
+	for (auto const& dir: path) {
+		char new_dir = (char) dir;
+		if (old_dir == new_dir) {
+			dup_count++;
+		} else {
+			if (dup_count == 1) {
+				std::cout << old_dir << " -> ";
+			} else {
+				std::cout << dup_count << old_dir << " -> ";
+				dup_count = 1;
+			}
+		}
+		old_dir = new_dir;
+	}
+	// print last one
+	if (dup_count == 1) {
+		std::cout << old_dir;
+	} else {
+		std::cout << dup_count << old_dir;
+	}
+	// double newline
+	std::cout << std::endl << std::endl;
+}
 
 int main(void)
 {
@@ -193,15 +226,7 @@ int main(void)
 		}
 	}
 
-	printf("Not smooth \n");
-	for (auto const& dir: path) {
-		printf("%c -> ",dir);
-
-	}
-	printf("\n");
-
-	///////////////////// I don't delete this for just incase we need it /////////////////////
-
+	printPath("Non-smooth", path);
 	//smooth turn//
 
 	while (!path.empty())
@@ -233,13 +258,7 @@ int main(void)
 		}
 	}
 
-
-	printf("\nSmooth \n");
-	for (auto const& dir: move) {
-		printf("%c -> ",dir);
-
-	}
-	printf("\n");
+	printPath("Smooth", move);
 
 	// diagonal move//
 
@@ -345,12 +364,6 @@ int main(void)
 		}
 	}
 
-	printf("\nDiagonal \n");
-	for (auto const& dir: diagonal_move) {
-		printf("%c -> ",dir);
-
-	}
-	printf("\n");
-
+	printPath("Diagonal", diagonal_move);
 	return 0;
 }
