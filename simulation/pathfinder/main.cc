@@ -1,14 +1,32 @@
 #include "Position.hpp"
 #include "Queue.hpp"
+#include "Maze.hpp"
+#include "StdIO.hpp"
+
 #include <vector>
 #include <stdio.h>
 #include <deque>
 
-std::vector<Position> pathPos = {
-	Position{12,1}, Position{13, 1}, Position{13, 2}, Position{12, 2}, Position{12, 1}, Position{13, 1}, Position{14, 1},
-    Position{14, 2}, Position{14, 3}, Position{14, 4}, Position{13, 4}, Position{12, 4}, Position{11, 4},
-    Position{10, 4}, Position{9, 4}, Position{8, 4}, Position{7, 4}, Position{7, 5}, Position{7, 6}
+#define MAZE_FILE "maze_base.txt"
 
+std::vector<Position> pathPos = {
+	Position{15,0}, Position{14,0}, Position{13,0}, Position{12,0}, Position{11,0},
+	Position{10,0}, Position{9,0}, 	Position{8,0}, 	Position{7,0}, 	Position{6,0},
+	Position{5,0}, 	Position{4,0}, 	Position{3,0}, 	Position{2,0}, 	Position{1,0},
+	Position{0,0}, 	Position{0,1}, 	Position{0,2}, 	Position{0,3}, 	Position{0,4},
+	Position{0,5}, 	Position{0,6}, 	Position{0,7}, 	Position{0,8}, 	Position{0,9},
+	Position{0,10},	Position{0,11}, Position{0,12}, Position{0,13}, Position{0,14},
+	Position{0,15}, Position{1,15}, Position{2,15}, Position{3,15}, Position{4,15},
+	Position{5,15}, Position{6,15}, Position{7,15}, Position{7,14}, Position{8,14},
+	Position{8,13}, Position{9,13}, Position{9,12}, Position{9,11}, Position{9,10},
+	Position{9,9},  Position{8,9}, 	Position{7,9}, 	Position{6,9}, 	Position{6,10},
+	Position{6,11}, Position{5,11}, Position{5,10}, Position{5,9}, 	Position{5,8},
+	Position{4,8}, 	Position{3,8}, 	Position{3,7}, 	Position{4,7}, 	Position{4,6},
+	Position{3,6}, 	Position{3,5}, 	Position{4,5}, 	Position{5,5}, 	Position{6,5},
+	Position{6,4}, 	Position{7,4}, 	Position{7,5}, 	Position{8,5}, 	Position{8,4},
+	Position{9,4}, 	Position{10,4},	Position{11,4}, Position{12,4}, Position{13,4},
+	Position{13,5}, Position{12,5}, Position{11,5}, Position{10,5}, Position{9,5},
+	Position{9,6},  Position{8,6}
 };
 Queue<Position> queue;
 
@@ -60,6 +78,12 @@ int main(void)
 	init.col = -1;
 
 	queue.init();
+	
+	// Create a maze object only for printing purpose
+    StdIO fileIO(true);
+    StdIO printIO(false);
+    Maze maze(MAZE_FILE, &fileIO, &printIO);
+	maze.printMazeWithPositions(pathPos);
 
 	for (int i = 0; i < pathPos.size(); i++)
 	{
@@ -67,11 +91,6 @@ int main(void)
 		pathPos[i].row = (pathPos[i].col);
 		pathPos[i].col = swap;
 	}
-	for (int i = 0; i < pathPos.size(); i++)
-	{
-		printf("position {%d,%d}", pathPos[i].row, pathPos[i].col);
-	}
-	printf("\n");
 	for (int i = 0; i < pathPos.size(); i++)
 	{
 		queue.pushToBack(pathPos[i]);

@@ -54,6 +54,7 @@ public:
     bool positionIsDestination(Position pos);
     // Actual IO
     void printMaze(void);
+    void printMazeWithPositions(std::vector<Position> &positions);
     void loadMazeFromString(char* str);
     void loadMazeFromFile(char* fileName);
     void saveMazeToFile(char* fileName);

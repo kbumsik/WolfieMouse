@@ -75,7 +75,8 @@ public:
     /* IO Related */
     void readMazeFromFile(char* fileName);
     void readMazeFromString(StringMaze *stringMaze);
-    virtual void printMaze();
+    virtual void printMaze(void);
+    virtual void printMazeWithPositions(std::vector<Position> &positions);
     void saveMazeFile(char* fileName);
 };
 

@@ -66,6 +66,44 @@ void MazeIO::printMaze(void)
     writeIOFromBuffer(printIO);
 }
 
+void MazeIO::printMazeWithPositions(std::vector<Position> &positions)
+{
+    if (NULL == maze) {
+        printf("No maze object");
+        return;
+    }
+
+    char *ptr = buffer;
+    writeBufferFromMaze(true);
+    /**
+     * Edit buffers to print positions
+     * it's like:
+     *  __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ 
+     * | 1. 2. 3. 6. 7.  .  .  .  .  .  .  .  .  .  .  |
+     *  .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. 
+     * | 0|  . 4. 5. 8. 9.19.11.12.13.  .  .  .  .  .  |
+     *  __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ 
+     */
+    for (int i = 0; i < positions.size(); i++) {
+        auto const& pos = positions[i];
+        char *ptr = buffer +
+                    ((pos.row * 2 + 1) * (CONFIG_MAX_COL_SIZE * 3 + 1 + 1))
+                    + (pos.col * 3 + 1);
+        char output;
+        // digit of 10's
+        if (i >= 10) {
+            output = '0' + ((i / 10) % 10);
+            *ptr++ = output;
+        } else {
+            ptr++;
+        }
+        // digit of 1's
+        output = '0' + (i % 10);
+        *ptr = output;
+    }
+    writeIOFromBuffer(printIO);
+}
+
 void MazeIO::loadMazeFromString(char* str)
 {
     if (NULL == str) {
