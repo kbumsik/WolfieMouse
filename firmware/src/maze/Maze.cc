@@ -252,6 +252,14 @@ void Maze::printMaze()
 }
 
 /**
+ * @brief      print the current maze
+ */
+void Maze::printMazeWithPositions(std::vector<Position> &positions)
+{
+    mazeIO.printMazeWithPositions(positions);
+}
+
+/**
  * @brief      save the maze as file
  *
  * @param      fileName  filename to save
