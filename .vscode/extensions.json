@@ -5,6 +5,7 @@
 		// Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
 		"dan-c-underwood.arm",
 		"ms-vscode.cpptools",
-		"marus25.cortex-debug"
+		"marus25.cortex-debug",
+		"xaver.clang-format"
 	]
 }
