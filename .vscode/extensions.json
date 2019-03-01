@@ -6,6 +6,7 @@
 		"dan-c-underwood.arm",
 		"ms-vscode.cpptools",
 		"marus25.cortex-debug",
-		"xaver.clang-format"
+		"xaver.clang-format",
+		"eamodio.gitlens"
 	]
 }

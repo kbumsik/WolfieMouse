@@ -6,3 +6,4 @@
 *.code-workspace
 .vscode/settings.json
 .vscode/.cortex-debug*.json
+.vscode/cquery_cached_index
