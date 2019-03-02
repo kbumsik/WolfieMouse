@@ -319,7 +319,7 @@ static void disp_main(void)
 
 static void disp_mem(void)
 {
-    hcms_290x_matrix("Mem");
+    hcms_290x_matrix("MEW");
 }
 
 static void search_to_goal(void)
