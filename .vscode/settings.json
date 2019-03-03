@@ -1,3 +1,4 @@
 {
-    "editor.formatOnSave": true
+  "terminal.integrated.shell.windows": "C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+  "editor.formatOnSave": false,
 }

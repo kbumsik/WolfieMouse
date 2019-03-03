@@ -7,6 +7,8 @@
 		"ms-vscode.cpptools",
 		"marus25.cortex-debug",
 		"xaver.clang-format",
-		"eamodio.gitlens"
+		"eamodio.gitlens",
+		"alefragnani.bookmarks",
+		"shardulm94.trailing-spaces"
 	]
 }
