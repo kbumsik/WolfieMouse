@@ -1,5 +1,6 @@
 // In the same folder
 #include "main_fsm_table.hpp"
+#include "button.hpp"
 
 // FreeRTOS
 #include "FreeRTOS.h"
@@ -43,14 +44,6 @@ void _maze_solver_run(void);
 // Thread declarations
 static void _thread_main(void *pvParameters);
 
-// Event declarations
-static void _on_b1_pressed(void);
-static void _on_b2_pressed(void);
-
-// Local variables
-static int _is_b1_pressed = 0;
-static int _is_b2_pressed = 0;
-
 /*******************************************************************************
  * FSM action function
  ******************************************************************************/
@@ -64,9 +57,7 @@ void task_1(void)
     }
 
     // wait for button pressed
-    while (!_is_b2_pressed) {
-    }
-    _is_b1_pressed = 0;
+    button_b1_b2_wait();
 
     hcms_290x_matrix("Go");
     delay_ms(1000);
@@ -183,13 +174,11 @@ static void _thread_main(void *pvParameters)
     last_steps = counter.right;
     while (1) {
         // polling button states
-        if (_is_b1_pressed) {
+        if (button_b1_check()) {
             main_fsm_run_task(b1_pressed);
-            _is_b1_pressed = 0;
             continue;
-        } else if (_is_b2_pressed) {
+        } else if (button_b2_check()) {
             main_fsm_run_task(b2_pressed);
-            _is_b2_pressed = 0;
             continue;
         }
 
@@ -225,20 +214,11 @@ int main(void)
     system_init();
 
     /* Set Button Pressed Events */
-    gpio_init_t GPIO_InitStruct;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = PULLUP;
-
-    gpio_isr_enable(B1_PORT, B1_PIN, &GPIO_InitStruct, FALLING_EDGE);
-    gpio_isr_register(B1_PORT, B1_PIN, _on_b1_pressed);
-
-    gpio_isr_enable(B2_PORT, B2_PIN, &GPIO_InitStruct, FALLING_EDGE);
-    gpio_isr_register(B2_PORT, B2_PIN, _on_b2_pressed);
-
-    system_disable_range_finder();
-    system_stop_driving();
+    button_init();
 
     // Initialize all configured peripherals and then start control loop
+    system_disable_range_finder();
+    system_stop_driving();
     thread_control_loop_init();
 
     // Initialize command system
@@ -270,19 +250,3 @@ int main(void)
     }
 }
 
-/*******************************************************************************
- * Event handlers
- ******************************************************************************/
-static void _on_b1_pressed(void)
-{
-    _is_b1_pressed = 1;
-    trace_puts("B1 Pressed\n");
-    return;
-}
-
-static void _on_b2_pressed(void)
-{
-    _is_b2_pressed = 1;
-    trace_puts("B2 Pressed\n");
-    return;
-}
