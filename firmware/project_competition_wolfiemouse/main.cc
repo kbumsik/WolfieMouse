@@ -30,33 +30,26 @@
 #endif
 
 /*******************************************************************************
- * Function declarations
+ * Function declarations and local variables
  ******************************************************************************/
 // Event declarations
-static void on_b1_pressed(void);
-static void on_b2_pressed(void);
+static void _on_b1_pressed(void);
+static void _on_b2_pressed(void);
 
 // Task declarations
-static void thread_main(void *pvParameters);
+static void _thread_main(void *pvParameters);
 
-/*******************************************************************************
- * local variables
- ******************************************************************************/
-static int is_b1_pressed = 0;
-static int is_b2_pressed = 0;
-struct encoder_data counter;
-
-/*******************************************************************************
- * Global variables
- ******************************************************************************/
-// Task Handlers
-TaskHandle_t thread_main_handler;
+// Local variables
+static int _is_b1_pressed = 0;
+static int _is_b2_pressed = 0;
 
 /*******************************************************************************
  * Main function
  ******************************************************************************/
 int main(void)
 {
+    static TaskHandle_t _thread_main_handler;
+
     /* initialize clock and system configuration */
     system_init();
 
@@ -66,10 +59,10 @@ int main(void)
     GPIO_InitStruct.Pull = PULLUP;
 
     gpio_isr_enable(B1_PORT, B1_PIN, &GPIO_InitStruct, FALLING_EDGE);
-    gpio_isr_register(B1_PORT, B1_PIN, on_b1_pressed);
+    gpio_isr_register(B1_PORT, B1_PIN, _on_b1_pressed);
 
     gpio_isr_enable(B2_PORT, B2_PIN, &GPIO_InitStruct, FALLING_EDGE);
-    gpio_isr_register(B2_PORT, B2_PIN, on_b2_pressed);
+    gpio_isr_register(B2_PORT, B2_PIN, _on_b2_pressed);
 
     system_disable_range_finder();
     system_stop_driving();
@@ -86,8 +79,13 @@ int main(void)
 
     /* Task creation and definition */
     BaseType_t result;
-    result = xTaskCreate(thread_main, "Main", configMINIMAL_STACK_SIZE + 15500, NULL,
-                         configMAX_PRIORITIES - 2, &thread_main_handler);
+    result = xTaskCreate(
+        _thread_main,               /* Pointer to the function that implements the task */
+        "Main",                     /* Text name for the task. This is to facilitate debugging only. It is not used in the scheduler */
+        configMINIMAL_STACK_SIZE + 15500, /* Stack depth in words */
+        NULL,                       /* Pointer to a task parameters */
+        configMAX_PRIORITIES - 2,   /* The task priority */
+        &_thread_main_handler);     /* Pointer of its task handler, if you don't want to use, you can leave it NULL */
     if (result != pdPASS) {
         terminal_puts("Creating task failed!!");
     }
@@ -104,29 +102,33 @@ int main(void)
 /*******************************************************************************
  * Tasks
  ******************************************************************************/
-static void thread_main(void *pvParameters)
+static void _thread_main(void *pvParameters)
 {
+    static struct encoder_data counter;
+    static uint32_t current_steps, last_steps;
+
     hcms_290x_matrix("BOOT");
 
     /* Initialize xLastWakeTime for vTaskDelayUntil */
     /* This variable is updated every vTaskDelayUntil is called */
-    portTickType xLastWakeTime = xTaskGetTickCount();
+    // portTickType xLastWakeTime = xTaskGetTickCount();
 
-    uint32_t current_steps, last_steps;
     encoder_get(&counter, ENCODER_CH_RIGHT);
     last_steps = counter.right;
     while (1) {
         // polling button states
-        if (is_b1_pressed) {
+        if (_is_b1_pressed) {
             main_fsm_run_task(b1_pressed);
-            is_b1_pressed = 0;
+            _is_b1_pressed = 0;
             continue;
-        } else if (is_b2_pressed) {
+        } else if (_is_b2_pressed) {
             main_fsm_run_task(b2_pressed);
-            is_b2_pressed = 0;
+            _is_b2_pressed = 0;
             continue;
         }
-        // polling left wheel state
+
+        // Polling right wheel state
+        // Rotation of wheel will be used to select a task.
         encoder_get(&counter, ENCODER_CH_RIGHT);
         current_steps = counter.right;
         if (current_steps > (last_steps + 300)) {
@@ -158,13 +160,14 @@ void task_1(void)
         delay_ms(500);
     }
     // wait for button pressed
-    while (!is_b2_pressed) {
+    while (!_is_b2_pressed) {
     }
-    is_b1_pressed = 0;
+    _is_b1_pressed = 0;
 
     hcms_290x_matrix("Go");
     delay_ms(1000);
-    hcms_290x_matrix("    ");
+    hcms_290x_matrix("    ");   // We should print empty spaces
+                                // in order to save battery
 
     /* Go to main algorithm */
     main_run();
@@ -208,16 +211,16 @@ void task_6(void)
 /*******************************************************************************
  * Event handlers
  ******************************************************************************/
-static void on_b1_pressed(void)
+static void _on_b1_pressed(void)
 {
-    is_b1_pressed = 1;
+    _is_b1_pressed = 1;
     trace_puts("B1 Pressed\n");
     return;
 }
 
-static void on_b2_pressed(void)
+static void _on_b2_pressed(void)
 {
-    is_b2_pressed = 1;
+    _is_b2_pressed = 1;
     trace_puts("B2 Pressed\n");
     return;
 }
