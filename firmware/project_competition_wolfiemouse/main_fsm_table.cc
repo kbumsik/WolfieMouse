@@ -88,8 +88,8 @@ void main_fsm_run_task(enum event event_input)
     };
 
     // call task function and than change state
-    fsm_table[current_state][i].task();
     current_state = fsm_table[current_state][i].next_state;
+    fsm_table[current_state][i].task();
     return;
 }
 
