@@ -55,6 +55,7 @@ void task_1(void)
         gpio_toggle(LED2_PORT, LED2_PIN);
         delay_ms(500);
     }
+    hcms_290x_matrix("PRSS");
 
     // wait for button pressed
     button_b1_b2_wait();
@@ -164,7 +165,10 @@ static void _thread_main(void *pvParameters)
     static struct encoder_data counter;
     static uint32_t current_steps, last_steps;
 
+    // This will display "TSK1" after showing "BOOT"
     hcms_290x_matrix("BOOT");
+    delay_ms(2000);
+    main_fsm_run_task(eol);
 
     /* Initialize xLastWakeTime for vTaskDelayUntil */
     /* This variable is updated every vTaskDelayUntil is called */
@@ -249,4 +253,3 @@ int main(void)
     while (1) {
     }
 }
-
