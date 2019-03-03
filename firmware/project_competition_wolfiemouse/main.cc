@@ -37,7 +37,7 @@ static void on_b1_pressed(void);
 static void on_b2_pressed(void);
 
 // Task declarations
-static void task_main(void *pvParameters);
+static void thread_main(void *pvParameters);
 
 /*******************************************************************************
  * local variables
@@ -50,7 +50,7 @@ struct encoder_data counter;
  * Global variables
  ******************************************************************************/
 // Task Handlers
-TaskHandle_t task_main_handler;
+TaskHandle_t thread_main_handler;
 
 /*******************************************************************************
  * Main function
@@ -86,8 +86,8 @@ int main(void)
 
     /* Task creation and definition */
     BaseType_t result;
-    result = xTaskCreate(task_main, "Main", configMINIMAL_STACK_SIZE + 15500, NULL,
-                         configMAX_PRIORITIES - 2, &task_main_handler);
+    result = xTaskCreate(thread_main, "Main", configMINIMAL_STACK_SIZE + 15500, NULL,
+                         configMAX_PRIORITIES - 2, &thread_main_handler);
     if (result != pdPASS) {
         terminal_puts("Creating task failed!!");
     }
@@ -104,14 +104,13 @@ int main(void)
 /*******************************************************************************
  * Tasks
  ******************************************************************************/
-static void task_main(void *pvParameters)
+static void thread_main(void *pvParameters)
 {
     hcms_290x_matrix("BOOT");
 
-    portTickType xLastWakeTime;
     /* Initialize xLastWakeTime for vTaskDelayUntil */
     /* This variable is updated every vTaskDelayUntil is called */
-    xLastWakeTime = xTaskGetTickCount();
+    portTickType xLastWakeTime = xTaskGetTickCount();
 
     uint32_t current_steps, last_steps;
     encoder_get(&counter, ENCODER_CH_RIGHT);
