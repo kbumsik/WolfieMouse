@@ -1,3 +1,6 @@
+// In the same folder
+#include "thread_solver_loop.hpp"
+#include "main_fsm_table.hpp"
 
 // FreeRTOS
 #include "FreeRTOS.h"
@@ -7,7 +10,6 @@
 #include "semphr.h"
 
 #include "system_control.h"
-#include "thread_solver_loop.hpp"
 #include "config_measurements.h"
 
 // KB library
@@ -21,25 +23,15 @@
 #include "thread_control_loop.h"
 #include "cmd.h"
 
-
-// Simple displya tasks
-static void disp_task_1(void);
-static void disp_task_2(void);
-static void disp_task_3(void);
-static void disp_task_4(void);
-static void disp_task_5(void);
-static void disp_task_6(void);
-
 // Define message base. This is used for KB_DEBUG_MSG()
 #ifdef KB_MSG_BASE
-	#undef KB_MSG_BASE
-	#define KB_MSG_BASE "Main"
+#    undef KB_MSG_BASE
+#    define KB_MSG_BASE "Main"
 #endif
 
 /*******************************************************************************
  * Function declarations
  ******************************************************************************/
-
 // Event declarations
 static void on_b1_pressed(void);
 static void on_b2_pressed(void);
@@ -59,123 +51,13 @@ struct encoder_data counter;
  ******************************************************************************/
 // Task Handlers
 TaskHandle_t task_main_handler;
-TaskHandle_t task_blinky_handler;
-
-#ifdef KB_WOLFIEMOUSE
-TaskHandle_t task_range_handler;
-#endif
-
-
-/*******************************************************************************
- * State machine definitions
- ******************************************************************************/
-// FSM action functions
-static void task_1(void);
-static void task_2(void);
-static void task_3(void);
-static void task_4(void);
-static void task_5(void);
-static void task_6(void);
-
-// event enum
-enum event {
-    b1_pressed, b2_pressed, wheel_up, wheel_down, eol
-};
-
-// state enum
-enum state {
-    state_1, state_2, state_3, state_4, state_5, state_6
-};
-
-// transition and table
-struct transition {
-    enum event event_val;
-    void (*task) (void);
-    enum state next_state;
-};
-
-// stopwatch current state
-enum state current_state = state_1;
-
-// fsm function
-void main_fsm(enum event event_input){
-    static const struct transition state_1_transitions[] = {
-    //  Event        Task             Next_state
-        {b1_pressed, task_1,          state_1   },
-        {b2_pressed, task_1,          state_1   },
-        {wheel_up,   disp_task_2,     state_2   },
-        {wheel_down, disp_task_6,     state_6   },
-        {eol,        disp_task_2,     state_1   }
-    };
-    static const struct transition state_2_transitions[] = {
-    //  Event        Task           Next_state
-        {b1_pressed, task_2,        state_2     },
-        {b2_pressed, task_2,        state_2     },
-        {wheel_up,   disp_task_3,   state_3     },
-        {wheel_down, disp_task_1,   state_1     },
-        {eol,        disp_task_2,   state_2     }
-    };
-    static const struct transition state_3_transitions[] = {
-    //  Event        Task           Next_state
-        {b1_pressed, task_3,        state_3     },
-        {b2_pressed, task_3,        state_3     },
-        {wheel_up,   disp_task_4,   state_4     },
-        {wheel_down, disp_task_2,   state_2     },
-        {eol,        disp_task_3,   state_3     }
-    };
-    static const struct transition state_4_transitions[] = {
-    //  Event        Task           Next_state
-        {b1_pressed, task_4,        state_4     },
-        {b2_pressed, task_4,        state_4     },
-        {wheel_up,   disp_task_5,   state_5     },
-        {wheel_down, disp_task_3,   state_3     },
-        {eol,        disp_task_4,   state_4     }
-    };
-    static const struct transition state_5_transitions[] = {
-    //  Event        Task           Next_state
-        {b1_pressed, task_5,        state_5     },
-        {b2_pressed, task_5,        state_5     },
-        {wheel_up,   disp_task_6,   state_6     },
-        {wheel_down, disp_task_4,   state_4     },
-        {eol,        disp_task_5,   state_5     }
-    };
-    static const struct transition state_6_transitions[] = {
-    //  Event        Task           Next_state
-        {b1_pressed, task_6,        state_6     },
-        {b2_pressed, task_6,        state_6     },
-        {wheel_up,   disp_task_1,   state_1     },
-        {wheel_down, disp_task_5,   state_5     },
-        {eol,        disp_task_6,   state_6     }
-    };
-    // FSM table. Since it is const, it will be stored in FLASH
-    static const struct transition *fsm_table[6] = {
-        state_1_transitions,
-        state_2_transitions,
-        state_3_transitions,
-        state_4_transitions,
-        state_5_transitions,
-        state_6_transitions,
-    };
-
-    // search for signal
-    int i;
-    for (i = 0; (fsm_table[current_state][i].event_val != event_input)
-        && (fsm_table[current_state][i].event_val != eol); i++){
-        // Do nothing until hit a transition
-    };
-
-    // call task function and than change state
-    fsm_table[current_state][i].task();
-    current_state = fsm_table[current_state][i].next_state;
-    return;
-}
 
 /*******************************************************************************
  * Main function
  ******************************************************************************/
 int main(void)
 {
-	/* initialize clock and system configuration */
+    /* initialize clock and system configuration */
     system_init();
 
     /* Set Button Pressed Events */
@@ -204,13 +86,8 @@ int main(void)
 
     /* Task creation and definition */
     BaseType_t result;
-    result = xTaskCreate(
-            task_main,
-            "Main",
-            configMINIMAL_STACK_SIZE+15500,
-            NULL,
-            configMAX_PRIORITIES-2,
-            &task_main_handler);
+    result = xTaskCreate(task_main, "Main", configMINIMAL_STACK_SIZE + 15500, NULL,
+                         configMAX_PRIORITIES - 2, &task_main_handler);
     if (result != pdPASS) {
         terminal_puts("Creating task failed!!");
     }
@@ -229,8 +106,7 @@ int main(void)
  ******************************************************************************/
 static void task_main(void *pvParameters)
 {
-    // Just to display "TSK1"
-    main_fsm(eol);
+    hcms_290x_matrix("BOOT");
 
     portTickType xLastWakeTime;
     /* Initialize xLastWakeTime for vTaskDelayUntil */
@@ -243,11 +119,11 @@ static void task_main(void *pvParameters)
     while (1) {
         // polling button states
         if (is_b1_pressed) {
-            main_fsm(b1_pressed);
+            main_fsm_run_task(b1_pressed);
             is_b1_pressed = 0;
             continue;
         } else if (is_b2_pressed) {
-            main_fsm(b2_pressed);
+            main_fsm_run_task(b2_pressed);
             is_b2_pressed = 0;
             continue;
         }
@@ -256,16 +132,16 @@ static void task_main(void *pvParameters)
         current_steps = counter.right;
         if (current_steps > (last_steps + 300)) {
             last_steps = current_steps;
-            main_fsm(wheel_up);
+            main_fsm_run_task(wheel_up);
             continue;
-        } else if (current_steps < (last_steps - 300)){
+        } else if (current_steps < (last_steps - 300)) {
             last_steps = current_steps;
-            main_fsm(wheel_down);
+            main_fsm_run_task(wheel_down);
             continue;
         }
 
         /* Call this Task every 1000ms */
-        //vTaskDelayUntil(&xLastWakeTime, (1000 / portTICK_RATE_MS));
+        // vTaskDelayUntil(&xLastWakeTime, (1000 / portTICK_RATE_MS));
     }
     /* It never goes here, but the task should be deleted when it reached here */
     vTaskDelete(NULL);
@@ -274,7 +150,7 @@ static void task_main(void *pvParameters)
 /*******************************************************************************
  * FSM action function
  ******************************************************************************/
-static void task_1(void)
+void task_1(void)
 {
     /* Give time to get ready */
     hcms_290x_matrix("RDY.");
@@ -293,49 +169,41 @@ static void task_1(void)
 
     /* Go to main algorithm */
     main_run();
-
-    /* Motor test running done */
-    main_fsm(eol);
 }
 
-static void task_2(void)
+void task_2(void)
 {
     /* Not implemented */
     hcms_290x_matrix("None");
     delay_ms(2000);
-    main_fsm(eol);
 }
 
-static void task_3(void)
+void task_3(void)
 {
     /* Not implemented */
     hcms_290x_matrix("None");
     delay_ms(2000);
-    main_fsm(eol);
 }
 
-static void task_4(void)
+void task_4(void)
 {
     /* Not implemented */
     hcms_290x_matrix("None");
     delay_ms(2000);
-    main_fsm(eol);
 }
 
-static void task_5(void)
+void task_5(void)
 {
     /* Not implemented */
     hcms_290x_matrix("None");
     delay_ms(2000);
-    main_fsm(eol);
 }
 
-static void task_6(void)
+void task_6(void)
 {
     /* Not implemented */
     hcms_290x_matrix("None");
     delay_ms(2000);
-    main_fsm(eol);
 }
 
 /*******************************************************************************
@@ -353,37 +221,4 @@ static void on_b2_pressed(void)
     is_b2_pressed = 1;
     trace_puts("B2 Pressed\n");
     return;
-}
-
-/*******************************************************************************
- * Task display
- ******************************************************************************/
-static void disp_task_1(void)
-{
-    hcms_290x_matrix("TSK1");
-}
-
-static void disp_task_2(void)
-{
-    hcms_290x_matrix("TSK2");
-}
-
-void disp_task_3(void)
-{
-    hcms_290x_matrix("TSK3");
-}
-
-void disp_task_4(void)
-{
-    hcms_290x_matrix("TSK4");
-}
-
-void disp_task_5(void)
-{
-    hcms_290x_matrix("TSK5");
-}
-
-void disp_task_6(void)
-{
-    hcms_290x_matrix("TSK6");
 }
