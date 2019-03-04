@@ -204,19 +204,38 @@ void task_blinky(void *pvParameters)
  ******************************************************************************/
 static void wait_for_button(MouseController *mouse)
 {
-    /* And print */
+    char buffer[80];
+    char *keyinput = buffer;
+    char key;
     mouse->printMaze();
-    printf("please press a button\n");
+    puts("please input a command");
+    puts("n:next, q: save and restart, p: print stack");
     fflush(stdout);
-    
-    // Wait for the button pressed.
-    xSemaphoreTake(one_clikc_semphr, portMAX_DELAY);
-
-    // Check if B2 pressed
-    if (xSemaphoreTake(double_click_semphr, 0) == pdTRUE) {
-        // Then save it to FLASH
-        mouse->saveMazeFile(NULL);
+    while (true) {
+        if (!terminal_gets(keyinput)) {
+            // TODO: why it gets error? It seems to get error and sucess back and forth.
+            // puts("Error!");
+        }
+        key = keyinput[0];
+        if (key == 'n') {
+            break;
+        } else if (key == 'q') {
+            goto save_and_exit;
+        } else if (key == 'p') {
+            mouse->printPathStack();
+            fflush(stdout);
+        } else {
+            continue;
+        }
     }
+    return;
+save_and_exit:
+    // Save it to flash
+    mouse->saveMazeFile(NULL);
+    puts("Maze saved to flash");
+    puts("Good Bye!");
+    exit(0);
+    return;
 }
 
 /*******************************************************************************
