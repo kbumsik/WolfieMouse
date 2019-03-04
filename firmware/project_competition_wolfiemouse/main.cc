@@ -72,35 +72,35 @@ void task_1(void)
 void task_2(void)
 {
     /* Not implemented */
-    hcms_290x_matrix("None");
+    hcms_290x_matrix("Non2");
     delay_ms(2000);
 }
 
 void task_3(void)
 {
     /* Not implemented */
-    hcms_290x_matrix("None");
+    hcms_290x_matrix("Non3");
     delay_ms(2000);
 }
 
 void task_4(void)
 {
     /* Not implemented */
-    hcms_290x_matrix("None");
+    hcms_290x_matrix("Non4");
     delay_ms(2000);
 }
 
 void task_5(void)
 {
     /* Not implemented */
-    hcms_290x_matrix("None");
+    hcms_290x_matrix("Non5");
     delay_ms(2000);
 }
 
 void task_6(void)
 {
     /* Not implemented */
-    hcms_290x_matrix("None");
+    hcms_290x_matrix("Non6");
     delay_ms(2000);
 }
 
