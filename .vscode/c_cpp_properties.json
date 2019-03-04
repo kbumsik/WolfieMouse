@@ -465,7 +465,7 @@
         "__WINT_TYPE__=unsigned int",
         "__WINT_WIDTH__=32"
       ],
-      "intelliSenseMode": "clang-x64",
+      "intelliSenseMode": "gcc-x64",
       "compilerPath": "arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard",
       "cStandard": "c99",
       "cppStandard": "c++11"
@@ -473,12 +473,7 @@
     {
       "name": "Win32",
       "includePath": [
-        "c:\\develop\\gnu tools arm embedded\\7 2017-q4-major\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
-        "c:\\develop\\gnu tools arm embedded\\7 2017-q4-major\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
-        "c:\\develop\\gnu tools arm embedded\\7 2017-q4-major\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
-        "c:\\develop\\gnu tools arm embedded\\7 2017-q4-major\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1",
-        "c:\\develop\\gnu tools arm embedded\\7 2017-q4-major\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/arm-none-eabi/thumb/v7e-m/fpv4-sp/hard",
-        "c:\\develop\\gnu tools arm embedded\\7 2017-q4-major\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/backward",
+        "${workspaceRoot}/firmware/project_competition_wolfiemouse",
         "${workspaceRoot}/firmware/lib/CMSIS/Include",
         "${workspaceRoot}/firmware/lib/CMSIS/Device/ST/STM32F4xx/Include",
         "${workspaceRoot}/firmware/lib/STM32F4xx_HAL_Driver/Inc",
@@ -495,12 +490,7 @@
       ],
       "browse": {
         "path": [
-          "c:\\develop\\gnu tools arm embedded\\7 2017-q4-major\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
-          "c:\\develop\\gnu tools arm embedded\\7 2017-q4-major\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
-          "c:\\develop\\gnu tools arm embedded\\7 2017-q4-major\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
-          "c:\\develop\\gnu tools arm embedded\\7 2017-q4-major\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1",
-          "c:\\develop\\gnu tools arm embedded\\7 2017-q4-major\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/arm-none-eabi/thumb/v7e-m/fpv4-sp/hard",
-          "c:\\develop\\gnu tools arm embedded\\7 2017-q4-major\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/backward",
+          "${workspaceRoot}/firmware/project_competition_wolfiemouse",
           "${workspaceRoot}/firmware/lib/CMSIS/Include",
           "${workspaceRoot}/firmware/lib/CMSIS/Device/ST/STM32F4xx/Include",
           "${workspaceRoot}/firmware/lib/STM32F4xx_HAL_Driver/Inc",
@@ -508,7 +498,7 @@
           "${workspaceRoot}/firmware/lib/FreeRTOS/Source/portable/GCC/ARM_CM4F",
           "${workspaceRoot}/firmware/lib/FreeRTOS/Source/include",
           "${workspaceRoot}/firmware/lib/FreeRTOS/Source/CMSIS_RTOS",
-          "${workspaceRoot}/firmware/src/board/nucleo_f446re",
+          "${workspaceRoot}/firmware/src/board/wolfiemouse",
           "${workspaceRoot}/firmware/src/math",
           "${workspaceRoot}/firmware/src/maze",
           "${workspaceRoot}/firmware/src/module",
@@ -945,7 +935,7 @@
         "__WINT_TYPE__=unsigned int",
         "__WINT_WIDTH__=32"
       ],
-      "intelliSenseMode": "clang-x64",
+      "intelliSenseMode": "gcc-x64",
       "compilerPath": "arm-none-eabi-gcc.exe -mcpu=cortex-m4 -mthumb -mfloat-abi=hard",
       "cStandard": "c99",
       "cppStandard": "c++11"
