@@ -39,7 +39,8 @@
  * Function declarations and local variables
  ******************************************************************************/
 // Maze solver
-void _maze_solver_run(void);
+static void _maze_solver_run(void (*wait_func)(MouseController *mouse));
+static void _wait_for_button(MouseController *mouse);
 
 // Thread declarations
 static void _thread_main(void *pvParameters);
@@ -69,7 +70,7 @@ void task_1(void)
                                 // in order to save battery
 
     /* Go to main algorithm */
-    _maze_solver_run();
+    _maze_solver_run(NULL);
 }
 
 /**
@@ -81,6 +82,20 @@ void task_2(void)
     /* Not implemented */
     hcms_290x_matrix("Non2");
     delay_ms(2000);
+
+    /* Give time to get ready */
+    hcms_290x_matrix("PRSS");
+
+    // wait for button pressed
+    button_b1_b2_wait();
+
+    hcms_290x_matrix("Go");
+    delay_ms(1000);
+    hcms_290x_matrix("    ");   // We should print empty spaces
+                                // in order to save battery
+
+    /* Go to main algorithm */
+    _maze_solver_run(_wait_for_button);
 }
 
 /**
@@ -151,7 +166,7 @@ void task_6(void)
 /*******************************************************************************
  * Maze_solver
  ******************************************************************************/
-void _maze_solver_run(void)
+static void _maze_solver_run(void (*wait_func)(MouseController *mouse))
 {
     char tmp;
     // Maze solver state
@@ -191,13 +206,49 @@ void _maze_solver_run(void)
                 break;
             }
         } else {
-            if (!mouse.scanAndMove(NULL)) {
+            if (!mouse.scanAndMove(wait_func)) {
                 goto end;
             }
         }
     }
 
 end:
+    return;
+}
+
+static void _wait_for_button(MouseController *mouse)
+{
+    char buffer[80];
+    char *keyinput = buffer;
+    char key;
+    mouse->printMaze();
+    puts("please input a command");
+    puts("n:next, q: save and restart, p: print stack");
+    fflush(stdout);
+    while (true) {
+        if (!terminal_gets(keyinput)) {
+            // TODO: why it gets error? It seems to get error and sucess back and forth.
+            // puts("Error!");
+        }
+        key = keyinput[0];
+        if (key == 'n') {
+            break;
+        } else if (key == 'q') {
+            goto save_and_exit;
+        } else if (key == 'p') {
+            mouse->printPathStack();
+            fflush(stdout);
+        } else {
+            continue;
+        }
+    }
+    return;
+save_and_exit:
+    // Save it to flash
+    mouse->saveMazeFile(NULL);
+    puts("Maze saved to flash");
+    puts("Good Bye!");
+    exit(0);
     return;
 }
 
