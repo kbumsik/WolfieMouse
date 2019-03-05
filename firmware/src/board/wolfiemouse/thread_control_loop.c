@@ -26,6 +26,7 @@
 #include "queue.h"
 #include "semphr.h"
 
+
 /*******************************************************************************
  * Control loop thread
  ******************************************************************************/
@@ -36,6 +37,23 @@ static SemaphoreHandle_t semphr_from_isr = NULL;
 static QueueHandle_t cmd_queue = NULL;
 static SemaphoreHandle_t cmd_semphr = NULL;
 
+/*******************************************************************************
+ * Inline functions
+ ******************************************************************************/
+static inline void wait_until_1ms (void)
+{
+    xSemaphoreTake(semphr_from_isr, portMAX_DELAY);
+}
+
+static inline int get_cmd (struct cmd_queue_element* cmd)
+{
+    return xQueueReceive(cmd_queue, cmd, 0);
+}
+
+static inline void notify_cmd_complete ()
+{
+    xSemaphoreGive(cmd_semphr);
+}
 
 /*******************************************************************************
  * Static local variables
@@ -234,12 +252,12 @@ static void control_loop(void *pvParameters)
     while (1) {
         // Wait from Systick
         // taskYIELD();
-        xSemaphoreTake(semphr_from_isr, portMAX_DELAY);
+        wait_until_1ms();
 
         // Get a cmd
         int cmd_updated = 0;
         if (state.cmd_ready) {
-            if (xQueueReceive(cmd_queue, &cmd, 0)) {
+            if (get_cmd(&cmd)) {
                 cmd_updated = 1;
                 state.cmd_ready = 0;
                 state.current_cmd = cmd.type;
@@ -444,7 +462,7 @@ static void control_loop(void *pvParameters)
                 pid_reset(&pid.tran);
                 pid_reset(&pid.rot);
                 // Send a notification
-                xSemaphoreGive(cmd_semphr);
+                notify_cmd_complete();
                 continue;
             }
         }
@@ -528,7 +546,7 @@ static void control_loop(void *pvParameters)
                     pid_reset(&pid.rot);
                 }
                 // Send a notification
-                xSemaphoreGive(cmd_semphr);
+                notify_cmd_complete();
             }
         }
 
