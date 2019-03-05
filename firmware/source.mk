@@ -133,6 +133,7 @@ AS_INCLUDES =  \
 
 # C includes
 C_INCLUDES =  \
+-I./ \
 -I$(LIB_DIR)/CMSIS/Include \
 -I$(LIB_DIR)/CMSIS/Device/ST/STM32F4xx/Include \
 -I$(STM32_HAL_DIR)/Inc \

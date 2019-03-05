@@ -1,0 +1,574 @@
+#include "main_control.h"
+#include "thread_control_loop.h"
+#include "config_measurements.h"
+#include "motor.h"
+#include "encoder.h"
+#include "pid.h"
+#include "range.h"
+#include "terminal.h"
+
+/*******************************************************************************
+ * Constants definition
+ ******************************************************************************/
+/* Set target PID speed */
+#define TARGET_MOVE_FORWARD_SPEED_TRAN  (10)
+#define TARGET_MOVE_FORWARD_SPEED_ROT   (0)
+
+#define TARGET_PIVOT_SPEED_TRAN         (0)
+#define TARGET_PIVOT_SPEED_ROT          (-30)
+
+#define TARGET_SMOOTH_TURN_SPEED_TRAN   (15)
+#define TARGET_SMOOTH_TURN_SPEED_ROT    (-30)
+
+/* Set PID controller */
+pid_value_t pid_tran_forwarding_value = {
+        .kp = 35,
+        .ki = 5, // 0.01
+        .kd = 10
+};
+
+pid_value_t pid_rot_forwarding_value = {
+            .kp = 3,
+            .ki = 0,
+            .kd = 400
+};
+
+pid_value_t pid_tran_rotating_value = {
+        .kp = 35,
+        .ki = 5, // 0.01
+        .kd = 10
+};
+
+pid_value_t pid_rot_rotating_value = {
+            .kp = 7,
+            .ki = 0.1,
+            .kd = 20
+};
+
+pid_value_t pid_tran_smooth_value = {
+        .kp = 35,
+        .ki = 5, // 0.01
+        .kd = 10
+};
+
+pid_value_t pid_rot_smooth_value = {
+            .kp = 30,
+            .ki = 0,
+            .kd = 20
+};
+
+/*******************************************************************************
+ * Local data structure
+ ******************************************************************************/
+// Target steps
+struct step_data {
+    uint32_t left;
+    uint32_t right;
+};
+
+struct speed_data {
+    int32_t left;
+    int32_t right;
+    int32_t diff;    // left - right
+};
+
+// Wheel state
+enum wheel_direction {
+    WHEEL_DISABLED, WHEEL_FORWARD, WHEEL_BACKWARD
+};
+
+struct wheel_status {
+    enum wheel_direction left;
+    enum wheel_direction right;
+};
+
+/*******************************************************************************
+ * Driver and function declarations
+ ******************************************************************************/
+void do_nothing (struct main_pid *pid);
+void move_from_back_to_start_center (struct main_pid *pid);
+void move_forward_one_cell (struct main_pid *pid);
+void move_forward_half_cell (struct main_pid *pid);
+void pivot_left_90_degree (struct main_pid *pid);
+void pivot_right_90_degree (struct main_pid *pid);
+void turn_left_smooth (struct main_pid *pid);
+void turn_right_smooth (struct main_pid *pid);
+void set_pid_and_go (struct main_pid *pid);
+void reset_pid_and_stop (struct main_pid *pid);
+
+void (*const main_control_driver[])(struct main_pid *pid) = {
+    do_nothing,                     // CMD_NOTHING
+    move_from_back_to_start_center, // CMD_BACK_TO_SART_CENTER
+    move_forward_one_cell,          // CMD_MOVE_FORWARD_ONE_CELL
+    move_forward_half_cell,         // CMD_MOVE_FORWARD_HALF_CELL
+    pivot_left_90_degree,           // CMD_PIVOT_LEFT_90_DEGREE
+    pivot_right_90_degree,          // CMD_PIVOT_RIGHT_90_DEGREE
+    turn_left_smooth,               // CMD_TURN_LEFT_SMOOTH
+    turn_right_smooth,              // CMD_TURN_RIGHT_SMOOTH
+    set_pid_and_go,                 // CMD_LOW_SET_PID_AND_GO
+    reset_pid_and_stop,             // CMD_LOW_RESET_PID_AND_STOP
+};
+
+/*******************************************************************************
+ * Common function definitions
+ ******************************************************************************/
+/* Control loops */
+void loop_move_forward (struct main_pid *pid,
+                        pid_value_t *pid_tran,
+                        pid_value_t *pid_rot,
+                        int32_t target_speed_tran,
+                        int32_t target_speed_rot,
+                        int16_t target_step_left,
+                        int16_t target_step_right);
+void loop_pivot (struct main_pid *pid,
+                 pid_value_t *pid_tran,
+                 pid_value_t *pid_rot,
+                 int32_t target_speed_tran,
+                 int32_t target_speed_rot,
+                 int16_t target_step_left,
+                 int16_t target_step_right);
+void loop_smooth_trun (struct main_pid *pid,
+                       pid_value_t *pid_tran,
+                       pid_value_t *pid_rot,
+                       int32_t target_speed_tran,
+                       int32_t target_speed_rot,
+                       int16_t target_step_left,
+                       int16_t target_step_right);
+
+/* etc. */
+void update_steps_and_speed (struct step_data *total_step,
+                             struct speed_data *speed);
+void update_range (struct range_data *range);
+void stop_motor (struct main_pid *pid);
+int check_escape_condition (struct main_pid *pid,
+                            struct step_data *total_step,
+                            struct step_data *target_step,
+                            struct wheel_status *target_wheel_dir);
+
+/*******************************************************************************
+ * Function definitions
+ ******************************************************************************/
+void do_nothing (struct main_pid *pid)
+{
+    // Do nothing. Literally.
+}
+
+void move_from_back_to_start_center (struct main_pid *pid)
+{
+    loop_move_forward (pid,
+                       &pid_tran_forwarding_value,
+                       &pid_rot_forwarding_value,
+                       TARGET_MOVE_FORWARD_SPEED_TRAN,
+                       TARGET_MOVE_FORWARD_SPEED_ROT,
+                       MEASURE_STEPS_BACK_TO_START_CENTER,
+                       MEASURE_STEPS_BACK_TO_START_CENTER);
+}
+
+void move_forward_one_cell (struct main_pid *pid)
+{
+    loop_move_forward (pid,
+                       &pid_tran_forwarding_value,
+                       &pid_rot_forwarding_value,
+                       TARGET_MOVE_FORWARD_SPEED_TRAN,
+                       TARGET_MOVE_FORWARD_SPEED_ROT,
+                       MEASURE_STEPS_PER_CELL,
+                       MEASURE_STEPS_PER_CELL);
+}
+
+void move_forward_half_cell (struct main_pid *pid)
+{
+    loop_move_forward (pid,
+                       &pid_tran_forwarding_value,
+                       &pid_rot_forwarding_value,
+                       TARGET_MOVE_FORWARD_SPEED_TRAN,
+                       TARGET_MOVE_FORWARD_SPEED_ROT,
+                       MEASURE_STEPS_PER_CELL / 2,
+                       MEASURE_STEPS_PER_CELL / 2);
+}
+
+void pivot_left_90_degree (struct main_pid *pid)
+{
+    loop_pivot (pid,
+                &pid_tran_rotating_value,
+                &pid_rot_rotating_value,
+                TARGET_PIVOT_SPEED_TRAN,
+                TARGET_PIVOT_SPEED_ROT,
+                -MEASURE_STEPS_90DEG_CCW,
+                MEASURE_STEPS_90DEG_CCW);
+}
+
+void pivot_right_90_degree (struct main_pid *pid)
+{
+    loop_pivot (pid,
+                &pid_tran_rotating_value,
+                &pid_rot_rotating_value,
+                TARGET_PIVOT_SPEED_TRAN,
+                -TARGET_PIVOT_SPEED_ROT,
+                MEASURE_STEPS_90DEG_CW,
+                -MEASURE_STEPS_90DEG_CW);
+}
+
+void turn_left_smooth (struct main_pid *pid)
+{
+    loop_smooth_trun (pid,
+                      &pid_tran_smooth_value,
+                      &pid_rot_smooth_value,
+                      TARGET_SMOOTH_TURN_SPEED_TRAN,
+                      TARGET_SMOOTH_TURN_SPEED_ROT,
+                      MEASURE_STEPS_SMOOTH_L_LEFT,
+                      MEASURE_STEPS_SMOOTH_L_RIGHT);
+}
+
+void turn_right_smooth (struct main_pid *pid)
+{
+    loop_smooth_trun (pid,
+                      &pid_tran_smooth_value,
+                      &pid_rot_smooth_value,
+                      TARGET_SMOOTH_TURN_SPEED_TRAN,
+                      -TARGET_SMOOTH_TURN_SPEED_ROT,
+                      MEASURE_STEPS_SMOOTH_R_LEFT,
+                      MEASURE_STEPS_SMOOTH_R_RIGHT);
+}
+
+void set_pid_and_go (struct main_pid *pid)
+{
+    // Not used
+}
+
+void reset_pid_and_stop (struct main_pid *pid)
+{
+    stop_motor(pid);
+}
+
+/*******************************************************************************
+ * Common function definitions (control loop)
+ ******************************************************************************/
+void loop_move_forward (struct main_pid *pid,
+                        pid_value_t *pid_tran,
+                        pid_value_t *pid_rot,
+                        int32_t target_speed_tran,
+                        int32_t target_speed_rot,
+                        int16_t target_step_left,
+                        int16_t target_step_right)
+{
+    struct range_data *range = &g_range;    // Range finder value
+    struct speed_data speed;    // Speed value
+    // TODO: Prevent underflow/overflow.
+    struct step_data total_step = { // Accumulated step (distance) values
+        .left = MEASURE_ENCODER_DEFAULT,
+        .right = MEASURE_ENCODER_DEFAULT,
+    };
+    struct step_data target_step;   // Target step (distance) values
+    struct wheel_status target_wheel_dir; // Target wheel direction
+
+    // Load PID profiles
+    pid_set_pid(&pid->tran, pid_tran);
+    pid_set_pid(&pid->rot, pid_rot);
+
+    // Set target speed values
+    pid_input_setpoint(&pid->tran, target_speed_tran);
+    pid_input_setpoint(&pid->rot, target_speed_rot);
+
+    // Set target steps (or travel distance)
+    target_step.left = MEASURE_ENCODER_DEFAULT + target_step_left;
+    target_step.right = MEASURE_ENCODER_DEFAULT + target_step_right;
+
+    // Set wheel directions
+    target_wheel_dir.left = WHEEL_FORWARD;
+    target_wheel_dir.right = WHEEL_FORWARD;
+
+    while (1) {
+        thread_control_wait_until_1ms();
+        update_steps_and_speed(&total_step, &speed);
+        update_range(range);
+
+        // if it is too close stop
+        if ((range->front > MEASURE_RANGE_F_NEAR_DETECT) ||
+            (range->front_right > MEASURE_RANGE_F_NEAR_DETECT))
+        {
+            stop_motor(pid);
+            break;
+        }
+
+        /* compute PID */
+        // calculate errorT
+        int32_t feedback_T = (speed.left + speed.right) / 2;
+        // calculate errorR
+        int32_t feedback_R;
+        if((range->left > (MEASURE_RANGE_L_MIN_DETECT))
+                            && (range->right > MEASURE_RANGE_R_MIN_DETECT) ) {
+            // If both range are within wall detecting distance,
+            // Use range sensor to get rotational error
+            feedback_R = (range->right - range->left - MEASURE_RANGE_R_OFFSET) / 10;
+        } else if (range->left > (MEASURE_RANGE_L_MIN_DETECT + 50)) {
+            // If only left side is within range
+            // use the middle value of the right range
+            feedback_R = (MEASURE_RANGE_R_M_DETECT - range->left) / 10;
+        } else if (range->right > (MEASURE_RANGE_R_MIN_DETECT + 50)) {
+            // If only right side is within range
+            // use the middle value of the left range
+            feedback_R = (range->right - MEASURE_RANGE_L_M_DETECT) / 10;
+        } else {
+            // in open space, use rotary encoder
+            feedback_R = speed.diff;
+        }
+        // Calculate PID outputs
+        int32_t outputT = pid_compute(&pid->tran, feedback_T);
+        int32_t outputR = pid_compute(&pid->rot, feedback_R);
+
+        // Apply to the motor
+        motor_speed_permyriad(CH_LEFT, outputT + outputR);
+        motor_speed_permyriad(CH_RIGHT, outputT - outputR);
+        motor_start(CH_BOTH);
+
+        // Print the result in json format
+        // terminal_puts("{");
+        // terminal_printf("\"L\":%d,", range->left);
+        // terminal_printf("\"R\":%d,", range->right);
+        // terminal_printf("\"F\":%d", range->front);
+        // // terminal_printf("\"LS\":%d,", speed.left);
+        // // terminal_printf("\"RS\":%d,", speed.right);
+        // // terminal_printf("\"LO\":%d,", outputT + outputR);
+        // // terminal_printf("\"RO\":%d,", outputT - outputR);
+        // // terminal_printf("\"TTS\":%d,", pid->tran.setpoint);
+        // // terminal_printf("\"TRS\":%d", pid->rot.setpoint);
+        // // terminal_printf("\"T\":%d", tick_us() - time);
+        // terminal_puts("},\n");
+
+        if (check_escape_condition(pid, &total_step, &target_step,
+                                   &target_wheel_dir)) {
+            break;
+        }
+    }
+}
+
+void loop_pivot (struct main_pid *pid,
+                 pid_value_t *pid_tran,
+                 pid_value_t *pid_rot,
+                 int32_t target_speed_tran,
+                 int32_t target_speed_rot,
+                 int16_t target_step_left,
+                 int16_t target_step_right)
+{
+    struct speed_data speed;    // Speed value
+    // TODO: Prevent underflow/overflow.
+    struct step_data total_step = { // Accumulated step (distance) values
+        .left = MEASURE_ENCODER_DEFAULT,
+        .right = MEASURE_ENCODER_DEFAULT,
+    };
+    struct step_data target_step;   // Target step (distance) values
+    struct wheel_status target_wheel_dir; // Target wheel direction
+
+    // Load PID profiles
+    pid_set_pid(&pid->tran, pid_tran);
+    pid_set_pid(&pid->rot, pid_rot);
+
+    // Reset PID, or reset accumulated (integrated) speed error
+    pid_reset(&pid->tran);
+    pid_reset(&pid->rot);
+
+    // Set target speed values
+    pid_input_setpoint(&pid->tran, target_speed_tran);
+    pid_input_setpoint(&pid->rot, target_speed_rot);
+
+    // Set target steps (or travel distance)
+    target_step.left = MEASURE_ENCODER_DEFAULT + target_step_left;
+    target_step.right = MEASURE_ENCODER_DEFAULT + target_step_right;
+
+    // Set wheel directions
+    target_wheel_dir.left = (target_step_left > 0) ? WHEEL_FORWARD : WHEEL_BACKWARD;
+    target_wheel_dir.right = (target_step_right > 0) ? WHEEL_FORWARD : WHEEL_BACKWARD;
+
+    while (1) {
+        thread_control_wait_until_1ms();
+        update_steps_and_speed(&total_step, &speed);
+
+        /* Calculate PID */
+        // calculate errorT
+        int32_t feedback_T = (speed.left + speed.right) / 2;
+        // calculate errorR
+        int32_t feedback_R = speed.diff;
+        // Calculate PID outputs
+        int32_t outputT = pid_compute(&pid->tran, feedback_T);
+        int32_t outputR = pid_compute(&pid->rot, feedback_R);
+
+        // Apply to the motor
+        motor_speed_permyriad(CH_LEFT, outputT + outputR);
+        motor_speed_permyriad(CH_RIGHT, outputT - outputR);
+        motor_start(CH_BOTH);
+
+        // Print the result in json format
+        // terminal_puts("{");
+        // terminal_printf("\"L\":%d,", range->left);
+        // terminal_printf("\"R\":%d,", range->right);
+        // terminal_printf("\"F\":%d", range->front);
+        // // terminal_printf("\"LS\":%d,", speed.left);
+        // // terminal_printf("\"RS\":%d,", speed.right);
+        // // terminal_printf("\"LO\":%d,", outputT + outputR);
+        // // terminal_printf("\"RO\":%d,", outputT - outputR);
+        // // terminal_printf("\"TTS\":%d,", pid.tran.setpoint);
+        // // terminal_printf("\"TRS\":%d", pid.rot.setpoint);
+        // // terminal_printf("\"T\":%d", tick_us() - time);
+        // terminal_puts("},\n");
+
+        if (check_escape_condition(pid, &total_step, &target_step,
+                                    &target_wheel_dir)) {
+            stop_motor(pid);
+            break;
+        }
+    }
+}
+
+void loop_smooth_trun (struct main_pid *pid,
+                       pid_value_t *pid_tran,
+                       pid_value_t *pid_rot,
+                       int32_t target_speed_tran,
+                       int32_t target_speed_rot,
+                       int16_t target_step_left,
+                       int16_t target_step_right)
+{
+    struct speed_data speed;    // Speed value
+    // TODO: Prevent underflow/overflow.
+    struct step_data total_step = { // Accumulated step (distance) values
+        .left = MEASURE_ENCODER_DEFAULT,
+        .right = MEASURE_ENCODER_DEFAULT,
+    };
+    struct step_data target_step;   // Target step (distance) values
+    struct wheel_status target_wheel_dir; // Target wheel direction
+
+    // Load PID profiles
+    pid_set_pid(&pid->tran, pid_tran);
+    pid_set_pid(&pid->rot, pid_rot);
+
+    // Reset PID, or reset accumulated (integrated) speed error
+    pid_reset(&pid->tran);
+    pid_reset(&pid->rot);
+
+    // Set target speed values
+    pid_input_setpoint(&pid->tran, target_speed_tran);
+    pid_input_setpoint(&pid->rot, target_speed_rot);
+
+    // Set target steps (or travel distance)
+    target_step.left = MEASURE_ENCODER_DEFAULT + target_step_left;
+    target_step.right = MEASURE_ENCODER_DEFAULT + target_step_right;
+
+    // Set wheel directions
+    target_wheel_dir.left = WHEEL_FORWARD;
+    target_wheel_dir.right = WHEEL_FORWARD;
+
+    while (1) {
+        thread_control_wait_until_1ms();
+        update_steps_and_speed(&total_step, &speed);
+
+        /* Calculate PID */
+        // calculate errorT
+        int32_t feedback_T = (speed.left + speed.right) / 2;
+        // calculate errorR
+        int32_t feedback_R = speed.diff;
+        // Calculate PID outputs
+        int32_t outputT = pid_compute(&pid->tran, feedback_T);
+        int32_t outputR = pid_compute(&pid->rot, feedback_R);
+
+        // Apply to the motor
+        motor_speed_permyriad(CH_LEFT, outputT + outputR);
+        motor_speed_permyriad(CH_RIGHT, outputT - outputR);
+        motor_start(CH_BOTH);
+
+        // Print the result in json format
+        // terminal_puts("{");
+        // terminal_printf("\"L\":%d,", range->left);
+        // terminal_printf("\"R\":%d,", range->right);
+        // terminal_printf("\"F\":%d", range->front);
+        // // terminal_printf("\"LS\":%d,", speed.left);
+        // // terminal_printf("\"RS\":%d,", speed.right);
+        // // terminal_printf("\"LO\":%d,", outputT + outputR);
+        // // terminal_printf("\"RO\":%d,", outputT - outputR);
+        // // terminal_printf("\"TTS\":%d,", pid.tran.setpoint);
+        // // terminal_printf("\"TRS\":%d", pid.rot.setpoint);
+        // // terminal_printf("\"T\":%d", tick_us() - time);
+        // terminal_puts("},\n");
+
+        if (check_escape_condition(pid, &total_step, &target_step,
+                                    &target_wheel_dir)) {
+            break;
+        }
+    }
+}
+
+/*******************************************************************************
+ * Common function definitions (etc.)
+ ******************************************************************************/
+void update_steps_and_speed (struct step_data *total_step, struct speed_data *speed)
+{
+    struct encoder_data step;
+    // Update steps from rotary encoders
+    encoder_get(&step, ENCODER_CH_BOTH);
+    // update speed
+    speed->left = (step.left - MEASURE_ENCODER_DEFAULT);// * CONFIG_LEN_PER_CNT;
+    speed->right = (step.right - MEASURE_ENCODER_DEFAULT);// * CONFIG_LEN_PER_CNT;
+    speed->diff = speed->left - speed->right;
+    // Accumulate steps
+    total_step->left += speed->left;
+    total_step->right += speed->right;
+    // Then reset
+    encoder_reset(ENCODER_CH_BOTH);
+}
+
+void update_range (struct range_data *range)
+{
+    range_get(range, RANGE_CH_ALL);
+
+    if (range->left > MEASURE_RANGE_L_MAX_DETECT) {
+        range->left = MEASURE_RANGE_L_MAX_DETECT;
+    }
+
+    if (range->right > MEASURE_RANGE_R_MAX_DETECT) {
+        range->right = MEASURE_RANGE_R_MAX_DETECT;
+    }
+}
+
+void stop_motor (struct main_pid *pid)
+{
+    motor_speed_percent(CH_BOTH, 0);
+    motor_start(CH_BOTH);
+    pid_reset(&pid->tran);
+    pid_reset(&pid->rot);
+}
+
+int check_escape_condition (struct main_pid *pid,
+                            struct step_data *total_step,
+                            struct step_data *target_step,
+                            struct wheel_status *target_wheel_dir)
+{
+    /* Escape condition */
+    // update both wheels
+    // left
+    if (target_wheel_dir->left == WHEEL_FORWARD) {
+        if (total_step->left > target_step->left) {
+            target_wheel_dir->left = WHEEL_DISABLED;
+        }
+    } else if (target_wheel_dir->left == WHEEL_BACKWARD) {
+        if (total_step->left < target_step->left) {
+            target_wheel_dir->left = WHEEL_DISABLED;
+        }
+    }
+
+    // right
+    if (target_wheel_dir->right == WHEEL_FORWARD) {
+        if (total_step->right > target_step->right) {
+            target_wheel_dir->right = WHEEL_DISABLED;
+        }
+    } else if (target_wheel_dir->right == WHEEL_BACKWARD) {
+        if (total_step->right < target_step->right) {
+            target_wheel_dir->right = WHEEL_DISABLED;
+        }
+    }
+
+    // if both wheels are completed then a command is complete
+    if ((target_wheel_dir->left == WHEEL_DISABLED) &&
+        (target_wheel_dir->right == WHEEL_DISABLED)) {
+        // Escape loop
+        return 1;
+    }
+    return 0;
+}
