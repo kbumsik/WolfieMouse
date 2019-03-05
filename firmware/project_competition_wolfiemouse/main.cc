@@ -99,9 +99,15 @@ void task_3(void)
  */
 void task_4(void)
 {
-    /* Not implemented */
     hcms_290x_matrix("Non4");
     delay_ms(2000);
+
+    // Move
+    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
+    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
+    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
+    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
+    cmd_low_pid_reset_and_stop(NULL);
 }
 
 /**
@@ -109,9 +115,18 @@ void task_4(void)
  */
 void task_5(void)
 {
-    /* Not implemented */
     hcms_290x_matrix("Non5");
     delay_ms(2000);
+
+    // Pivot
+    cmd_polling(CMD_TURN_LEFT_90_DEGREE);
+    cmd_low_pid_reset_and_stop(NULL);
+
+    // Pivot 180 degree
+    delay_ms(1000);
+    cmd_polling(CMD_TURN_LEFT_90_DEGREE);
+    cmd_polling(CMD_TURN_LEFT_90_DEGREE);
+    cmd_low_pid_reset_and_stop(NULL);
 }
 
 /**
@@ -119,9 +134,18 @@ void task_5(void)
  */
 void task_6(void)
 {
-    /* Not implemented */
     hcms_290x_matrix("Non6");
     delay_ms(2000);
+
+    // Pivot
+    cmd_polling(CMD_TURN_RIGHT_90_DEGREE);
+    cmd_low_pid_reset_and_stop(NULL);
+
+    // Pivot 180 degree
+    delay_ms(1000);
+    cmd_polling(CMD_TURN_RIGHT_90_DEGREE);
+    cmd_polling(CMD_TURN_RIGHT_90_DEGREE);
+    cmd_low_pid_reset_and_stop(NULL);
 }
 
 /*******************************************************************************
