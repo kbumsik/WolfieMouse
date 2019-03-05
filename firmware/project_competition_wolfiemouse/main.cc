@@ -9,7 +9,6 @@
 #include "queue.h"
 #include "semphr.h"
 
-#include "system_control.h"
 #include "config_measurements.h"
 
 // KB library
@@ -22,6 +21,7 @@
 #include "system_config.h"
 #include "thread_control_loop.h"
 #include "cmd.h"
+#include "range.h"
 
 // Maze solver
 #include "MouseController.hpp"
@@ -168,7 +168,6 @@ void task_6(void)
  ******************************************************************************/
 static void _maze_solver_run(void (*wait_func)(MouseController *mouse))
 {
-    char tmp;
     // Maze solver state
     enum {
         goGoal  = 0,
@@ -184,6 +183,8 @@ static void _maze_solver_run(void (*wait_func)(MouseController *mouse))
 
     /* First just print maze */
     //mouse.printMaze();
+
+    range_get(&g_range, RANGE_CH_ALL); // To prevent the maze solver get wrong values
 
     while (true) {
         //Finite State Machine
@@ -316,15 +317,10 @@ int main(void)
     button_init();
 
     // Initialize all configured peripherals and then start control loop
-    system_disable_range_finder();
-    system_stop_driving();
     thread_control_loop_init();
 
     // Initialize command system
     cmd_init();
-
-    system_disable_range_finder();
-    system_stop_driving();
     cmd_low_pid_reset_and_stop(NULL);
 
     /* Task creation and definition */

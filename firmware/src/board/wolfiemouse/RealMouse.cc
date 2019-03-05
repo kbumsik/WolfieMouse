@@ -6,7 +6,6 @@
  */
 
 #include "RealMouse.hpp"
-#include "system_control.h"
 #include "config_measurements.h"
 
 #include "range.h"
@@ -20,8 +19,8 @@
 /*******************************************************************************
  * Global Variables
  ******************************************************************************/
+extern struct range_data g_range;
 
-extern volatile struct range_data range;
 /*******************************************************************************
  * Private functions
  ******************************************************************************/
@@ -44,16 +43,16 @@ Wall RealMouse::examineWall(int row, int col, Direction wallDir, PositionControl
 {
     gpio_set(LED3_PORT, LED3_PIN, GPIO_PIN_SET);
     Direction mouseDir = mousePos.getCurrentDir();
-    
+
     Wall ret = wallError;
     if (wallDir == mouseDir) {
         // Use front sensor
-        ret = (range.front > (MEASURE_RANGE_F_NEAR_DETECT - 100 ))?wall:empty;
+        ret = (g_range.front > (MEASURE_RANGE_F_NEAR_DETECT - 100 ))?wall:empty;
     } else if (wallDir == (++mouseDir)) {
         // Use left sensor
-        ret = (range.left > MEASURE_RANGE_L_WALL_DETECT)?wall:empty;
+        ret = (g_range.left > MEASURE_RANGE_L_WALL_DETECT)?wall:empty;
     } else if ((++wallDir) == (--mouseDir)) {
-        ret = (range.right > MEASURE_RANGE_R_WALL_DETECT)?wall:empty;
+        ret = (g_range.right > MEASURE_RANGE_R_WALL_DETECT)?wall:empty;
     }
     gpio_set(LED3_PORT, LED3_PIN, GPIO_PIN_RESET);
     return ret;
