@@ -43,7 +43,7 @@ void cmd_low_pid_and_go(struct cmd_pid *cmd, struct cmd_events *events)
     // int32_t step_left;  //< if it is zero, not target step
     // int32_t step_right; //< if it is zero, not target step
     struct cmd_queue_element commend = {
-        .type = CMD_LOW_PID_AND_GO,
+        .type = CMD_LOW_SET_PID_AND_GO,
         .pid = *cmd,
     };
     if (xQueueSend(cmd_queue, &commend, portMAX_DELAY) != pdPASS) {
@@ -67,7 +67,7 @@ void cmd_low_pid_reset_and_stop(struct cmd_events *events)
     }
 
     struct cmd_queue_element commend = {
-        .type = CMD_LOW_PID_RESET_AND_STOP,
+        .type = CMD_LOW_RESET_PID_AND_STOP,
     };
     if (xQueueSend(cmd_queue, &commend, portMAX_DELAY) != pdPASS) {
         // failed to send a commend

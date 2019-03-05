@@ -265,7 +265,7 @@ static void control_loop(void *pvParameters)
                 // decode and apply command
                 switch(cmd.type) {
                     /* Low Level commands */
-                    case CMD_LOW_PID_AND_GO:
+                    case CMD_LOW_SET_PID_AND_GO:
                         pid_input_setpoint(&pid.tran, cmd.pid.setpoint_trans);
                         pid_input_setpoint(&pid.rot, cmd.pid.setpoint_rot);
                         system_enable_range_finder();
@@ -273,7 +273,7 @@ static void control_loop(void *pvParameters)
                         state.cmd_ready = 1;
                         state.current_cmd = CMD_NOTHING;
                     break;
-                    case CMD_LOW_PID_RESET_AND_STOP:
+                    case CMD_LOW_RESET_PID_AND_STOP:
                         system_stop_driving();
                         system_disable_range_finder();
                         pid_reset(&pid.tran);
@@ -282,7 +282,7 @@ static void control_loop(void *pvParameters)
                         state.current_cmd = CMD_NOTHING;
                     break;
                     /* High level commands */
-                    case CMD_BACK_TO_SART_CENTER:
+                    case CMD_MOVE_FROM_BACK_TO_SART_CENTER:
                         pid_set_pid(&pid.tran, &pid_tran_forwarding_value);
                         pid_set_pid(&pid.rot, &pid_rot_forwarding_value);
 
@@ -336,7 +336,7 @@ static void control_loop(void *pvParameters)
                         system_enable_range_finder();
                         system_start_driving();
                     break;
-                    case CMD_TURN_LEFT_90_DEGREE:
+                    case CMD_PIVOT_LEFT_90_DEGREE:
                         pid_set_pid(&pid.tran, &pid_tran_rotating_value);
                         pid_set_pid(&pid.rot, &pid_rot_rotating_value);
                         pid_reset(&pid.tran);
@@ -356,7 +356,7 @@ static void control_loop(void *pvParameters)
                         system_disable_range_finder();  // MUST BE OFF
                         system_start_driving();
                     break;
-                    case CMD_TURN_RIGHT_90_DEGREE:
+                    case CMD_PIVOT_RIGHT_90_DEGREE:
                         pid_set_pid(&pid.tran, &pid_tran_rotating_value);
                         pid_set_pid(&pid.rot, &pid_rot_rotating_value);
                         pid_reset(&pid.tran);
@@ -456,7 +456,7 @@ static void control_loop(void *pvParameters)
         if ((range.front > MEASURE_RANGE_F_NEAR_DETECT) ||
         (range.front_right > MEASURE_RANGE_F_NEAR_DETECT))
         {
-            if ((cmd.type != CMD_TURN_LEFT_90_DEGREE) && (cmd.type != CMD_TURN_RIGHT_90_DEGREE)){
+            if ((cmd.type != CMD_PIVOT_LEFT_90_DEGREE) && (cmd.type != CMD_PIVOT_RIGHT_90_DEGREE)){
                 system_start_driving();
                 state.cmd_ready = 1;
                 pid_reset(&pid.tran);
@@ -541,7 +541,7 @@ static void control_loop(void *pvParameters)
             if ((state.left_wheel == WHEEL_DISABLED) && (state.right_wheel == WHEEL_DISABLED)) {
                 state.cmd_ready = 1;
                 // state.current_cmd = CMD_NOTHING;
-                if ((state.current_cmd == CMD_TURN_RIGHT_90_DEGREE) || (state.current_cmd == CMD_TURN_LEFT_90_DEGREE)) {
+                if ((state.current_cmd == CMD_PIVOT_RIGHT_90_DEGREE) || (state.current_cmd == CMD_PIVOT_LEFT_90_DEGREE)) {
                     pid_reset(&pid.tran);
                     pid_reset(&pid.rot);
                 }

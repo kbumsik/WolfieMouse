@@ -134,13 +134,13 @@ void task_5(void)
     delay_ms(2000);
 
     // Pivot
-    cmd_polling(CMD_TURN_LEFT_90_DEGREE);
+    cmd_polling(CMD_PIVOT_LEFT_90_DEGREE);
     cmd_low_pid_reset_and_stop(NULL);
 
     // Pivot 180 degree
     delay_ms(1000);
-    cmd_polling(CMD_TURN_LEFT_90_DEGREE);
-    cmd_polling(CMD_TURN_LEFT_90_DEGREE);
+    cmd_polling(CMD_PIVOT_LEFT_90_DEGREE);
+    cmd_polling(CMD_PIVOT_LEFT_90_DEGREE);
     cmd_low_pid_reset_and_stop(NULL);
 }
 
@@ -153,13 +153,13 @@ void task_6(void)
     delay_ms(2000);
 
     // Pivot
-    cmd_polling(CMD_TURN_RIGHT_90_DEGREE);
+    cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE);
     cmd_low_pid_reset_and_stop(NULL);
 
     // Pivot 180 degree
     delay_ms(1000);
-    cmd_polling(CMD_TURN_RIGHT_90_DEGREE);
-    cmd_polling(CMD_TURN_RIGHT_90_DEGREE);
+    cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE);
+    cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE);
     cmd_low_pid_reset_and_stop(NULL);
 }
 
