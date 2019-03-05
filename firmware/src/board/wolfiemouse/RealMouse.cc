@@ -77,19 +77,19 @@ void RealMouse::rotateTo(Direction destDir, PositionController &mousePos)
         // The direction is the same. Nothing
     } else if (destDir == (++mouseDir)) {
         // Turn left
-        cmd_polling(CMD_TURN_LEFT_90_DEGREE);
+        cmd_polling(CMD_PIVOT_LEFT_90_DEGREE);
         cmd_low_pid_reset_and_stop(NULL);
         delay_ms(500);
     } else if ((++destDir) == (--mouseDir)) {
         // Turn right
-        cmd_polling(CMD_TURN_RIGHT_90_DEGREE);
+        cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE);
         cmd_low_pid_reset_and_stop(NULL);
         delay_ms(500);
     } else {
         // turn 180 degree
         // Turn left
-        cmd_polling(CMD_TURN_LEFT_90_DEGREE);
-        cmd_polling(CMD_TURN_LEFT_90_DEGREE);
+        cmd_polling(CMD_PIVOT_LEFT_90_DEGREE);
+        cmd_polling(CMD_PIVOT_LEFT_90_DEGREE);
         cmd_low_pid_reset_and_stop(NULL);
         delay_ms(500);
     }

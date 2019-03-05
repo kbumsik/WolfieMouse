@@ -16,17 +16,18 @@ extern "C" {
 #endif
 
 enum cmd_type {
-    CMD_NOTHING,
-    // low commands
-    CMD_LOW_PID_AND_GO, CMD_LOW_PID_RESET_AND_STOP,
+    CMD_NOTHING                 = 0,
     // high level commands
-    CMD_BACK_TO_SART_CENTER,    //< move forward from the back of the cell to the center of the cell
-    CMD_MOVE_FORWARD_ONE_CELL,  //< move forward 1 cell
-    CMD_MOVE_FORWARD_HALF_CELL, //< move forward 1/2 cell
-    CMD_TURN_LEFT_90_DEGREE,    //< turn left in-place
-    CMD_TURN_RIGHT_90_DEGREE,   //< turn right in-place
-    CMD_TURN_LEFT_SMOOTH,       //< turn left smooth
-    CMD_TURN_RIGHT_SMOOTH,      //< turn right smooth
+    CMD_MOVE_FROM_BACK_TO_SART_CENTER     = 1,    //< move forward from the back of the cell to the center of the cell
+    CMD_MOVE_FORWARD_ONE_CELL   = 2,    //< move forward 1 cell
+    CMD_MOVE_FORWARD_HALF_CELL  = 3,    //< move forward 1/2 cell
+    CMD_PIVOT_LEFT_90_DEGREE    = 4,    //< turn left in-place
+    CMD_PIVOT_RIGHT_90_DEGREE   = 5,    //< turn right in-place
+    CMD_TURN_LEFT_SMOOTH        = 6,    //< turn left smooth
+    CMD_TURN_RIGHT_SMOOTH       = 7,    //< turn right smooth
+    // low commands
+    CMD_LOW_SET_PID_AND_GO          = 8,    //< Set PID and start controlling the motors
+    CMD_LOW_RESET_PID_AND_STOP  = 9,    //< Reset current accumulated I-value of PID and then stop the motors
 };
 
 struct cmd_pid {
