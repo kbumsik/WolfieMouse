@@ -47,6 +47,9 @@ static void _thread_main(void *pvParameters);
 /*******************************************************************************
  * FSM action function
  ******************************************************************************/
+/**
+ * @brief Competition mode. This task is used for actual competition.
+ */
 void task_1(void)
 {
     /* Give time to get ready */
@@ -69,6 +72,10 @@ void task_1(void)
     _maze_solver_run();
 }
 
+/**
+ * @brief Remote algorithm debugging mode. You can control the mouse
+ *        step-by-step using serial console.
+ */
 void task_2(void)
 {
     /* Not implemented */
@@ -76,6 +83,10 @@ void task_2(void)
     delay_ms(2000);
 }
 
+/**
+ * @brief Use front sensors to adjust micromouse.
+ *        See https://www.youtube.com/watch?v=6PKUbhkdqWk
+ */
 void task_3(void)
 {
     /* Not implemented */
@@ -83,6 +94,9 @@ void task_3(void)
     delay_ms(2000);
 }
 
+/**
+ * @brief Forward movement debugging mode. Mouse will move forward for 4 cells.
+ */
 void task_4(void)
 {
     /* Not implemented */
@@ -90,6 +104,9 @@ void task_4(void)
     delay_ms(2000);
 }
 
+/**
+ * @brief Pivot-left debugging mode. Mouse will pivot left.
+ */
 void task_5(void)
 {
     /* Not implemented */
@@ -97,6 +114,9 @@ void task_5(void)
     delay_ms(2000);
 }
 
+/**
+ * @brief Pivot-right debugging mode. Mouse will pivot left.
+ */
 void task_6(void)
 {
     /* Not implemented */
