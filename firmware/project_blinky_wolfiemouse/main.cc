@@ -200,10 +200,10 @@ void task_blinky(void *pvParameters)
     
     //  delay_ms(1000);
 
-    // cmd_polling(CMD_F);
-    // cmd_polling(CMD_F);
-    // cmd_polling(CMD_F);
-    //cmd_polling(CMD_F);
+    // cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
+    // cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
+    // cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
+    //cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
     // cmd_low_pid_reset_and_stop(NULL);
     /* Motor test running done */
 

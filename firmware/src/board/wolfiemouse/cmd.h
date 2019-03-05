@@ -20,13 +20,13 @@ enum cmd_type {
     // low commands
     CMD_LOW_PID_AND_GO, CMD_LOW_PID_RESET_AND_STOP,
     // high level commands
-    CMD_BACK_TO_SART_CENTER, //< move forward from the back of the cell to the center of the cell
-    CMD_F,      //< move forward 1 cell
-    CMD_H_F,    //< move forward 1/2 cell
-    CMD_L,      //< turn left in-place
-    CMD_R,      //< turn right in-place
-    CMD_S_L,    //< turn left smooth
-    CMD_S_R,    //< turn right smooth
+    CMD_BACK_TO_SART_CENTER,    //< move forward from the back of the cell to the center of the cell
+    CMD_MOVE_FORWARD_ONE_CELL,  //< move forward 1 cell
+    CMD_MOVE_FORWARD_HALF_CELL, //< move forward 1/2 cell
+    CMD_TURN_LEFT_90_DEGREE,    //< turn left in-place
+    CMD_TURN_RIGHT_90_DEGREE,   //< turn right in-place
+    CMD_TURN_LEFT_SMOOTH,       //< turn left smooth
+    CMD_TURN_RIGHT_SMOOTH,      //< turn right smooth
 };
 
 struct cmd_pid {
