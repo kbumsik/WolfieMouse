@@ -19,7 +19,7 @@
 
 // Micromouse system
 #include "system_control.h"
-#include "thread_control_loop.h"
+#include "control_loop_thread.h"
 #include "cmd.h"
 
 // Algorithm
@@ -60,7 +60,7 @@ int main(void)
     system_init();
 
     // Initialize all configured peripherals and then start control loop
-    thread_control_loop_init();
+    control_loop_thread_init();
 
     // Initialize command system
     cmd_init();
@@ -85,7 +85,7 @@ int main(void)
             "Blinky",               /* Text name for the task. This is to facilitate debugging only. It is not used in the scheduler */
             configMINIMAL_STACK_SIZE, /* Stack depth in words */
             NULL,                   /* Pointer to a task parameters */
-            0,   /* The task priority */
+            0,                      /* The task priority */
             &task_blinky_handler);  /* Pointer of its task handler, if you don't want to use, you can leave it NULL */
 
     if (result != pdPASS) {
@@ -197,7 +197,7 @@ void task_blinky(void *pvParameters)
     //     // .step_right = 0
     // };
     // cmd_low_pid_and_go(&setpoints, NULL);
-    
+
     //  delay_ms(1000);
 
     // cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
@@ -208,7 +208,7 @@ void task_blinky(void *pvParameters)
     /* Motor test running done */
 
     xLastWakeTime = xTaskGetTickCount();
-    
+
     while (1) {
         gpio_toggle(LED1_PORT, LED1_PIN);
         gpio_toggle(LED2_PORT, LED2_PIN);
@@ -235,7 +235,7 @@ static void wait_for_button(MouseController *mouse)
     mouse->printMaze();
     printf("please press a button\n");
     fflush(stdout);
-    
+
     // Wait for the button pressed.
     xSemaphoreTake(b1_semphr, portMAX_DELAY);
 

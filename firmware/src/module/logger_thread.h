@@ -1,7 +1,7 @@
 #ifndef MAIN_LOGGER_H_
 #define MAIN_LOGGER_H_
 
-#include "main_control.h"
+#include "mouse_data.h"
 #include "range.h"
 
 #ifdef __cplusplus
@@ -11,7 +11,7 @@ extern "C" {
 /**
  * @brief Initialize logger thread
  */
-void thread_logger_loop_init(void);
+void logger_thread_init(void);
 
 /**
  * @brief Log micromouse data
@@ -26,10 +26,10 @@ void thread_logger_loop_init(void);
  *                  the writer being busy. Failed call is not a critical error.
  */
 int logger_log (
-    struct main_pid *pid,
+    struct mouse_data_pid *pid,
     struct range_data *range,
-    struct step_data *step,
-    struct speed_data *speed,
+    struct mouse_data_step *step,
+    struct mouse_data_speed *speed,
     int32_t outputT,
     int32_t outputR);
 

@@ -85,7 +85,8 @@ PositionController.cc \
 
 # .c files used in /firmware/src/module
 MODULE_FILES = \
-cmd_thread.c \
+logger_thread.c \
+cmd.c \
 terminal.c \
 hcms_290x_display.c \
 # terminal_test.c \

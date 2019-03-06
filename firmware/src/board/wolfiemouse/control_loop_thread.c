@@ -24,7 +24,7 @@
 #include "queue.h"
 #include "semphr.h"
 
-#include "main_control.h"
+#include "control_loop_thread_driver.h"
 
 /*******************************************************************************
  * Global variable
@@ -44,7 +44,7 @@ static SemaphoreHandle_t cmd_semphr = NULL;
 /*******************************************************************************
  * Function definition
  ******************************************************************************/
-void thread_control_loop_init(void)
+void control_loop_thread_init(void)
 {
     gpio_init_t GPIO_InitStruct;
 
@@ -123,7 +123,7 @@ static void control_loop(void *pvParameters)
     static struct cmd_queue_element cmd;
 
     // PID handler
-    static struct main_pid pid;
+    static struct mouse_data_pid pid;
 
     range_get(&g_range, RANGE_CH_ALL); // To prevent the maze solver get wrong values
 
@@ -131,7 +131,7 @@ static void control_loop(void *pvParameters)
         // Wait for a command from the maze solver
         xQueueReceive(cmd_queue, &cmd, portMAX_DELAY);
         // Invoke the corresponding control function
-        main_control_driver[cmd.type](&pid);
+        control_loop_driver[cmd.type](&pid);
         // Notify the solver
         range_get(&g_range, RANGE_CH_ALL); // To prevent the maze solver get wrong values
         xSemaphoreGive(cmd_semphr);
@@ -141,17 +141,17 @@ static void control_loop(void *pvParameters)
     vTaskDelete(NULL);
 }
 
-void thread_control_wait_until_1ms(void)
+void control_loop_thread_wait_until_1ms(void)
 {
     xSemaphoreTake(semphr_from_isr, portMAX_DELAY);
 }
 
-QueueHandle_t thread_control_loop_cmd_queue(void)
+QueueHandle_t control_loop_thread_cmd_queue(void)
 {
     return cmd_queue;
 }
 
-SemaphoreHandle_t thread_control_loop_cmd_semphr(void)
+SemaphoreHandle_t control_loop_thread_get_cmd_semphr(void)
 {
     return cmd_semphr;
 }

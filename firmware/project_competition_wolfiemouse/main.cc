@@ -1,6 +1,6 @@
 // In the same folder
 #include "main_fsm_table.hpp"
-#include "logger.h"
+#include "logger_thread.h"
 #include "button.hpp"
 
 // FreeRTOS
@@ -20,7 +20,7 @@
 #include "terminal.h"
 #include "encoder.h"
 #include "system_config.h"
-#include "thread_control_loop.h"
+#include "control_loop_thread.h"
 #include "cmd.h"
 #include "range.h"
 
@@ -318,10 +318,10 @@ int main(void)
     button_init();
 
     // Initialize all configured peripherals and then start control loop
-    thread_control_loop_init();
+    control_loop_thread_init();
 
     // Init logger thread
-    thread_logger_loop_init();
+    logger_thread_init();
 
     // Initialize command system
     cmd_init();
