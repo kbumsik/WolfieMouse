@@ -1,4 +1,4 @@
-#include "logger.h"
+#include "logger_thread.h"
 
 #include "range.h"
 #include "terminal.h"
@@ -16,10 +16,10 @@
  * Data structure definition
  ******************************************************************************/
 struct data {
-    struct main_pid pid;        //< PID setpoint data
+    struct mouse_data_pid pid;        //< PID setpoint data
     struct range_data range;    //< Range data
-    struct step_data step;      //< Travel distance data
-    struct speed_data speed;    //< Wheel speed data
+    struct mouse_data_step step;      //< Travel distance data
+    struct mouse_data_speed speed;    //< Wheel speed data
     int32_t outputT;            //< Transitional speed
     int32_t outputR;            //< Rotational speed
     uint32_t current_time;      //< Log time
@@ -36,7 +36,7 @@ static SemaphoreHandle_t notify_semphr = NULL;
 /*******************************************************************************
  * Function definition
  ******************************************************************************/
-void thread_logger_loop_init(void)
+void logger_thread_init(void)
 {
     /* Allocate Queue */
     data_queue = xQueueCreate(1, sizeof(struct data *));
@@ -65,10 +65,10 @@ void thread_logger_loop_init(void)
 }
 
 int logger_log (
-    struct main_pid *pid,
+    struct mouse_data_pid *pid,
     struct range_data *range,
-    struct step_data *step,
-    struct speed_data *speed,
+    struct mouse_data_step *step,
+    struct mouse_data_speed *speed,
     int32_t outputT,
     int32_t outputR)
 {
@@ -81,10 +81,10 @@ int logger_log (
 
     // Copy data
     data = (struct data){
-        .pid = pid ? *pid : (const struct main_pid){0},
+        .pid = pid ? *pid : (const struct mouse_data_pid){0},
         .range = range ? *range : (const struct range_data){0},
-        .step = step ? *step : (const struct step_data){0},
-        .speed = speed ? *speed : (const struct speed_data){0},
+        .step = step ? *step : (const struct mouse_data_step){0},
+        .speed = speed ? *speed : (const struct mouse_data_speed){0},
         .outputT = outputT,
         .outputR = outputR,
         .current_time = tick_ms()

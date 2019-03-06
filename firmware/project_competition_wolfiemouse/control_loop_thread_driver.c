@@ -1,11 +1,11 @@
-#include "main_control.h"
-#include "thread_control_loop.h"
+#include "control_loop_thread.h"
+#include "control_loop_thread_driver.h"
 #include "config_measurements.h"
 #include "motor.h"
 #include "encoder.h"
 #include "pid.h"
 #include "range.h"
-#include "logger.h"
+#include "logger_thread.h"
 
 /*******************************************************************************
  * Constants definition
@@ -73,18 +73,18 @@ struct wheel_status {
 /*******************************************************************************
  * Driver and function declarations
  ******************************************************************************/
-void do_nothing (struct main_pid *pid);
-void move_from_back_to_start_center (struct main_pid *pid);
-void move_forward_one_cell (struct main_pid *pid);
-void move_forward_half_cell (struct main_pid *pid);
-void pivot_left_90_degree (struct main_pid *pid);
-void pivot_right_90_degree (struct main_pid *pid);
-void turn_left_smooth (struct main_pid *pid);
-void turn_right_smooth (struct main_pid *pid);
-void set_pid_and_go (struct main_pid *pid);
-void reset_pid_and_stop (struct main_pid *pid);
+void do_nothing (struct mouse_data_pid *pid);
+void move_from_back_to_start_center (struct mouse_data_pid *pid);
+void move_forward_one_cell (struct mouse_data_pid *pid);
+void move_forward_half_cell (struct mouse_data_pid *pid);
+void pivot_left_90_degree (struct mouse_data_pid *pid);
+void pivot_right_90_degree (struct mouse_data_pid *pid);
+void turn_left_smooth (struct mouse_data_pid *pid);
+void turn_right_smooth (struct mouse_data_pid *pid);
+void set_pid_and_go (struct mouse_data_pid *pid);
+void reset_pid_and_stop (struct mouse_data_pid *pid);
 
-void (*const main_control_driver[])(struct main_pid *pid) = {
+void (*const control_loop_driver[])(struct mouse_data_pid *pid) = {
     do_nothing,                     // CMD_NOTHING
     move_from_back_to_start_center, // CMD_BACK_TO_SART_CENTER
     move_forward_one_cell,          // CMD_MOVE_FORWARD_ONE_CELL
@@ -101,21 +101,21 @@ void (*const main_control_driver[])(struct main_pid *pid) = {
  * Common function definitions
  ******************************************************************************/
 /* Control loops */
-void loop_move_forward (struct main_pid *pid,
+void loop_move_forward (struct mouse_data_pid *pid,
                         pid_value_t *pid_tran,
                         pid_value_t *pid_rot,
                         int32_t target_speed_tran,
                         int32_t target_speed_rot,
                         int16_t target_step_left,
                         int16_t target_step_right);
-void loop_pivot (struct main_pid *pid,
+void loop_pivot (struct mouse_data_pid *pid,
                  pid_value_t *pid_tran,
                  pid_value_t *pid_rot,
                  int32_t target_speed_tran,
                  int32_t target_speed_rot,
                  int16_t target_step_left,
                  int16_t target_step_right);
-void loop_smooth_trun (struct main_pid *pid,
+void loop_smooth_trun (struct mouse_data_pid *pid,
                        pid_value_t *pid_tran,
                        pid_value_t *pid_rot,
                        int32_t target_speed_tran,
@@ -124,24 +124,24 @@ void loop_smooth_trun (struct main_pid *pid,
                        int16_t target_step_right);
 
 /* etc. */
-void update_steps_and_speed (struct step_data *total_step,
-                             struct speed_data *speed);
+void update_steps_and_speed (struct mouse_data_step *total_step,
+                             struct mouse_data_speed *speed);
 void update_range (struct range_data *range);
-void stop_motor (struct main_pid *pid);
-int check_escape_condition (struct main_pid *pid,
-                            struct step_data *total_step,
-                            struct step_data *target_step,
+void stop_motor (struct mouse_data_pid *pid);
+int check_escape_condition (struct mouse_data_pid *pid,
+                            struct mouse_data_step *total_step,
+                            struct mouse_data_step *target_step,
                             struct wheel_status *target_wheel_dir);
 
 /*******************************************************************************
  * Function definitions
  ******************************************************************************/
-void do_nothing (struct main_pid *pid)
+void do_nothing (struct mouse_data_pid *pid)
 {
     // Do nothing. Literally.
 }
 
-void move_from_back_to_start_center (struct main_pid *pid)
+void move_from_back_to_start_center (struct mouse_data_pid *pid)
 {
     loop_move_forward (pid,
                        &pid_tran_forwarding_value,
@@ -152,7 +152,7 @@ void move_from_back_to_start_center (struct main_pid *pid)
                        MEASURE_STEPS_BACK_TO_START_CENTER);
 }
 
-void move_forward_one_cell (struct main_pid *pid)
+void move_forward_one_cell (struct mouse_data_pid *pid)
 {
     loop_move_forward (pid,
                        &pid_tran_forwarding_value,
@@ -163,7 +163,7 @@ void move_forward_one_cell (struct main_pid *pid)
                        MEASURE_STEPS_PER_CELL);
 }
 
-void move_forward_half_cell (struct main_pid *pid)
+void move_forward_half_cell (struct mouse_data_pid *pid)
 {
     loop_move_forward (pid,
                        &pid_tran_forwarding_value,
@@ -174,7 +174,7 @@ void move_forward_half_cell (struct main_pid *pid)
                        MEASURE_STEPS_PER_CELL / 2);
 }
 
-void pivot_left_90_degree (struct main_pid *pid)
+void pivot_left_90_degree (struct mouse_data_pid *pid)
 {
     loop_pivot (pid,
                 &pid_tran_rotating_value,
@@ -185,7 +185,7 @@ void pivot_left_90_degree (struct main_pid *pid)
                 MEASURE_STEPS_90DEG_CCW);
 }
 
-void pivot_right_90_degree (struct main_pid *pid)
+void pivot_right_90_degree (struct mouse_data_pid *pid)
 {
     loop_pivot (pid,
                 &pid_tran_rotating_value,
@@ -196,7 +196,7 @@ void pivot_right_90_degree (struct main_pid *pid)
                 -MEASURE_STEPS_90DEG_CW);
 }
 
-void turn_left_smooth (struct main_pid *pid)
+void turn_left_smooth (struct mouse_data_pid *pid)
 {
     loop_smooth_trun (pid,
                       &pid_tran_smooth_value,
@@ -207,7 +207,7 @@ void turn_left_smooth (struct main_pid *pid)
                       MEASURE_STEPS_SMOOTH_L_RIGHT);
 }
 
-void turn_right_smooth (struct main_pid *pid)
+void turn_right_smooth (struct mouse_data_pid *pid)
 {
     loop_smooth_trun (pid,
                       &pid_tran_smooth_value,
@@ -218,12 +218,12 @@ void turn_right_smooth (struct main_pid *pid)
                       MEASURE_STEPS_SMOOTH_R_RIGHT);
 }
 
-void set_pid_and_go (struct main_pid *pid)
+void set_pid_and_go (struct mouse_data_pid *pid)
 {
     // Not used
 }
 
-void reset_pid_and_stop (struct main_pid *pid)
+void reset_pid_and_stop (struct mouse_data_pid *pid)
 {
     stop_motor(pid);
 }
@@ -231,7 +231,7 @@ void reset_pid_and_stop (struct main_pid *pid)
 /*******************************************************************************
  * Common function definitions (control loop)
  ******************************************************************************/
-void loop_move_forward (struct main_pid *pid,
+void loop_move_forward (struct mouse_data_pid *pid,
                         pid_value_t *pid_tran,
                         pid_value_t *pid_rot,
                         int32_t target_speed_tran,
@@ -240,13 +240,13 @@ void loop_move_forward (struct main_pid *pid,
                         int16_t target_step_right)
 {
     struct range_data *range = &g_range;    // Range finder value
-    struct speed_data speed;    // Speed value
+    struct mouse_data_speed speed;    // Speed value
     // TODO: Prevent underflow/overflow.
-    struct step_data total_step = { // Accumulated step (distance) values
+    struct mouse_data_step total_step = { // Accumulated step (distance) values
         .left = MEASURE_ENCODER_DEFAULT,
         .right = MEASURE_ENCODER_DEFAULT,
     };
-    struct step_data target_step;   // Target step (distance) values
+    struct mouse_data_step target_step;   // Target step (distance) values
     struct wheel_status target_wheel_dir; // Target wheel direction
 
     // Load PID profiles
@@ -266,7 +266,7 @@ void loop_move_forward (struct main_pid *pid,
     target_wheel_dir.right = WHEEL_FORWARD;
 
     while (1) {
-        thread_control_wait_until_1ms();
+        control_loop_thread_wait_until_1ms();
         update_steps_and_speed(&total_step, &speed);
         update_range(range);
 
@@ -317,7 +317,7 @@ void loop_move_forward (struct main_pid *pid,
     }
 }
 
-void loop_pivot (struct main_pid *pid,
+void loop_pivot (struct mouse_data_pid *pid,
                  pid_value_t *pid_tran,
                  pid_value_t *pid_rot,
                  int32_t target_speed_tran,
@@ -325,13 +325,13 @@ void loop_pivot (struct main_pid *pid,
                  int16_t target_step_left,
                  int16_t target_step_right)
 {
-    struct speed_data speed;    // Speed value
+    struct mouse_data_speed speed;    // Speed value
     // TODO: Prevent underflow/overflow.
-    struct step_data total_step = { // Accumulated step (distance) values
+    struct mouse_data_step total_step = { // Accumulated step (distance) values
         .left = MEASURE_ENCODER_DEFAULT,
         .right = MEASURE_ENCODER_DEFAULT,
     };
-    struct step_data target_step;   // Target step (distance) values
+    struct mouse_data_step target_step;   // Target step (distance) values
     struct wheel_status target_wheel_dir; // Target wheel direction
 
     // Load PID profiles
@@ -355,7 +355,7 @@ void loop_pivot (struct main_pid *pid,
     target_wheel_dir.right = (target_step_right > 0) ? WHEEL_FORWARD : WHEEL_BACKWARD;
 
     while (1) {
-        thread_control_wait_until_1ms();
+        control_loop_thread_wait_until_1ms();
         update_steps_and_speed(&total_step, &speed);
 
         /* Calculate PID */
@@ -382,7 +382,7 @@ void loop_pivot (struct main_pid *pid,
     }
 }
 
-void loop_smooth_trun (struct main_pid *pid,
+void loop_smooth_trun (struct mouse_data_pid *pid,
                        pid_value_t *pid_tran,
                        pid_value_t *pid_rot,
                        int32_t target_speed_tran,
@@ -390,13 +390,13 @@ void loop_smooth_trun (struct main_pid *pid,
                        int16_t target_step_left,
                        int16_t target_step_right)
 {
-    struct speed_data speed;    // Speed value
+    struct mouse_data_speed speed;    // Speed value
     // TODO: Prevent underflow/overflow.
-    struct step_data total_step = { // Accumulated step (distance) values
+    struct mouse_data_step total_step = { // Accumulated step (distance) values
         .left = MEASURE_ENCODER_DEFAULT,
         .right = MEASURE_ENCODER_DEFAULT,
     };
-    struct step_data target_step;   // Target step (distance) values
+    struct mouse_data_step target_step;   // Target step (distance) values
     struct wheel_status target_wheel_dir; // Target wheel direction
 
     // Load PID profiles
@@ -420,7 +420,7 @@ void loop_smooth_trun (struct main_pid *pid,
     target_wheel_dir.right = WHEEL_FORWARD;
 
     while (1) {
-        thread_control_wait_until_1ms();
+        control_loop_thread_wait_until_1ms();
         update_steps_and_speed(&total_step, &speed);
 
         /* Calculate PID */
@@ -449,7 +449,7 @@ void loop_smooth_trun (struct main_pid *pid,
 /*******************************************************************************
  * Common function definitions (etc.)
  ******************************************************************************/
-void update_steps_and_speed (struct step_data *total_step, struct speed_data *speed)
+void update_steps_and_speed (struct mouse_data_step *total_step, struct mouse_data_speed *speed)
 {
     struct encoder_data step;
     // Update steps from rotary encoders
@@ -477,7 +477,7 @@ void update_range (struct range_data *range)
     }
 }
 
-void stop_motor (struct main_pid *pid)
+void stop_motor (struct mouse_data_pid *pid)
 {
     motor_speed_percent(CH_BOTH, 0);
     motor_start(CH_BOTH);
@@ -485,9 +485,9 @@ void stop_motor (struct main_pid *pid)
     pid_reset(&pid->rot);
 }
 
-int check_escape_condition (struct main_pid *pid,
-                            struct step_data *total_step,
-                            struct step_data *target_step,
+int check_escape_condition (struct mouse_data_pid *pid,
+                            struct mouse_data_step *total_step,
+                            struct mouse_data_step *target_step,
                             struct wheel_status *target_wheel_dir)
 {
     /* Escape condition */

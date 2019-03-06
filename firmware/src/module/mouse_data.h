@@ -1,5 +1,5 @@
-#ifndef MAIN_CONTROL_H_
-#define MAIN_CONTROL_H_
+#ifndef MODULE_MOUSE_DATA_H_
+#define MODULE_MOUSE_DATA_H_
 
 #include "pid.h"
 
@@ -8,29 +8,26 @@ extern "C" {
 #endif
 
 // PID handler
-struct main_pid {
+struct mouse_data_pid {
     pid_handler_t tran;
     pid_handler_t rot;
 };
 
 // Target steps
-struct step_data {
+struct mouse_data_step {
     uint32_t left;
     uint32_t right;
 };
 
 // Speed information
-struct speed_data {
+struct mouse_data_speed {
     int32_t left;
     int32_t right;
     int32_t diff;    // left - right
 };
 
-extern void (*const main_control_driver[])(struct main_pid *pid);
-
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* MAIN_CONTROL_H_ */
+#endif /* MODULE_MOUSE_DATA_H_ */

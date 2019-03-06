@@ -24,8 +24,8 @@ static SemaphoreHandle_t cmd_semphr = NULL;
 void cmd_init(void)
 {
     // /* Get queue from the controll loop */
-    cmd_queue = thread_control_loop_cmd_queue();
-    cmd_semphr = thread_control_loop_cmd_semphr();
+    cmd_queue = control_loop_thread_cmd_queue();
+    cmd_semphr = control_loop_thread_get_cmd_semphr();
     if (cmd_queue == NULL) {
         KB_DEBUG_ERROR("Getting cmd queue failed!!");
     }
