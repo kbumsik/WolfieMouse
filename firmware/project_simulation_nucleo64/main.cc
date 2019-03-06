@@ -107,8 +107,10 @@ static void task_1_mouse_simulation ()
 
 void task_2_logger_test ()
 {
-    puts("Not yet implemented :)");
-    fflush(stdout);
+    for(int i = 0; i < 1000; i++) {
+        logger_log(NULL, NULL, NULL, NULL, 100, 1200);
+        vTaskDelay(1);
+    }
 }
 
 /*******************************************************************************
@@ -226,6 +228,9 @@ int main(void)
     // Initialize all configured peripherals
     peripheral_init();
 
+    // Init logger thread
+    logger_thread_init();
+
     // ADC
     // This is A5 Pin in Nucleo-64
     // adc_init_t adc = {
@@ -261,7 +266,7 @@ int main(void)
             "Blinky",               /* Text name for the task. This is to facilitate debugging only. It is not used in the scheduler */
             configMINIMAL_STACK_SIZE, /* Stack depth in words */
             NULL,                   /* Pointer to a task parameters */
-            configMAX_PRIORITIES-1,                      /* The task priority */
+            configMAX_PRIORITIES - 3,                      /* The task priority */
             &task_blinky_handler);  /* Pointer of its task handler, if you don't want to use, you can leave it NULL */
 
     if (result != pdPASS) {
@@ -273,7 +278,7 @@ int main(void)
             "Main",
             configMINIMAL_STACK_SIZE+15500,
             NULL,
-            configMAX_PRIORITIES-2,
+            configMAX_PRIORITIES,
             &task_main_handler);
     if (result != pdPASS) {
         terminal_puts("Creating main task failed!!");
