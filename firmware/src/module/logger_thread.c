@@ -41,13 +41,13 @@ void logger_thread_init(void)
     /* Allocate Queue */
     data_queue = xQueueCreate(1, sizeof(struct data *));
     if (NULL == data_queue) {
-        KB_DEBUG_ERROR("Creating logger queue failed!!");
+        terminal_puts("Creating logger queue failed!!");
     }
 
     /* Semaphore */
     notify_semphr = xSemaphoreCreateCounting(1, 0);
     if (NULL == notify_semphr) {
-        KB_DEBUG_ERROR("Creating logger mutex failed!!");
+        terminal_puts("Creating logger mutex failed!!");
     }
 
     /* Allocate task */
@@ -60,7 +60,7 @@ void logger_thread_init(void)
             configMAX_PRIORITIES - 1,
             &thread_handler);
     if (result != pdPASS) {
-        KB_DEBUG_ERROR("Creating logger task failed!!");
+        terminal_puts("Creating logger task failed!!");
     }
 }
 
@@ -73,13 +73,14 @@ int logger_log (
     int32_t outputR)
 {
     static struct data data;
+    struct data *ptr;
 
     if (pdTRUE != xSemaphoreTake(notify_semphr, 0)) {
         // Writer is busy
         return 1;
     }
 
-    // Copy data
+    // Copy data and send
     data = (struct data){
         .pid = pid ? *pid : (const struct mouse_data_pid){0},
         .range = range ? *range : (const struct range_data){0},
@@ -89,7 +90,8 @@ int logger_log (
         .outputR = outputR,
         .current_time = tick_ms()
     };
-    xQueueSend(data_queue, &data, 0);
+    ptr = &data;
+    xQueueSend(data_queue, &ptr, 0);
 
     return 0;
 }
@@ -99,9 +101,13 @@ static void writer_loop(void *pvParameters)
     static struct data *data;
     static uint32_t start_time = 0;
 
+    xSemaphoreGive(notify_semphr);
     while (1) {
+        // Writer ready
+        xSemaphoreGive(notify_semphr);
+
         // Wait for data
-        xQueueReceive(data_queue, data, portMAX_DELAY);
+        xQueueReceive(data_queue, &data, portMAX_DELAY);
         if (!start_time) {
             start_time = tick_ms();
             data->current_time = start_time; // Prevent the first log time being minus
@@ -123,9 +129,6 @@ static void writer_loop(void *pvParameters)
         terminal_printf("\"OR\":%ld,", data->outputR);
         terminal_printf("\"T\":%lu", data->current_time - start_time);
         terminal_puts("},\n");
-
-        // Writer done
-        xSemaphoreGive(notify_semphr);
     }
 
     /* It never goes here, but the task should be deleted when it reached here */
