@@ -88,6 +88,7 @@ StdIO.cc \
 
 # .c files used in /firmware/src/module
 MODULE_FILES = \
+logger_thread.c \
 terminal.c \
 # hcms-290x_display.c \
 # terminal_test.c \

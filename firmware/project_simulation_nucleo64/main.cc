@@ -27,10 +27,18 @@
 // Maze String file
 #include "mazeString.hpp"
 
+// Thread modules
+#include "logger_thread.h"
+
 void on_b1_pressed(void);
 
-static void task_blinky(void *pvParameters);
-static void task_main(void *pvParameters);
+// Task functions
+static void task_1_mouse_simulation();
+static void task_2_logger_test();
+
+// FreeRTOS threads
+static void thread_main(void *pvParameters);
+static void thread_blinky(void *pvParameters);
 
 /* Task Handlers */
 TaskHandle_t task_blinky_handler;
@@ -43,79 +51,10 @@ static void wait_for_button(MouseController *mouse);
 /* peripheral objects */
 // adc_t range_front_right;
 
-int main(void)
-{
-    // initialize clock and system configuration
-    system_init();
-
-    // Initialize all configured peripherals
-    peripheral_init();
-
-    // ADC
-    // This is A5 Pin in Nucleo-64
-    // adc_init_t adc = {
-    //         .device = RECV_ADC,
-    //         .channel = KB_ADC_CH10
-    // };
-    // adc_init(&range_front_right, &adc);
-    // adc_pin(RECV_FR_PORT, RECV_FR_PIN);
-
-    // Set interrupt button
-    gpio_init_t GPIO_InitStruct;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = NOPULL;
-    gpio_isr_enable(B1_PORT, B1_PIN, &GPIO_InitStruct, FALLING_EDGE);
-    gpio_isr_register(B1_PORT, B1_PIN, on_b1_pressed);
-    b1_semphr = xSemaphoreCreateCounting(1, 0);
-    one_clikc_semphr = xSemaphoreCreateCounting(1, 0);
-    double_click_semphr = xSemaphoreCreateCounting(1, 0);
-
-    // Set toggling pin controlled by the button
-    // This pin controls the infared LED.
-    // This is A0 pin in Nucleo-64
-    // GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    // GPIO_InitStruct.Pull = GPIO_NOPULL;
-    // GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    // gpio_init(PORTA, PIN_0, &GPIO_InitStruct);
-    // gpio_set(PORTA, PIN_0, GPIO_PIN_RESET);
-
-    BaseType_t result;
-    /* definition and creation of defaultTask */
-    result = xTaskCreate(
-            task_blinky,            /* Pointer to the function that implements the task */
-            "Blinky",               /* Text name for the task. This is to facilitate debugging only. It is not used in the scheduler */
-            configMINIMAL_STACK_SIZE, /* Stack depth in words */
-            NULL,                   /* Pointer to a task parameters */
-            configMAX_PRIORITIES-1,                      /* The task priority */
-            &task_blinky_handler);  /* Pointer of its task handler, if you don't want to use, you can leave it NULL */
-
-    if (result != pdPASS) {
-        KB_DEBUG_ERROR("Creating task failed!!");
-    }
-
-    result = xTaskCreate(
-            task_main,
-            "Main",
-            configMINIMAL_STACK_SIZE+15500,
-            NULL,
-            configMAX_PRIORITIES-2,
-            &task_main_handler);
-    if (result != pdPASS) {
-        terminal_puts("Creating task failed!!");
-    }
-    /* Do not put delay function in this section!
-     * Because xTaskCreate will stop systick until the scheduler called */
-    // TODO: check if it is true
-    /* Start scheduler */
-    vTaskStartScheduler();
-    while (1) {
-    }
-}
-
 /*******************************************************************************
  * Tasks
  ******************************************************************************/
-static void task_main(void *pvParameters)
+static void task_1_mouse_simulation ()
 {
     // Create virtual mouse hardware for simulation
     static StdIO fileIO(true);
@@ -160,18 +99,56 @@ static void task_main(void *pvParameters)
             }
         } else {
             if (!mouse.scanAndMove(wait_for_button)) {
-                goto end;
+                return;
             }
         }
     }
+}
 
-end:
+void task_2_logger_test ()
+{
+    puts("Not yet implemented :)");
+    fflush(stdout);
+}
+
+/*******************************************************************************
+ * Tasks
+ ******************************************************************************/
+static void thread_main(void *pvParameters)
+{
+    char buffer[80];
+    char *keyinput = buffer;
+    char key;
+    puts("Please select a task");
+    puts("1: Mouse simulation, ");
+    puts("2: Logger test");
+    fflush(stdout);
+    while (true) {
+        if (!terminal_gets(keyinput)) {
+            // TODO: why it gets error? It seems to get error and sucess back and forth.
+            // puts("Error!");
+        }
+        key = keyinput[0];
+        switch (key) {
+            case '1':
+                task_1_mouse_simulation();
+                break;
+
+            case '2':
+                task_2_logger_test();
+                break;
+
+            default:
+                continue;
+        }
+        keyinput[0] = ' ';
+    }
     /* It never goes here, but the task should be deleted when it reached here */
     vTaskDelete(NULL);
 }
 
 /* vBlinkyTask function */
-void task_blinky(void *pvParameters)
+void thread_blinky(void *pvParameters)
 {
     portTickType xLastWakeTime;
     /* Initialize xLastWakeTime for vTaskDelayUntil */
@@ -200,7 +177,7 @@ void task_blinky(void *pvParameters)
 }
 
 /*******************************************************************************
- * static functions
+ * Other static functions
  ******************************************************************************/
 static void wait_for_button(MouseController *mouse)
 {
@@ -236,6 +213,78 @@ save_and_exit:
     puts("Good Bye!");
     exit(0);
     return;
+}
+
+/*******************************************************************************
+ * Main function
+ ******************************************************************************/
+int main(void)
+{
+    // initialize clock and system configuration
+    system_init();
+
+    // Initialize all configured peripherals
+    peripheral_init();
+
+    // ADC
+    // This is A5 Pin in Nucleo-64
+    // adc_init_t adc = {
+    //         .device = RECV_ADC,
+    //         .channel = KB_ADC_CH10
+    // };
+    // adc_init(&range_front_right, &adc);
+    // adc_pin(RECV_FR_PORT, RECV_FR_PIN);
+
+    // Set interrupt button
+    gpio_init_t GPIO_InitStruct;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = NOPULL;
+    gpio_isr_enable(B1_PORT, B1_PIN, &GPIO_InitStruct, FALLING_EDGE);
+    gpio_isr_register(B1_PORT, B1_PIN, on_b1_pressed);
+    b1_semphr = xSemaphoreCreateCounting(1, 0);
+    one_clikc_semphr = xSemaphoreCreateCounting(1, 0);
+    double_click_semphr = xSemaphoreCreateCounting(1, 0);
+
+    // Set toggling pin controlled by the button
+    // This pin controls the infared LED.
+    // This is A0 pin in Nucleo-64
+    // GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    // GPIO_InitStruct.Pull = GPIO_NOPULL;
+    // GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    // gpio_init(PORTA, PIN_0, &GPIO_InitStruct);
+    // gpio_set(PORTA, PIN_0, GPIO_PIN_RESET);
+
+    BaseType_t result;
+    /* definition and creation of defaultTask */
+    result = xTaskCreate(
+            thread_blinky,            /* Pointer to the function that implements the task */
+            "Blinky",               /* Text name for the task. This is to facilitate debugging only. It is not used in the scheduler */
+            configMINIMAL_STACK_SIZE, /* Stack depth in words */
+            NULL,                   /* Pointer to a task parameters */
+            configMAX_PRIORITIES-1,                      /* The task priority */
+            &task_blinky_handler);  /* Pointer of its task handler, if you don't want to use, you can leave it NULL */
+
+    if (result != pdPASS) {
+        KB_DEBUG_ERROR("Creating blinky task failed!!");
+    }
+
+    result = xTaskCreate(
+            thread_main,
+            "Main",
+            configMINIMAL_STACK_SIZE+15500,
+            NULL,
+            configMAX_PRIORITIES-2,
+            &task_main_handler);
+    if (result != pdPASS) {
+        terminal_puts("Creating main task failed!!");
+    }
+    /* Do not put delay function in this section!
+     * Because xTaskCreate will stop systick until the scheduler called */
+    // TODO: check if it is true
+    /* Start scheduler */
+    vTaskStartScheduler();
+    while (1) {
+    }
 }
 
 /*******************************************************************************
