@@ -1,4 +1,8 @@
 {
   "terminal.integrated.shell.windows": "C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
   "editor.formatOnSave": false,
+  "python.pythonPath": "C:\\Users\\kbumsik\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
+  "files.associations": {
+    "terminal.h": "c"
+  },
 }
