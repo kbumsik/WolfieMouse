@@ -5,7 +5,7 @@
 #include "encoder.h"
 #include "pid.h"
 #include "range.h"
-#include "terminal.h"
+#include "logger.h"
 
 /*******************************************************************************
  * Constants definition
@@ -60,18 +60,6 @@ pid_value_t pid_rot_smooth_value = {
 /*******************************************************************************
  * Local data structure
  ******************************************************************************/
-// Target steps
-struct step_data {
-    uint32_t left;
-    uint32_t right;
-};
-
-struct speed_data {
-    int32_t left;
-    int32_t right;
-    int32_t diff;    // left - right
-};
-
 // Wheel state
 enum wheel_direction {
     WHEEL_DISABLED, WHEEL_FORWARD, WHEEL_BACKWARD
@@ -284,8 +272,7 @@ void loop_move_forward (struct main_pid *pid,
 
         // if it is too close stop
         if ((range->front > MEASURE_RANGE_F_NEAR_DETECT) ||
-            (range->front_right > MEASURE_RANGE_F_NEAR_DETECT))
-        {
+            (range->front_right > MEASURE_RANGE_F_NEAR_DETECT)) {
             stop_motor(pid);
             break;
         }
@@ -321,19 +308,7 @@ void loop_move_forward (struct main_pid *pid,
         motor_speed_permyriad(CH_RIGHT, outputT - outputR);
         motor_start(CH_BOTH);
 
-        // Print the result in json format
-        // terminal_puts("{");
-        // terminal_printf("\"L\":%d,", range->left);
-        // terminal_printf("\"R\":%d,", range->right);
-        // terminal_printf("\"F\":%d", range->front);
-        // // terminal_printf("\"LS\":%d,", speed.left);
-        // // terminal_printf("\"RS\":%d,", speed.right);
-        // // terminal_printf("\"LO\":%d,", outputT + outputR);
-        // // terminal_printf("\"RO\":%d,", outputT - outputR);
-        // // terminal_printf("\"TTS\":%d,", pid->tran.setpoint);
-        // // terminal_printf("\"TRS\":%d", pid->rot.setpoint);
-        // // terminal_printf("\"T\":%d", tick_us() - time);
-        // terminal_puts("},\n");
+        logger_log(pid, range, &total_step, &speed, outputT, outputR);
 
         if (check_escape_condition(pid, &total_step, &target_step,
                                    &target_wheel_dir)) {
@@ -397,19 +372,7 @@ void loop_pivot (struct main_pid *pid,
         motor_speed_permyriad(CH_RIGHT, outputT - outputR);
         motor_start(CH_BOTH);
 
-        // Print the result in json format
-        // terminal_puts("{");
-        // terminal_printf("\"L\":%d,", range->left);
-        // terminal_printf("\"R\":%d,", range->right);
-        // terminal_printf("\"F\":%d", range->front);
-        // // terminal_printf("\"LS\":%d,", speed.left);
-        // // terminal_printf("\"RS\":%d,", speed.right);
-        // // terminal_printf("\"LO\":%d,", outputT + outputR);
-        // // terminal_printf("\"RO\":%d,", outputT - outputR);
-        // // terminal_printf("\"TTS\":%d,", pid.tran.setpoint);
-        // // terminal_printf("\"TRS\":%d", pid.rot.setpoint);
-        // // terminal_printf("\"T\":%d", tick_us() - time);
-        // terminal_puts("},\n");
+        logger_log(pid, NULL, &total_step, &speed, outputT, outputR);
 
         if (check_escape_condition(pid, &total_step, &target_step,
                                     &target_wheel_dir)) {
@@ -474,19 +437,7 @@ void loop_smooth_trun (struct main_pid *pid,
         motor_speed_permyriad(CH_RIGHT, outputT - outputR);
         motor_start(CH_BOTH);
 
-        // Print the result in json format
-        // terminal_puts("{");
-        // terminal_printf("\"L\":%d,", range->left);
-        // terminal_printf("\"R\":%d,", range->right);
-        // terminal_printf("\"F\":%d", range->front);
-        // // terminal_printf("\"LS\":%d,", speed.left);
-        // // terminal_printf("\"RS\":%d,", speed.right);
-        // // terminal_printf("\"LO\":%d,", outputT + outputR);
-        // // terminal_printf("\"RO\":%d,", outputT - outputR);
-        // // terminal_printf("\"TTS\":%d,", pid.tran.setpoint);
-        // // terminal_printf("\"TRS\":%d", pid.rot.setpoint);
-        // // terminal_printf("\"T\":%d", tick_us() - time);
-        // terminal_puts("},\n");
+        logger_log(pid, NULL, &total_step, &speed, outputT, outputR);
 
         if (check_escape_condition(pid, &total_step, &target_step,
                                     &target_wheel_dir)) {
@@ -503,6 +454,7 @@ void update_steps_and_speed (struct step_data *total_step, struct speed_data *sp
     struct encoder_data step;
     // Update steps from rotary encoders
     encoder_get(&step, ENCODER_CH_BOTH);
+    encoder_reset(ENCODER_CH_BOTH); // Then reset
     // update speed
     speed->left = (step.left - MEASURE_ENCODER_DEFAULT);// * CONFIG_LEN_PER_CNT;
     speed->right = (step.right - MEASURE_ENCODER_DEFAULT);// * CONFIG_LEN_PER_CNT;
@@ -510,8 +462,6 @@ void update_steps_and_speed (struct step_data *total_step, struct speed_data *sp
     // Accumulate steps
     total_step->left += speed->left;
     total_step->right += speed->right;
-    // Then reset
-    encoder_reset(ENCODER_CH_BOTH);
 }
 
 void update_range (struct range_data *range)
