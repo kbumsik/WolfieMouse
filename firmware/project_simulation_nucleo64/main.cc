@@ -107,10 +107,12 @@ static void task_1_mouse_simulation ()
 
 void task_2_logger_test ()
 {
+    vTaskPrioritySet(NULL, configMAX_PRIORITIES - 1);
     for(int i = 0; i < 1000; i++) {
         logger_log(NULL, NULL, NULL, NULL, 100, 1200);
         vTaskDelay(1);
     }
+    vTaskPrioritySet(NULL, configMAX_PRIORITIES - 3);
 }
 
 /*******************************************************************************
@@ -266,7 +268,7 @@ int main(void)
             "Blinky",               /* Text name for the task. This is to facilitate debugging only. It is not used in the scheduler */
             configMINIMAL_STACK_SIZE, /* Stack depth in words */
             NULL,                   /* Pointer to a task parameters */
-            configMAX_PRIORITIES - 3,                      /* The task priority */
+            0,                      /* The task priority */
             &task_blinky_handler);  /* Pointer of its task handler, if you don't want to use, you can leave it NULL */
 
     if (result != pdPASS) {
@@ -278,7 +280,7 @@ int main(void)
             "Main",
             configMINIMAL_STACK_SIZE+15500,
             NULL,
-            configMAX_PRIORITIES,
+            configMAX_PRIORITIES - 3,
             &task_main_handler);
     if (result != pdPASS) {
         terminal_puts("Creating main task failed!!");

@@ -214,6 +214,7 @@ static void _maze_solver_run(void (*wait_func)(MouseController *mouse))
                 goto end;
             }
         }
+        taskYIELD();
     }
 
 end:
@@ -225,10 +226,14 @@ static void _wait_for_button(MouseController *mouse)
     char buffer[80];
     char *keyinput = buffer;
     char key;
+
+    // Stop the mouse completely and print the maze and the information.
+    cmd_low_pid_reset_and_stop(NULL);
     mouse->printMaze();
     puts("please input a command");
     puts("n:next, q: save and restart, p: print stack");
     fflush(stdout);
+
     while (true) {
         if (!terminal_gets(keyinput)) {
             // TODO: why it gets error? It seems to get error and sucess back and forth.
@@ -246,6 +251,7 @@ static void _wait_for_button(MouseController *mouse)
         } else {
             continue;
         }
+        taskYIELD();
     }
     return;
 save_and_exit:

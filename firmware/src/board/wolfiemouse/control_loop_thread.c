@@ -110,7 +110,7 @@ void control_loop_thread_init(void)
             "Cnrt",
             configMINIMAL_STACK_SIZE+2000,
             NULL,
-            configMAX_PRIORITIES,
+            configMAX_PRIORITIES - 1,
             &control_loop_handler);
     if (result != pdPASS) {
         KB_DEBUG_ERROR("Creating motion task failed!!");
