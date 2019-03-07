@@ -27,8 +27,9 @@
 // Maze solver
 #include "MouseController.hpp"
 #include "IOInterface.hpp"
-#include "FakeIO.hpp"
 #include "RealMouse.hpp"
+#include "StdIO.hpp"
+#include "FlashIO.hpp"
 
 // Define message base. This is used for KB_DEBUG_MSG()
 #ifdef KB_MSG_BASE
@@ -177,13 +178,14 @@ static void _maze_solver_run(void (*wait_func)(MouseController *mouse))
     } mouseState = goGoal;
 
     // Create virtual mouse hardware for simulation
-    static FakeIO fake;
+    static FlashIO flashIO;
+    static StdIO printIO(false);
     static RealMouse realmouse;
-    static MouseController mouse(NULL, &fake, &fake,
+    static MouseController mouse(NULL, &flashIO, &printIO,
             (FinderInterface*) &realmouse, (MoverInterface*) &realmouse);
 
     /* First just print maze */
-    //mouse.printMaze();
+    mouse.printMaze();
 
     range_get(&g_range, RANGE_CH_ALL); // To prevent the maze solver get wrong values
 
@@ -233,6 +235,7 @@ static void _wait_for_button(MouseController *mouse)
             // puts("Error!");
         }
         key = keyinput[0];
+        keyinput[0] = ' ';
         if (key == 'n') {
             break;
         } else if (key == 'q') {

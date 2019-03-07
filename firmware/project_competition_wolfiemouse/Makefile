@@ -75,12 +75,12 @@ pid.c
 
 # .c files used in /firmware/src/maze
 MAZE_FILES = \
-FakeIO.cc \
+FlashIO.cc \
 MazeIO.cc \
 Maze.cc \
 MouseController.cc \
 PositionController.cc \
-# StdIO.cc \
+StdIO.cc \
 # SimulMouse.cc \
 
 # .c files used in /firmware/src/module
@@ -93,6 +93,7 @@ hcms_290x_display.c \
 
 # .c files used in /firmware/src/peripheral
 PERIPHERAL_FILES = \
+flash.c \
 adc.c \
 rotary_encoder.c \
 gpio.c \
