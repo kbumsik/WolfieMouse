@@ -57,7 +57,7 @@ void logger_thread_init(void)
             "logger",
             configMINIMAL_STACK_SIZE,
             NULL,
-            configMAX_PRIORITIES - 1,
+            configMAX_PRIORITIES - 3,
             &thread_handler);
     if (result != pdPASS) {
         terminal_puts("Creating logger task failed!!");
@@ -75,10 +75,10 @@ int logger_log (
     static struct data data;
     struct data *ptr;
 
-    if (pdTRUE != xSemaphoreTake(notify_semphr, 0)) {
-        // Writer is busy
+    if (!uxSemaphoreGetCount(notify_semphr)) {
         return 1;
     }
+    xSemaphoreTake(notify_semphr, 0);
 
     // Copy data and send
     data = (struct data){
