@@ -8,7 +8,6 @@
 #ifndef MOTION_CONTROLLER_H_
 #define MOTION_CONTROLLER_H_
 
-#include "control_loop_thread.h"
 #include "pid.h"
 
 #ifdef __cplusplus
@@ -42,7 +41,7 @@ struct cmd_events {
     void (*on_completed)(void); //< on completed callback pointer
 };
 
-struct cmd_queue_element {
+struct cmd_command {
     enum cmd_type type;
     struct cmd_pid pid;
     // uint8_t stop_after;         //< Stop after operation

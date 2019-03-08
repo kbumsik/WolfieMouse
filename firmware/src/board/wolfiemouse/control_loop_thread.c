@@ -17,6 +17,7 @@
 #include "pid.h"
 #include "tick.h"
 #include "cmd.h"
+#include "control_loop_thread.h"
 
 #include "FreeRTOS.h"
 #include "portable.h" // TODO: Delete
@@ -93,7 +94,7 @@ void control_loop_thread_init(void)
     /* Now peripherals has been initialized */
 
     /* Allocate Queue */
-    cmd_queue = xQueueCreate( 10, sizeof(struct cmd_queue_element));
+    cmd_queue = xQueueCreate( 10, sizeof(struct cmd_command));
     if (NULL == cmd_queue) {
         KB_DEBUG_ERROR("Creating cmd queue failed!!");
     }
@@ -117,7 +118,7 @@ void control_loop_thread_init(void)
 
 static void control_loop(void *pvParameters)
 {
-    static struct cmd_queue_element cmd;
+    static struct cmd_command cmd;
 
     // PID handler
     static struct mouse_data_pid pid;
@@ -143,9 +144,9 @@ void control_loop_thread_wait_1ms(void)
     vTaskDelay(1);
 }
 
-QueueHandle_t control_loop_thread_cmd_queue(void)
+void control_loop_send_commend (struct cmd_command *cmd)
 {
-    return cmd_queue;
+    xQueueSend(cmd_queue, cmd, portMAX_DELAY);
 }
 
 SemaphoreHandle_t control_loop_thread_get_cmd_semphr(void)
