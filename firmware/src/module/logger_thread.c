@@ -101,7 +101,6 @@ static void writer_loop(void *pvParameters)
     static struct data *data;
     static uint32_t start_time = 0;
 
-    xSemaphoreGive(notify_semphr);
     while (1) {
         // Writer ready
         xSemaphoreGive(notify_semphr);
