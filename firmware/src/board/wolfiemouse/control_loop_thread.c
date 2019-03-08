@@ -138,7 +138,7 @@ static void control_loop(void *pvParameters)
     vTaskDelete(NULL);
 }
 
-void control_loop_thread_wait_until_1ms(void)
+void control_loop_thread_wait_1ms(void)
 {
     vTaskDelay(1);
 }

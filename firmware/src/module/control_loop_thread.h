@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 void control_loop_thread_init(void);
-void control_loop_thread_wait_until_1ms(void);
+void control_loop_thread_wait_1ms(void);
 QueueHandle_t control_loop_thread_cmd_queue(void);
 SemaphoreHandle_t control_loop_thread_get_cmd_semphr(void);
 
