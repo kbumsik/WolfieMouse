@@ -120,10 +120,7 @@ void task_4(void)
     delay_ms(2000);
 
     // Move
-    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
-    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
-    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
-    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
+    cmd_polling(CMD_MOVE_UNTIL_FRONT_WALL);
     cmd_low_pid_reset_and_stop(NULL);
 }
 
