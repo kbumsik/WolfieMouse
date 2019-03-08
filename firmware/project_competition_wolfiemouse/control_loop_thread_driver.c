@@ -266,7 +266,7 @@ void loop_move_forward (struct mouse_data_pid *pid,
     target_wheel_dir.right = WHEEL_FORWARD;
 
     while (1) {
-        control_loop_thread_wait_until_1ms();
+        control_loop_thread_wait_1ms();
         update_steps_and_speed(&total_step, &speed);
         update_range(range);
 
@@ -355,7 +355,7 @@ void loop_pivot (struct mouse_data_pid *pid,
     target_wheel_dir.right = (target_step_right > 0) ? WHEEL_FORWARD : WHEEL_BACKWARD;
 
     while (1) {
-        control_loop_thread_wait_until_1ms();
+        control_loop_thread_wait_1ms();
         update_steps_and_speed(&total_step, &speed);
 
         /* Calculate PID */
@@ -420,7 +420,7 @@ void loop_smooth_trun (struct mouse_data_pid *pid,
     target_wheel_dir.right = WHEEL_FORWARD;
 
     while (1) {
-        control_loop_thread_wait_until_1ms();
+        control_loop_thread_wait_1ms();
         update_steps_and_speed(&total_step, &speed);
 
         /* Calculate PID */
