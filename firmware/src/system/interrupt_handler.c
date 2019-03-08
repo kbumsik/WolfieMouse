@@ -48,13 +48,9 @@ void SVC_Handler (void)
     extern void xPortSysTickHandler(void);
 #endif
 
-extern void SysTick_hook(void); // Can be found in hooks.c
-
 void SysTick_Handler (void)
 {
 	tick_inc_ms();
-    SysTick_hook();
-
 #ifdef KB_USE_FREERTOS
 	// FreeRTOS Tick handler
     if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {

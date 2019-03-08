@@ -37,7 +37,6 @@ struct range_data g_range;
 static void control_loop(void *pvParameters);
 static TaskHandle_t control_loop_handler;
 
-static SemaphoreHandle_t semphr_from_isr = NULL;
 static QueueHandle_t cmd_queue = NULL;
 static SemaphoreHandle_t cmd_semphr = NULL;
 
@@ -93,14 +92,12 @@ void control_loop_thread_init(void)
 
     /* Now peripherals has been initialized */
 
-    /* Allocate Semaphore */
-    // Max counting is 1, initial is zero
-    semphr_from_isr = xSemaphoreCreateCounting(1, 0);
     /* Allocate Queue */
     cmd_queue = xQueueCreate( 10, sizeof(struct cmd_queue_element));
     if (NULL == cmd_queue) {
         KB_DEBUG_ERROR("Creating cmd queue failed!!");
     }
+    /* Allocate Semaphore */
     cmd_semphr = xSemaphoreCreateCounting(1, 0);
 
     /* Allocate task */
@@ -143,7 +140,7 @@ static void control_loop(void *pvParameters)
 
 void control_loop_thread_wait_until_1ms(void)
 {
-    xSemaphoreTake(semphr_from_isr, portMAX_DELAY);
+    vTaskDelay(1);
 }
 
 QueueHandle_t control_loop_thread_cmd_queue(void)
@@ -154,14 +151,4 @@ QueueHandle_t control_loop_thread_cmd_queue(void)
 SemaphoreHandle_t control_loop_thread_get_cmd_semphr(void)
 {
     return cmd_semphr;
-}
-
-void SysTick_hook(void)
-{
-    static BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-
-    if (semphr_from_isr != NULL) {
-        xSemaphoreGiveFromISR(semphr_from_isr, &xHigherPriorityTaskWoken);
-        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-    }
 }
