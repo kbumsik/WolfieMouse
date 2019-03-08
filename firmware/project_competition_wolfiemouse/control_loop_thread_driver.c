@@ -308,7 +308,7 @@ void loop_move_forward (struct mouse_data_pid *pid,
         motor_speed_permyriad(CH_RIGHT, outputT - outputR);
         motor_start(CH_BOTH);
 
-        logger_log(pid, range, &total_step, &speed, outputT, outputR);
+        // logger_log(pid, range, &total_step, &speed, outputT, outputR);
 
         if (check_escape_condition(pid, &total_step, &target_step,
                                    &target_wheel_dir)) {
@@ -372,7 +372,7 @@ void loop_pivot (struct mouse_data_pid *pid,
         motor_speed_permyriad(CH_RIGHT, outputT - outputR);
         motor_start(CH_BOTH);
 
-        logger_log(pid, NULL, &total_step, &speed, outputT, outputR);
+        // logger_log(pid, NULL, &total_step, &speed, outputT, outputR);
 
         if (check_escape_condition(pid, &total_step, &target_step,
                                     &target_wheel_dir)) {
@@ -437,7 +437,7 @@ void loop_smooth_trun (struct mouse_data_pid *pid,
         motor_speed_permyriad(CH_RIGHT, outputT - outputR);
         motor_start(CH_BOTH);
 
-        logger_log(pid, NULL, &total_step, &speed, outputT, outputR);
+        // logger_log(pid, NULL, &total_step, &speed, outputT, outputR);
 
         if (check_escape_condition(pid, &total_step, &target_step,
                                     &target_wheel_dir)) {
