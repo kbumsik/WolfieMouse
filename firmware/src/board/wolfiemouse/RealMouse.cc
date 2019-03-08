@@ -102,12 +102,12 @@ void RealMouse::rotateTo(Direction destDir, PositionController &mousePos)
     } else if (destDir == (++mouseDir)) {
         // Turn left
         cmd_polling(CMD_PIVOT_LEFT_90_DEGREE, NULL);
-        cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
+        cmd_polling(CMD_NONBLOCK_RESET_PID_AND_STOP, NULL);
         delay_ms(500);
     } else if ((++destDir) == (--mouseDir)) {
         // Turn right
         cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE, NULL);
-        cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
+        cmd_polling(CMD_NONBLOCK_RESET_PID_AND_STOP, NULL);
         delay_ms(500);
     } else {
         // turn 180 degree
@@ -115,7 +115,7 @@ void RealMouse::rotateTo(Direction destDir, PositionController &mousePos)
         cmd_polling(CMD_PIVOT_LEFT_90_DEGREE, NULL);
         cmd_polling(CMD_PIVOT_LEFT_90_DEGREE, NULL);
         // TODO: Calibrate position here!!!!!!!!!!!!!!!!!!!!!!
-        cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
+        cmd_polling(CMD_NONBLOCK_RESET_PID_AND_STOP, NULL);
         delay_ms(500);
     }
     // Update sensors

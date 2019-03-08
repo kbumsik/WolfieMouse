@@ -25,9 +25,9 @@ enum cmd_type {
     CMD_PIVOT_RIGHT_90_DEGREE   = 5,    //< turn right in-place
     CMD_TURN_LEFT_SMOOTH        = 6,    //< turn left smooth
     CMD_TURN_RIGHT_SMOOTH       = 7,    //< turn right smooth
-    // low commands
-    CMD_LOW_SET_PID_AND_GO          = 8,    //< Set PID and start controlling the motors
-    CMD_LOW_RESET_PID_AND_STOP  = 9,    //< Reset current accumulated I-value of PID and then stop the motors
+    // Non-blocking commands
+    CMD_NONBLOCK_SET_PID_AND_GO = 8,    //< Set PID and start controlling the motors
+    CMD_NONBLOCK_RESET_PID_AND_STOP  = 9,    //< Reset current accumulated I-value of PID and then stop the motors
     // Sensor commands
     CMD_SENSOR_GET_RANGE        = 10,   //< Get range sensor value from CMD_RESP_RANGE
 };

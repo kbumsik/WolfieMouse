@@ -124,7 +124,7 @@ void task_4(void)
     cmd_polling(CMD_MOVE_FORWARD_ONE_CELL, NULL);
     cmd_polling(CMD_MOVE_FORWARD_ONE_CELL, NULL);
     cmd_polling(CMD_MOVE_FORWARD_ONE_CELL, NULL);
-    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
+    cmd_polling(CMD_NONBLOCK_RESET_PID_AND_STOP, NULL);
 }
 
 /**
@@ -137,7 +137,7 @@ void task_5(void)
 
     // Pivot
     cmd_polling(CMD_PIVOT_LEFT_90_DEGREE, NULL);
-    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
+    cmd_polling(CMD_NONBLOCK_RESET_PID_AND_STOP, NULL);
 
     // Pivot 180 degree
     delay_ms(1000);
@@ -159,7 +159,7 @@ void task_6(void)
 
     // Pivot
     cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE, NULL);
-    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
+    cmd_polling(CMD_NONBLOCK_RESET_PID_AND_STOP, NULL);
 
     // Pivot 180 degree
     delay_ms(1000);
@@ -339,7 +339,7 @@ int main(void)
 
     // Initialize command system
     cmd_init();
-    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
+    cmd_polling(CMD_NONBLOCK_RESET_PID_AND_STOP, NULL);
 
     /* Task creation and definition */
     BaseType_t result;

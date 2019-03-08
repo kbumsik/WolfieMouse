@@ -121,8 +121,8 @@ void (*const control_loop_driver[])(struct mouse_data_pid *pid) = {
     pivot_right_90_degree,          // CMD_PIVOT_RIGHT_90_DEGREE
     turn_left_smooth,               // CMD_TURN_LEFT_SMOOTH
     turn_right_smooth,              // CMD_TURN_RIGHT_SMOOTH
-    set_pid_and_go,                 // CMD_LOW_SET_PID_AND_GO
-    reset_pid_and_stop,             // CMD_LOW_RESET_PID_AND_STOP
+    set_pid_and_go,                 // CMD_NONBLOCK_SET_PID_AND_GO
+    reset_pid_and_stop,             // CMD_NONBLOCK_RESET_PID_AND_STOP
     send_range_data,                // CMD_SENSOR_GET_RANGE
 };
 
