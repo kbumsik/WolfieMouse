@@ -38,7 +38,8 @@ struct range_data g_range;
 static void control_loop(void *pvParameters);
 static TaskHandle_t control_loop_handler;
 
-static QueueHandle_t cmd_queue = NULL;
+static SemaphoreHandle_t semphr_from_isr = NULL;
+static QueueHandle_t command_queue = NULL;
 static SemaphoreHandle_t cmd_semphr = NULL;
 
 /*******************************************************************************
@@ -94,8 +95,8 @@ void control_loop_thread_init(void)
     /* Now peripherals has been initialized */
 
     /* Allocate Queue */
-    cmd_queue = xQueueCreate( 10, sizeof(struct cmd_command));
-    if (NULL == cmd_queue) {
+    command_queue = xQueueCreate( 10, sizeof(struct cmd_command));
+    if (NULL == command_queue) {
         KB_DEBUG_ERROR("Creating cmd queue failed!!");
     }
     /* Allocate Semaphore */
@@ -127,7 +128,7 @@ static void control_loop(void *pvParameters)
 
     while (1) {
         // Wait for a command from the maze solver
-        xQueueReceive(cmd_queue, &cmd, portMAX_DELAY);
+        xQueueReceive(command_queue, &cmd, portMAX_DELAY);
         // Invoke the corresponding control function
         control_loop_driver[cmd.type](&pid);
         // Notify the solver
@@ -146,7 +147,7 @@ void control_loop_thread_wait_1ms(void)
 
 void control_loop_send_commend (struct cmd_command *cmd)
 {
-    xQueueSend(cmd_queue, cmd, portMAX_DELAY);
+    xQueueSend(command_queue, cmd, portMAX_DELAY);
 }
 
 SemaphoreHandle_t control_loop_thread_get_cmd_semphr(void)
