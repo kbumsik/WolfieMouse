@@ -22,23 +22,60 @@ long_labels = ["T_target", "R_target",
                "time"]
 df = df[short_labels]
 df.columns = long_labels
+df["travel_distance"] = (df["Left_travel"] + df["Right_travel"]) / 2
 
 print(df.tail())
 
 # plot
-fig, axes = plt.subplots(nrows=3, ncols=1)
-pids = df[["T_target", "R_target",
-           "T_output", "R_output",
-           "time"]]
-speed = df[["Left_speed", "Right_speed",
-            "Left_travel", "Right_travel",
-            "time"]]
-range_sensor = df[["Left_distance", "Right_distance", "Front_distance",
-                   "Left_travel", "Right_travel",
-                   "time"]]
+fig, axes = plt.subplots(nrows=3, ncols=2)
 
-pids.plot(x="time", ax=axes[0]) #, ylim=(0,speeds["T_setpoint"].max()+10), 
-speed.plot(x="time", ax=axes[1]) #, ylim=(-10,pwms["Output_Left"].max()), 
-range_sensor.plot(x="time", ax=axes[2]) #, ylim=(-10,pwms["Output_Left"].max()), 
-# df.plot(secondary_y=["Output_Left", "Output_Right"], mark_right=False)
+# Plot data over time
+df.plot(
+    y=["T_target", "R_target",
+        "T_output", "R_output"],
+    x="time",
+    ax=axes[0, 0],
+    # ylim=(0,speeds["T_setpoint"].max()+10),
+    )
+df.plot(
+    y=["Left_speed", "Right_speed",
+        "Left_travel", "Right_travel"],
+    x="time",
+    ax=axes[1, 0],
+    # ylim=(-10,pwms["Output_Left"].max()),
+    )
+df.plot(
+    y=["Left_distance",
+        "Right_distance", "Front_distance"],
+    x="time",
+    ax=axes[2, 0],
+    # ylim=(-10,pwms["Output_Left"].max())
+    )
+
+# Plot data over distance
+df.plot(
+    y=["T_target", "R_target",
+        "T_output", "R_output"],
+    x="travel_distance",
+    ax=axes[0, 1],
+    # ylim=(0,speeds["T_setpoint"].max()+10),
+    )
+df.plot(
+    y=["Left_speed", "Right_speed",
+        "Left_travel", "Right_travel"],
+    x="travel_distance",
+    ax=axes[1, 1],
+    # ylim=(-10,pwms["Output_Left"].max()),
+    )
+df.plot(
+    y=["Left_distance",
+        "Right_distance", "Front_distance"],
+    x="travel_distance",
+    ax=axes[2, 1],
+    # ylim=(-10,pwms["Output_Left"].max())
+    )
+
+
+
+
 plt.show()
