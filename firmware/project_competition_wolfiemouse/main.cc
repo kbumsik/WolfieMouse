@@ -120,11 +120,11 @@ void task_4(void)
     delay_ms(2000);
 
     // Move
-    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
-    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
-    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
-    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
-    cmd_low_pid_reset_and_stop(NULL);
+    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL, NULL);
+    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL, NULL);
+    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL, NULL);
+    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL, NULL);
+    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
 }
 
 /**
@@ -136,16 +136,16 @@ void task_5(void)
     delay_ms(1000);
 
     // Pivot
-    cmd_polling(CMD_PIVOT_LEFT_90_DEGREE);
-    cmd_low_pid_reset_and_stop(NULL);
+    cmd_polling(CMD_PIVOT_LEFT_90_DEGREE, NULL);
+    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
 
     // Pivot 180 degree
     delay_ms(1000);
-    cmd_polling(CMD_PIVOT_LEFT_90_DEGREE);
-    cmd_low_pid_reset_and_stop(NULL);
+    cmd_polling(CMD_PIVOT_LEFT_90_DEGREE, NULL);
+    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
     delay_ms(1000);
-    cmd_polling(CMD_PIVOT_LEFT_90_DEGREE);
-    cmd_low_pid_reset_and_stop(NULL);
+    cmd_polling(CMD_PIVOT_LEFT_90_DEGREE, NULL);
+    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
     delay_ms(1000);
 }
 
@@ -158,16 +158,16 @@ void task_6(void)
     delay_ms(2000);
 
     // Pivot
-    cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE);
-    cmd_low_pid_reset_and_stop(NULL);
+    cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE, NULL);
+    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
 
     // Pivot 180 degree
     delay_ms(1000);
-    cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE);
-    cmd_low_pid_reset_and_stop(NULL);
+    cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE, NULL);
+    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
     delay_ms(1000);
-    cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE);
-    cmd_low_pid_reset_and_stop(NULL);
+    cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE, NULL);
+    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
     delay_ms(1000);
 }
 
@@ -190,10 +190,9 @@ static void _maze_solver_run(void (*wait_func)(MouseController *mouse))
     static MouseController mouse(NULL, &flashIO, &printIO,
             (FinderInterface*) &realmouse, (MoverInterface*) &realmouse);
 
-    /* First just print maze */
+    /* First get ready and print maze */
+    realmouse.getReady();
     mouse.printMaze();
-
-    range_get(&g_range, RANGE_CH_ALL); // To prevent the maze solver get wrong values
 
     while (true) {
         //Finite State Machine
@@ -234,7 +233,7 @@ static void _wait_for_button(MouseController *mouse)
     char key;
 
     // Stop the mouse completely and print the maze and the information.
-    cmd_low_pid_reset_and_stop(NULL);
+    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
     mouse->printMaze();
     puts("please input a command");
     puts("n:next, q: save and restart, p: print stack");
@@ -340,7 +339,7 @@ int main(void)
 
     // Initialize command system
     cmd_init();
-    cmd_low_pid_reset_and_stop(NULL);
+    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
 
     /* Task creation and definition */
     BaseType_t result;

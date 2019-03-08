@@ -9,6 +9,7 @@
 #define MOTION_CONTROLLER_H_
 
 #include "pid.h"
+#include "range.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,6 +28,13 @@ enum cmd_type {
     // low commands
     CMD_LOW_SET_PID_AND_GO          = 8,    //< Set PID and start controlling the motors
     CMD_LOW_RESET_PID_AND_STOP  = 9,    //< Reset current accumulated I-value of PID and then stop the motors
+    // Sensor commands
+    CMD_SENSOR_GET_RANGE        = 10,   //< Get range sensor value from CMD_RESP_RANGE
+};
+
+enum cmd_response_type {
+    CMD_RESP_DONE               = 0,    // Command complete
+    CMD_RESP_RANGE              = 1     // Range finder result
 };
 
 struct cmd_pid {
@@ -44,17 +52,31 @@ struct cmd_events {
 struct cmd_command {
     enum cmd_type type;
     struct cmd_pid pid;
-    // uint8_t stop_after;         //< Stop after operation
-    // uint8_t get_walls_after;    //< Use range sensors to check walls
 };
 
+struct cmd_response {
+    enum cmd_response_type type;
+    struct range_data range;
+};
+
+/**
+ * @brief Init cmd
+ */
 void cmd_init(void);
-void cmd_low_pid_and_go(struct cmd_pid *cmd, struct cmd_events *events);
-void cmd_low_pid_reset_and_stop(struct cmd_events *events);
 
-void cmd_polling(enum cmd_type type);
+/**
+ * @brief Send a command to a control loop thread and wait.
+ * @param cmd_type          type of a command to send.
+ * @param escape_callback   escape_callback is called when a response is received.
+ *                          A command will receive more than one response
+ *                          depending on types of the command. The callback MUST
+ *                          return non-zero when you don't want to wait anymore.
+ *                          It is HIGHLY recommanded to return non-zero when
+ *                          response.type is CMD_RESP_DONE.
+ */
+void cmd_polling(enum cmd_type type, int (*escape_callback)(struct cmd_response));
+
 // void cmd_async()
-
 // void motion_queue(motion_cmd_t *commend);
 
 #ifdef __cplusplus

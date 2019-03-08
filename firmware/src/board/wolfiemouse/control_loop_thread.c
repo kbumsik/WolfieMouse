@@ -28,11 +28,6 @@
 #include "control_loop_thread_driver.h"
 
 /*******************************************************************************
- * Global variable
- ******************************************************************************/
-struct range_data g_range;
-
-/*******************************************************************************
  * Control loop thread
  ******************************************************************************/
 static void control_loop(void *pvParameters);
@@ -40,7 +35,7 @@ static TaskHandle_t control_loop_handler;
 
 static SemaphoreHandle_t semphr_from_isr = NULL;
 static QueueHandle_t command_queue = NULL;
-static SemaphoreHandle_t cmd_semphr = NULL;
+static QueueHandle_t response_queue = NULL;
 
 /*******************************************************************************
  * Function definition
@@ -95,12 +90,14 @@ void control_loop_thread_init(void)
     /* Now peripherals has been initialized */
 
     /* Allocate Queue */
-    command_queue = xQueueCreate( 10, sizeof(struct cmd_command));
+    command_queue = xQueueCreate( 5, sizeof(struct cmd_command));
     if (NULL == command_queue) {
         KB_DEBUG_ERROR("Creating cmd queue failed!!");
     }
-    /* Allocate Semaphore */
-    cmd_semphr = xSemaphoreCreateCounting(1, 0);
+    response_queue = xQueueCreate( 10, sizeof(struct cmd_response));
+    if (NULL == response_queue) {
+        KB_DEBUG_ERROR("Creating cmd queue failed!!");
+    }
 
     /* Allocate task */
     BaseType_t result;
@@ -124,16 +121,17 @@ static void control_loop(void *pvParameters)
     // PID handler
     static struct mouse_data_pid pid;
 
-    range_get(&g_range, RANGE_CH_ALL); // To prevent the maze solver get wrong values
-
     while (1) {
         // Wait for a command from the maze solver
         xQueueReceive(command_queue, &cmd, portMAX_DELAY);
         // Invoke the corresponding control function
         control_loop_driver[cmd.type](&pid);
         // Notify the solver
-        range_get(&g_range, RANGE_CH_ALL); // To prevent the maze solver get wrong values
-        xSemaphoreGive(cmd_semphr);
+        struct cmd_response resp = {
+            .type = CMD_RESP_DONE,
+            .range = (const struct range_data){0},
+        };
+        xQueueSend(response_queue, &resp, portMAX_DELAY);
     }
 
     /* It never goes here, but the task should be deleted when it reached here */
@@ -150,7 +148,12 @@ void control_loop_send_commend (struct cmd_command *cmd)
     xQueueSend(command_queue, cmd, portMAX_DELAY);
 }
 
-SemaphoreHandle_t control_loop_thread_get_cmd_semphr(void)
+void control_loop_get_response (struct cmd_response *resp)
 {
-    return cmd_semphr;
+    xQueueReceive(response_queue, resp, portMAX_DELAY);
+}
+
+void control_loop_send_response (struct cmd_response *resp)
+{
+    xQueueSend(response_queue, resp, portMAX_DELAY);
 }

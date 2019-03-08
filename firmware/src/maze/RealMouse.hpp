@@ -19,6 +19,10 @@ public:
     {
             return examineWall(pos.row, pos.col, wallDir, mousePos);
     }
+    /**
+     * @brief Do some preparations before get started.
+     */
+    void getReady();
     /* Overriding MoverInterface methods */
     void moveTo(int row, int col, Direction destDir, PositionController &mousePos) override;
     void moveTo(Position pos, Direction destDir, PositionController &mousePos)

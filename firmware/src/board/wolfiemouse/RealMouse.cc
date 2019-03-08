@@ -17,9 +17,21 @@
 #include "tick.h"
 
 /*******************************************************************************
- * Global Variables
+ * local Variables
  ******************************************************************************/
-extern struct range_data g_range;
+static struct range_data range;
+static auto update_range = [&range](struct cmd_response resp){
+    switch (resp.type) {
+        case CMD_RESP_RANGE:
+            range = resp.range;
+            return 0;
+        case CMD_RESP_DONE:
+            return 1;
+        default:
+            return 0;
+    }
+    return 0;
+};
 
 /*******************************************************************************
  * Private functions
@@ -47,15 +59,26 @@ Wall RealMouse::examineWall(int row, int col, Direction wallDir, PositionControl
     Wall ret = wallError;
     if (wallDir == mouseDir) {
         // Use front sensor
-        ret = (g_range.front > (MEASURE_RANGE_F_NEAR_DETECT - 100 ))?wall:empty;
+        ret = (range.front > (MEASURE_RANGE_F_NEAR_DETECT - 100 ))?wall:empty;
     } else if (wallDir == (++mouseDir)) {
         // Use left sensor
-        ret = (g_range.left > MEASURE_RANGE_L_WALL_DETECT)?wall:empty;
+        ret = (range.left > MEASURE_RANGE_L_WALL_DETECT)?wall:empty;
     } else if ((++wallDir) == (--mouseDir)) {
-        ret = (g_range.right > MEASURE_RANGE_R_WALL_DETECT)?wall:empty;
+        ret = (range.right > MEASURE_RANGE_R_WALL_DETECT)?wall:empty;
     }
     gpio_set(LED3_PORT, LED3_PIN, GPIO_PIN_RESET);
     return ret;
+}
+
+/* Overriding MoverInterface methods */
+void RealMouse::getReady()
+{
+    gpio_set(LED1_PORT, LED1_PIN, GPIO_PIN_SET);
+    // TODO: MOVE HALF!!!!!!!!!!!!!
+    // Update sensors
+    cmd_polling(CMD_SENSOR_GET_RANGE, update_range);
+    gpio_set(LED1_PORT, LED1_PIN, GPIO_PIN_RESET);
+    return;
 }
 
 /* Overriding MoverInterface methods */
@@ -63,7 +86,9 @@ void RealMouse::moveTo(int row, int col, Direction destDir, PositionController &
 {
     gpio_set(LED5_PORT, LED5_PIN, GPIO_PIN_SET);
     // Just move it by one cell
-    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
+    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL, NULL);
+    // Update sensors
+    cmd_polling(CMD_SENSOR_GET_RANGE, update_range);
     gpio_set(LED5_PORT, LED5_PIN, GPIO_PIN_RESET);
     return;
 }
@@ -76,21 +101,24 @@ void RealMouse::rotateTo(Direction destDir, PositionController &mousePos)
         // The direction is the same. Nothing
     } else if (destDir == (++mouseDir)) {
         // Turn left
-        cmd_polling(CMD_PIVOT_LEFT_90_DEGREE);
-        cmd_low_pid_reset_and_stop(NULL);
+        cmd_polling(CMD_PIVOT_LEFT_90_DEGREE, NULL);
+        cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
         delay_ms(500);
     } else if ((++destDir) == (--mouseDir)) {
         // Turn right
-        cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE);
-        cmd_low_pid_reset_and_stop(NULL);
+        cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE, NULL);
+        cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
         delay_ms(500);
     } else {
         // turn 180 degree
         // Turn left
-        cmd_polling(CMD_PIVOT_LEFT_90_DEGREE);
-        cmd_polling(CMD_PIVOT_LEFT_90_DEGREE);
-        cmd_low_pid_reset_and_stop(NULL);
+        cmd_polling(CMD_PIVOT_LEFT_90_DEGREE, NULL);
+        cmd_polling(CMD_PIVOT_LEFT_90_DEGREE, NULL);
+        // TODO: Calibrate position here!!!!!!!!!!!!!!!!!!!!!!
+        cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
         delay_ms(500);
     }
+    // Update sensors
+    cmd_polling(CMD_SENSOR_GET_RANGE, update_range);
     gpio_set(LED4_PORT, LED4_PIN, GPIO_PIN_RESET);
 }

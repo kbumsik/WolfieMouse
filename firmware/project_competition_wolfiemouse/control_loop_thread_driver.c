@@ -110,6 +110,7 @@ void turn_left_smooth (struct mouse_data_pid *pid);
 void turn_right_smooth (struct mouse_data_pid *pid);
 void set_pid_and_go (struct mouse_data_pid *pid);
 void reset_pid_and_stop (struct mouse_data_pid *pid);
+void send_range_data (struct mouse_data_pid *pid);
 
 void (*const control_loop_driver[])(struct mouse_data_pid *pid) = {
     do_nothing,                     // CMD_NOTHING
@@ -122,6 +123,7 @@ void (*const control_loop_driver[])(struct mouse_data_pid *pid) = {
     turn_right_smooth,              // CMD_TURN_RIGHT_SMOOTH
     set_pid_and_go,                 // CMD_LOW_SET_PID_AND_GO
     reset_pid_and_stop,             // CMD_LOW_RESET_PID_AND_STOP
+    send_range_data,                // CMD_SENSOR_GET_RANGE
 };
 
 /*******************************************************************************
@@ -255,6 +257,17 @@ void reset_pid_and_stop (struct mouse_data_pid *pid)
     stop_motor(pid);
 }
 
+void send_range_data (struct mouse_data_pid *pid)
+{
+    struct range_data range;
+    update_range(&range);
+    control_loop_send_response(
+        &(struct cmd_response){
+            .type = CMD_RESP_RANGE,
+            .range = range
+        });
+}
+
 /*******************************************************************************
  * Common function definitions (control loop)
  ******************************************************************************/
@@ -266,7 +279,7 @@ void loop_move_forward (struct mouse_data_pid *pid,
                         int16_t target_step_left,
                         int16_t target_step_right)
 {
-    struct range_data *range = &g_range;    // Range finder value
+    struct range_data range;    // Range finder value
     struct mouse_data_speed speed;    // Speed value
     // TODO: Prevent underflow/overflow.
     struct mouse_data_step total_step = { // Accumulated step (distance) values
@@ -295,11 +308,11 @@ void loop_move_forward (struct mouse_data_pid *pid,
     while (1) {
         control_loop_thread_wait_1ms();
         update_steps_and_speed(&total_step, &speed);
-        update_range(range);
+        update_range(&range);
 
         // if it is too close stop
-        if ((range->front > MEASURE_RANGE_F_NEAR_DETECT) ||
-            (range->front_right > MEASURE_RANGE_F_NEAR_DETECT)) {
+        if ((range.front > MEASURE_RANGE_F_NEAR_DETECT) ||
+            (range.front_right > MEASURE_RANGE_F_NEAR_DETECT)) {
             stop_motor(pid);
             break;
         }
@@ -309,19 +322,19 @@ void loop_move_forward (struct mouse_data_pid *pid,
         int32_t feedback_T = (speed.left + speed.right) / 2;
         // calculate errorR
         int32_t feedback_R;
-        if((range->left > (MEASURE_RANGE_L_MIN_DETECT))
-                            && (range->right > MEASURE_RANGE_R_MIN_DETECT) ) {
+        if((range.left > (MEASURE_RANGE_L_MIN_DETECT))
+                            && (range.right > MEASURE_RANGE_R_MIN_DETECT) ) {
             // If both range are within wall detecting distance,
             // Use range sensor to get rotational error
-            feedback_R = (range->right - range->left - MEASURE_RANGE_R_OFFSET) / 10;
-        } else if (range->left > (MEASURE_RANGE_L_MIN_DETECT + 50)) {
+            feedback_R = (range.right - range.left - MEASURE_RANGE_R_OFFSET) / 10;
+        } else if (range.left > (MEASURE_RANGE_L_MIN_DETECT + 50)) {
             // If only left side is within range
             // use the middle value of the right range
-            feedback_R = (MEASURE_RANGE_R_M_DETECT - range->left) / 10;
-        } else if (range->right > (MEASURE_RANGE_R_MIN_DETECT + 50)) {
+            feedback_R = (MEASURE_RANGE_R_M_DETECT - range.left) / 10;
+        } else if (range.right > (MEASURE_RANGE_R_MIN_DETECT + 50)) {
             // If only right side is within range
             // use the middle value of the left range
-            feedback_R = (range->right - MEASURE_RANGE_L_M_DETECT) / 10;
+            feedback_R = (range.right - MEASURE_RANGE_L_M_DETECT) / 10;
         } else {
             // in open space, use rotary encoder
             feedback_R = speed.diff;
@@ -335,7 +348,7 @@ void loop_move_forward (struct mouse_data_pid *pid,
         motor_speed_permyriad(CH_RIGHT, outputT - outputR);
         motor_start(CH_BOTH);
 
-        logger_log(pid, range, &total_step, &speed, outputT, outputR);
+        logger_log(pid, &range, &total_step, &speed, outputT, outputR);
 
         if (check_escape_condition(pid, &total_step, &target_step,
                                    &target_wheel_dir)) {

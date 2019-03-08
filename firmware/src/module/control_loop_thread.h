@@ -20,9 +20,8 @@ extern "C" {
 void control_loop_thread_init(void);
 void control_loop_thread_wait_1ms(void);
 void control_loop_send_commend (struct cmd_command *cmd);
-SemaphoreHandle_t control_loop_thread_get_cmd_semphr(void);
-
-extern struct range_data g_range;
+void control_loop_get_response (struct cmd_response *resp);
+void control_loop_send_response (struct cmd_response *resp);
 
 #ifdef __cplusplus
 }
