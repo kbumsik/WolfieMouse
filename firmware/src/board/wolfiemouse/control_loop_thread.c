@@ -33,7 +33,6 @@
 static void control_loop(void *pvParameters);
 static TaskHandle_t control_loop_handler;
 
-static SemaphoreHandle_t semphr_from_isr = NULL;
 static QueueHandle_t command_queue = NULL;
 static QueueHandle_t response_queue = NULL;
 

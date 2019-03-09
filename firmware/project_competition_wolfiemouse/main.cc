@@ -120,10 +120,7 @@ void task_4(void)
     delay_ms(2000);
 
     // Move
-    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL, NULL);
-    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL, NULL);
-    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL, NULL);
-    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL, NULL);
+    cmd_polling(CMD_MOVE_UNTIL_FRONT_WALL, NULL);
     cmd_polling(CMD_NONBLOCK_RESET_PID_AND_STOP, NULL);
 }
 
@@ -142,10 +139,10 @@ void task_5(void)
     // Pivot 180 degree
     delay_ms(1000);
     cmd_polling(CMD_PIVOT_LEFT_90_DEGREE, NULL);
-    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
+    cmd_polling(CMD_NONBLOCK_RESET_PID_AND_STOP, NULL);
     delay_ms(1000);
     cmd_polling(CMD_PIVOT_LEFT_90_DEGREE, NULL);
-    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
+    cmd_polling(CMD_NONBLOCK_RESET_PID_AND_STOP, NULL);
     delay_ms(1000);
 }
 
@@ -164,10 +161,10 @@ void task_6(void)
     // Pivot 180 degree
     delay_ms(1000);
     cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE, NULL);
-    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
+    cmd_polling(CMD_NONBLOCK_RESET_PID_AND_STOP, NULL);
     delay_ms(1000);
     cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE, NULL);
-    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
+    cmd_polling(CMD_NONBLOCK_RESET_PID_AND_STOP, NULL);
     delay_ms(1000);
 }
 
@@ -233,7 +230,7 @@ static void _wait_for_button(MouseController *mouse)
     char key;
 
     // Stop the mouse completely and print the maze and the information.
-    cmd_polling(CMD_LOW_RESET_PID_AND_STOP, NULL);
+    cmd_polling(CMD_NONBLOCK_RESET_PID_AND_STOP, NULL);
     mouse->printMaze();
     puts("please input a command");
     puts("n:next, q: save and restart, p: print stack");

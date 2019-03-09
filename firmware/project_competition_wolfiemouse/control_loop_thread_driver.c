@@ -104,6 +104,8 @@ void do_nothing (struct mouse_data_pid *pid);
 void move_from_back_to_start_center (struct mouse_data_pid *pid);
 void move_forward_one_cell (struct mouse_data_pid *pid);
 void move_forward_half_cell (struct mouse_data_pid *pid);
+void move_forward_until_wall (struct mouse_data_pid *pid);
+void move_forward_until_wall_scaning (struct mouse_data_pid *pid);
 void pivot_left_90_degree (struct mouse_data_pid *pid);
 void pivot_right_90_degree (struct mouse_data_pid *pid);
 void turn_left_smooth (struct mouse_data_pid *pid);
@@ -117,6 +119,8 @@ void (*const control_loop_driver[])(struct mouse_data_pid *pid) = {
     move_from_back_to_start_center, // CMD_BACK_TO_SART_CENTER
     move_forward_one_cell,          // CMD_MOVE_FORWARD_ONE_CELL
     move_forward_half_cell,         // CMD_MOVE_FORWARD_HALF_CELL
+    move_forward_until_wall,        // CMD_MOVE_UNTIL_FRONT_WALL
+    move_forward_until_wall_scaning,// CMD_MOVE_UNTIL_FRONT_WALL_SCANING
     pivot_left_90_degree,           // CMD_PIVOT_LEFT_90_DEGREE
     pivot_right_90_degree,          // CMD_PIVOT_RIGHT_90_DEGREE
     turn_left_smooth,               // CMD_TURN_LEFT_SMOOTH
@@ -136,7 +140,8 @@ void loop_move_forward (struct mouse_data_pid *pid,
                         int32_t target_speed_tran,
                         int32_t target_speed_rot,
                         int16_t target_step_left,
-                        int16_t target_step_right);
+                        int16_t target_step_right,
+                        int check_wheel);
 void loop_pivot (struct mouse_data_pid *pid,
                  pid_value_t *pid_tran,
                  pid_value_t *pid_rot,
@@ -178,7 +183,8 @@ void move_from_back_to_start_center (struct mouse_data_pid *pid)
                        TARGET_MOVE_FORWARD_SPEED_TRAN,
                        TARGET_MOVE_FORWARD_SPEED_ROT,
                        MEASURE_STEPS_BACK_TO_START_CENTER,
-                       MEASURE_STEPS_BACK_TO_START_CENTER);
+                       MEASURE_STEPS_BACK_TO_START_CENTER,
+                       1);
 }
 
 void move_forward_one_cell (struct mouse_data_pid *pid)
@@ -189,7 +195,8 @@ void move_forward_one_cell (struct mouse_data_pid *pid)
                        TARGET_MOVE_FORWARD_SPEED_TRAN,
                        TARGET_MOVE_FORWARD_SPEED_ROT,
                        MEASURE_STEPS_PER_CELL,
-                       MEASURE_STEPS_PER_CELL);
+                       MEASURE_STEPS_PER_CELL,
+                       1);
 }
 
 void move_forward_half_cell (struct mouse_data_pid *pid)
@@ -200,7 +207,32 @@ void move_forward_half_cell (struct mouse_data_pid *pid)
                        TARGET_MOVE_FORWARD_SPEED_TRAN,
                        TARGET_MOVE_FORWARD_SPEED_ROT,
                        MEASURE_STEPS_PER_CELL / 2,
-                       MEASURE_STEPS_PER_CELL / 2);
+                       MEASURE_STEPS_PER_CELL / 2,
+                       1);
+}
+
+void move_forward_until_wall (struct mouse_data_pid *pid)
+{
+    loop_move_forward (pid,
+                       &pid_tran_forwarding_value,
+                       &pid_rot_forwarding_value,
+                       TARGET_MOVE_FORWARD_SPEED_TRAN,
+                       TARGET_MOVE_FORWARD_SPEED_ROT,
+                       MEASURE_STEPS_PER_CELL,
+                       MEASURE_STEPS_PER_CELL,
+                       0);
+}
+
+void move_forward_until_wall_scaning (struct mouse_data_pid *pid)
+{
+    // loop_move_forward (pid,
+    //                    &pid_tran_forwarding_value,
+    //                    &pid_rot_forwarding_value,
+    //                    TARGET_MOVE_FORWARD_SPEED_TRAN,
+    //                    TARGET_MOVE_FORWARD_SPEED_ROT,
+    //                    MEASURE_STEPS_PER_CELL,
+    //                    MEASURE_STEPS_PER_CELL,
+    //                    0);
 }
 
 void pivot_left_90_degree (struct mouse_data_pid *pid)
@@ -277,7 +309,8 @@ void loop_move_forward (struct mouse_data_pid *pid,
                         int32_t target_speed_tran,
                         int32_t target_speed_rot,
                         int16_t target_step_left,
-                        int16_t target_step_right)
+                        int16_t target_step_right,
+                        int check_wheel)
 {
     struct range_data range;    // Range finder value
     struct mouse_data_speed speed;    // Speed value
@@ -349,9 +382,10 @@ void loop_move_forward (struct mouse_data_pid *pid,
         motor_start(CH_BOTH);
 
         logger_log(pid, &range, &total_step, &speed, outputT, outputR);
-
-        if (check_escape_condition(pid, &total_step, &target_step,
-                                   &target_wheel_dir)) {
+        // logger_log(pid, range, &total_step, &speed, outputT, outputR);
+        if (check_wheel &&
+            check_escape_condition(pid, &total_step,
+                                    &target_step, &target_wheel_dir)) {
             break;
         }
     }

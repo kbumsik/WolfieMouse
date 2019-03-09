@@ -18,18 +18,20 @@ extern "C" {
 enum cmd_type {
     CMD_NOTHING                 = 0,
     // high level commands
-    CMD_MOVE_FROM_BACK_TO_SART_CENTER     = 1,    //< move forward from the back of the cell to the center of the cell
-    CMD_MOVE_FORWARD_ONE_CELL   = 2,    //< move forward 1 cell
-    CMD_MOVE_FORWARD_HALF_CELL  = 3,    //< move forward 1/2 cell
-    CMD_PIVOT_LEFT_90_DEGREE    = 4,    //< turn left in-place
-    CMD_PIVOT_RIGHT_90_DEGREE   = 5,    //< turn right in-place
-    CMD_TURN_LEFT_SMOOTH        = 6,    //< turn left smooth
-    CMD_TURN_RIGHT_SMOOTH       = 7,    //< turn right smooth
+    CMD_MOVE_FROM_BACK_TO_SART_CENTER,      //< move forward from the back of the cell to the center of the cell
+    CMD_MOVE_FORWARD_ONE_CELL,              //< move forward 1 cell
+    CMD_MOVE_FORWARD_HALF_CELL,             //< move forward 1/2 cell
+    CMD_MOVE_UNTIL_FRONT_WALL,              //< move forward until the mouse faces a wall
+    CMD_MOVE_UNTIL_FRONT_WALL_SCANING,      //< move forward until the mouse faces a wall, while sending range data for each wall the mouse passes.
+    CMD_PIVOT_LEFT_90_DEGREE,               //< turn left in-place
+    CMD_PIVOT_RIGHT_90_DEGREE,              //< turn right in-place
+    CMD_TURN_LEFT_SMOOTH,                   //< turn left smooth
+    CMD_TURN_RIGHT_SMOOTH,                  //< turn right smooth
     // Non-blocking commands
-    CMD_NONBLOCK_SET_PID_AND_GO = 8,    //< Set PID and start controlling the motors
-    CMD_NONBLOCK_RESET_PID_AND_STOP  = 9,    //< Reset current accumulated I-value of PID and then stop the motors
+    CMD_NONBLOCK_SET_PID_AND_GO,    //< Set PID and start controlling the motors
+    CMD_NONBLOCK_RESET_PID_AND_STOP,    //< Reset current accumulated I-value of PID and then stop the motors
     // Sensor commands
-    CMD_SENSOR_GET_RANGE        = 10,   //< Get range sensor value from CMD_RESP_RANGE
+    CMD_SENSOR_GET_RANGE,   //< Get range sensor value from CMD_RESP_RANGE
 };
 
 enum cmd_response_type {
