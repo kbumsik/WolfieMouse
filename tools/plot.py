@@ -31,15 +31,13 @@ fig, axes = plt.subplots(nrows=3, ncols=2)
 
 # Plot data over time
 df.plot(
-    y=["T_target", "R_target",
-        "T_output", "R_output"],
+    y=["T_target", "R_target", "T_output", "R_output"],
     x="time",
     ax=axes[0, 0],
     # ylim=(0,speeds["T_setpoint"].max()+10),
     )
 df.plot(
-    y=["Left_speed", "Right_speed",
-        "Left_travel", "Right_travel"],
+    y=["Left_speed", "Right_speed"],
     x="time",
     ax=axes[1, 0],
     # ylim=(-10,pwms["Output_Left"].max()),
@@ -61,15 +59,13 @@ df.plot(
     # ylim=(0,speeds["T_setpoint"].max()+10),
     )
 df.plot(
-    y=["Left_speed", "Right_speed",
-        "Left_travel", "Right_travel"],
+    y=["Left_speed", "Right_speed"],
     x="travel_distance",
     ax=axes[1, 1],
     # ylim=(-10,pwms["Output_Left"].max()),
     )
 df.plot(
-    y=["Left_distance",
-        "Right_distance", "Front_distance"],
+    y=["Left_distance", "Right_distance", "Front_distance"],
     x="travel_distance",
     ax=axes[2, 1],
     # ylim=(-10,pwms["Output_Left"].max())
