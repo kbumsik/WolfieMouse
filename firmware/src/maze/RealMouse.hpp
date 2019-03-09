@@ -24,10 +24,10 @@ public:
      */
     void getReady();
     /* Overriding MoverInterface methods */
-    void moveTo(int row, int col, Direction destDir, PositionController &mousePos) override;
-    void moveTo(Position pos, Direction destDir, PositionController &mousePos)
+    void moveTo(int row, int col, Direction destDir, bool stoppingWallExists, PositionController &mousePos) override;
+    void moveTo(Position pos, Direction destDir, bool stoppingWallExists, PositionController &mousePos)
     {
-        return moveTo(pos.row, pos.col, destDir, mousePos);
+        return moveTo(pos.row, pos.col, destDir, stoppingWallExists, mousePos);
     }
     void rotateTo(Direction destDir, PositionController &mousePos) override;
 };

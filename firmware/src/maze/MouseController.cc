@@ -32,7 +32,7 @@ bool MouseController::scanAndMove(void (*wait_func)(MouseController *mouse))
         /* then get shortest path */
         getShortestPath();
         /* Optimize path stack */
-        // optimizePathStack();
+        optimizePathStack();
     } else {
         /* If the walls changed do nothing */
     }
@@ -50,9 +50,9 @@ bool MouseController::scanAndMove(void (*wait_func)(MouseController *mouse))
         getDistanceAllCell();
         getShortestPath();
         /* Optimize path stack */
-        // optimizePathStack();
+        optimizePathStack();
     }
-    
+
     /* Block after moving */
     if (wait_func) {
         wait_func(this);
@@ -360,6 +360,8 @@ Direction MouseController::getDirectionToGo(void)
 {
     /* get the next position */
     PositionController nextPosition = pathStack.peekFromFront();
+    printf("\n Next POOOSIITIOONNNN!:\n");
+    nextPosition.print(nextPosition);
     return getNextDir(nextPosition);
 }
 
@@ -404,6 +406,10 @@ bool MouseController::scanWalls(void)
 
 void MouseController::moveNextShortestCell(void)
 {
+    printf("Current:\n");
+    printPathStack();
+    printf("target: ");
+    PositionController::print(pathStack.peekFromFront());
     /* 1. turn first */
     Direction next_d = getDirectionToGo();
     mover->rotateTo(next_d, *this);
@@ -411,9 +417,17 @@ void MouseController::moveNextShortestCell(void)
     /* 2. scan side wall */
     scanWalls();		// TODO: Try using this outside
     /* 3. move */
-    /* move command */
+    // Get next position
     Position next_p = getNextPos();
-    mover->moveTo(next_p, next_d, *this);
+    // Check wall status of the next position.
+    bool stoppingWallExists = (getWall(next_p, next_d) == wall) ? true : false;
+
+    if (stoppingWallExists) {
+        printf("\nYEEEEEEEEEEESSSS!!!!!!!!!!!!!!!!!!!!!!\n");
+    }
+
+    // move command
+    mover->moveTo(next_p, next_d, stoppingWallExists, *this);
     setPos(next_p);
     /* 4. scan the front wall */
     /* 5. update */

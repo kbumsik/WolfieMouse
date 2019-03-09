@@ -32,7 +32,7 @@ Wall SimulMouse::examineWall(int row, int col, Direction wallDir, PositionContro
 }
 
 /* Overriding MoverInterface methods */
-void SimulMouse::moveTo(int row, int col, Direction destDir, PositionController &mousePos)
+void SimulMouse::moveTo(int row, int col, Direction destDir, bool stoppingWallExists, PositionController &mousePos)
 {
 	return;
 }

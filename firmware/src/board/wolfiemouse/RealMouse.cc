@@ -82,11 +82,18 @@ void RealMouse::getReady()
 }
 
 /* Overriding MoverInterface methods */
-void RealMouse::moveTo(int row, int col, Direction destDir, PositionController &mousePos)
+void RealMouse::moveTo(int row, int col, Direction destDir, bool stoppingWallExists, PositionController &mousePos)
 {
     gpio_set(LED5_PORT, LED5_PIN, GPIO_PIN_SET);
     // Just move it by one cell
-    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL, NULL);
+    if (stoppingWallExists) {
+        gpio_set(LED1_PORT, LED1_PIN, GPIO_PIN_SET);
+        cmd_polling(CMD_MOVE_UNTIL_FRONT_WALL, NULL);
+        delay_ms(1000);
+        gpio_set(LED1_PORT, LED1_PIN, GPIO_PIN_RESET);
+    } else {
+        cmd_polling(CMD_MOVE_FORWARD_ONE_CELL, NULL);
+    }
     // Update sensors
     cmd_polling(CMD_SENSOR_GET_RANGE, update_range);
     gpio_set(LED5_PORT, LED5_PIN, GPIO_PIN_RESET);
