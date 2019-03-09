@@ -47,7 +47,7 @@ Wall RealMouse::examineWall(int row, int col, Direction wallDir, PositionControl
     Wall ret = wallError;
     if (wallDir == mouseDir) {
         // Use front sensor
-        ret = (g_range.front > (MEASURE_RANGE_F_NEAR_DETECT - 100 ))?wall:empty;
+        ret = (g_range.front_left > (MEASURE_RANGE_F_NEAR_DETECT - 100 ))?wall:empty;
     } else if (wallDir == (++mouseDir)) {
         // Use left sensor
         ret = (g_range.left > MEASURE_RANGE_L_WALL_DETECT)?wall:empty;

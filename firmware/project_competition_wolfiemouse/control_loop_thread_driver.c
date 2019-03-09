@@ -299,7 +299,7 @@ void loop_move_forward (struct mouse_data_pid *pid,
         update_range(range);
 
         // if it is too close stop
-        if ((range->front > MEASURE_RANGE_F_NEAR_DETECT) ||
+        if ((range->front_left > MEASURE_RANGE_F_NEAR_DETECT) ||
             (range->front_right > MEASURE_RANGE_F_NEAR_DETECT)) {
             stop_motor(pid);
             break;
@@ -310,7 +310,8 @@ void loop_move_forward (struct mouse_data_pid *pid,
         int32_t feedback_T = (speed.left + speed.right) / 2;
         // calculate errorR
         int32_t feedback_R;
-        if (range->front > MEASURE_RANGE_F_NEAR_DANGER) {
+        if ((range->front_left > MEASURE_RANGE_F_NEAR_DANGER) ||
+            (range->front_right > MEASURE_RANGE_F_NEAR_DANGER)) {
             // When front is getting close turn of sides.
             feedback_R = speed.diff;
         } else if ((range->left > (MEASURE_RANGE_L_MIN_DETECT))
