@@ -133,7 +133,7 @@ void task_4(void)
 void task_5(void)
 {
     hcms_290x_matrix("Non5");
-    delay_ms(2000);
+    delay_ms(1000);
 
     // Pivot
     cmd_polling(CMD_PIVOT_LEFT_90_DEGREE);
@@ -142,8 +142,11 @@ void task_5(void)
     // Pivot 180 degree
     delay_ms(1000);
     cmd_polling(CMD_PIVOT_LEFT_90_DEGREE);
+    cmd_low_pid_reset_and_stop(NULL);
+    delay_ms(1000);
     cmd_polling(CMD_PIVOT_LEFT_90_DEGREE);
     cmd_low_pid_reset_and_stop(NULL);
+    delay_ms(1000);
 }
 
 /**
@@ -161,8 +164,11 @@ void task_6(void)
     // Pivot 180 degree
     delay_ms(1000);
     cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE);
+    cmd_low_pid_reset_and_stop(NULL);
+    delay_ms(1000);
     cmd_polling(CMD_PIVOT_RIGHT_90_DEGREE);
     cmd_low_pid_reset_and_stop(NULL);
+    delay_ms(1000);
 }
 
 /*******************************************************************************

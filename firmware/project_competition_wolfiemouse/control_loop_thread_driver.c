@@ -10,6 +10,33 @@
 /*******************************************************************************
  * Constants definition
  ******************************************************************************/
+
+/**
+ * @brief Wheel measurements
+ */
+#define MEASURE_STEPS_PER_REV       5760
+#define MEASURE_STEPS_PER_CELL      7875
+#define MEASURE_STEPS_90DEG_CW      2618
+#define MEASURE_STEPS_90DEG_CCW     2659
+#define MEASURE_STEPS_SMOOTH_L_LEFT     4376
+#define MEASURE_STEPS_SMOOTH_L_RIGHT    9258
+#define MEASURE_STEPS_SMOOTH_R_LEFT     9258
+#define MEASURE_STEPS_SMOOTH_R_RIGHT    4376
+#define MEASURE_STEPS_BACK_TO_START_CENTER 1500 //< start is from 3.7cm
+
+/**
+ * @brief Reange finder values
+ */
+#define MEASURE_RANGE_L_MIN_DETECT	660
+#define MEASURE_RANGE_L_M_DETECT    1150
+#define MEASURE_RANGE_L_MAX_DETECT	1450
+
+#define MEASURE_RANGE_R_MIN_DETECT	900
+#define MEASURE_RANGE_R_M_DETECT	1550
+#define MEASURE_RANGE_R_MAX_DETECT	1700
+
+#define MEASURE_RANGE_R_OFFSET 300 /* the offset between left and right sensor when mouse in the middle of cell */
+
 /* Set target PID speed */
 #define TARGET_MOVE_FORWARD_SPEED_TRAN  (10)
 #define TARGET_MOVE_FORWARD_SPEED_ROT   (0)
@@ -40,7 +67,7 @@ pid_value_t pid_tran_rotating_value = {
 };
 
 pid_value_t pid_rot_rotating_value = {
-            .kp = 7,
+            .kp = 8 ,
             .ki = 0.1,
             .kd = 20
 };
