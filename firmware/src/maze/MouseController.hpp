@@ -52,6 +52,7 @@ private:
     /* Setting Direction */
     Direction getDirectionToGo(void);
     void setDirectionToGo(void);
+    void optimizePathStack (void);
 
     /*************** Interacting physical interfaces **************************/
     /**

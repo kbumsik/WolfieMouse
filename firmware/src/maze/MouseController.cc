@@ -31,13 +31,17 @@ bool MouseController::scanAndMove(void (*wait_func)(MouseController *mouse))
         getDistanceAllCell();
         /* then get shortest path */
         getShortestPath();
+        /* Optimize path stack */
+        // optimizePathStack();
     } else {
         /* If the walls changed do nothing */
     }
+
     /* Block before moving */
     if (wait_func) {
         wait_func(this);
     }
+
     /* Then move */
     moveNextShortestCell();
 
@@ -45,6 +49,8 @@ bool MouseController::scanAndMove(void (*wait_func)(MouseController *mouse))
     if (!destinations.empty()) {
         getDistanceAllCell();
         getShortestPath();
+        /* Optimize path stack */
+        // optimizePathStack();
     }
     
     /* Block after moving */
@@ -450,4 +456,21 @@ int MouseController::goForward(void)
 	/* Use MovingInterface */
 	// TODO: What if the mouse actually failed to move??
 	return COMMON_MAZE_SUCCESS;
+}
+
+/*******************************************************************************
+ * Private functions
+ ******************************************************************************/
+void MouseController::optimizePathStack (void)
+{
+    while (true) {
+        // Pop first
+        PositionController current = pathStack.popFromFront();
+        PositionController next = pathStack.peekFromFront();
+        // Compare. If not the same, push back and exit.
+        if (current.getCurrentDir() != next.getCurrentDir()) {
+            pathStack.pushToFront(current);
+            break;
+        }
+    }
 }
