@@ -28,9 +28,9 @@ pid_value_t pid_tran_forwarding_value = {
 };
 
 pid_value_t pid_rot_forwarding_value = {
-            .kp = 3,
+            .kp = 8,
             .ki = 0,
-            .kd = 400
+            .kd = 1000
 };
 
 pid_value_t pid_tran_rotating_value = {
