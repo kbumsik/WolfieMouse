@@ -90,13 +90,13 @@ void control_loop_thread_init(void)
     /* Now peripherals has been initialized */
 
     /* Allocate Queue */
-    command_queue = xQueueCreate( 5, sizeof(struct cmd_command));
+    command_queue = xQueueCreate( 2, sizeof(struct cmd_command));
     if (NULL == command_queue) {
-        KB_DEBUG_ERROR("Creating cmd queue failed!!");
+        terminal_puts("Creating cmd command queue failed!!");
     }
-    response_queue = xQueueCreate( 10, sizeof(struct cmd_response));
+    response_queue = xQueueCreate( 3, sizeof(struct cmd_response));
     if (NULL == response_queue) {
-        KB_DEBUG_ERROR("Creating cmd queue failed!!");
+        terminal_puts("Creating cmd resp queue failed!!");
     }
 
     /* Allocate task */
