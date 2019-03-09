@@ -288,7 +288,12 @@ void MouseController::getShortestPath(void)
 				isNextDistance = (getDis(posFromPath) + 1) == getDis(posFromAvailable);
 			} while (!(isAdjacent && isNextDistance));
 		}
-        pathStack.pushToBack(availablePositionStack.popFromBack());
+        // Before insert, save direction info.
+        PositionController nextPos = availablePositionStack.popFromBack();
+        PositionController currentPos = pathStack.peekFromBack();
+        nextPos.setDir(currentPos.getNextDir(nextPos));
+        // Insert
+        pathStack.pushToBack(nextPos);
 	}
 	/* Delete the top element - it is the current position! */
 	// FIXME: Do not delete it?

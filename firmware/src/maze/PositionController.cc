@@ -78,28 +78,21 @@ Direction PositionController::getNextDir(Position posTo)
     /* get the next Position */
     Position nextPosition = posTo;
     Position pos_delta = nextPosition - getCurrentPos();
-    switch (pos_delta.row) {
-    case 1:
+
+    if (pos_delta.row > 0) {
         return row_plus;
-        break;
-    case -1:
+    } else if (pos_delta.row < 0) {
         return row_minus;
-        break;
-    default:
-        break;
     }
-    switch (pos_delta.col) {
-    case 1:
+
+    if (pos_delta.col > 0) {
         return col_plus;
-        break;
-    case -1:
+    } else if (pos_delta.col < 0) {
         return col_minus;
-        break;
-    default:
-        break;
     }
+
     /* return value should not this one */
-    /* we can make a strange code ablow to indicate there is an error */
+    /* we can make a strange code blow to indicate there is an error */
     return eDirError;
 }
 
@@ -127,7 +120,28 @@ Position PositionController::getNextPos(Direction dirTo)
 
 void PositionController::print(PositionController obj)
 {
-    printf("Position{%d,%d}, ", obj.pos.row, obj.pos.col);
+    printf("Position{%d,%d,", obj.pos.row, obj.pos.col);
+    char dirCharacter;
+    switch(obj.dir) {
+		case Direction::row_minus:		//mouse pointing up
+			dirCharacter = '^';
+			break;
+		case Direction::col_minus:
+			dirCharacter = '<';         //mouse pointing left
+			break;
+		case Direction::row_plus:		//mouse pointing down
+			dirCharacter = 'v';
+			break;
+		case Direction::col_plus:		//mouse pointing right
+			dirCharacter = '>';
+			break;
+		case Direction::eDirError:
+		default:
+			dirCharacter = '?';
+			break;
+    }
+    printf("%c", dirCharacter);
+    printf("}, ");
 }
 
 /*******************************************************************************
