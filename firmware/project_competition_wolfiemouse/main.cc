@@ -124,6 +124,8 @@ void task_4(void)
     cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
     cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
     cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
+    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
+    cmd_polling(CMD_MOVE_FORWARD_ONE_CELL);
     cmd_low_pid_reset_and_stop(NULL);
 }
 

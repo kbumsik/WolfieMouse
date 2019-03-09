@@ -15,7 +15,8 @@
  * @brief Wheel measurements
  */
 #define MEASURE_STEPS_PER_REV       5760
-#define MEASURE_STEPS_PER_CELL      7875
+// #define MEASURE_STEPS_PER_CELL      7875
+#define MEASURE_STEPS_PER_CELL      8000
 #define MEASURE_STEPS_90DEG_CW      2618
 #define MEASURE_STEPS_90DEG_CCW     2659
 #define MEASURE_STEPS_SMOOTH_L_LEFT     4376
@@ -27,15 +28,15 @@
 /**
  * @brief Reange finder values
  */
-#define MEASURE_RANGE_L_MIN_DETECT	660
-#define MEASURE_RANGE_L_M_DETECT    1150
-#define MEASURE_RANGE_L_MAX_DETECT	1450
+#define MEASURE_RANGE_L_MIN_DETECT	600
+#define MEASURE_RANGE_L_M_DETECT    900
+#define MEASURE_RANGE_L_MAX_DETECT	2000
 
-#define MEASURE_RANGE_R_MIN_DETECT	900
-#define MEASURE_RANGE_R_M_DETECT	1550
-#define MEASURE_RANGE_R_MAX_DETECT	1700
+#define MEASURE_RANGE_R_MIN_DETECT	600
+#define MEASURE_RANGE_R_M_DETECT	900
+#define MEASURE_RANGE_R_MAX_DETECT	2000
 
-#define MEASURE_RANGE_R_OFFSET 300 /* the offset between left and right sensor when mouse in the middle of cell */
+#define MEASURE_RANGE_R_OFFSET 255 /* the offset between left and right sensor when mouse in the middle of cell */
 
 /* Set target PID speed */
 #define TARGET_MOVE_FORWARD_SPEED_TRAN  (10)
@@ -49,15 +50,15 @@
 
 /* Set PID controller */
 pid_value_t pid_tran_forwarding_value = {
-        .kp = 35,
-        .ki = 5, // 0.01
-        .kd = 10
+        .kp = 20,
+        .ki = 7, // 0.01
+        .kd = 0.1
 };
 
 pid_value_t pid_rot_forwarding_value = {
-            .kp = 8,
+            .kp = 12,
             .ki = 0,
-            .kd = 1000
+            .kd = 1200
 };
 
 pid_value_t pid_tran_rotating_value = {
@@ -309,7 +310,10 @@ void loop_move_forward (struct mouse_data_pid *pid,
         int32_t feedback_T = (speed.left + speed.right) / 2;
         // calculate errorR
         int32_t feedback_R;
-        if((range->left > (MEASURE_RANGE_L_MIN_DETECT))
+        if (range->front > MEASURE_RANGE_F_NEAR_DANGER) {
+            // When front is getting close turn of sides.
+            feedback_R = speed.diff;
+        } else if ((range->left > (MEASURE_RANGE_L_MIN_DETECT))
                             && (range->right > MEASURE_RANGE_R_MIN_DETECT) ) {
             // If both range are within wall detecting distance,
             // Use range sensor to get rotational error
