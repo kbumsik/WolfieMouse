@@ -29,6 +29,7 @@
 
 // Thread modules
 #include "logger_thread.h"
+#include "control_loop_thread.h"
 
 void on_b1_pressed(void);
 
@@ -229,6 +230,9 @@ int main(void)
 
     // Initialize all configured peripherals
     peripheral_init();
+
+    // Initialize all configured peripherals and then start control loop
+    control_loop_thread_init();
 
     // Init logger thread
     logger_thread_init();
