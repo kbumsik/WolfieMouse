@@ -28,6 +28,8 @@ enum cmd_type {
     // low commands
     CMD_LOW_SET_PID_AND_GO          = 8,    //< Set PID and start controlling the motors
     CMD_LOW_RESET_PID_AND_STOP  = 9,    //< Reset current accumulated I-value of PID and then stop the motors
+    // Calibrations
+    CMD_CALIBRATE_AGAINST_WALL,    //< Calibrate position of the mouse against the front wall
 };
 
 struct cmd_pid {

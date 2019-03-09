@@ -108,7 +108,8 @@ void task_3(void)
 {
     /* Not implemented */
     hcms_290x_matrix("Non3");
-    delay_ms(2000);
+    delay_ms(1000);
+    cmd_polling(CMD_CALIBRATE_AGAINST_WALL);
 }
 
 /**

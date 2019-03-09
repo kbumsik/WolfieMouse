@@ -38,6 +38,9 @@
 
 #define MEASURE_RANGE_R_OFFSET 255 /* the offset between left and right sensor when mouse in the middle of cell */
 
+#define MEASURE_RANGE_F_CALIBRATE_DISTANCE (3800)
+#define MEASURE_RANGE_F_CALIBRATE_LR_OFFSET (200)
+
 /* Set target PID speed */
 #define TARGET_MOVE_FORWARD_SPEED_TRAN  (10)
 #define TARGET_MOVE_FORWARD_SPEED_ROT   (0)
@@ -47,6 +50,9 @@
 
 #define TARGET_SMOOTH_TURN_SPEED_TRAN   (15)
 #define TARGET_SMOOTH_TURN_SPEED_ROT    (-30)
+
+#define TARGET_CALIBRATE_WALL_SPEED_TRAN   (0)
+#define TARGET_CALIBRATE_WALL_SPEED_ROT    (0)
 
 /* Set PID controller */
 pid_value_t pid_tran_forwarding_value = {
@@ -85,6 +91,18 @@ pid_value_t pid_rot_smooth_value = {
             .kd = 20
 };
 
+pid_value_t pid_tran_calibrate_value = {
+        .kp = 10,
+        .ki = 7, // 0.01
+        .kd = 200
+};
+
+pid_value_t pid_rot_calibrate_value = {
+            .kp = 30,
+            .ki = 0,
+            .kd = 300
+};
+
 /*******************************************************************************
  * Local data structure
  ******************************************************************************/
@@ -111,6 +129,7 @@ void turn_left_smooth (struct mouse_data_pid *pid);
 void turn_right_smooth (struct mouse_data_pid *pid);
 void set_pid_and_go (struct mouse_data_pid *pid);
 void reset_pid_and_stop (struct mouse_data_pid *pid);
+void calibrate_against_wall (struct mouse_data_pid *pid);
 
 void (*const control_loop_driver[])(struct mouse_data_pid *pid) = {
     do_nothing,                     // CMD_NOTHING
@@ -123,6 +142,7 @@ void (*const control_loop_driver[])(struct mouse_data_pid *pid) = {
     turn_right_smooth,              // CMD_TURN_RIGHT_SMOOTH
     set_pid_and_go,                 // CMD_LOW_SET_PID_AND_GO
     reset_pid_and_stop,             // CMD_LOW_RESET_PID_AND_STOP
+    calibrate_against_wall,         // CMD_CALIBRATE_AGAINST_WALL
 };
 
 /*******************************************************************************
@@ -150,6 +170,9 @@ void loop_smooth_trun (struct mouse_data_pid *pid,
                        int32_t target_speed_rot,
                        int16_t target_step_left,
                        int16_t target_step_right);
+void loop_calibrate_wall (struct mouse_data_pid *pid,
+                        pid_value_t *pid_tran,
+                        pid_value_t *pid_rot);
 
 /* etc. */
 void update_steps_and_speed (struct mouse_data_step *total_step,
@@ -254,6 +277,13 @@ void set_pid_and_go (struct mouse_data_pid *pid)
 void reset_pid_and_stop (struct mouse_data_pid *pid)
 {
     stop_motor(pid);
+}
+
+void calibrate_against_wall (struct mouse_data_pid *pid)
+{
+    loop_calibrate_wall (pid,
+                         &pid_tran_calibrate_value,
+                         &pid_rot_calibrate_value);
 }
 
 /*******************************************************************************
@@ -475,6 +505,55 @@ void loop_smooth_trun (struct mouse_data_pid *pid,
                                     &target_wheel_dir)) {
             break;
         }
+    }
+}
+
+void loop_calibrate_wall (struct mouse_data_pid *pid,
+                        pid_value_t *pid_tran,
+                        pid_value_t *pid_rot)
+{
+    struct range_data *range = &g_range;    // Range finder value
+    struct mouse_data_speed speed;    // Speed value
+    // TODO: Prevent underflow/overflow.
+    struct mouse_data_step total_step = { // Accumulated step (distance) values
+        .left = MEASURE_ENCODER_DEFAULT,
+        .right = MEASURE_ENCODER_DEFAULT,
+    };
+
+    // Load PID profiles
+    pid_set_pid(&pid->tran, pid_tran);
+    pid_set_pid(&pid->rot, pid_rot);
+
+    // Reset PID, or reset accumulated (integrated) speed error
+    pid_reset(&pid->tran);
+    pid_reset(&pid->rot);
+
+    // Set target speed values
+    pid_input_setpoint(&pid->tran, 0);
+    pid_input_setpoint(&pid->rot, 0);
+
+    // Iterate for 1000 ms
+    for (int time = 0; time < 1000; time++) {
+        control_loop_thread_wait_1ms();
+        update_steps_and_speed(&total_step, &speed);
+        update_range(range);
+
+        /* compute PID */
+        // calculate errorT
+        int32_t feedback_T = ((range->front_left + range->front_right) / 2 - MEASURE_RANGE_F_CALIBRATE_DISTANCE) / 10;
+        // calculate errorR
+        int32_t feedback_R = (range->right - range->left - MEASURE_RANGE_F_CALIBRATE_LR_OFFSET) / 10;
+
+        // Calculate PID outputs
+        int32_t outputT = pid_compute(&pid->tran, feedback_T);
+        int32_t outputR = pid_compute(&pid->rot, feedback_R);
+
+        // Apply to the motor
+        motor_speed_permyriad(CH_LEFT, outputT + outputR);
+        motor_speed_permyriad(CH_RIGHT, outputT - outputR);
+        motor_start(CH_BOTH);
+
+        logger_log(pid, range, &total_step, &speed, outputT, outputR);
     }
 }
 
