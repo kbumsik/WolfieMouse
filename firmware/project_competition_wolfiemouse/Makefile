@@ -85,6 +85,7 @@ StdIO.cc \
 
 # .c files used in /firmware/src/module
 MODULE_FILES = \
+control_loop_thread.c \
 logger_thread.c \
 cmd.c \
 terminal.c \
