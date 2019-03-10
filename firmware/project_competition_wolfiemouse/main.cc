@@ -331,6 +331,9 @@ int main(void)
     /* initialize clock and system configuration */
     system_init();
 
+    /* Initialize all required peripherals */
+    peripheral_init();
+
     /* Set Button Pressed Events */
     button_init();
 
