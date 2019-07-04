@@ -136,6 +136,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "tools/vagrant/eclipse_cdt.sh"
   config.vm.provision "shell", path: "tools/vagrant/modify_bashrc.sh"
   config.vm.provision "shell", inline: "sudo apt-get install -y gdb python"
+  config.vm.provision "shell", inline: "sudo apt-get install -y fish && sudo chsh -s /usr/bin/fish vagrant"
 
   # The official Vagrant Ubuntu box has a broken group permssion.
   # So a group for USB should be manually added.
