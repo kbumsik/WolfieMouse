@@ -39,8 +39,8 @@ def better_usbfilter_add(vb, filter_name, manufacturer, product)
   #       times on each Vagrantfile parsing.
   #
   if not usbfilter_exists(filter_name)
-    vb.customize ["usbfilter", "add", "0", 
-       "--target", :id, 
+    vb.customize ["usbfilter", "add", "0",
+       "--target", :id,
        "--name", filter_name,
        "--manufacturer", manufacturer,
        "--product", product]
@@ -55,7 +55,7 @@ Vagrant.configure("2") do |config|
 
   # Enable X11 forwarding
   config.ssh.forward_x11 = true
-  
+
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
@@ -117,6 +117,7 @@ Vagrant.configure("2") do |config|
     # https://github.com/mitchellh/vagrant/issues/5774
     better_usbfilter_add(vb, "J-Link Debugger", "SEGGER", "J-Link")
     better_usbfilter_add(vb, "STLink Debugger", "STMicroelectronics", "STM32 STLink")
+    better_usbfilter_add(vb, "FTDI USB UART", "FTDI", "FT232R USB UART")
   end
   # View the documentation for the provider you are using for more
   # information on available options.
@@ -131,7 +132,8 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  
+
+  config.vm.provision "shell", path: "tools/vagrant/install_usb_serial_modules.sh"
   config.vm.provision "shell", path: "tools/vagrant/install_gcc_arm_tools.sh"
   config.vm.provision "shell", path: "tools/vagrant/eclipse_cdt.sh"
   config.vm.provision "shell", path: "tools/vagrant/modify_shell.sh"
