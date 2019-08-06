@@ -26,7 +26,7 @@ install-installer-essential () {
 install-gcc-arm-embedded () {
 	echo -e "\n\nInstalling GNU ARM Embedded Toolchain..."
 	echo -e "\nInstalling Dependancies..."
-	
+
 	sudo apt-get -y install lib32ncurses5
 
 	echo -e "\nDownlaoding the Package..."
@@ -38,11 +38,12 @@ install-gcc-arm-embedded () {
 	sudo rsync -a --delete-after gcc-arm-none-eabi-7-2017-q4-major/ /opt/gcc-arm-none-eabi/
 	rm gcc-arm-none-eabi.tar.bz2
 	rm -rf gcc-arm-none-eabi-7-2017-q4-major
-	
+
 	echo -e "\nAdding PATH to the toolchain..."
-	cat >> /home/$USER/.bashrc <<-EOF
+	sudo cat >> /etc/profile.d/gcc-arm-none-eabi.sh <<-EOF
+	#!/bin/sh
 	#Add GNU ARM Embedded Toolchain to PATH
-	export PATH=\$PATH:/opt/gcc-arm-none-eabi/bin
+	export PATH=/opt/gcc-arm-none-eabi/bin:\$PATH
 	EOF
 
 	echo -e "\nDone installing GNU ARM Embedded Toolchain."
@@ -72,7 +73,7 @@ install-openocd () {
 	cd ..
 	sudo rm -r openocd
 	sudo cp /usr/local/share/openocd/contrib/60-openocd.rules /etc/udev/rules.d/
-	
+
 	echo -e "\nDone installing OpenOCD."
 }
 
@@ -83,11 +84,11 @@ install-openocd () {
 install-jlink () {
 	echo -e "\n\nInstalling J-Link Software and Documentation Pack..."
 	echo -e "\nDownloading J-Link Software and Documentation Pack..."
-	
+
 	wget --post-data "accept_license_agreement=accepted&submit=Download+software&non_emb_ctr=confirmed" \
 			-nv "https://www.segger.com/downloads/jlink/JLink_Linux_x86_64.deb" \
 			-O "JLink_Linux_x86_64.deb"
-		
+
 	echo -e "\nInstalling the Package..."
 	yes Y | sudo dpkg -i "JLink_Linux_x86_64.deb"
 	rm "JLink_Linux_x86_64.deb"

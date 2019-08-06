@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eu
+
 # Ubuntu Vagrant box doesn't have USB serial kernel modules by default.
 # I manually compiled the corresponding kernel modules to enable them.
 # Compiled target Linux version is 4.4.0-154-generic.
