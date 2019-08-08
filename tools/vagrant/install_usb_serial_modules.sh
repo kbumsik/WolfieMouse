@@ -6,17 +6,21 @@ set -eu
 # I manually compiled the corresponding kernel modules to enable them.
 # Compiled target Linux version is 4.4.0-154-generic.
 
-WOLFIE_PATH=$(pwd)/wolfiemouse
+sudo apt-get update && sudo apt-get install -y build-essential linux-headers-$(uname -r)
+sudo apt-get update && sudo apt-get install -y rsync
 
-# FTDI USB UART modules
-sudo mkdir /lib/modules/$(uname -r)/kernel/drivers/usb/serial
-sudo cp $WOLFIE_PATH/tools/vagrant/usbserial.ko /lib/modules/$(uname -r)/kernel/drivers/usb/serial/
-sudo cp $WOLFIE_PATH/tools/vagrant/ftdi_sio.ko /lib/modules/$(uname -r)/kernel/drivers/usb/serial/
-sudo cp $WOLFIE_PATH/tools/vagrant/cp210x.ko /lib/modules/$(uname -r)/kernel/drivers/usb/serial/
+WOLFIE_DIR=$(pwd)/wolfiemouse
+PRV_DIR=$(pwd)
 
-# CDC ACM module (ST-Link VCP)
-sudo mkdir /lib/modules/$(uname -r)/kernel/drivers/usb/class
-sudo cp $WOLFIE_PATH/tools/vagrant/cdc-acm.ko /lib/modules/$(uname -r)/kernel/drivers/usb/class/
+# Build kernel modules
+cd $WOLFIE_DIR/tools/vagrant/ubuntu-xenial-kernel-source
+make
+
+# Copy compiled .ko modules
+sudo rsync -avm --include="*/" --include="*.ko" --exclude="*" ./ /lib/modules/$(uname -r)/kernel/
 
 # Update module dependencies
 sudo depmod
+
+cd $PRV_DIR
+
