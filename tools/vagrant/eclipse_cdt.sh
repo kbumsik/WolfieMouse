@@ -1,11 +1,5 @@
 #!/bin/bash
-
-set -eu
-
-# For Vagrant provisioning - Check root and change to vagrant user
-if [ $(id -u) = 0 ]; then
-   USER='vagrant'
-fi
+source /home/vagrant/wolfiemouse/tools/vagrant/config.sh
 
 # Eclipse CDT tools
 install-eclipse_cdt () {
@@ -24,8 +18,7 @@ install-eclipse_cdt () {
 	rm -rf cdt-stand-alone-debugger/
 
 	echo -e "\nAdding Eclipse cdt to PATH"
-	sudo cat >> /etc/profile.d/cdt-stand-alone-debugger.sh <<-EOF
-	#!/bin/sh
+	sudo cat >> $CONFIG_SHELL_RC_PATH <<-EOF
 	#Add Eclipse CDT debugger to PATH
 	export PATH=\$PATH:/opt/cdt-stand-alone-debugger
 	EOF

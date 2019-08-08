@@ -1,11 +1,5 @@
 #!/bin/bash
-
-set -eu
-
-# For Vagrant provisioning - Check root and change to vagrant user
-if [ $(id -u) = 0 ]; then
-   USER='vagrant'
-fi
+source /home/vagrant/wolfiemouse/tools/vagrant/config.sh
 
 ################################################################################
 # Common installation commends
@@ -40,8 +34,7 @@ install-gcc-arm-embedded () {
 	rm -rf gcc-arm-none-eabi-7-2017-q4-major
 
 	echo -e "\nAdding PATH to the toolchain..."
-	sudo cat >> /etc/profile.d/gcc-arm-none-eabi.sh <<-EOF
-	#!/bin/sh
+	sudo cat >> $CONFIG_SHELL_RC_PATH <<-EOF
 	#Add GNU ARM Embedded Toolchain to PATH
 	export PATH=/opt/gcc-arm-none-eabi/bin:\$PATH
 	EOF

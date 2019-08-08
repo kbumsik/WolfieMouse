@@ -1,3 +1,7 @@
 *.ur-safe
 *.ko
 *.o
+*.mod*
+*.cmd
+modules.order
+Module.symvers

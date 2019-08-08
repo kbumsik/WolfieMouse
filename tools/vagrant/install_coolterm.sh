@@ -1,6 +1,5 @@
 #!/bin/bash
-
-set -eu
+source /home/vagrant/wolfiemouse/tools/vagrant/config.sh
 
 sudo apt-get install -y wget unzip
 sudo apt-get install -y libgtk-3-0 libunwind-dev
@@ -16,6 +15,6 @@ rm CoolTermLinux.zip
 # Create coolterm command
 sudo cat >> /usr/local/bin/coolterm <<'EOF'
 #!/bin/sh
-exec /opt/CoolTermLinux/Coolterm
+exec /opt/CoolTermLinux/CoolTerm
 EOF
 sudo chmod +x /usr/local/bin/coolterm

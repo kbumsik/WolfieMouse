@@ -1,6 +1,5 @@
 #!/bin/bash
-
-set -eu
+source /home/vagrant/wolfiemouse/tools/vagrant/config.sh
 
 # Ubuntu Vagrant box doesn't have USB serial kernel modules by default.
 # I manually compiled the corresponding kernel modules to enable them.

@@ -133,18 +133,20 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
 
+  # Install ZSH and grml-zsh-config.
+  # See https://grml.org/zsh/#grmlzshconfig
+  # ZSH must be installed first, as other installations depends on .zshrc
+  config.vm.provision "shell", inline: "sudo apt-get install -y zsh wget && sudo chsh -s /usr/bin/zsh vagrant"
+  config.vm.provision "shell", inline: "wget -nv -O /home/vagrant/.zshrc https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc && chown vagrant:vagrant /home/vagrant/.zshrc"
+  config.vm.provision "shell", inline: "wget -nv -O /home/vagrant/.zshrc.local  https://git.grml.org/f/grml-etc-core/etc/skel/.zshrc && chown vagrant:vagrant /home/vagrant/.zshrc.local"
+  config.vm.provision "shell", path: "tools/vagrant/modify_shell.sh"
+  # Install tools
   config.vm.provision "shell", path: "tools/vagrant/install_usb_serial_modules.sh"
   config.vm.provision "shell", path: "tools/vagrant/install_gcc_arm_tools.sh"
   # We don't use eclipse anymore.
   #config.vm.provision "shell", path: "tools/vagrant/eclipse_cdt.sh"
   config.vm.provision "shell", path: "tools/vagrant/install_coolterm.sh"
   config.vm.provision "shell", inline: "sudo apt-get install -y gdb python3 python3-pip python python-pip"
-  # Install ZSH and grml-zsh-config.
-  # See https://grml.org/zsh/#grmlzshconfig
-  config.vm.provision "shell", inline: "sudo apt-get install -y zsh wget && sudo chsh -s /usr/bin/zsh vagrant"
-  config.vm.provision "shell", inline: "wget -O /home/vagrant/.zshrc https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc && chown vagrant:vagrant /home/vagrant/.zshrc"
-  config.vm.provision "shell", inline: "wget -O /home/vagrant/.zshrc.local  https://git.grml.org/f/grml-etc-core/etc/skel/.zshrc && chown vagrant:vagrant /home/vagrant/.zshrc.local"
-  config.vm.provision "shell", path: "tools/vagrant/modify_shell.sh"
 
   # The official Vagrant Ubuntu box has a broken group permssion.
   # So a group for USB should be manually added.
