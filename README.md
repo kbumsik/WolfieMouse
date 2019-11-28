@@ -7,7 +7,9 @@ WolfieMouse is a robotics project to build [a micromouse](https://en.wikipedia.o
 * Tools to capture and plot robot's sensor data (Python)
 * Embedded hardware design and PCB design (KiCad, an open-source alternative to Altium)
 
-This robot won **The Special Mention Award in 2018 IEEE Region 1 Micromouse Robotics Competition**.
+This robot won:
+  * **The Special Mention Award in 2018 IEEE Region 1 Micromouse Robotics Competition**.
+  * **The 3rd Place Award in 2019 IEEE Region 1 Micromouse Robotics Competition**.
 
 <img src="doc/images/wolfiemouse_2018.jpg" width="290px"><img src="doc/images/wolfiemouse_maze_2018.jpg" width="290px"><img src="doc/images/prize_2018.jpg" width="290px">
 
