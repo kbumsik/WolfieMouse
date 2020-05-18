@@ -11,7 +11,9 @@ This robot won:
   * **The Special Mention Award in 2018 IEEE Region 1 Micromouse Robotics Competition**.
   * **The 3rd Place Award in 2019 IEEE Region 1 Micromouse Robotics Competition**.
 
-<img src="doc/images/wolfiemouse_2018.jpg" width="290px"><img src="doc/images/wolfiemouse_maze_2018.jpg" width="290px"><img src="doc/images/prize_2018.jpg" width="290px">
+<img src="doc/images/wolfiemouse_2018.jpg" width="290px"><img src="doc/images/wolfiemouse_maze_2018.jpg" width="290px">
+
+<img src="doc/images/prize_2018.jpg" width="290px"><img src="doc/images/prize_2019.jpg" width="290px">
 
 ## Get started
 
