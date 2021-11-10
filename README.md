@@ -22,7 +22,7 @@ If you don't know what is micromouse competition, [this document will help.](doc
 Requires tools:
 * [GNU Arm Embedded Toolchain](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm) and [Makefile](https://www.gnu.org/software/make/manual/make.html) to build program for the robot.
 * [OpenOCD](http://openocd.org/) to upload the program to the robot and to debug.
-* [KiCad](http://kicad-pcb.org/) to design a PCB hardware.
+* [KiCad](http://kicad.org/) to design a PCB hardware.
 
 Otherwise, a [Vagrant](https://www.vagrantup.com/) virtual machine environment is provided to skip installing the above tools.
 
